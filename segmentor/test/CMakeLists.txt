@@ -5,6 +5,7 @@ project(segmentor)
 include_directories(
   /usr/local/include/
   /home/freeman/software/include/
+  ${CMAKE_SOURCE_DIR}/../deps/public-cpp/include/
 )
 
 link_directories(
@@ -29,5 +30,5 @@ link_libraries(
 
 add_executable(testBigramDict
   ${LOCAL_CPP_FILES}
-  ${CMAKE_SOURCE_DIR}/src/data/testBigramDict.cpp
+  ${CMAKE_SOURCE_DIR}/src/data/test_bigram_dict.cpp
 )

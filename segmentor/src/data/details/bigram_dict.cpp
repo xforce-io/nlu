@@ -1,4 +1,4 @@
-#include "../BigramDict.h"
+#include "../bigram_dict.h"
 
 bool BigramDict::Init(const std::string &dictpath) {
   return true;

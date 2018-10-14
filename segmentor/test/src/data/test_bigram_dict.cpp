@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "../src/data/BigramDict.h"
+#include "../../../src/data/bigram_dict.h"
 
 LOGGER_IMPL(xforce::xforce_logger, "template")
 
