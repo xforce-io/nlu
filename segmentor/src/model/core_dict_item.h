@@ -1,0 +1,33 @@
+#pragma once
+
+#include "public.h"
+
+namespace xforce { namespace nlu {
+
+class CoreDictNatures;
+
+class CoreDictItem {
+ public:
+  bool Init(const std::vector<std::string> &items);
+
+  const std::string& GetName() const { return name_; }
+  inline size_t GetFreq() const;
+
+  virtual ~CoreDictItem();
+
+ private: 
+  std::string name_;
+  CoreDictNatures *coreDictNatures_;
+};  
+
+}}
+
+#include "core_dict_natures.h"
+
+namespace xforce { namespace nlu {
+
+size_t CoreDictItem::GetFreq() const { 
+  return coreDictNatures_->GetFreq(); 
+}
+
+}}

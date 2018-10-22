@@ -2,11 +2,13 @@
 
 #include "public.h"
 
-namespace xforce { namespace nlu { namespace segmentor {
+namespace xforce { namespace nlu {
 
 class Conf {
  public: 
+  Conf();
+
   bool Init(const std::string &filedir); 
 };
 
-}}}
+}}

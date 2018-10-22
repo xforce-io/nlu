@@ -1,9 +1,11 @@
 #include "../conf.h"
 
-namespace xforce { namespace nlu { namespace segmentor {
+namespace xforce { namespace nlu {
 
 Conf::Conf() {}  
 
-bool 
+bool Conf::Init(const std::string &filedir) {
+    return true;
+}
 
-}}}
+}}

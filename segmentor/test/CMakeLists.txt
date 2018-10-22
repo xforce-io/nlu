@@ -19,8 +19,10 @@ FILE(GLOB_RECURSE LOCAL_CPP_FILES "${CMAKE_SOURCE_DIR}/../src/*.cpp")
 set(CMAKE_CXX_COMPILER g++)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -pthread -std=c++11 -DUT_TEST -Dprivate=public")
+set(LIB_DEPS ${CMAKE_SOURCE_DIR}/../deps/public-cpp/lib/public-cpp/libpublic-cpp.a)
 
 link_libraries(
+  ${LIB_DEPS}
   log4cplus
   gtest
   pthread
@@ -31,4 +33,9 @@ link_libraries(
 add_executable(testBigramDict
   ${LOCAL_CPP_FILES}
   ${CMAKE_SOURCE_DIR}/src/data/test_bigram_dict.cpp
+)
+
+add_executable(testWordDict
+  ${LOCAL_CPP_FILES}
+  ${CMAKE_SOURCE_DIR}/src/data/test_word_dict.cpp
 )
