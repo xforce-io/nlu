@@ -36,7 +36,11 @@ bool NatureBigram::Init(const NatureDict &natureDict, const std::string &dictpat
     if (strlen(buf) > 0) {
       StrHelper::SplitStr(buf, '\t', results);
       if (results.size() != natureDict.GetIndexSize()) {
-        ERROR("invalid_nature_dict_format[invalid_line_cnt]");
+        ERROR("invalid_nature_dict_format[" 
+            << results.size() 
+            << "|" 
+            << natureDict.GetIndexSize() 
+            << "]");
         return false;
       }
 

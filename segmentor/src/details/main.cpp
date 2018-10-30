@@ -1,7 +1,35 @@
+#include "../model/graph/graph.h"
+#include "../conf/conf.h"
+
 #ifndef UT_TEST
 
+LOGGER_IMPL(xforce::xforce_logger, "segmentor")
+
+using namespace xforce;
+using namespace xforce::nlu;
+
 int main() {
-    return 0;
+  LOGGER_SYS_INIT("conf/log.conf")
+
+  setlocale(LC_ALL, "");
+
+  bool ret = Conf::Get().Init("conf/segmentor.conf");
+  if (!ret) {
+    FATAL("fail_init_conf_from[conf/segmentor.conf]");
+    return -1;
+  }
+
+  ret = Manager::Get().Init();
+  if (!ret) {
+    FATAL("fail_init_data_manager");
+    return -2;
+  }
+
+  Graph *graph = new xforce::nlu::Graph("这样其实还好");
+  graph->Process();
+  graph->Profile();
+  XFC_DELETE(graph)
+  return 0;
 }
 
 #endif

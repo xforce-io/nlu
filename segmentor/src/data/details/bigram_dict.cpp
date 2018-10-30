@@ -49,7 +49,7 @@ bool BigramDict::Init(const std::string &dictpath) {
   return true;
 }
 
-uint32_t BigramDict::GetFreq(const std::string &word0, const std::string &word1) {
+uint32_t BigramDict::GetFreq(const std::string &word0, const std::string &word1) const {
   auto iter = container_.find(word0);
   if (iter == container_.end()) {
     return 0;

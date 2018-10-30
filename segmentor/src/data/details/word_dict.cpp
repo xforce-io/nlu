@@ -5,7 +5,7 @@
 namespace xforce { namespace nlu {
 
 bool WordDict::Init(const std::vector<std::string> &filepaths) {
-  simpleTrie_ = new SimpleTrie();
+  simpleTrie_ = new xforce::SimpleTrie();
   for (auto iter = filepaths.begin(); iter != filepaths.end(); ++iter) {
     bool ret = Init_(*iter);
     if (!ret) {
@@ -18,7 +18,7 @@ bool WordDict::Init(const std::vector<std::string> &filepaths) {
 
 void WordDict::PrefixMatch(
     const std::string &query, 
-    std::vector<const CoreDictItem*> &coreDictItems) {
+    std::vector<const CoreDictItem*> &coreDictItems) const {
   std::vector<size_t> prefixOffsets;
   simpleTrie_->PrefixesOf(query.c_str(), query.length(), prefixOffsets);
   for (auto iter = prefixOffsets.begin(); iter != prefixOffsets.end(); ++iter) {
@@ -37,7 +37,7 @@ const CoreDictItem* WordDict::GetCoreDictItem(const std::string &word) const {
     }
 }
 
-ssize_t WordDict::GetFreq(const std::string &word) {
+ssize_t WordDict::GetFreq(const std::string &word) const {
   const CoreDictItem *coreDictItem = GetCoreDictItem(word);
   if (coreDictItem != NULL) {
     return coreDictItem->GetFreq();

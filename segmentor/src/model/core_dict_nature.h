@@ -23,10 +23,6 @@ bool CoreDictNature::Init(const std::string &name, size_t freq) {
   name_ = name;
   freq_ = freq;
   nature_ = Manager::Get().GetNatureDict().GetNature(name);
-  if (NULL == nature_) {
-    WARN("fail_get_nature[" << name << "]");
-    return false;
-  }
   return true;
 }
 

@@ -13,7 +13,7 @@ class BigramDict {
   BigramDict() {}
 
   bool Init(const std::string &dictpath);
-  uint32_t GetFreq(const std::string &word0, const std::string &word1); 
+  uint32_t GetFreq(const std::string &word0, const std::string &word1) const;
 
   virtual ~BigramDict();
 

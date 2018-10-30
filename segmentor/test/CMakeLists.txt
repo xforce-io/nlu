@@ -30,6 +30,11 @@ link_libraries(
   curl
 )
 
+add_executable(testSurname
+  ${LOCAL_CPP_FILES}
+  ${CMAKE_SOURCE_DIR}/src/data/test_surname.cpp
+)
+
 add_executable(testBigramDict
   ${LOCAL_CPP_FILES}
   ${CMAKE_SOURCE_DIR}/src/data/test_bigram_dict.cpp
