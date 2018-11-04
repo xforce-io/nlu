@@ -14,7 +14,7 @@ class Graph {
   typedef std::tr1::unordered_map<int, double> PrioredNegLogPossi;
   typedef std::tr1::unordered_set<int> OffsetProcessed;
   typedef std::queue<int> OffsetToProcess;
-  typedef std::vector<int> Segment;
+  typedef std::vector<int> Offset;
   typedef std::vector<NodesVec*> PosToNumNodes;
   typedef typename std::vector< std::pair<const Node*, ConflictSubgraph*> > ProfileItems;
 
@@ -28,7 +28,7 @@ class Graph {
   void Process();
   inline void AddPrioredNegLogPossi(int offset, size_t len, double score);
   inline void AddMaxPrioredNegLogPossi(const Node &node);
-  const Segment& GetSegments() const { return segments_; }
+  const Offset& GetOffsets() const { return offsets_; }
   void OutputPath() const;
   void Profile();
 
@@ -67,7 +67,7 @@ class Graph {
   OffsetProcessed offsetProcessed_;
   OffsetToProcess offsetToProcess_;
 
-  Segment segments_;
+  Offset offsets_;
 
   //for profile
   PosToNumNodes posToNumNodes_;

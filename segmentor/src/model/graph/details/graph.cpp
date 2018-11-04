@@ -29,6 +29,7 @@ void Graph::Process() {
   CreateNodes_();
   candidateNodes_->EstablishPrevs();
   Optimize_();
+  MakeResults_();
 }
 
 void Graph::OutputPath() const {
@@ -143,16 +144,16 @@ void Graph::MakeResults_() {
   while (!curNode->IsBegin()) {
     curNode = curNode->GetBestPrev();
     if (!curNode->IsBegin()) {
-      segments_.push_back(curNode->GetOffset());
+      offsets_.push_back(curNode->GetOffset());
     }
   }
 
-  for (size_t i=0; i < segments_.size()/2; ++i) {
+  for (size_t i=0; i < offsets_.size()/2; ++i) {
     size_t one = i;
-    ssize_t other = segments_.size() - 1 - i;
-    int tmp = segments_[one];
-    segments_[one] = segments_[other];
-    segments_[other] = tmp;
+    ssize_t other = offsets_.size() - 1 - i;
+    int tmp = offsets_[one];
+    offsets_[one] = offsets_[other];
+    offsets_[other] = tmp;
   }
 }
 

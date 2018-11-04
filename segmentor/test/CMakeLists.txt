@@ -44,3 +44,8 @@ add_executable(testWordDict
   ${LOCAL_CPP_FILES}
   ${CMAKE_SOURCE_DIR}/src/data/test_word_dict.cpp
 )
+
+add_executable(testRegression
+  ${LOCAL_CPP_FILES}
+  ${CMAKE_SOURCE_DIR}/src/test_regression.cpp
+)
