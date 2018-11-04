@@ -53,4 +53,16 @@ bool Manager::Init() {
   return false;
 }  
 
+Manager::~Manager() {
+  XFC_DELETE(wordDict_)
+  XFC_DELETE(surname_)
+  XFC_DELETE(natureBigram_)
+  XFC_DELETE(natureDict_)
+  XFC_DELETE(bigramDict_)
+}
+
+void Manager::Tini() {
+  XFC_DELETE(manager_)
+}
+
 }}

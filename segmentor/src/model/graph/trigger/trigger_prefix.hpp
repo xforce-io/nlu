@@ -14,6 +14,8 @@ class TriggerPrefix : public Trigger {
       IN const std::string &query, 
       IN int offset, 
       OUT std::list<TriggeredNodes*> &results);
+
+  virtual ~TriggerPrefix() {}
 };
 
 }}
@@ -40,7 +42,13 @@ void TriggerPrefix::Process(
         iter != coreDictItems.end();
         ++iter) {
       const CoreDictItem &coreDictItem = **iter;
-      results.push_back(new TriggeredNodes(offset, coreDictItem.GetName().length()));
+      TriggeredNodes *triggeredNodes = new TriggeredNodes(offset, coreDictItem.GetName().length());
+      results.push_back(triggeredNodes);
+      ReqTracer::Get().Add(
+          "triggerPrefixStr", 
+          query.substr(
+            triggeredNodes->GetEndOffset() - triggeredNodes->GetLen(), 
+            triggeredNodes->GetLen()));
     }
   }
 }

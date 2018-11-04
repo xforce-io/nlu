@@ -26,7 +26,10 @@ class Manager {
   inline static void SetSurname(Surname &surname);
   inline static void SetWordDict(WordDict &wordDict);
 
+  virtual ~Manager();
+
   static Manager& Get() { return *manager_; }
+  static void Tini();
 
  private:
   BigramDict *bigramDict_; 

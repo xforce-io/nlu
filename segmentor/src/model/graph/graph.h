@@ -32,16 +32,20 @@ class Graph {
   void OutputPath() const;
   void Profile();
 
+  const std::string& GetQuery() const { return query_; }
+  void GetStrForNode(
+      IN const Node &node, 
+      OUT std::string &str) const;
+  double GetNegLogPossiForNodes(
+      const Node &node, 
+      const Node &curNode) const;
+
   virtual ~Graph();
  
  private: 
   void CreateNodes_();
   void Optimize_();
   void Optimize_(Node &curNode);
-  double GetNegLogPossiForNodes_(const Node &node, const Node &curNode);
-  inline void GetStrForNode_(
-      IN const Node &node, 
-      OUT std::string &str) const;
   void MakeResults_();
   void MakeProfileInfo_();
   void DumpProfile_();
@@ -50,6 +54,7 @@ class Graph {
 
  private:   
   const std::string query_;
+  std::wstring wquery_;
 
   Node *nodeBegin_; 
   Node *nodeEnd_;
@@ -87,18 +92,6 @@ void Graph::AddMaxPrioredNegLogPossi(const Node &node) {
   prioredNegLogPossi_.insert(std::make_pair(
         node.GetShapeCode(),
         kMaxNegLogPossi));
-}
-
-void Graph::GetStrForNode_(
-    const Node &node,
-    std::string &str) const {
-  if (!node.IsSpecial()) {
-    str.assign(query_.substr(node.GetOffset(), node.GetLen()));
-  } else if (node.IsBegin()) {
-    str.assign(kMarkStart);
-  } else {
-    str.assign(kMarkEnd);
-  }
 }
 
 double Graph::GetNegLogPossi_(const std::string &str, const std::string &condStr) {

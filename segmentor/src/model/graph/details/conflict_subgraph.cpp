@@ -21,14 +21,21 @@ void ConflictSubgraph::GeneratePaths() {
   while (!queue_.empty()) {
     Path &thePath = *(queue_.front());
     queue_.pop();
+
+    bool completePath = false;
     std::vector<Node*> nexts = thePath.End()->GetNexts();
     for (auto iter = nexts.begin(); iter != nexts.end(); ++iter) {
       Node &next = **iter;
       if (&next != endNode_) {
-        queue_.push(&(thePath.CopyAndAdd(next)));
+        queue_.push(&thePath.CopyAndAdd(next));
       } else {
         paths_.push_back(&thePath);
+        completePath = true;
       }
+    }
+
+    if (!completePath) {
+      delete &thePath;
     }
   }
 }
@@ -40,7 +47,7 @@ void ConflictSubgraph::DumpProfile(const Graph &graph) {
     beginNode_->DumpProfile(graph, *path.Begin());
     path.DumpProfile(graph);
     path.End()->DumpProfile(graph, *endNode_);
-    std::cout << " | " << std::endl;
+    std::cout << " | ";
   }
   std::cout << "] -> ";
 }
@@ -52,6 +59,7 @@ ConflictSubgraph::~ConflictSubgraph() {
 
   while (!queue_.empty()) {
     XFC_DELETE(queue_.front())
+    queue_.pop();
   }
 }
 

@@ -1,5 +1,7 @@
 #include "../model/graph/graph.h"
+#include "../model/graph/trigger/manager_triggers.h"
 #include "../conf/conf.h"
+#include "../public/req_tracer.h"
 
 #ifndef UT_TEST
 
@@ -29,6 +31,9 @@ int main() {
   graph->Process();
   graph->Profile();
   XFC_DELETE(graph)
+
+  ManagerTriggers::Tini();  
+  Manager::Tini();  
   return 0;
 }
 

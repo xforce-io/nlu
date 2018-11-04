@@ -11,18 +11,18 @@ const int Graph::kMaxNegLogPossi = 100;
 
 Graph::Graph(const std::string &query) :
     query_(query) {
+  XFC_ASSERT(StrHelper::Str2Wstr(query_, wquery_))
   nodeBegin_ = new Node(-1, 0);
   nodeEnd_ = new Node(-1, 0);
   candidateNodes_ = new CandidateNodes();
   candidateNodes_->AddNode(*nodeBegin_);
   offsetToProcess_.push(0);
-  posToNumNodes_.push_back(new NodesVec());
-  for (size_t i=1; i <= query_.length(); ++i) {
+
+  for (size_t i=0; i <= wquery_.length() + 1; ++i) {
     posToNumNodes_.push_back(new NodesVec());
   }
   posToNumNodes_[0]->push_back(nodeBegin_);
-  posToNumNodes_[query_.length() + 1] = new NodesVec();
-  posToNumNodes_[query_.length() + 1]->push_back(nodeEnd_);
+  posToNumNodes_[wquery_.length() + 1]->push_back(nodeEnd_);
 }
 
 void Graph::Process() {
@@ -39,14 +39,47 @@ void Graph::Profile() {
   DumpProfile_();
 }
 
+void Graph::GetStrForNode(
+    const Node &node,
+    std::string &str) const {
+  if (!node.IsSpecial()) {
+    str.assign(query_.substr(node.GetOffset(), node.GetLen()));
+  } else if (node.IsBegin()) {
+    str.assign(kMarkStart);
+  } else {
+    str.assign(kMarkEnd);
+  }
+}
+
+double Graph::GetNegLogPossiForNodes(const Node &node, const Node &condNode) const {
+  auto iter = prioredNegLogPossi_.find(node.GetShapeCode(
+        condNode.GetOffset(),
+        condNode.GetLen() + node.GetLen()));
+  if (iter != prioredNegLogPossi_.end()) {
+    return iter->second;
+  }
+
+  std::string strNode, strCondNode;
+  GetStrForNode(node, strNode);
+  GetStrForNode(condNode, strCondNode);
+  return GetNegLogPossi_(strNode, strCondNode);
+}
+
 Graph::~Graph() {
+  for (auto iter = profileItems_.begin(); iter != profileItems_.end(); ++iter) {
+    XFC_DELETE(iter->second)
+  }
+  for (auto iter = posToNumNodes_.begin(); iter != posToNumNodes_.end(); ++iter) {
+    XFC_DELETE(*iter)
+  }
+  XFC_DELETE(candidateNodes_)
+  XFC_DELETE(nodeEnd_)  
 }
 
 void Graph::CreateNodes_() {
   std::list<TriggeredNodes*> tmpContinousNodes;
   while (!offsetToProcess_.empty()) {
     int offset = offsetToProcess_.front();
-    NOTICE("offset[" << offset << "]");
     offsetToProcess_.pop();
     if (offsetProcessed_.find(offset) == offsetProcessed_.end()) {
       tmpContinousNodes.clear();
@@ -55,7 +88,6 @@ void Graph::CreateNodes_() {
           iter != tmpContinousNodes.end();
           ++iter) {
         TriggeredNodes *continuousNode = *iter;
-        NOTICE("continousNode[" << continuousNode->Str() << "]");
         for (auto iter1 = continuousNode->GetNodes().begin();
             iter1 != continuousNode->GetNodes().end();
             ++iter1) {
@@ -65,6 +97,7 @@ void Graph::CreateNodes_() {
         if (offset + continuousNode->GetLen() != query_.length()) {
           offsetToProcess_.push(continuousNode->GetEndOffset());
         }
+        XFC_DELETE(continuousNode)
       } 
       offsetProcessed_.insert(offset);
     }
@@ -92,7 +125,7 @@ void Graph::Optimize_(Node &curNode) {
       Optimize_(prevNode);
     }
 
-    double thePathScore = prevNode.GetBestScore() + GetNegLogPossiForNodes_(curNode, prevNode);
+    double thePathScore = prevNode.GetBestScore() + GetNegLogPossiForNodes(curNode, prevNode);
     if (thePathScore < bestScore) {
       bestScore = thePathScore;
       bestPrev = &prevNode;
@@ -104,20 +137,6 @@ void Graph::Optimize_(Node &curNode) {
   }
   curNode.SetBestScore(bestScore);
 } 
-
-double Graph::GetNegLogPossiForNodes_(const Node &node, const Node &condNode) {
-  auto iter = prioredNegLogPossi_.find(node.GetShapeCode(
-        condNode.GetOffset(),
-        condNode.GetLen() + node.GetLen()));
-  if (iter != prioredNegLogPossi_.end()) {
-    return iter->second;
-  }
-
-  std::string strNode, strCondNode;
-  GetStrForNode_(node, strNode);
-  GetStrForNode_(condNode, strCondNode);
-  return GetNegLogPossi_(strNode, strCondNode);
-}
 
 void Graph::MakeResults_() {
   Node *curNode = candidateNodes_->GetItems().back().first;
@@ -143,9 +162,9 @@ void Graph::MakeProfileInfo_() {
       ++iter) {
     if (!iter->first->IsSpecial()) {
       Node *node = iter->first;
-      for (size_t i = node->GetOffset() + 1;
-          i <= node->GetOffset() + node->GetLen();
-          ++i) {
+      size_t woffset = node->GetWoffset(*this);
+      size_t wlen = node->GetWlen(*this);
+      for (size_t i = woffset + 1; i <= woffset + wlen; ++i) {
         posToNumNodes_[i]->push_back(node);
       }
     }
@@ -183,7 +202,7 @@ void Graph::MakeProfileInfo_() {
 }
 
 void Graph::DumpProfile_() {
-  for (size_t i=0; i < profileItems_.size(); ++i) {
+  for (size_t i=0; i < profileItems_.size() - 1; ++i) {
     auto curItem = profileItems_[i]; 
     auto nextItem = profileItems_[i+1];
     if (curItem.first != NULL && nextItem.first != NULL) {
@@ -194,7 +213,7 @@ void Graph::DumpProfile_() {
   }
 
   std::string strForNode;
-  GetStrForNode_(*(profileItems_.back().first), strForNode);
+  GetStrForNode(*(profileItems_.back().first), strForNode);
   std::cout << strForNode << std::endl;
 }
 

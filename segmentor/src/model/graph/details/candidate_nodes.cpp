@@ -35,6 +35,10 @@ void CandidateNodes::EstablishPrevs() {
 
 CandidateNodes::~CandidateNodes() {
   for (auto iter = endToNode_.begin(); iter != endToNode_.end(); ++iter) {
+    std::list<Node*> &listNodes = *(iter->second);
+    for (auto iter1 = listNodes.begin(); iter1 != listNodes.end(); ++iter1) {
+      delete *iter1;
+    }
     XFC_DELETE(iter->second)
   }
 }

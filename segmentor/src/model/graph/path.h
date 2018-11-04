@@ -15,7 +15,7 @@ class Path {
   inline bool NonEmpty();
   inline Path& CopyAndAdd(Node &node);
 
-  Path& DumpProfile(const Graph &graph);
+  void DumpProfile(const Graph &graph);
 
   inline static Path& CreateFromNode(Node &node);
 

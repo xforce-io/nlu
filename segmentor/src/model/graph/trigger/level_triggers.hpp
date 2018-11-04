@@ -14,6 +14,8 @@ class LevelTriggers {
       IN const std::string &query, 
       IN int offset, 
       OUT std::list<TriggeredNodes*> &results);
+
+  virtual ~LevelTriggers();
    
  private:  
   std::list<Trigger*> triggers_;
@@ -37,6 +39,12 @@ void LevelTriggers::Process(
   for (auto iter = triggers_.begin(); iter != triggers_.end(); ++iter) {
     Trigger &trigger = **iter;
     trigger.Process(graph, query, offset, results);
+  }
+}
+
+LevelTriggers::~LevelTriggers() {
+  for (auto iter = triggers_.begin(); iter != triggers_.end(); ++iter) {
+    XFC_DELETE(*iter)
   }
 }
 

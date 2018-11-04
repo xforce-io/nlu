@@ -21,6 +21,7 @@ class ManagerTriggers {
   virtual ~ManagerTriggers();
 
   inline static ManagerTriggers &Get();
+  static void Tini();
  
  private:
   std::list<LevelTriggers*> levelTriggers_;

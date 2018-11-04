@@ -14,6 +14,8 @@ class Trigger {
       IN const std::string &query, 
       IN int offset, 
       OUT std::list<TriggeredNodes*> &results) = 0; 
+
+  virtual ~Trigger() {}
 };  
 
 }}

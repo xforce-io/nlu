@@ -11,6 +11,8 @@ class TriggerDefault : public Trigger {
       IN const std::string &query, 
       IN int offset, 
       OUT std::list<TriggeredNodes*> &results); 
+
+  virtual ~TriggerDefault() {}
 };
 
 void TriggerDefault::Process(

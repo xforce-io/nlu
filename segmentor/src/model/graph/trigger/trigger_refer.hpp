@@ -14,6 +14,8 @@ class TriggerRefer : public Trigger {
       IN const std::string &query, 
       IN int offset, 
       OUT std::list<TriggeredNodes*> &results);
+
+  virtual ~TriggerRefer() {}
 };
 
 void TriggerRefer::Process(

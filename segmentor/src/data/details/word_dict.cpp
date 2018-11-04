@@ -48,6 +48,9 @@ ssize_t WordDict::GetFreq(const std::string &word) const {
 
 WordDict::~WordDict() {
   XFC_DELETE(simpleTrie_)
+  for (auto iter = container_.begin(); iter != container_.end(); ++iter) {
+    XFC_DELETE(iter->second)
+  }  
 }
 
 bool WordDict::Init_(const std::string &filepath) {

@@ -54,15 +54,21 @@ void ManagerTriggers::Process(
           results.push_back(*iter1);
         }
       }
+      XFC_DELETE(tmpContinousNodes)
       return;
     }
   }
+  XFC_DELETE(tmpContinousNodes)
 }
 
 ManagerTriggers::~ManagerTriggers() {
   for (auto iter = levelTriggers_.begin(); iter != levelTriggers_.end(); ++iter) {
     XFC_DELETE(*iter)
   }
+}
+
+void ManagerTriggers::Tini() {
+  XFC_DELETE(managerTriggers_)
 }
 
 }}
