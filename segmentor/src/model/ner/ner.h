@@ -14,5 +14,5 @@ class Ner {
   };
 
  public: 
-  virtual int GetCategory(); 
+  virtual int GetCategory() const; 
 };
