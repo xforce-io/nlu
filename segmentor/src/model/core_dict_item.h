@@ -10,13 +10,13 @@ class CoreDictItem {
  public:
   bool Init(const std::vector<std::string> &items);
 
-  const std::string& GetName() const { return name_; }
+  const std::wstring& GetName() const { return name_; }
   inline size_t GetFreq() const;
 
   virtual ~CoreDictItem();
 
  private: 
-  std::string name_;
+  std::wstring name_;
   CoreDictNatures *coreDictNatures_;
 };  
 

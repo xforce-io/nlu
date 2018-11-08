@@ -41,15 +41,15 @@ void ConflictSubgraph::GeneratePaths() {
 }
 
 void ConflictSubgraph::DumpProfile(const Graph &graph) {
-  std::cout << "[";  
+  std::wcout << "[";  
   for (auto iter = paths_.begin(); iter != paths_.end(); ++iter) {
     Path &path = **iter;
     beginNode_->DumpProfile(graph, *path.Begin());
     path.DumpProfile(graph);
     path.End()->DumpProfile(graph, *endNode_);
-    std::cout << " | ";
+    std::wcout << " | ";
   }
-  std::cout << "] -> ";
+  std::wcout << "] -> ";
 }
 
 ConflictSubgraph::~ConflictSubgraph() {

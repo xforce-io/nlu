@@ -19,9 +19,16 @@ int main() {
     return -1;
   }
 
-  Graph *graph = new xforce::nlu::Graph("这样其实还好");
+  Graph *graph = new xforce::nlu::Graph(L"中国人民进入了");
   graph->Process();
   graph->Profile();
+
+  const std::vector<int> &offset = graph->GetOffsets();  
+  std::wcout << "[" << offset.size() << std::endl;
+  for (auto iter = offset.begin(); iter != offset.end(); ++iter) {
+    std::wcout << *iter << std::endl;
+  }
+
   XFC_DELETE(graph)
 
   Segmentor::Tini();  

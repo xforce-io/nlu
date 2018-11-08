@@ -7,17 +7,17 @@ namespace xforce { namespace nlu {
 class NumericRecognizer {
  public: 
   inline static int ExtractArabicNumeral(
-      const std::string &query,
+      const std::wstring &query,
       size_t offset); 
 };
 
 int NumericRecognizer::ExtractArabicNumeral(
-    const std::string &query,
+    const std::wstring &query,
     size_t offset) {
   size_t i = offset;
   while (i < query.length() 
       && (
-        (query[i] >= '0' && query[i] <= '9') 
+        (query[i] >= L'0' && query[i] <= L'9') 
         || '.' == query[i])) {
     ++i;
   }

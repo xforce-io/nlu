@@ -12,8 +12,10 @@ class ReqTracer {
   inline void Set(const std::string &key, int val);
   inline void Set(const std::string &key, const char *val);
   inline void Set(const std::string &key, const std::string &val);
+  inline void Set(const std::string &key, const std::wstring &val);
 
   inline void Add(const std::string &key, const std::string &val);
+  inline void Add(const std::string &key, const std::wstring &val);
 
   inline void Clear();
   inline std::string GetReport() const;
@@ -22,9 +24,6 @@ class ReqTracer {
 
   inline static ReqTracer& Get() { return *reqTracer_; }
   static void Tini();
- 
- private:
-  inline std::string ProcessStr_(const std::string &str); 
 
  private:
   time_t curMs_;
@@ -53,8 +52,20 @@ void ReqTracer::Set(const std::string &key, const std::string &val) {
   (*jsonType_)[key] = val;
 }
 
+void ReqTracer::Set(const std::string &key, const std::wstring &val) {
+  std::string valStr;
+  XFC_ASSERT(StrHelper::Wstr2Str(val, valStr));
+  Set(key, valStr);
+}
+
 void ReqTracer::Add(const std::string &key, const std::string &val) {
   (*jsonType_)[key].Append(val);
+}
+
+void ReqTracer::Add(const std::string &key, const std::wstring &val) {
+  std::string valStr;
+  XFC_ASSERT(StrHelper::Wstr2Str(val, valStr));
+  Add(key, valStr);
 }
 
 void ReqTracer::Clear() {

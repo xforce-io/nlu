@@ -9,16 +9,16 @@ class SimpleTrie;
 
 class WordDict {
  private:
-  typedef std::tr1::unordered_map<std::string, CoreDictItem*> Container; 
+  typedef std::tr1::unordered_map<std::wstring, CoreDictItem*> Container; 
  
  public: 
   bool Init(const std::vector<std::string> &filepaths);
 
   void PrefixMatch(
-      IN const std::string &query, 
+      IN const std::wstring &query, 
       OUT std::vector<const CoreDictItem*> &coreDictItems) const;
-  const CoreDictItem* GetCoreDictItem(const std::string &word) const;
-  ssize_t GetFreq(const std::string &word) const; 
+  const CoreDictItem* GetCoreDictItem(const std::wstring &word) const;
+  ssize_t GetFreq(const std::wstring &word) const; 
 
   virtual ~WordDict();
 

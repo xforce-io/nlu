@@ -3,10 +3,11 @@
 #include "../../../src/data/nature_dict.h"
 #include "../../../src/data/manager.h"
 #include "../../../src/model/core_dict_item.h"
-
-using namespace xforce::nlu;
+#include "../../../src/segmentor.h"
 
 LOGGER_IMPL(xforce::xforce_logger, "segmentor")
+
+using namespace xforce::nlu;
 
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
@@ -22,6 +23,8 @@ void initNatureDict() {
 TEST(test_all, all) {
   LOGGER_SYS_INIT("../conf/log.conf")
 
+  ASSERT_TRUE(Segmentor::Init("conf/segmentor.conf"));
+
   initNatureDict();
 
   xforce::nlu::WordDict *wordDict = new xforce::nlu::WordDict();
@@ -30,10 +33,10 @@ TEST(test_all, all) {
   ASSERT_TRUE(wordDict->Init(wordDictPaths));
 
   std::vector<const CoreDictItem*> results;
-  wordDict->PrefixMatch("中国人民银行", results);
+  wordDict->PrefixMatch(L"中国人民银行", results);
   std::cout << results.size() << std::endl;
   for (auto iter = results.begin(); iter != results.end(); ++iter) {
-    std::cout << (*iter)->GetName() << std::endl;
+    std::wcout << (*iter)->GetName() << std::endl;
   }
   delete wordDict;
 }

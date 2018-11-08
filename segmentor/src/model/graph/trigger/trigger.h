@@ -11,7 +11,7 @@ class Trigger {
  public: 
   virtual void Process(
       IN const Graph &graph, 
-      IN const std::string &query, 
+      IN const std::wstring &query, 
       IN int offset, 
       OUT std::list<TriggeredNodes*> &results) = 0; 
 

@@ -41,7 +41,12 @@ bool BigramDict::Init(const std::string &dictpath) {
         ERROR("invalid_bigram_dict_line[" << buf << "]"); 
         return false;
       }
-      AddToDict(results1[0], results1[1], num);  
+
+      std::wstring wstrWord0;
+      std::wstring wstrWord1;
+      XFC_ASSERT(StrHelper::Str2Wstr(results1[0], wstrWord0));
+      XFC_ASSERT(StrHelper::Str2Wstr(results1[1], wstrWord1));
+      AddToDict(wstrWord0, wstrWord1, num);  
     }
     line = fgets(buf, sizeof(buf), fp);
   }
@@ -49,7 +54,7 @@ bool BigramDict::Init(const std::string &dictpath) {
   return true;
 }
 
-uint32_t BigramDict::GetFreq(const std::string &word0, const std::string &word1) const {
+uint32_t BigramDict::GetFreq(const std::wstring &word0, const std::wstring &word1) const {
   auto iter = container_.find(word0);
   if (iter == container_.end()) {
     return 0;
@@ -62,7 +67,7 @@ uint32_t BigramDict::GetFreq(const std::string &word0, const std::string &word1)
   return iter1->second;
 }
 
-void BigramDict::AddToDict(const std::string &word0, const std::string &word1, uint32_t freq) {
+void BigramDict::AddToDict(const std::wstring &word0, const std::wstring &word1, uint32_t freq) {
   auto iter = container_.find(word0);
   if (iter == container_.end()) {
     Inner *inner = new Inner;

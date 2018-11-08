@@ -23,8 +23,6 @@ class Node {
 
   inline ssize_t GetOffset() const { return offset_; }
   inline size_t GetLen() const { return len_; }
-  size_t GetWoffset(const Graph &graph) const;
-  size_t GetWlen(const Graph &graph) const;
   inline std::vector<Node*>& GetPrevs() { return prevs_; }
   inline std::vector<Node*>& GetNexts() { return nexts_; }
   inline Node* GetBestPrev() { return bestPrev_; }

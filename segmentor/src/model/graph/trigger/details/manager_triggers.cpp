@@ -27,7 +27,7 @@ ManagerTriggers::ManagerTriggers() {
 
 void ManagerTriggers::Process(      
     const Graph &graph, 
-    const std::string &query, 
+    const std::wstring &query, 
     int offset, 
     std::list<TriggeredNodes*> &results) {
   int minLen = NumericRecognizer::ExtractArabicNumeral(query, offset);

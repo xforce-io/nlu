@@ -23,7 +23,7 @@ class Graph {
   static const int kMaxNegLogPossi;
 
  public:
-  Graph(const std::string &query);
+  Graph(const std::wstring &query);
 
   void Process();
   inline void AddPrioredNegLogPossi(int offset, size_t len, double score);
@@ -32,10 +32,10 @@ class Graph {
   void OutputPath() const;
   void Profile();
 
-  const std::string& GetQuery() const { return query_; }
+  const std::wstring& GetQuery() const { return query_; }
   void GetStrForNode(
       IN const Node &node, 
-      OUT std::string &str) const;
+      OUT std::wstring &str) const;
   double GetNegLogPossiForNodes(
       const Node &node, 
       const Node &curNode) const;
@@ -50,11 +50,10 @@ class Graph {
   void MakeProfileInfo_();
   void DumpProfile_();
 
-  inline static double GetNegLogPossi_(const std::string &str, const std::string &condStr);
+  inline static double GetNegLogPossi_(const std::wstring &str, const std::wstring &condStr);
 
  private:   
-  const std::string query_;
-  std::wstring wquery_;
+  std::wstring query_;
 
   Node *nodeBegin_; 
   Node *nodeEnd_;
@@ -94,7 +93,7 @@ void Graph::AddMaxPrioredNegLogPossi(const Node &node) {
         kMaxNegLogPossi));
 }
 
-double Graph::GetNegLogPossi_(const std::string &str, const std::string &condStr) {
+double Graph::GetNegLogPossi_(const std::wstring &str, const std::wstring &condStr) {
   double freqCondIndex = Manager::Get().GetWordDict().GetFreq(condStr);
   double possi = 1.0 / WordDict::GetCntWord();
   if (freqCondIndex>0) {

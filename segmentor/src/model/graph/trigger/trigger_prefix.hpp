@@ -11,7 +11,7 @@ class TriggerPrefix : public Trigger {
  public: 
   inline void Process(      
       IN const Graph &graph, 
-      IN const std::string &query, 
+      IN const std::wstring &query, 
       IN int offset, 
       OUT std::list<TriggeredNodes*> &results);
 
@@ -29,7 +29,7 @@ namespace xforce { namespace nlu {
 
 void TriggerPrefix::Process(      
     const Graph &graph, 
-    const std::string &query, 
+    const std::wstring &query, 
     int offset, 
     std::list<TriggeredNodes*> &results) {
   UNUSE(graph)

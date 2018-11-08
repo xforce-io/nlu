@@ -54,7 +54,10 @@ TEST(test_all, all) {
 bool Check(const std::string &query, const std::vector<std::string> &segments) {
   std::cout << "test[" << query << "]" << std::endl;
 
-  xforce::nlu::Graph graph(query);
+  std::wstring wStrQuery;
+  assert(StrHelper::Str2Wstr(query, wStrQuery));
+
+  xforce::nlu::Graph graph(wStrQuery);
   graph.Process();
 
   auto offsets = graph.GetOffsets();
@@ -63,7 +66,9 @@ bool Check(const std::string &query, const std::vector<std::string> &segments) {
   }
 
   for (size_t i=0; i < segments.size()-1; ++i) {
-    if (segments[i].length() + (size_t)offsets[i] != (size_t)offsets[i+1]) {
+    std::wstring wstr;
+    assert(StrHelper::Str2Wstr(segments[i], wstr));
+    if (wstr.length() + (size_t)offsets[i] != (size_t)offsets[i+1]) {
       return false;
     }
   }

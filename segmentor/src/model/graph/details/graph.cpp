@@ -9,20 +9,19 @@ namespace xforce { namespace nlu {
 const double Graph::kSmoothFactor = 0.1;
 const int Graph::kMaxNegLogPossi = 100;
 
-Graph::Graph(const std::string &query) :
+Graph::Graph(const std::wstring &query) :
     query_(query) {
-  XFC_ASSERT(StrHelper::Str2Wstr(query_, wquery_))
   nodeBegin_ = new Node(-1, 0);
   nodeEnd_ = new Node(-1, 0);
   candidateNodes_ = new CandidateNodes();
   candidateNodes_->AddNode(*nodeBegin_);
   offsetToProcess_.push(0);
 
-  for (size_t i=0; i <= wquery_.length() + 1; ++i) {
+  for (size_t i=0; i <= query_.length() + 1; ++i) {
     posToNumNodes_.push_back(new NodesVec());
   }
   posToNumNodes_[0]->push_back(nodeBegin_);
-  posToNumNodes_[wquery_.length() + 1]->push_back(nodeEnd_);
+  posToNumNodes_[query_.length() + 1]->push_back(nodeEnd_);
 }
 
 void Graph::Process() {
@@ -42,7 +41,7 @@ void Graph::Profile() {
 
 void Graph::GetStrForNode(
     const Node &node,
-    std::string &str) const {
+    std::wstring &str) const {
   if (!node.IsSpecial()) {
     str.assign(query_.substr(node.GetOffset(), node.GetLen()));
   } else if (node.IsBegin()) {
@@ -60,7 +59,7 @@ double Graph::GetNegLogPossiForNodes(const Node &node, const Node &condNode) con
     return iter->second;
   }
 
-  std::string strNode, strCondNode;
+  std::wstring strNode, strCondNode;
   GetStrForNode(node, strNode);
   GetStrForNode(condNode, strCondNode);
   return GetNegLogPossi_(strNode, strCondNode);
@@ -163,8 +162,8 @@ void Graph::MakeProfileInfo_() {
       ++iter) {
     if (!iter->first->IsSpecial()) {
       Node *node = iter->first;
-      size_t woffset = node->GetWoffset(*this);
-      size_t wlen = node->GetWlen(*this);
+      size_t woffset = node->GetOffset();
+      size_t wlen = node->GetLen();
       for (size_t i = woffset + 1; i <= woffset + wlen; ++i) {
         posToNumNodes_[i]->push_back(node);
       }
@@ -213,9 +212,9 @@ void Graph::DumpProfile_() {
     }
   }
 
-  std::string strForNode;
+  std::wstring strForNode;
   GetStrForNode(*(profileItems_.back().first), strForNode);
-  std::cout << strForNode << std::endl;
+  std::wcout << strForNode << std::endl;
 }
 
 }}

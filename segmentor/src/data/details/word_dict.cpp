@@ -17,18 +17,24 @@ bool WordDict::Init(const std::vector<std::string> &filepaths) {
 }
 
 void WordDict::PrefixMatch(
-    const std::string &query, 
+    const std::wstring &query, 
     std::vector<const CoreDictItem*> &coreDictItems) const {
+  std::string strQuery;
+  XFC_ASSERT(StrHelper::Wstr2Str(query, strQuery));
+
   std::vector<size_t> prefixOffsets;
-  simpleTrie_->PrefixesOf(query.c_str(), query.length(), prefixOffsets);
+  simpleTrie_->PrefixesOf(strQuery.c_str(), strQuery.length(), prefixOffsets);
   for (auto iter = prefixOffsets.begin(); iter != prefixOffsets.end(); ++iter) {
-    std::string tmpStr = std::string(query.c_str(), *iter);
-    auto iter2 = container_.find(tmpStr);
+    std::string tmpStr(strQuery.c_str(), *iter);
+    std::wstring tmpWstr;
+    XFC_ASSERT(StrHelper::Str2Wstr(tmpStr, tmpWstr));
+
+    auto iter2 = container_.find(tmpWstr);
     coreDictItems.push_back(iter2->second);
   }
 }
 
-const CoreDictItem* WordDict::GetCoreDictItem(const std::string &word) const {
+const CoreDictItem* WordDict::GetCoreDictItem(const std::wstring &word) const {
     auto iter = container_.find(word);
     if (iter != container_.end()) {
       return iter->second;
@@ -37,7 +43,7 @@ const CoreDictItem* WordDict::GetCoreDictItem(const std::string &word) const {
     }
 }
 
-ssize_t WordDict::GetFreq(const std::string &word) const {
+ssize_t WordDict::GetFreq(const std::wstring &word) const {
   const CoreDictItem *coreDictItem = GetCoreDictItem(word);
   if (coreDictItem != NULL) {
     return coreDictItem->GetFreq();
@@ -84,7 +90,10 @@ bool WordDict::Init_(const std::string &filepath) {
 
         if (container_.find(coreDictItem->GetName()) == container_.end()) {
           container_.insert(std::make_pair(coreDictItem->GetName(), coreDictItem));
-          simpleTrie_->Insert(coreDictItem->GetName().c_str(), coreDictItem->GetName().length());
+
+          std::string strName;
+          XFC_ASSERT(StrHelper::Wstr2Str(coreDictItem->GetName(), strName));
+          simpleTrie_->Insert(strName.c_str(), strName.length());
         } else {
           XFC_DELETE(coreDictItem)
         }

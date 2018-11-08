@@ -11,18 +11,6 @@ Node::Node(int offset, size_t len) {
   bestScore_ = -1.0;
 }
 
-size_t Node::GetWoffset(const Graph &graph) const {
-  std::wstring wstr;
-  XFC_ASSERT(StrHelper::Str2Wstr(graph.GetQuery().substr(0, offset_), wstr))
-  return wstr.length();
-}
-
-size_t Node::GetWlen(const Graph &graph) const {
-  std::wstring wstr;
-  XFC_ASSERT(StrHelper::Str2Wstr(graph.GetQuery().substr(offset_, len_), wstr))
-  return wstr.length();
-}
-
 std::string Node::Str() const {
   std::stringstream ss;
   ss << "(" << this << "/" << offset_ << "/" << len_;
@@ -34,12 +22,12 @@ std::string Node::Str() const {
 }
 
 void Node::DumpProfile(const Graph &graph, const Node &nextNode) const {
-  std::string strForNode;
+  std::wstring strForNode;
   graph.GetStrForNode(*this, strForNode);
-  std::cout << strForNode 
-      << " =" 
+  std::wcout << strForNode 
+      << L" =" 
       << graph.GetNegLogPossiForNodes(nextNode, *this) 
-      << "=>";
+      << L"=>";
 }
 
 }}

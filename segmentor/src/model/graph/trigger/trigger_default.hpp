@@ -8,7 +8,7 @@ class TriggerDefault : public Trigger {
  public: 
   inline void Process(
       IN const Graph &graph, 
-      IN const std::string &query, 
+      IN const std::wstring &query, 
       IN int offset, 
       OUT std::list<TriggeredNodes*> &results); 
 
@@ -17,7 +17,7 @@ class TriggerDefault : public Trigger {
 
 void TriggerDefault::Process(
     const Graph &graph,
-    const std::string &query, 
+    const std::wstring &query, 
     int offset, 
     std::list<TriggeredNodes*> &results) {
   UNUSE(graph)
