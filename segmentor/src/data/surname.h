@@ -12,7 +12,7 @@ class Surname {
   Surname() {}
 
   bool Init(const std::string &dictpath);
-  int StartWithSurname(const std::wstring &wstr, size_t offset);
+  int StartWithSurname(const std::wstring &wstr, size_t offset) const;
 
  private:  
   Container container_;

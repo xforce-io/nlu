@@ -36,7 +36,7 @@ bool Surname::Init(const std::string &dictpath) {
   return true;
 }
 
-int Surname::StartWithSurname(const std::wstring &wstr, size_t offset) {
+int Surname::StartWithSurname(const std::wstring &wstr, size_t offset) const {
   if (wstr.empty()) {
     return -1;
   }

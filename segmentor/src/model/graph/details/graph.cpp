@@ -174,10 +174,19 @@ void Graph::MakeProfileInfo_() {
   size_t nextIdx = curIdx+1;
   while (true) {
     while (posToNumNodes_[curIdx]->size() == 1) {
+      Node *node = (*(posToNumNodes_[curIdx]))[0];
       profileItems_.push_back(std::make_pair(
-            (*(posToNumNodes_[curIdx]))[0],
+            node,
             (ConflictSubgraph*)NULL));
-      ++curIdx;
+
+      size_t curNodeLen = node->GetLen();
+      int curNodeOffset = node->GetOffset();
+      if (curNodeOffset > 0 && curNodeLen != 0) {
+        curIdx += curNodeLen;
+      } else {
+        ++curIdx;
+      }
+
       if (curIdx >= posToNumNodes_.size()) {
         return;
       }

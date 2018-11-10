@@ -2,6 +2,8 @@
 
 #include "public.h"
 
+namespace xforce { namespace nlu {
+
 class Ner {
  public: 
   enum Category {
@@ -14,5 +16,7 @@ class Ner {
   };
 
  public: 
-  virtual int GetCategory() const; 
+  virtual int GetCategory() const = 0; 
 };
+
+}}

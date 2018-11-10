@@ -10,7 +10,7 @@ class TriggeredNodes {
   TriggeredNodes();
   TriggeredNodes(int offset, size_t length);
 
-  inline const Node& AddNode(int offset, size_t len);
+  inline Node& AddNode(int offset, size_t len);
   inline void AddNode(Node &node);
   inline const Node& GetNode() const;
   inline std::vector<Node*> &GetNodes() { return nodes_; }
@@ -31,7 +31,7 @@ class TriggeredNodes {
 
 namespace xforce { namespace nlu {
 
-const Node& TriggeredNodes::AddNode(int offset, size_t len) {
+Node& TriggeredNodes::AddNode(int offset, size_t len) {
   Node *node = new Node(offset, len);
   AddNode(*node);
   return *node;

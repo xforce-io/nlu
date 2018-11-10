@@ -5,6 +5,7 @@
 namespace xforce { namespace nlu {
 
 class Graph;
+class Ner;
 
 class Node {
  private:
@@ -20,6 +21,7 @@ class Node {
   inline void AddNext(Node &next);
   inline void SetBestPrev(Node &prev);
   inline void SetBestScore(double score);
+  inline void SetNer(Ner &ner);
 
   inline ssize_t GetOffset() const { return offset_; }
   inline size_t GetLen() const { return len_; }
@@ -48,6 +50,8 @@ class Node {
   std::vector<Node*> nexts_;
   Node *bestPrev_;
   double bestScore_;
+
+  Ner *ner_;
 };  
 
 void Node::SetOffset(int offset) {
@@ -72,6 +76,10 @@ void Node::SetBestPrev(Node &prev) {
 
 void Node::SetBestScore(double score) {
   bestScore_ = score;
+}
+
+void Node::SetNer(Ner &ner) {
+  ner_ = &ner;
 }
 
 int Node::EndOffset() const {

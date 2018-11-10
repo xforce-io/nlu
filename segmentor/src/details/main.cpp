@@ -19,7 +19,7 @@ int main() {
     return -1;
   }
 
-  Graph *graph = new xforce::nlu::Graph(L"中国人民进入了");
+  Graph *graph = new xforce::nlu::Graph(L"张三、王二小、上官芳和李四参与了会议");
   graph->Process();
   graph->Profile();
 

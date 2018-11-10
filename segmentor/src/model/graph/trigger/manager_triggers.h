@@ -13,7 +13,7 @@ class ManagerTriggers {
   ManagerTriggers(); 
 
   void Process(      
-    IN const Graph &graph, 
+    IN Graph &graph, 
     IN const std::wstring &query, 
     IN int offset, 
     OUT std::list<TriggeredNodes*> &results);

@@ -10,7 +10,7 @@ class TriggeredNodes;
 class TriggerRefer : public Trigger {
  public: 
   inline void Process(      
-      IN const Graph &graph, 
+      IN Graph &graph, 
       IN const std::wstring &query, 
       IN int offset, 
       OUT std::list<TriggeredNodes*> &results);
@@ -19,7 +19,7 @@ class TriggerRefer : public Trigger {
 };
 
 void TriggerRefer::Process(
-    const Graph &graph, 
+    Graph &graph, 
     const std::wstring &query, 
     int offset, 
     std::list<TriggeredNodes*> &results) {

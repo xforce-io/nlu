@@ -3,6 +3,7 @@
 #include "../trigger_refer.hpp"
 #include "../trigger_prefix.hpp"
 #include "../trigger_default.hpp"
+#include "../trigger_compound.h"
 #include "../../../numeric_recognizer.hpp"
 
 namespace xforce { namespace nlu {
@@ -14,19 +15,22 @@ ManagerTriggers::ManagerTriggers() {
   levelTriggers0->AddTrigger(*(new TriggerRefer()));
 
   LevelTriggers *levelTriggers1 = new LevelTriggers();
-  //TODO:add a trigger
-  levelTriggers1->AddTrigger(*(new TriggerPrefix()));
+  levelTriggers1->AddTrigger(*(new TriggerCompound()));
 
   LevelTriggers *levelTriggers2 = new LevelTriggers();
-  levelTriggers2->AddTrigger(*(new TriggerDefault()));
+  levelTriggers2->AddTrigger(*(new TriggerPrefix()));
+
+  LevelTriggers *levelTriggers3 = new LevelTriggers();
+  levelTriggers3->AddTrigger(*(new TriggerDefault()));
 
   levelTriggers_.push_back(levelTriggers0);
   levelTriggers_.push_back(levelTriggers1);
   levelTriggers_.push_back(levelTriggers2);
+  levelTriggers_.push_back(levelTriggers3);
 }
 
 void ManagerTriggers::Process(      
-    const Graph &graph, 
+    Graph &graph, 
     const std::wstring &query, 
     int offset, 
     std::list<TriggeredNodes*> &results) {
