@@ -2,7 +2,7 @@
 
 #include "public.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 class Surname {
  private: 
@@ -18,4 +18,4 @@ class Surname {
   Container container_;
 };
 
-}}
+}}}

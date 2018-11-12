@@ -3,7 +3,7 @@
 #include "../path.h"
 #include "../graph.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 ConflictSubgraph::ConflictSubgraph(
       Node &beginNode,
@@ -63,4 +63,4 @@ ConflictSubgraph::~ConflictSubgraph() {
   }
 }
 
-}}
+}}}

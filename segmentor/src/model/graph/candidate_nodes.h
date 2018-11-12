@@ -2,7 +2,7 @@
 
 #include "public.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 class Node;  
 
@@ -48,4 +48,4 @@ size_t CandidateNodes::GetLen() const {
   return items_.size();
 }
 
-}}
+}}}

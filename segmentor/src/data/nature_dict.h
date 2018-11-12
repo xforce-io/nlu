@@ -2,7 +2,7 @@
 
 #include "public.h"
 
-namespace xforce { namespace nlu  {
+namespace xforce { namespace nlu { namespace segmentor { 
 
 class Nature;  
 
@@ -33,4 +33,4 @@ const Nature* NatureDict::GetNature(const std::string &name) const {
   }
 }
 
-}}
+}}}

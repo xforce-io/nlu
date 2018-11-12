@@ -1,8 +1,8 @@
 #pragma once
 
-#include "common.h"
+#include "dep.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 class ReqTracer {
  public: 
@@ -78,4 +78,4 @@ std::string ReqTracer::GetReport() const {
   return ostr.str();
 }
 
-}}
+}}}

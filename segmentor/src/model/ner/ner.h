@@ -2,7 +2,7 @@
 
 #include "public.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 class Ner {
  public: 
@@ -19,4 +19,4 @@ class Ner {
   virtual int GetCategory() const = 0; 
 };
 
-}}
+}}}

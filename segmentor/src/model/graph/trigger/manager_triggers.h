@@ -1,8 +1,8 @@
 #pragma once
 
-#include "public.h"
+#include "../public.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 class Graph;
 class TriggeredNodes;
@@ -33,4 +33,4 @@ ManagerTriggers &ManagerTriggers::Get() {
   return *managerTriggers_;
 }
 
-}}
+}}}

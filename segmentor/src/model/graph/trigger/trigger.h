@@ -2,7 +2,7 @@
 
 #include "public.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 class Graph;  
 class TriggeredNodes;
@@ -18,4 +18,4 @@ class Trigger {
   virtual ~Trigger() {}
 };  
 
-}}
+}}}

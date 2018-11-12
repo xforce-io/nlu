@@ -2,7 +2,7 @@
 
 #include "public.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 class Trigger;  
 
@@ -21,11 +21,11 @@ class LevelTriggers {
   std::list<Trigger*> triggers_;
 };
 
-}}
+}}}
 
 #include "trigger.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 void LevelTriggers::AddTrigger(Trigger &trigger) {
   triggers_.push_back(&trigger);
@@ -48,4 +48,4 @@ LevelTriggers::~LevelTriggers() {
   }
 }
 
-}}
+}}}

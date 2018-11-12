@@ -4,7 +4,7 @@
 #include "../data/manager.h"
 #include "../data/nature_dict.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 class CoreDictNature {
  public:
@@ -26,4 +26,4 @@ bool CoreDictNature::Init(const std::string &name, size_t freq) {
   return true;
 }
 
-}}
+}}}

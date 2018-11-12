@@ -1,7 +1,7 @@
 #include "../core_dict_natures.h"
 #include "../core_dict_nature.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 CoreDictNatures::CoreDictNatures() :
   mainNature_(NULL),
@@ -82,4 +82,4 @@ void CoreDictNatures::Init_() {
   }
 }
 
-}}
+}}}

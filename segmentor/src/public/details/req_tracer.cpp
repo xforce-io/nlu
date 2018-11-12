@@ -1,6 +1,6 @@
 #include "../req_tracer.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 ReqTracer* ReqTracer::reqTracer_ = new ReqTracer();
 
@@ -12,4 +12,4 @@ void ReqTracer::Tini() {
   XFC_DELETE(reqTracer_)
 }
 
-}}
+}}}

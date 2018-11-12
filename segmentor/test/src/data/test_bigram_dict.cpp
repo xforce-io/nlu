@@ -4,7 +4,7 @@
 
 LOGGER_IMPL(xforce::xforce_logger, "segmentor")
 
-using namespace xforce::nlu;
+using namespace xforce::nlu::segmentor;
 
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
@@ -14,7 +14,7 @@ int main(int argc, char **argv) {
 TEST(test_all, all) {
     ASSERT_TRUE(Segmentor::Init("conf/segmentor.conf"));
 
-    xforce::nlu::BigramDict *bigram_dict = new xforce::nlu::BigramDict();
+    auto bigram_dict = new xforce::nlu::segmentor::BigramDict();
     ASSERT_TRUE(bigram_dict->Init("../../data/bigramdict.dic"));
     ASSERT_TRUE(bigram_dict->GetFreq(L"阿", L"国内") == 3);
 }

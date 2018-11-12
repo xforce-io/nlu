@@ -2,7 +2,7 @@
 
 #include "public.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 struct Nature {
  public:
@@ -19,4 +19,4 @@ Nature::Nature(const std::string &nameArg, uint32_t indexArg, uint32_t freqArg) 
     index(indexArg),
     freq(freqArg) {}
 
-}}
+}}}

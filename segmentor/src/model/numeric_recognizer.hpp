@@ -2,7 +2,7 @@
 
 #include "public.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 class NumericRecognizer {
  public: 
@@ -29,4 +29,4 @@ int NumericRecognizer::ExtractArabicNumeral(
   }
 }
 
-}}
+}}}

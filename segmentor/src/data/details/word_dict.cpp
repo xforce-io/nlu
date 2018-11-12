@@ -2,7 +2,7 @@
 
 #include "../../model/core_dict_item.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 bool WordDict::Init(const std::vector<std::string> &filepaths) {
   simpleTrie_ = new xforce::SimpleTrie();
@@ -108,4 +108,4 @@ bool WordDict::Init_(const std::string &filepath) {
   return true;
 }
 
-}}
+}}}

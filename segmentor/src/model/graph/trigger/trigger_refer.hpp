@@ -2,7 +2,7 @@
 
 #include "public.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 class Graph;  
 class TriggeredNodes;
@@ -25,4 +25,4 @@ void TriggerRefer::Process(
     std::list<TriggeredNodes*> &results) {
 }
 
-}}
+}}}

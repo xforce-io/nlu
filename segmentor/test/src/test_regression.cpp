@@ -5,7 +5,7 @@
 LOGGER_IMPL(xforce::xforce_logger, "segmentor")
 
 using namespace xforce;
-using namespace xforce::nlu;
+using namespace xforce::nlu::segmentor;
 
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
@@ -57,7 +57,7 @@ bool Check(const std::string &query, const std::vector<std::string> &segments) {
   std::wstring wStrQuery;
   assert(StrHelper::Str2Wstr(query, wStrQuery));
 
-  xforce::nlu::Graph graph(wStrQuery);
+  Graph graph(wStrQuery);
   graph.Process();
 
   auto offsets = graph.GetOffsets();

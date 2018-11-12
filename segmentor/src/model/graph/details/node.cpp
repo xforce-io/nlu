@@ -2,7 +2,7 @@
 
 #include "../graph.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 Node::Node(int offset, size_t len) {
   offset_ = offset;
@@ -30,4 +30,4 @@ void Node::DumpProfile(const Graph &graph, const Node &nextNode) const {
       << L"=>";
 }
 
-}}
+}}}

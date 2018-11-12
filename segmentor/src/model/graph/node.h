@@ -2,10 +2,9 @@
 
 #include "public.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 class Graph;
-class Ner;
 
 class Node {
  private:
@@ -21,7 +20,7 @@ class Node {
   inline void AddNext(Node &next);
   inline void SetBestPrev(Node &prev);
   inline void SetBestScore(double score);
-  inline void SetNer(Ner &ner);
+  inline void SetNameEntity(ner::NameEntity &ner);
 
   inline ssize_t GetOffset() const { return offset_; }
   inline size_t GetLen() const { return len_; }
@@ -51,7 +50,7 @@ class Node {
   Node *bestPrev_;
   double bestScore_;
 
-  Ner *ner_;
+  ner::NameEntity *nameEntity_;
 };  
 
 void Node::SetOffset(int offset) {
@@ -78,8 +77,8 @@ void Node::SetBestScore(double score) {
   bestScore_ = score;
 }
 
-void Node::SetNer(Ner &ner) {
-  ner_ = &ner;
+void Node::SetNameEntity(ner::NameEntity &nameEntity) {
+  nameEntity_ = &nameEntity;
 }
 
 int Node::EndOffset() const {
@@ -110,4 +109,4 @@ int Node::GetShapeCode(int offset, size_t len) {
   return offset * kMaxLenQueries + len; 
 }
 
-}}
+}}}

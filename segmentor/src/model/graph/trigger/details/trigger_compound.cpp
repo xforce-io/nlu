@@ -1,15 +1,14 @@
 #include "../trigger_compound.h"
-#include "../../triggered_nodes.h"
-#include "../../../ner/person_name.h"
 #include "../../graph.h"
+#include "../../triggered_nodes.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 void TriggerCompound::Process(      
-    IN Graph &graph, 
-    IN const std::wstring &query, 
-    IN int offset, 
-    OUT std::list<TriggeredNodes*> &results) {
+    Graph &graph, 
+    const std::wstring &query, 
+    int offset, 
+    std::list<TriggeredNodes*> &results) {
   if (kMarkPunction != query[offset]) {
     return;
   }
@@ -53,7 +52,7 @@ void TriggerCompound::Process(
   bool isName = true;
   for (auto iter = namesNodes->GetNodes().begin(); iter != namesNodes->GetNodes().end(); ++iter) {
     Node *node = *iter;
-    if (PersonName::PossibleName(query, node->GetOffset(), node->GetLen()) < 0) {
+    if (ner::PersonName::PossibleName(query, node->GetOffset(), node->GetLen()) < 0) {
       isName = false;
     }
   }
@@ -61,14 +60,14 @@ void TriggerCompound::Process(
   if (isName) {
     for (auto iter = namesNodes->GetNodes().begin(); iter != namesNodes->GetNodes().end(); ++iter) {
       Node &node = **iter;
-      node.SetNer(*(new PersonName(query.substr(node.GetOffset(), node.GetLen()))));
+      node.SetNameEntity(*(new ner::PersonName(query.substr(node.GetOffset(), node.GetLen()))));
       graph.AddMaxPrioredNegLogPossi(node);
     }
 
-    int prevNameOffset = PersonName::FindNameFromEnd(query.substr(0, offset));
+    int prevNameOffset = ner::PersonName::FindNameFromEnd(query.substr(0, offset));
     if (prevNameOffset >= 0) {
       auto newNode = new Node(prevNameOffset, offset-prevNameOffset);
-      newNode->SetNer(*(new PersonName(query.substr(prevNameOffset, offset - prevNameOffset))));
+      newNode->SetNameEntity(*(new ner::PersonName(query.substr(prevNameOffset, offset - prevNameOffset))));
       newTriggeredNodes->AddNode(*newNode);
       graph.AddMaxPrioredNegLogPossi(*newNode);
     }
@@ -76,4 +75,4 @@ void TriggerCompound::Process(
   }
 }
 
-}}
+}}}

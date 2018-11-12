@@ -2,7 +2,7 @@
 
 #include "public.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 class Path;
 class Graph;
@@ -28,4 +28,4 @@ class ConflictSubgraph {
   std::queue<Path*> queue_;
 };
 
-}}
+}}}

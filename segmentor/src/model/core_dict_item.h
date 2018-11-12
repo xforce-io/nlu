@@ -2,7 +2,7 @@
 
 #include "public.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 class CoreDictNatures;
 
@@ -20,14 +20,14 @@ class CoreDictItem {
   CoreDictNatures *coreDictNatures_;
 };  
 
-}}
+}}}
 
 #include "core_dict_natures.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 size_t CoreDictItem::GetFreq() const { 
   return coreDictNatures_->GetFreq(); 
 }
 
-}}
+}}}

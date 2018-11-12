@@ -1,7 +1,7 @@
 #include "../nature_dict.h"
 #include "../../model/nature.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 bool NatureDict::Init(const std::string &dictpath) {
   FILE *fp = fopen(dictpath.c_str(), "r");
@@ -62,4 +62,4 @@ NatureDict::~NatureDict() {
   }
 }
 
-}}
+}}}

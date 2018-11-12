@@ -1,8 +1,8 @@
 #pragma once
 
-#include "path.h"
+#include "public.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 class TriggeredNodes {
  public:
@@ -25,11 +25,11 @@ class TriggeredNodes {
   int endOffset_;
 };  
 
-}}
+}}}
 
 #include "node.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 Node& TriggeredNodes::AddNode(int offset, size_t len) {
   Node *node = new Node(offset, len);
@@ -49,4 +49,4 @@ const Node& TriggeredNodes::GetNode() const {
   return *(nodes_[0]);
 }
 
-}}
+}}}

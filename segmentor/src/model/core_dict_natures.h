@@ -2,7 +2,7 @@
 
 #include "public.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 class CoreDictNature;  
 
@@ -28,4 +28,4 @@ class CoreDictNatures {
   size_t allFreq_;
 };
 
-}}
+}}}

@@ -2,7 +2,7 @@
 
 #include "public.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 class Graph;
 class TriggeredNodes;
@@ -18,14 +18,14 @@ class TriggerPrefix : public Trigger {
   virtual ~TriggerPrefix() {}
 };
 
-}}
+}}}
 
 #include "../../../data/manager.h"
 #include "../../core_dict_item.h"
 #include "../../../data/word_dict.h"
 #include "../triggered_nodes.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 void TriggerPrefix::Process(      
     Graph &graph, 
@@ -53,4 +53,4 @@ void TriggerPrefix::Process(
   }
 }
 
-}}
+}}}

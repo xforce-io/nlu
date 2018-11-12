@@ -2,7 +2,7 @@
 
 #include "public.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 class Graph;  
 class Node;
@@ -62,4 +62,4 @@ Path& Path::CreateFromNode(Node &node) {
   return *path;
 }
 
-}}
+}}}

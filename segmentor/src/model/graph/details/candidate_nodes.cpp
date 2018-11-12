@@ -1,7 +1,7 @@
 #include "../candidate_nodes.h"
 #include "../node.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 void CandidateNodes::AddNode(Node &node, bool hiConvinced) {
   int shapeCode = node.GetShapeCode();
@@ -82,4 +82,4 @@ void CandidateNodes::RemoveEndToNode_(const Node &node) {
   }
 }
 
-}}
+}}}

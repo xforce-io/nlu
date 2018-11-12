@@ -1,6 +1,6 @@
 #include "../bigram_dict.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 bool BigramDict::Init(const std::string &dictpath) {
   FILE *fp = fopen(dictpath.c_str(), "r");
@@ -91,4 +91,4 @@ BigramDict::~BigramDict() {
   }
 }
 
-}}
+}}}

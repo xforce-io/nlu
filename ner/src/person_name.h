@@ -1,15 +1,15 @@
 #pragma once
 
 #include "public.h"
-#include "ner.h"
+#include "name_entity.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace ner {
 
-class PersonName : public Ner {
+class PersonName : public NameEntity {
  public: 
   explicit PersonName(const std::wstring &name); 
 
-  virtual int GetCategory() const { return Ner::kCategoryName; }
+  virtual int GetCategory() const { return NameEntity::kCategoryName; }
   const std::wstring& GetName() const { return name_; }
 
   inline static int PossibleName(const std::wstring &wstr, int offset, int len);
@@ -19,12 +19,12 @@ class PersonName : public Ner {
   std::wstring name_;
 };
 
-}}
+}}}
 
-#include "../../data/manager.h"
-#include "../../data/surname.h"
+#include "data/surname.h"
+#include "data/manager.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace ner {
 
 int PersonName::PossibleName(const std::wstring &wstr, int offset, int len) {
   int lenSurName = Manager::Get().GetSurname().StartWithSurname(wstr, offset);
@@ -52,4 +52,4 @@ int PersonName::FindNameFromEnd(const std::wstring &wstr) {
   }
 }
 
-}}
+}}}

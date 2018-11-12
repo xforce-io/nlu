@@ -2,7 +2,7 @@
 
 #include "public.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 class NatureDict;  
 
@@ -20,4 +20,4 @@ class NatureBigram {
   uint32_t **count_; 
 };
 
-}}
+}}}

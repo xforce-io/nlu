@@ -1,6 +1,6 @@
 #include "../triggered_nodes.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 TriggeredNodes::TriggeredNodes(Node *singleNode) {
   if (NULL != singleNode) {
@@ -29,4 +29,4 @@ std::string TriggeredNodes::Str() const {
   return ss.str();
 }
 
-}}
+}}}

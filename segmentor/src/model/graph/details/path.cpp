@@ -2,7 +2,7 @@
 #include "../graph.h"
 #include "../node.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 void Path::DumpProfile(const Graph &graph) {
   for (size_t i=0; i < nodes_.size() - 1; ++i) {
@@ -12,4 +12,4 @@ void Path::DumpProfile(const Graph &graph) {
   }
 }
 
-}}
+}}}

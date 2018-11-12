@@ -3,7 +3,7 @@
 #include "public.h"
 #include "trigger.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 class TriggerDefault : public Trigger {
  public: 
@@ -26,4 +26,4 @@ void TriggerDefault::Process(
   results.push_back(new TriggeredNodes(offset, 1));
 }
 
-}}
+}}}

@@ -2,7 +2,7 @@
 
 #include "public.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 class Conf {
  public: 
@@ -24,4 +24,4 @@ const std::string& Conf::GetDataDir() const {
   return dataDir_;
 }
 
-}}
+}}}

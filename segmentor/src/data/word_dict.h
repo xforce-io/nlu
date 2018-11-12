@@ -2,7 +2,7 @@
 
 #include "public.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 class CoreDictItem;
 class SimpleTrie;
@@ -32,4 +32,4 @@ class WordDict {
   xforce::SimpleTrie *simpleTrie_;
 };
 
-}}
+}}}

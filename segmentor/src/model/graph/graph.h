@@ -1,9 +1,8 @@
 #pragma once
 
 #include "public.h"
-#include "../../data/manager.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 class Node;
 class ConflictSubgraph;
@@ -14,7 +13,7 @@ class Graph {
   typedef std::tr1::unordered_map<int, double> PrioredNegLogPossi;
   typedef std::tr1::unordered_set<int> OffsetProcessed;
   typedef std::queue<int> OffsetToProcess;
-  typedef std::vector<int> Offset;
+  typedef std::vector<size_t> Offset;
   typedef std::vector<NodesVec*> PosToNumNodes;
   typedef typename std::vector< std::pair<const Node*, ConflictSubgraph*> > ProfileItems;
 
@@ -23,7 +22,7 @@ class Graph {
   static const int kMaxNegLogPossi;
 
  public:
-  Graph(const std::wstring &query);
+  explicit Graph(const std::wstring &query);
 
   void Process();
   inline void AddPrioredNegLogPossi(int offset, size_t len, double score);
@@ -73,13 +72,14 @@ class Graph {
   ProfileItems profileItems_;
 };
 
-}}
+}}}
 
 #include "node.h"
 #include "../../data/word_dict.h"
 #include "../../data/bigram_dict.h"
+#include "../../data/manager.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 void Graph::AddPrioredNegLogPossi(int offset, size_t len, double score) {
   prioredNegLogPossi_.insert(std::make_pair(
@@ -109,4 +109,4 @@ double Graph::GetNegLogPossi_(const std::wstring &str, const std::wstring &condS
   return -1 * log((1-kSmoothFactor) * possi + kSmoothFactor * freqCondIndex / WordDict::GetCntWord());
 }
 
-}}
+}}}

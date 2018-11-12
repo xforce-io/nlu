@@ -6,7 +6,7 @@
 #include "../surname.h"
 #include "../../conf/conf.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 Manager *Manager::manager_ = new Manager();
 
@@ -32,12 +32,6 @@ bool Manager::Init() {
   XFC_FAIL_HANDLE_WARN(!ret, "fail_init_nature_bigram")
 
   ss.str("");  
-  ss << Conf::Get().GetDataDir() << "data/surname.dic";
-  surname_ = new Surname();    
-  ret = surname_->Init(ss.str());
-  XFC_FAIL_HANDLE_WARN(!ret, "fail_init_surname")
-
-  ss.str("");  
   ss << Conf::Get().GetDataDir() << "data/word/core.dic";
   wordDictPaths.push_back(ss.str());
   ss.str("");
@@ -55,7 +49,6 @@ bool Manager::Init() {
 
 Manager::~Manager() {
   XFC_DELETE(wordDict_)
-  XFC_DELETE(surname_)
   XFC_DELETE(natureBigram_)
   XFC_DELETE(natureDict_)
   XFC_DELETE(bigramDict_)
@@ -65,4 +58,4 @@ void Manager::Tini() {
   XFC_DELETE(manager_)
 }
 
-}}
+}}}

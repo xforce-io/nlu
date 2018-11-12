@@ -2,7 +2,7 @@
 
 #include "public.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 class Ner::Category;  
 
@@ -12,4 +12,4 @@ struct ReferMark {
   Ner::Category nerCategory;
 };  
 
-}}
+}}}

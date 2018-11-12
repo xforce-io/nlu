@@ -6,7 +6,7 @@
 #include "../trigger_compound.h"
 #include "../../../numeric_recognizer.hpp"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 ManagerTriggers* ManagerTriggers::managerTriggers_ = new ManagerTriggers();
 
@@ -75,4 +75,4 @@ void ManagerTriggers::Tini() {
   XFC_DELETE(managerTriggers_)
 }
 
-}}
+}}}

@@ -7,7 +7,7 @@
 
 LOGGER_IMPL(xforce::xforce_logger, "segmentor")
 
-using namespace xforce::nlu;
+using namespace xforce::nlu::segmentor;
 
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
@@ -27,7 +27,7 @@ TEST(test_all, all) {
 
   initNatureDict();
 
-  xforce::nlu::WordDict *wordDict = new xforce::nlu::WordDict();
+  WordDict *wordDict = new WordDict();
   std::vector<std::string> wordDictPaths;
   wordDictPaths.push_back("../../data/word/core.dic");
   ASSERT_TRUE(wordDict->Init(wordDictPaths));

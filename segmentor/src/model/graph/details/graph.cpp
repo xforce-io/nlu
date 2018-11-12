@@ -4,7 +4,7 @@
 #include "../trigger/manager_triggers.h"
 #include "../conflict_subgraph.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 const double Graph::kSmoothFactor = 0.1;
 const int Graph::kMaxNegLogPossi = 100;
@@ -32,6 +32,13 @@ void Graph::Process() {
 }
 
 void Graph::OutputPath() const {
+  for (size_t i=0; i < offsets_.size(); ++i) {
+    if (i != offsets_.size() - 1) {
+      std::wcout << query_.substr(offsets_[i], offsets_[i+1] - offsets_[i]) << "/";
+    } else {
+      std::wcout << query_.substr(offsets_[i]);
+    }
+  }
 }
 
 void Graph::Profile() {
@@ -143,14 +150,14 @@ void Graph::MakeResults_() {
   while (!curNode->IsBegin()) {
     curNode = curNode->GetBestPrev();
     if (!curNode->IsBegin()) {
-      offsets_.push_back(curNode->GetOffset());
+      offsets_.push_back(SCAST<size_t>(curNode->GetOffset()));
     }
   }
 
   for (size_t i=0; i < offsets_.size()/2; ++i) {
     size_t one = i;
     ssize_t other = offsets_.size() - 1 - i;
-    int tmp = offsets_[one];
+    size_t tmp = offsets_[one];
     offsets_[one] = offsets_[other];
     offsets_[other] = tmp;
   }
@@ -226,4 +233,4 @@ void Graph::DumpProfile_() {
   std::wcout << strForNode << std::endl;
 }
 
-}}
+}}}

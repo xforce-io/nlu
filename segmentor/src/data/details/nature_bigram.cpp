@@ -1,7 +1,7 @@
 #include "../nature_bigram.h"
 #include "../nature_dict.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 NatureBigram::NatureBigram() :
   count_(NULL) {}
@@ -72,4 +72,4 @@ NatureBigram::~NatureBigram() {
   XFC_DELETE_ARRAY(count_)
 }
 
-}}
+}}}

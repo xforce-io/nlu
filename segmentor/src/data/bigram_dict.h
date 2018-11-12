@@ -2,7 +2,7 @@
 
 #include "public.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 class BigramDict {
  private:
@@ -24,4 +24,4 @@ class BigramDict {
   Container container_;
 };
 
-}}
+}}}

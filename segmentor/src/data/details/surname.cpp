@@ -1,6 +1,6 @@
 #include "../surname.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 bool Surname::Init(const std::string &dictpath) {
   FILE *fp = fopen(dictpath.c_str(), "r");
@@ -54,4 +54,4 @@ int Surname::StartWithSurname(const std::wstring &wstr, size_t offset) const {
   return -1;
 }
 
-}}
+}}}

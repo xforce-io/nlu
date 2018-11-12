@@ -1,9 +1,12 @@
 #pragma once
 
-#include "public.h"
+#include "../public.h"
 #include "trigger.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
+
+class Graph;  
+class TriggeredNodes;
 
 class TriggerCompound : public Trigger {
  private:
@@ -19,4 +22,4 @@ class TriggerCompound : public Trigger {
   virtual ~TriggerCompound() {}
 };
 
-}}
+}}}

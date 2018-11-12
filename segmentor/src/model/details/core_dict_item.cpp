@@ -1,7 +1,7 @@
 #include "../core_dict_item.h"
 #include "../core_dict_natures.h"
 
-namespace xforce { namespace nlu {
+namespace xforce { namespace nlu { namespace segmentor {
 
 bool CoreDictItem::Init(const std::vector<std::string> &items) {
   if (items.size() <= 1) {
@@ -23,4 +23,4 @@ CoreDictItem::~CoreDictItem() {
   XFC_DELETE(coreDictNatures_)
 }
 
-}}
+}}}

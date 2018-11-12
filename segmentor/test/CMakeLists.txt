@@ -6,6 +6,7 @@ include_directories(
   /usr/local/include/
   /home/freeman/software/include/
   ${CMAKE_SOURCE_DIR}/../deps/public-cpp/include/
+  ${CMAKE_SOURCE_DIR}/../deps/ner/include/
 )
 
 link_directories(
@@ -19,7 +20,10 @@ FILE(GLOB_RECURSE LOCAL_CPP_FILES "${CMAKE_SOURCE_DIR}/../src/*.cpp")
 set(CMAKE_CXX_COMPILER g++)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -pthread -std=c++11 -DUT_TEST -Dprivate=public")
-set(LIB_DEPS ${CMAKE_SOURCE_DIR}/../deps/public-cpp/lib/public-cpp/libpublic-cpp.a)
+set(LIB_DEPS 
+  ${CMAKE_SOURCE_DIR}/../deps/public-cpp/lib/public-cpp/libpublic-cpp.a
+  ${CMAKE_SOURCE_DIR}/../deps/ner/lib/ner/libner.a
+)
 
 link_libraries(
   ${LIB_DEPS}
