@@ -22,12 +22,13 @@ class Node {
   inline void SetBestScore(double score);
   inline void SetNameEntity(ner::NameEntity &ner);
 
-  inline ssize_t GetOffset() const { return offset_; }
-  inline size_t GetLen() const { return len_; }
-  inline std::vector<Node*>& GetPrevs() { return prevs_; }
-  inline std::vector<Node*>& GetNexts() { return nexts_; }
-  inline Node* GetBestPrev() { return bestPrev_; }
-  inline double GetBestScore() { return bestScore_; }
+  ssize_t GetOffset() const { return offset_; }
+  size_t GetLen() const { return len_; }
+  std::vector<Node*>& GetPrevs() { return prevs_; }
+  std::vector<Node*>& GetNexts() { return nexts_; }
+  Node* GetBestPrev() { return bestPrev_; }
+  double GetBestScore() { return bestScore_; }
+  ner::NameEntity* GetNameEntity() { return nameEntity_; }
   inline int EndOffset() const;
   inline bool Optimized() const;
   inline bool IsBegin() const;

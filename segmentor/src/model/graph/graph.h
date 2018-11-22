@@ -11,9 +11,10 @@ class CandidateNodes;
 class Graph {
  public: 
   typedef std::tr1::unordered_map<int, double> PrioredNegLogPossi;
-  typedef std::tr1::unordered_set<int> OffsetProcessed;
-  typedef std::queue<int> OffsetToProcess;
-  typedef std::vector<size_t> Offset;
+  typedef std::tr1::unordered_set<int> OffsetsProcessed;
+  typedef std::queue<int> OffsetsToProcess;
+  typedef std::vector<size_t> Offsets;
+  typedef std::vector<ner::NameEntity*> NameEntities;
   typedef std::vector<NodesVec*> PosToNumNodes;
   typedef typename std::vector< std::pair<const Node*, ConflictSubgraph*> > ProfileItems;
 
@@ -24,12 +25,11 @@ class Graph {
  public:
   explicit Graph(const std::wstring &query);
 
-  void Process();
+  void Process(OUT Offsets &offset, OUT NameEntities &nameEntities);
+  void Profile(OUT Offsets &offset, OUT NameEntities &nameEntities);
+
   inline void AddPrioredNegLogPossi(int offset, size_t len, double score);
   inline void AddMaxPrioredNegLogPossi(const Node &node);
-  const Offset& GetOffsets() const { return offsets_; }
-  void OutputPath() const;
-  void Profile();
 
   const std::wstring& GetQuery() const { return query_; }
   void GetStrForNode(
@@ -45,7 +45,7 @@ class Graph {
   void CreateNodes_();
   void Optimize_();
   void Optimize_(Node &curNode);
-  void MakeResults_();
+  void MakeResults_(OUT Offsets &offsets, OUT NameEntities &nameEntities);
   void MakeProfileInfo_();
   void DumpProfile_();
 
@@ -62,10 +62,8 @@ class Graph {
    * shapeCode -> score
    */
   PrioredNegLogPossi prioredNegLogPossi_;
-  OffsetProcessed offsetProcessed_;
-  OffsetToProcess offsetToProcess_;
-
-  Offset offsets_;
+  OffsetsProcessed offsetProcessed_;
+  OffsetsToProcess offsetToProcess_;
 
   //for profile
   PosToNumNodes posToNumNodes_;

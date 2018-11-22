@@ -16,7 +16,19 @@ class NameEntity {
   };
 
  public: 
+  inline NameEntity(size_t offset, size_t len);
+
   virtual int GetCategory() const = 0; 
+
+  virtual ~NameEntity() {}
+ 
+ protected:
+  size_t offset_; 
+  size_t len_;
 };
+
+NameEntity::NameEntity(size_t offset, size_t len) :
+  offset_(offset),
+  len_(len) {}
 
 }}}

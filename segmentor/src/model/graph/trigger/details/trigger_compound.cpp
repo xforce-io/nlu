@@ -60,14 +60,18 @@ void TriggerCompound::Process(
   if (isName) {
     for (auto iter = namesNodes->GetNodes().begin(); iter != namesNodes->GetNodes().end(); ++iter) {
       Node &node = **iter;
-      node.SetNameEntity(*(new ner::PersonName(query.substr(node.GetOffset(), node.GetLen()))));
+      node.SetNameEntity(*(new ner::PersonName(
+              query.substr(node.GetOffset(), node.GetLen()),
+              node.GetOffset())));
       graph.AddMaxPrioredNegLogPossi(node);
     }
 
     int prevNameOffset = ner::PersonName::FindNameFromEnd(query.substr(0, offset));
     if (prevNameOffset >= 0) {
       auto newNode = new Node(prevNameOffset, offset-prevNameOffset);
-      newNode->SetNameEntity(*(new ner::PersonName(query.substr(prevNameOffset, offset - prevNameOffset))));
+      newNode->SetNameEntity(*(new ner::PersonName(
+              query.substr(prevNameOffset, offset - prevNameOffset),
+              prevNameOffset)));
       newTriggeredNodes->AddNode(*newNode);
       graph.AddMaxPrioredNegLogPossi(*newNode);
     }

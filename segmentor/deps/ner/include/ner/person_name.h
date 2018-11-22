@@ -7,7 +7,7 @@ namespace xforce { namespace nlu { namespace ner {
 
 class PersonName : public NameEntity {
  public: 
-  explicit PersonName(const std::wstring &name); 
+  explicit PersonName(const std::wstring &name, size_t offset); 
 
   virtual int GetCategory() const { return NameEntity::kCategoryName; }
   const std::wstring& GetName() const { return name_; }

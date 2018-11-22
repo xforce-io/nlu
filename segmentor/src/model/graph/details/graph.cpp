@@ -24,24 +24,15 @@ Graph::Graph(const std::wstring &query) :
   posToNumNodes_[query_.length() + 1]->push_back(nodeEnd_);
 }
 
-void Graph::Process() {
+void Graph::Process(Offsets &offsets, NameEntities &nameEntities) {
   CreateNodes_();
   candidateNodes_->EstablishPrevs();
   Optimize_();
-  MakeResults_();
+  MakeResults_(offsets, nameEntities);
 }
 
-void Graph::OutputPath() const {
-  for (size_t i=0; i < offsets_.size(); ++i) {
-    if (i != offsets_.size() - 1) {
-      std::wcout << query_.substr(offsets_[i], offsets_[i+1] - offsets_[i]) << "/";
-    } else {
-      std::wcout << query_.substr(offsets_[i]);
-    }
-  }
-}
-
-void Graph::Profile() {
+void Graph::Profile(Offsets &offsets, NameEntities &nameEntities) {
+  Process(offsets, nameEntities);
   MakeProfileInfo_();
   DumpProfile_();
 }
@@ -145,21 +136,25 @@ void Graph::Optimize_(Node &curNode) {
   curNode.SetBestScore(bestScore);
 } 
 
-void Graph::MakeResults_() {
+void Graph::MakeResults_(Offsets &offsets, NameEntities &nameEntities) {
   Node *curNode = candidateNodes_->GetItems().back().first;
   while (!curNode->IsBegin()) {
     curNode = curNode->GetBestPrev();
+    if (curNode->GetNameEntity() != NULL) {
+      nameEntities.push_back(curNode->GetNameEntity());
+    }
+
     if (!curNode->IsBegin()) {
-      offsets_.push_back(SCAST<size_t>(curNode->GetOffset()));
+      offsets.push_back(SCAST<size_t>(curNode->GetOffset()));
     }
   }
 
-  for (size_t i=0; i < offsets_.size()/2; ++i) {
+  for (size_t i=0; i < offsets.size()/2; ++i) {
     size_t one = i;
-    ssize_t other = offsets_.size() - 1 - i;
-    size_t tmp = offsets_[one];
-    offsets_[one] = offsets_[other];
-    offsets_[other] = tmp;
+    ssize_t other = offsets.size() - 1 - i;
+    size_t tmp = offsets[one];
+    offsets[one] = offsets[other];
+    offsets[other] = tmp;
   }
 }
 
