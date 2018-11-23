@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.6.4)
 
-project(segmentor)
+project(charles)
 
 include_directories(
   /usr/include/
@@ -19,10 +19,10 @@ set(LIB_DEPS
   ${CMAKE_SOURCE_DIR}/deps/ner/lib/ner/libner.a
 )
 
-add_library(segmentor
+add_executable(charles
   ${SEG_FILES})
 
-target_link_libraries(segmentor
+target_link_libraries(charles
   ${LIB_DEPS}
   log4cplus
   pthread

@@ -1,8 +1,11 @@
 #pragma once
 
-#include "dep.h"
+#include "common.h"
+#include "jsontype/jsontype.h"
+#include "str_helper.hpp"
+#include "time/time.h"
 
-namespace xforce { namespace nlu { namespace segmentor {
+namespace xforce { 
 
 class ReqTracer {
  public: 
@@ -78,4 +81,4 @@ std::string ReqTracer::GetReport() const {
   return ostr.str();
 }
 
-}}}
+}
