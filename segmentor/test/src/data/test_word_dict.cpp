@@ -10,6 +10,9 @@ LOGGER_IMPL(xforce::xforce_logger, "segmentor")
 using namespace xforce::nlu::segmentor;
 
 int main(int argc, char **argv) {
+  setlocale(LC_ALL, "");
+  std::wcout << L"还有什么更好的办法吗";
+
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
@@ -23,7 +26,8 @@ void initNatureDict() {
 TEST(test_all, all) {
   LOGGER_SYS_INIT("../conf/log.conf")
 
-  ASSERT_TRUE(Segmentor::Init("conf/segmentor.conf"));
+  const xforce::JsonType* conf = xforce::JsonType::CreateConf("conf/segmentor.conf");
+  ASSERT_TRUE(Segmentor::Init((*conf)["segmentor"], (*conf)["ner"]));
 
   initNatureDict();
 
@@ -39,4 +43,6 @@ TEST(test_all, all) {
     std::wcout << (*iter)->GetName() << std::endl;
   }
   delete wordDict;
+
+  XFC_DELETE(conf)
 }

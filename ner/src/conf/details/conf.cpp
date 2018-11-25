@@ -15,4 +15,8 @@ bool Conf::Init(const xforce::JsonType &confJson) {
   return true;
 }
 
+void Conf::Tini() {
+  XFC_DELETE(conf_)
+}
+
 }}}

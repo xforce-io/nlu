@@ -20,7 +20,7 @@ class Node {
   inline void AddNext(Node &next);
   inline void SetBestPrev(Node &prev);
   inline void SetBestScore(double score);
-  inline void SetNameEntity(ner::NameEntity &ner);
+  inline void SetNameEntity(std::shared_ptr<ner::NameEntity> ner);
 
   ssize_t GetOffset() const { return offset_; }
   size_t GetLen() const { return len_; }
@@ -28,7 +28,7 @@ class Node {
   std::vector<Node*>& GetNexts() { return nexts_; }
   Node* GetBestPrev() { return bestPrev_; }
   double GetBestScore() { return bestScore_; }
-  ner::NameEntity* GetNameEntity() { return nameEntity_; }
+  std::shared_ptr<ner::NameEntity>& GetNameEntity() { return nameEntity_; }
   inline int EndOffset() const;
   inline bool Optimized() const;
   inline bool IsBegin() const;
@@ -51,7 +51,7 @@ class Node {
   Node *bestPrev_;
   double bestScore_;
 
-  ner::NameEntity *nameEntity_;
+  std::shared_ptr<ner::NameEntity> nameEntity_;
 };  
 
 void Node::SetOffset(int offset) {
@@ -78,8 +78,8 @@ void Node::SetBestScore(double score) {
   bestScore_ = score;
 }
 
-void Node::SetNameEntity(ner::NameEntity &nameEntity) {
-  nameEntity_ = &nameEntity;
+void Node::SetNameEntity(std::shared_ptr<ner::NameEntity> nameEntity) {
+  nameEntity_ = nameEntity;
 }
 
 int Node::EndOffset() const {

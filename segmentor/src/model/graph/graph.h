@@ -14,7 +14,7 @@ class Graph {
   typedef std::tr1::unordered_set<int> OffsetsProcessed;
   typedef std::queue<int> OffsetsToProcess;
   typedef std::vector<size_t> Offsets;
-  typedef std::vector<ner::NameEntity*> NameEntities;
+  typedef std::vector<std::shared_ptr<ner::NameEntity>> NameEntities;
   typedef std::vector<NodesVec*> PosToNumNodes;
   typedef typename std::vector< std::pair<const Node*, ConflictSubgraph*> > ProfileItems;
 

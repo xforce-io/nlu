@@ -53,3 +53,8 @@ add_executable(testRegression
   ${LOCAL_CPP_FILES}
   ${CMAKE_SOURCE_DIR}/src/test_regression.cpp
 )
+
+add_executable(testCase
+  ${LOCAL_CPP_FILES}
+  ${CMAKE_SOURCE_DIR}/src/test_case.cpp
+)

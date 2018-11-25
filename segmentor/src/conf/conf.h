@@ -8,11 +8,12 @@ class Conf {
  public: 
   Conf();
 
-  bool Init(const std::string &filepath); 
+  bool Init(const xforce::JsonType &filepath); 
 
   inline const std::string& GetDataDir() const;
  
   static Conf& Get() { return *conf_; }
+  static void Tini();
 
  private: 
   std::string dataDir_;

@@ -6,24 +6,19 @@ Conf *Conf::conf_ = new Conf();
 
 Conf::Conf() {}  
 
-bool Conf::Init(const std::string &filepath) {
-  const xforce::JsonType* conf = xforce::JsonType::CreateConf(filepath);
-
+bool Conf::Init(const xforce::JsonType &confJson) {
   XFC_FAIL_HANDLE_FATAL(
-      NULL == conf || !conf->IsDict(), 
-      "fail_init_service_conf[" << filepath << "]")
-
-  XFC_FAIL_HANDLE_FATAL(
-      !(*conf)["dataDir"].IsStr(),
+      !confJson["dataDir"].IsStr(),
       "fail_get_dataDir")  
-  dataDir_ = (*conf)["dataDir"].AsStr();
-
-  XFC_DELETE(conf)
+  dataDir_ = confJson["dataDir"].AsStr();
   return true;
 
   ERROR_HANDLE:
-  XFC_DELETE(conf)
   return false;
+}
+
+void Conf::Tini() {
+  XFC_DELETE(conf_)
 }
 
 }}}

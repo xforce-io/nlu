@@ -13,6 +13,7 @@ class Conf {
   inline const std::string& GetDataDir() const;
  
   static Conf& Get() { return *conf_; }
+  static void Tini();
 
  private: 
   std::string dataDir_;

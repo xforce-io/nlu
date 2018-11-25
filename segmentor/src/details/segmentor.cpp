@@ -3,21 +3,27 @@
 #include "../data/manager.h"
 #include "../model/graph/graph.h"
 #include "../model/graph/trigger/manager_triggers.h"
+#include "ner/ner.h"
 
 namespace xforce { namespace nlu { namespace segmentor {
 
-bool Segmentor::Init(const std::string &confpath) {
-  setlocale(LC_ALL, "");
-
-  bool ret = Conf::Get().Init(confpath);
+bool Segmentor::Init(
+    const xforce::JsonType &confSeg,
+    const xforce::JsonType &confNer) {
+  bool ret = xforce::nlu::ner::Ner::Init(confNer);
   if (!ret) {
-    FATAL("fail_init_conf_from[conf/segmentor.conf]");
+    return false;
+  }
+
+  ret = Conf::Get().Init(confSeg);
+  if (!ret) {
+    FATAL("fail_init_conf[segmentor]");
     return false;
   }
 
   ret = Manager::Get().Init();
   if (!ret) {
-    FATAL("fail_init_data_manager");
+    FATAL("fail_init_data_manager[segmentor]");
     return false;
   }
   return true;
@@ -26,7 +32,7 @@ bool Segmentor::Init(const std::string &confpath) {
 void Segmentor::Parse(
     const std::wstring &query, 
     std::vector<size_t> &offsets,
-    std::vector<ner::NameEntity*> &nameEntities) {
+    std::vector<std::shared_ptr<ner::NameEntity>> &nameEntities) {
   Graph *graph = new Graph(query);
   graph->Process(offsets, nameEntities);
   XFC_DELETE(graph)
@@ -35,6 +41,7 @@ void Segmentor::Parse(
 void Segmentor::Tini() {
   ManagerTriggers::Tini();  
   Manager::Tini();  
+  Conf::Tini();
 }
 
 }}}

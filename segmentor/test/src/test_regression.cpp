@@ -15,7 +15,10 @@ int main(int argc, char **argv) {
 bool Check(const std::string &query, const std::vector<std::string> &segments);
 
 TEST(test_all, all) {
-  ASSERT_TRUE(Segmentor::Init("conf/segmentor.conf"));
+  setlocale(LC_ALL, "");
+
+  const xforce::JsonType* conf = xforce::JsonType::CreateConf("conf/segmentor.conf");
+  ASSERT_TRUE(Segmentor::Init((*conf)["segmentor"], (*conf)["ner"]));
 
   std::string filepath = "../../data/regressionCases";
 
@@ -49,6 +52,7 @@ TEST(test_all, all) {
   fclose(fp);
 
   Segmentor::Tini();
+  XFC_DELETE(conf)
 }
 
 bool Check(const std::string &query, const std::vector<std::string> &segments) {
@@ -57,10 +61,12 @@ bool Check(const std::string &query, const std::vector<std::string> &segments) {
   std::wstring wStrQuery;
   assert(StrHelper::Str2Wstr(query, wStrQuery));
 
-  Graph graph(wStrQuery);
-  graph.Process();
+  Graph::Offsets offsets;
+  Graph::NameEntities nameEntities;
 
-  auto offsets = graph.GetOffsets();
+  Graph *graph = new Graph(wStrQuery);
+  graph->Process(offsets, nameEntities);
+
   if (offsets.size() != segments.size()) {
     return false;
   }
@@ -72,5 +78,7 @@ bool Check(const std::string &query, const std::vector<std::string> &segments) {
       return false;
     }
   }
+
+  XFC_DELETE(graph)
   return true;
 }
