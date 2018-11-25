@@ -20,6 +20,9 @@ class NameEntity {
 
   virtual int GetCategory() const = 0; 
 
+  size_t GetOffset() const { return offset_; }
+  size_t GetLen() const { return len_; }
+
   virtual ~NameEntity() {}
  
  protected:

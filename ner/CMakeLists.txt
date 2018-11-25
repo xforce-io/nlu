@@ -15,7 +15,6 @@ link_directories(
 set(NER_OUTPUT_PATH ner/)
 set(NER_LIB_OUTPUT_PATH  ${NER_OUTPUT_PATH}/lib/ner)
 set(NER_INC_OUTPUT_PATH  ${NER_OUTPUT_PATH}/include/ner)
-
 set(NER_SRC_DIR "${CMAKE_SOURCE_DIR}/src/")
 
 FILE(GLOB_RECURSE NER_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")

@@ -5,11 +5,17 @@ project(segmentor)
 include_directories(
   /usr/include/
   ${CMAKE_SOURCE_DIR}/deps/public-cpp/include/
+  ${CMAKE_SOURCE_DIR}/deps/segmentor/include/
   ${CMAKE_SOURCE_DIR}/deps/ner/include/
 )
 
 link_directories(
 )
+
+set(SEGMENTOR_OUTPUT_PATH segmentor/)
+set(SEGMENTOR_LIB_OUTPUT_PATH  ${SEGMENTOR_OUTPUT_PATH}/lib/segmentor)
+set(SEGMENTOR_INC_OUTPUT_PATH  ${SEGMENTOR_OUTPUT_PATH}/include/segmentor)
+set(SEGMENTOR_SRC_DIR "${CMAKE_SOURCE_DIR}/src/")
 
 FILE(GLOB_RECURSE SEG_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 
@@ -29,3 +35,21 @@ target_link_libraries(segmentor
   rt
   z
   )
+
+add_custom_command(TARGET segmentor
+  PRE_BUILD
+
+  #make segmentor
+  COMMAND mkdir -p ${SEGMENTOR_LIB_OUTPUT_PATH}
+  COMMAND mkdir -p ${SEGMENTOR_INC_OUTPUT_PATH}
+
+  COMMAND cp ${SEGMENTOR_SRC_DIR}/segmentor.h ${SEGMENTOR_INC_OUTPUT_PATH}/
+  COMMAND git log | head -n 1 > ${SEGMENTOR_OUTPUT_PATH}/version
+)
+
+add_custom_command(TARGET segmentor
+  POST_BUILD
+
+  #make segmentor
+  COMMAND cp libsegmentor.a ${SEGMENTOR_LIB_OUTPUT_PATH}
+)
