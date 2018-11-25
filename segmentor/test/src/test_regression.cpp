@@ -67,11 +67,11 @@ bool Check(const std::string &query, const std::vector<std::string> &segments) {
   Graph *graph = new Graph(wStrQuery);
   graph->Process(offsets, nameEntities);
 
-  if (offsets.size() != segments.size()) {
+  if (offsets.size() != segments.size() + 1) {
     return false;
   }
 
-  for (size_t i=0; i < segments.size()-1; ++i) {
+  for (size_t i=0; i < segments.size(); ++i) {
     std::wstring wstr;
     assert(StrHelper::Str2Wstr(segments[i], wstr));
     if (wstr.length() + (size_t)offsets[i] != (size_t)offsets[i+1]) {

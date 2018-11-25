@@ -156,6 +156,7 @@ void Graph::MakeResults_(Offsets &offsets, NameEntities &nameEntities) {
     offsets[one] = offsets[other];
     offsets[other] = tmp;
   }
+  offsets.push_back(query_.length());
 }
 
 void Graph::MakeProfileInfo_() {
