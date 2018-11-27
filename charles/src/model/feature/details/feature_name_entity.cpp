@@ -3,13 +3,9 @@
 namespace xforce { namespace nlu { namespace charles {
 
 FeatureNameEntity::FeatureNameEntity(
-    ner::NameEntity &nameEntity, 
-    size_t offset, 
-    size_t len,
+    std::shared_ptr<ner::NameEntity> &nameEntity, 
     size_t score) :
-  nameEntity_(&nameEntity),
-  offset_(offset),
-  len_(len),
+  nameEntity_(nameEntity),
   score_(score) {}
 
 }}}

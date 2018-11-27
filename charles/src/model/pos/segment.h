@@ -12,10 +12,9 @@ class Segment {
 
   inline void SetPos(Pos::Type pos);
 
-  Pos::Type GetPos() const { return pos; }
+  Pos::Type GetPos() const { return pos_; }
   size_t GetOffset() const { return offset_; }
   size_t GetLen() const { return len_; }
-
 
  private:
   Pos::Type pos_;
@@ -29,7 +28,7 @@ Segment::Segment(Pos::Type pos, size_t offset, size_t len) :
   len_(len) {}
 
 Segment::Segment(size_t offset, size_t len) :
-  offset_(offset_),
+  offset_(offset),
   len_(len) {}
 
 void Segment::SetPos(Pos::Type pos) {

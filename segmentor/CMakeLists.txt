@@ -42,8 +42,13 @@ add_custom_command(TARGET segmentor
   #make segmentor
   COMMAND mkdir -p ${SEGMENTOR_LIB_OUTPUT_PATH}
   COMMAND mkdir -p ${SEGMENTOR_INC_OUTPUT_PATH}
+  COMMAND mkdir -p ${SEGMENTOR_INC_OUTPUT_PATH}/public/
 
   COMMAND cp ${SEGMENTOR_SRC_DIR}/segmentor.h ${SEGMENTOR_INC_OUTPUT_PATH}/
+  COMMAND cp ${SEGMENTOR_SRC_DIR}/public.h ${SEGMENTOR_INC_OUTPUT_PATH}/
+  COMMAND cp ${SEGMENTOR_SRC_DIR}/constant.h ${SEGMENTOR_INC_OUTPUT_PATH}/
+  COMMAND cp ${SEGMENTOR_SRC_DIR}/public/public.h ${SEGMENTOR_INC_OUTPUT_PATH}/public/
+  COMMAND cp ${SEGMENTOR_SRC_DIR}/public/dep.h ${SEGMENTOR_INC_OUTPUT_PATH}/public/
   COMMAND git log | head -n 1 > ${SEGMENTOR_OUTPUT_PATH}/version
 )
 

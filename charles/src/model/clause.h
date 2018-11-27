@@ -4,7 +4,7 @@
 
 namespace xforce { namespace nlu { namespace charles {
 
-class FeatureSegment;  
+class FeatureSegments;
 class FeatureNameEntity;
 
 class Clause {
@@ -12,7 +12,7 @@ class Clause {
   typedef std::list<FeatureNameEntity*> FeatureNameEntities; 
 
  public:
-  Clause();
+  Clause(const std::wstring &clause);
 
   void Segment(); 
 
@@ -21,7 +21,7 @@ class Clause {
  private:
   std::wstring clause_;
 
-  FeatureSegment *featureSegment_;
+  FeatureSegments *featureSegments_;
   FeatureNameEntities featureNameEntities_;
 };
 

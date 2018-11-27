@@ -1,22 +1,21 @@
 #pragma once
 
 #include "public.h"
+#include "segmentor/segmentor.h" 
 
-namespace xforce { namespace nlu {
-
-class Segmentor;
+namespace xforce { namespace nlu { namespace charles {
 
 class BaseModules {
  public:
   bool Init(); 
-  Segmentor& GetSegmentor() { return *segmentor_; } 
+  segmentor::Segmentor& GetSegmentor() { return *segmentor_; } 
 
   static BaseModules& Get() { return *baseModules_; }
 
  private: 
-  Segmentor *segmentor_; 
+  segmentor::Segmentor *segmentor_; 
 
   static BaseModules *baseModules_;
 };
 
-}}
+}}}

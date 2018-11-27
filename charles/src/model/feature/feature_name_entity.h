@@ -8,16 +8,14 @@ namespace xforce { namespace nlu { namespace charles {
 class FeatureNameEntity : public Feature {
  public: 
   explicit FeatureNameEntity(
-      ner::NameEntity &nameEntity, 
-      size_t offset, 
-      size_t len,
+      std::shared_ptr<ner::NameEntity> &nameEntity, 
       size_t score);
 
   const ner::NameEntity& GetNameEntity() const { return *nameEntity_; }
-  ner::NameEntity& GetNameEntity() { return *nameEntity_; }
 
  private: 
-  ner::NameEntity* nameEntity_;
+  std::shared_ptr<ner::NameEntity> nameEntity_;
+  size_t score_;
 };
 
 }}}
