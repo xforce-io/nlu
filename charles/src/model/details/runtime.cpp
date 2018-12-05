@@ -1,4 +1,6 @@
 #include "../runtime.h"
+#include "../analysis/analysis_context.h"
+#include "../process/processor_context.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
@@ -10,12 +12,14 @@ Runtime::~Runtime() {
 }
 
 bool Runtime::Process(const std::wstring &query) {
-  currentAnalysisContext_ = new AnalysisContext();
-  bool ret = currentAnalysisContext_->Init(query);
-  if (!ret) {
-    return false;
+  currentAnalysisContext_ = new AnalysisContext(query);
+  while (Round_()) {
   }
   return true;
+}
+
+void Runtime::DumpAnalysisContext(JsonType &jsonType) {
+  currentAnalysisContext_->Dump(jsonType);
 }
 
 bool Runtime::Round_() {
@@ -24,12 +28,12 @@ bool Runtime::Round_() {
   for (auto analysisClausePtr : analysisClauses) {
     if (ProcessorContext::Get().ProcessClause(
         *currentAnalysisContext_, 
-        *analysisClausesPtr)) {
+        *analysisClausePtr)) {
       modified = true;
     }
   }
 
-  if (ProcessorContext::Get().ProcessorSentence(
+  if (ProcessorContext::Get().ProcessSentence(
       *currentAnalysisContext_, 
       currentAnalysisContext_->GetAnalysisSentence())) {
     modified = true;

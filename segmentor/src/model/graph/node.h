@@ -21,6 +21,7 @@ class Node {
   inline void SetBestPrev(Node &prev);
   inline void SetBestScore(double score);
   inline void SetNameEntity(std::shared_ptr<ner::NameEntity> ner);
+  inline void SetPos(basic::Pos::Type pos);
 
   ssize_t GetOffset() const { return offset_; }
   size_t GetLen() const { return len_; }
@@ -35,6 +36,7 @@ class Node {
   inline bool IsEnd() const;
   inline bool IsSpecial() const;
   inline int GetShapeCode() const;
+  inline basic::Pos::Type GetPos() const { return pos_; }
 
   std::string Str() const;
 
@@ -50,6 +52,8 @@ class Node {
   std::vector<Node*> nexts_;
   Node *bestPrev_;
   double bestScore_;
+
+  basic::Pos::Type pos_;
 
   std::shared_ptr<ner::NameEntity> nameEntity_;
 };  
@@ -80,6 +84,10 @@ void Node::SetBestScore(double score) {
 
 void Node::SetNameEntity(std::shared_ptr<ner::NameEntity> nameEntity) {
   nameEntity_ = nameEntity;
+}
+
+void Node::SetPos(basic::Pos::Type pos) {
+  pos_ = pos;
 }
 
 int Node::EndOffset() const {

@@ -10,6 +10,7 @@ Node::Node(int offset, size_t len) {
   bestPrev_ = NULL;
   bestScore_ = -1.0;
   nameEntity_ = NULL;
+  pos_ = basic::Pos::kUndef;
 }
 
 std::string Node::Str() const {

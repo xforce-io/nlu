@@ -4,6 +4,9 @@
 
 namespace xforce { namespace nlu { namespace charles {
 
+class AnalysisContext;
+class AnalysisClause;
+
 class ProcessorClause {
  public:
   //@return : is analysisContext modified 
@@ -17,10 +20,18 @@ class ProcessorClause {
       AnalysisClause &analysisClause); 
 };
 
+}}}
+
+#include "../analysis/analysis_context.h"
+#include "../analysis/analysis_clause.h"
+
+namespace xforce { namespace nlu { namespace charles {
+
 bool ProcessorClause::Segment(
     AnalysisContext &analysisContext,
     AnalysisClause &analysisClause) {
   analysisClause.Segment();
+  return false;
 }
 
 }}}

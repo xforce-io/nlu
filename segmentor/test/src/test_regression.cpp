@@ -5,6 +5,7 @@
 LOGGER_IMPL(xforce::xforce_logger, "segmentor")
 
 using namespace xforce;
+using namespace xforce::nlu::basic;
 using namespace xforce::nlu::segmentor;
 
 int main(int argc, char **argv) {
@@ -12,7 +13,7 @@ int main(int argc, char **argv) {
   return RUN_ALL_TESTS();
 }
 
-bool Check(const std::string &query, const std::vector<std::string> &segments);
+bool Check(const std::string &query, const std::vector<std::string> &segStrs);
 
 TEST(test_all, all) {
   setlocale(LC_ALL, "");
@@ -43,9 +44,9 @@ TEST(test_all, all) {
       ASSERT_TRUE(results.size() == 2);
 
       std::string query = results[0];
-      std::vector<std::string> segments;
-      StrHelper::SplitStr(results[1], '/', segments);
-      ASSERT_TRUE(Check(query, segments));
+      std::vector<std::string> segStrs;
+      StrHelper::SplitStr(results[1], '/', segStrs);
+      ASSERT_TRUE(Check(query, segStrs));
     }
     line = fgets(buf, sizeof(buf), fp);
   }
@@ -55,26 +56,26 @@ TEST(test_all, all) {
   XFC_DELETE(conf)
 }
 
-bool Check(const std::string &query, const std::vector<std::string> &segments) {
+bool Check(const std::string &query, const std::vector<std::string> &segStrs) {
   std::cout << "test[" << query << "]" << std::endl;
 
   std::wstring wStrQuery;
   assert(StrHelper::Str2Wstr(query, wStrQuery));
 
-  Graph::Offsets offsets;
+  Segments segments;
   Graph::NameEntities nameEntities;
 
   Graph *graph = new Graph(wStrQuery);
-  graph->Process(offsets, nameEntities);
+  graph->Process(segments, nameEntities);
 
-  if (offsets.size() != segments.size() + 1) {
+  if (segments.size() != segStrs.size() + 1) {
     return false;
   }
 
-  for (size_t i=0; i < segments.size(); ++i) {
+  for (size_t i=0; i < segStrs.size(); ++i) {
     std::wstring wstr;
-    assert(StrHelper::Str2Wstr(segments[i], wstr));
-    if (wstr.length() + (size_t)offsets[i] != (size_t)offsets[i+1]) {
+    assert(StrHelper::Str2Wstr(segStrs[i], wstr));
+    if (wstr.length() + (size_t)segments[i].GetOffset() != (size_t)segments[i+1].GetOffset()) {
       return false;
     }
   }

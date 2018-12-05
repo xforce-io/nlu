@@ -1,6 +1,7 @@
 #pragma once
 
 #include "public.h"
+#include "analysis_component.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
@@ -12,6 +13,8 @@ class AnalysisClause : public AnalysisComponent {
   AnalysisClause(const std::wstring &clause);
 
   void Segment();
+
+  void Dump(JsonType &jsonType);
 
  private: 
   std::wstring clause_;

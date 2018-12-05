@@ -1,13 +1,15 @@
 #pragma once
 
 #include "public.h"
+#include "processor_sentence.h"
+#include "processor_clause.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
 class ProcessorContext {
  private:
-  typedef std::vector<ProcessorSentence::Processor*> ProcessorSentences;
-  typedef std::vector<ProcessorClause::Processor*> ProcessorClauses;
+  typedef std::vector<ProcessorSentence::Processor> ProcessorSentences;
+  typedef std::vector<ProcessorClause::Processor> ProcessorClauses;
 
  public:
   ProcessorContext(); 
@@ -41,7 +43,7 @@ bool ProcessorContext::ProcessSentence(
     AnalysisSentence &analysisSentence) {
   bool modified = false;
   for (auto processor : processorSentences_) {
-    if (processor(analysisContext, analysisSentence)) {
+    if ((*processor)(analysisContext, analysisSentence)) {
       modified = true;
     }
   }
@@ -53,7 +55,7 @@ bool ProcessorContext::ProcessClause(
     AnalysisClause &analysisClause) {
   bool modified = false;
   for (auto processor : processorClauses_) {
-    if (processor(analysisContext, analysisSentence)) {
+    if ((*processor)(analysisContext, analysisClause)) {
       modified = true;
     }
   }

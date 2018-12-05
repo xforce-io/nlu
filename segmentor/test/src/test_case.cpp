@@ -7,6 +7,7 @@
 LOGGER_IMPL(xforce::xforce_logger, "segmentor")
 
 using namespace xforce;
+using namespace xforce::nlu::basic;
 using namespace xforce::nlu::segmentor;
 
 int main(int argc, char **argv) {
@@ -23,15 +24,15 @@ TEST(test_all, all) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("conf/segmentor.conf");
   ASSERT_TRUE(Segmentor::Init((*conf)["segmentor"], (*conf)["ner"]));
 
-  Graph::Offsets offsets;
+  Segments segments;
   Graph::NameEntities nameEntities;
 
-  std::wstring wStrQuery = L"这样真的好吗";
+  std::wstring wStrQuery = L"周杰伦、刘亦菲和王凯的关系很好";
   Graph *graph = new Graph(wStrQuery);
-  graph->Process(offsets, nameEntities);
+  graph->Process(segments, nameEntities);
 
-  for (size_t i=0; i < offsets.size() - 1; ++i) {
-    std::wcout << wStrQuery.substr(offsets[i], offsets[i+1] - offsets[i]) << std::endl;
+  for (size_t i=0; i < segments.size(); ++i) {
+    std::wcout << wStrQuery.substr(segments[i].GetOffset(), segments[i].GetLen()) << std::endl;
   }
 
   XFC_DELETE(graph)

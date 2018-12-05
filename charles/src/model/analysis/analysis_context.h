@@ -4,7 +4,8 @@
 
 namespace xforce { namespace nlu { namespace charles {
 
-class AnalysisSentence;  
+class AnalysisSentence;
+class AnalysisClause;
 
 class AnalysisContext {
  public:
@@ -12,6 +13,8 @@ class AnalysisContext {
 
  public:
   AnalysisContext(const std::wstring &query); 
+
+  void Dump(JsonType &jsonType);
 
   AnalysisSentence& GetAnalysisSentence() { return *analysisSentence_; }
   AnalysisClauses& GetAnalysisClauses() { return analysisClauses_; }

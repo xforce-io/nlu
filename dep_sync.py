@@ -2,12 +2,16 @@ import os, sys
 
 kBuildPathPublicCpp = "../public-cpp/build/"
 
+kBuildPathBasic = "basic/build/"
 kBuildPathNer = "ner/build/"
 kBuildPathSegmentor = "segmentor/build/"
+kBuildPathPosTagging = "pos_tagging/build/"
 kBuildPathCharles = "charles/build/"
 
+kDepPathBasic = "basic/deps/"
 kDepPathNer = "ner/deps/"
 kDepPathSegmentor = "segmentor/deps/"
+kDepPathPosTagging = "pos_tagging/deps/"
 kDepPathCharles = "charles/deps/"
 
 def call(cmd) :
@@ -16,6 +20,13 @@ def call(cmd) :
 def buildPublicCpp() :
     call("mkdir -p %s && cd %s && cmake ../ && make clean && make -j4 -s" % \
             (kBuildPathPublicCpp, kBuildPathPublicCpp))
+
+def buildBasic() :
+    call("mkdir -p %s && rm -rf %s/*" % (kDepPathBasic, kDepPathBasic))
+    call("cp -rf %s/public-cpp %s/public-cpp" % \
+            (kBuildPathPublicCpp, kDepPathBasic))
+    call("mkdir -p %s && cd %s && cmake ../ && make clean && make -j4 -s" % \
+            (kBuildPathBasic, kBuildPathBasic))
 
 def buildNer() :
     call("mkdir -p %s && rm -rf %s/*" % (kDepPathNer, kDepPathNer))
@@ -28,22 +39,40 @@ def buildSegmentor() :
     call("mkdir -p %s && rm -rf %s/*" % (kDepPathSegmentor, kDepPathSegmentor))
     call("cp -rf %s/public-cpp %s/public-cpp" % \
             (kBuildPathPublicCpp, kDepPathSegmentor))
+    call("cp -rf %s/basic %s/basic" % \
+            (kBuildPathBasic, kDepPathSegmentor))
     call("cp -rf %s/ner %s/ner" % \
             (kBuildPathNer, kDepPathSegmentor))
     call("mkdir -p %s && cd %s && cmake ../ && make clean && make -j4 -s" % \
             (kBuildPathSegmentor, kBuildPathSegmentor))
 
+def buildPosTagging() :
+    call("mkdir -p %s && rm -rf %s/*" % (kDepPathPosTagging, kDepPathPosTagging))
+    call("cp -rf %s/public-cpp %s/public-cpp" % \
+            (kBuildPathPublicCpp, kDepPathPosTagging))
+    call("cp -rf %s/basic %s/basic/" % \
+            (kBuildPathBasic, kDepPathPosTagging))
+    call("cp -rf %s/ner %s/ner/" % \
+            (kBuildPathNer, kDepPathPosTagging))
+    call("cp -rf %s/segmentor %s/segmentor/" % \
+            (kBuildPathSegmentor, kDepPathPosTagging))
+    call("mkdir -p %s && cd %s && cmake ../ && make clean && make -j4 -s" % \
+            (kBuildPathPosTagging, kBuildPathPosTagging))
+
 def buildCharles() :
     call("mkdir -p %s && rm -rf %s/*" % (kDepPathCharles, kDepPathCharles))
     call("cp -rf %s/public-cpp %s/public-cpp/" % \
             (kBuildPathPublicCpp, kDepPathCharles))
+    call("cp -rf %s/basic %s/basic/" % \
+            (kBuildPathBasic, kDepPathCharles))
     call("cp -rf %s/ner %s/ner/" % \
             (kBuildPathNer, kDepPathCharles))
-    call("cp -rf %s/segmentor %s/segmentor" % \
+    call("cp -rf %s/segmentor %s/segmentor/" % \
             (kBuildPathSegmentor, kDepPathCharles))
+    call("cp -rf %s/pos_tagging %s/pos_tagging/" % \
+            (kBuildPathPosTagging, kDepPathCharles))
     call("mkdir -p %s && cd %s && cmake ../ && make clean && make -j4 -s" % \
             (kBuildPathCharles, kBuildPathCharles))
-
 
 if __name__ == "__main__" :    
     if len(sys.argv) < 2 :
@@ -52,6 +81,14 @@ if __name__ == "__main__" :
 
     buildPublicCpp()
     if sys.argv[1] == "pub" :
+        sys.exit(0)
+
+    buildBasic()
+    if sys.argv[1] == "bas" :
+        sys.exit(0)
+
+    buildPosTagging()
+    if sys.argv[1] == "pos" :
         sys.exit(0)
 
     buildNer()

@@ -17,19 +17,19 @@ bool Manager::Init() {
   ss << Conf::Get().GetDataDir() << "data/bigramdict.dic";
   bigramDict_ = new BigramDict();
   bool ret = bigramDict_->Init(ss.str());
-  XFC_FAIL_HANDLE_WARN(!ret, "fail_init_bigram_dict")
+  XFC_FAIL_HANDLE_FATAL(!ret, "fail_init_bigram_dict")
 
   ss.str("");  
   ss << Conf::Get().GetDataDir() << "data/nature/nature.map";
   natureDict_ = new NatureDict();  
   ret = natureDict_->Init(ss.str());
-  XFC_FAIL_HANDLE_WARN(!ret, "fail_init_nature_dict")
+  XFC_FAIL_HANDLE_FATAL(!ret, "fail_init_nature_dict")
 
   ss.str("");  
   ss << Conf::Get().GetDataDir() << "data/nature/nature.table";
   natureBigram_ = new NatureBigram();  
   ret = natureBigram_->Init(*natureDict_, ss.str());
-  XFC_FAIL_HANDLE_WARN(!ret, "fail_init_nature_bigram")
+  XFC_FAIL_HANDLE_FATAL(!ret, "fail_init_nature_bigram")
 
   ss.str("");  
   ss << Conf::Get().GetDataDir() << "data/word/core.dic";
@@ -39,7 +39,7 @@ bool Manager::Init() {
   wordDictPaths.push_back(ss.str());
   wordDict_ = new WordDict();
   ret = wordDict_->Init(wordDictPaths);
-  XFC_FAIL_HANDLE_WARN(!ret, "fail_init_word_dict")
+  XFC_FAIL_HANDLE_FATAL(!ret, "fail_init_word_dict")
 
   return true;
 

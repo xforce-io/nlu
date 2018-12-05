@@ -4,6 +4,8 @@
 
 namespace xforce { namespace nlu { namespace charles {
 
+class AnalysisContext;  
+
 class Runtime {
  public:
   Runtime(); 
@@ -11,6 +13,7 @@ class Runtime {
 
   //@return : succ or fail
   bool Process(const std::wstring &query);
+  void DumpAnalysisContext(JsonType &jsonType);
 
  private:  
   bool Round_();

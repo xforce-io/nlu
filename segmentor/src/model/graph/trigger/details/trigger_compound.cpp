@@ -1,6 +1,5 @@
 #include "../trigger_compound.h"
 #include "../../graph.h"
-#include "../../triggered_nodes.h"
 
 namespace xforce { namespace nlu { namespace segmentor {
 
@@ -13,38 +12,39 @@ void TriggerCompound::Process(
     return;
   }
 
-  auto newTriggeredNodes = new TriggeredNodes(offset, 1);
+  auto triggeredNodes = new TriggeredNodes(offset, 1);
   auto namesNodes = new TriggeredNodes();
 
   int lastOffset = offset;
   int offsetNextComma = query.find(kMarkPunction, offset+1);
   while (offsetNextComma > 0) {
     namesNodes->AddNode(
-        newTriggeredNodes->AddNode(
+        triggeredNodes->AddNode(
           lastOffset+1, 
           offsetNextComma-lastOffset-1));
-    newTriggeredNodes->AddNode(offsetNextComma, 1);
+    triggeredNodes->AddNode(offsetNextComma, 1);
 
     lastOffset = offsetNextComma;
     offsetNextComma = query.find(kMarkPunction, lastOffset+1);
   }
 
+  int nextOffset = -1;
   for (ssize_t i = lastOffset+1; i < (ssize_t)query.length(); ++i) {
     if (L'和' == query[i] || L'及' == query[i]) {
       namesNodes->AddNode(
-          newTriggeredNodes->AddNode(
+          triggeredNodes->AddNode(
             lastOffset+1, 
             i-lastOffset-1));
-      newTriggeredNodes->AddNode(i, 1);
-      offsetNextComma = i;
+      triggeredNodes->AddNode(i, 1, basic::Pos::kC);
+      nextOffset = i+1;
       break;
     } else if (L'以' == query[i] || L'及' == query[i+1]) {
       namesNodes->AddNode(
-          newTriggeredNodes->AddNode(
+          triggeredNodes->AddNode(
             lastOffset+1,
             i-lastOffset-1));
-      newTriggeredNodes->AddNode(i, 2);
-      offsetNextComma = i+1;
+      triggeredNodes->AddNode(i, 2, basic::Pos::kC);
+      nextOffset = i+2;
       break;
     }
   }
@@ -66,16 +66,26 @@ void TriggerCompound::Process(
       graph.AddMaxPrioredNegLogPossi(node);
     }
 
+    //find prev
     int prevNameOffset = ner::PersonName::FindNameFromEnd(query.substr(0, offset));
     if (prevNameOffset >= 0) {
-      auto newNode = new Node(prevNameOffset, offset-prevNameOffset);
-      newNode->SetNameEntity(std::shared_ptr<ner::NameEntity>(new ner::PersonName(
-              query.substr(prevNameOffset, offset - prevNameOffset),
-              prevNameOffset)));
-      newTriggeredNodes->AddNode(*newNode);
-      graph.AddMaxPrioredNegLogPossi(*newNode);
+      graph.AddMaxPrioredNegLogPossi(
+          *AddNewPersonName_(query, *triggeredNodes, prevNameOffset, offset - prevNameOffset));
     }
-    results.push_back(newTriggeredNodes);
+
+    //find next
+    if (nextOffset > 0) {
+      if (ner::PersonName::PossibleName(query, nextOffset, 2) >= 0) {
+        AddNewPersonName_(query, *triggeredNodes, nextOffset, 2);
+      }
+
+      if (ner::PersonName::PossibleName(query, nextOffset, 3) >= 0) {
+        auto otherTriggeredNodes = new TriggeredNodes();
+        AddNewPersonName_(query, *otherTriggeredNodes, nextOffset, 3);
+        results.push_back(otherTriggeredNodes);
+      }
+    }
+    results.push_back(triggeredNodes);
   }
 }
 

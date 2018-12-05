@@ -23,6 +23,8 @@ class NameEntity {
   size_t GetOffset() const { return offset_; }
   size_t GetLen() const { return len_; }
 
+  void Dump(JsonType &jsonType);
+
   virtual ~NameEntity() {}
  
  protected:

@@ -10,13 +10,13 @@ Clause::Clause(const std::wstring &clause) :
   featureSegments_(NULL) {}
 
 void Clause::Segment() {
-  std::vector<size_t> offsets;
+  basic::Segments segments;
   std::vector<std::shared_ptr<ner::NameEntity>> nameEntities;
-  BaseModules::Get().GetSegmentor().Parse(clause_, offsets, nameEntities);
+  BaseModules::Get().GetSegmentor().Parse(clause_, segments, nameEntities);
 
-  featureSegments_ = new FeatureSegments(offsets);
+  featureSegments_ = new FeatureSegments(clause_, segments);
   for (auto iter = nameEntities.begin(); iter != nameEntities.end(); ++iter) {
-    featureNameEntities_.push_back(new FeatureNameEntity(*iter, 0));
+    featureNameEntities_.push_back(new FeatureNameEntity(*featureSegments_, *iter, 0));
   }
 }
 

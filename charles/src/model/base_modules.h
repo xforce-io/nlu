@@ -7,7 +7,7 @@ namespace xforce { namespace nlu { namespace charles {
 
 class BaseModules {
  public:
-  bool Init(); 
+  bool Init(const xforce::JsonType &conf); 
   segmentor::Segmentor& GetSegmentor() { return *segmentor_; } 
 
   static BaseModules& Get() { return *baseModules_; }

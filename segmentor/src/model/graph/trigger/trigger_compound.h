@@ -20,6 +20,33 @@ class TriggerCompound : public Trigger {
       OUT std::list<TriggeredNodes*> &results);
 
   virtual ~TriggerCompound() {}
+ 
+ private: 
+  inline Node* AddNewPersonName_(
+      const std::wstring &query, 
+      TriggeredNodes &triggeredNodes, 
+      int offset, 
+      size_t len);
 };
+
+}}}
+
+#include "../node.h"
+#include "../triggered_nodes.h"
+
+namespace xforce { namespace nlu { namespace segmentor {
+
+Node* TriggerCompound::AddNewPersonName_(
+    const std::wstring &query,
+    TriggeredNodes &triggeredNodes, 
+    int offset, 
+    size_t len) {
+  auto newNode = new Node(offset, len);
+  newNode->SetNameEntity(
+      std::shared_ptr<ner::NameEntity>(
+          new ner::PersonName(query.substr(offset, len), offset)));
+  triggeredNodes.AddNode(*newNode);
+  return newNode;
+}
 
 }}}

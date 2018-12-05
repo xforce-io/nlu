@@ -31,10 +31,10 @@ bool Segmentor::Init(
 
 void Segmentor::Parse(
     const std::wstring &query, 
-    std::vector<size_t> &offsets,
+    std::vector<basic::Segment> &segments,
     std::vector<std::shared_ptr<ner::NameEntity>> &nameEntities) {
   Graph *graph = new Graph(query);
-  graph->Process(offsets, nameEntities);
+  graph->Process(segments, nameEntities);
   XFC_DELETE(graph)
 }
 

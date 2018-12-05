@@ -6,6 +6,9 @@
 namespace xforce { namespace nlu { namespace ner {
 
 class PersonName : public NameEntity {
+ private:
+  typedef std::tr1::unordered_set<wchar_t> WcharSet;
+
  public: 
   explicit PersonName(const std::wstring &name, size_t offset); 
 
@@ -15,8 +18,13 @@ class PersonName : public NameEntity {
   inline static int PossibleName(const std::wstring &wstr, int offset, int len);
   inline static int FindNameFromEnd(const std::wstring &wstr);
 
+ private: 
+  static WcharSet CreateForbiddenChars_();
+
  private:
   std::wstring name_;
+
+  static WcharSet forbiddenChars_; 
 };
 
 }}}
@@ -30,6 +38,12 @@ int PersonName::PossibleName(const std::wstring &wstr, int offset, int len) {
   int lenSurName = Manager::Get().GetSurname().StartWithSurname(wstr, offset);
   if (lenSurName < 0) {
     return -1;
+  }
+
+  for (size_t i=offset; i < (size_t)(offset+len); ++i) {
+    if (forbiddenChars_.find(wstr.at(i)) != forbiddenChars_.end()) {
+      return -1;
+    }
   }
 
   if ((1 == lenSurName && (2 == len || 3 == len)) ||
