@@ -1,0 +1,19 @@
+PATTERN_EXPR_UNION_START(whatis)
+
+  whatIsPhrase = [$WhatIs, $HowToInterpret]
+  whatissocalled = { {$SoCalled ?} $*sbv {$Def ?} }
+  { $Greeting { $YouKnow ?} $whatIsPhrase $whatissocalled $ModalParticleWithPunc }
+
+  isWhatPhrase = [$IsWhat, $HowToInterpret]
+  { $Greeting { $YouKnow ?} {$SoCalled ?} $*sbv $Def {$isWhatPhrase ?} $ModalParticleWithPunc }
+  { $Greeting { $YouKnow ?} {$SoCalled ?} $*sbv {$Def ?} $isWhatPhrase $ModalParticleWithPunc }
+
+  <sbv>
+PATTERN_EXPR_UNION_END
+
+FEATURE_EXTRACTOR_START(someone)
+
+  { #Pos(aP+) "的" #Pos(nP+) } => #Chunk(vp)
+
+FEATURE_EXTRACTOR_END
+
