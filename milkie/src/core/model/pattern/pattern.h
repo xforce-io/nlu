@@ -15,10 +15,11 @@ class Pattern {
   const PatternItems& GetPatternItems() const { return patternItems_; }
   inline const std::wstring& GetRepr() const;
   inline const std::wstring* AsStr() const;
-  
- private:  
+
   inline static bool IsStartingChar(wchar_t c); 
   inline static std::pair<std::shared_ptr<Pattern>, size_t> Build(const std::wstring &statement);
+  
+ private:  
   inline static PatternItems CreatePatternItems(const StructPatternItems &structPatternItems);
   inline static std::shared_ptr<Pattern> Build(const StructPattern &structPattern);
 

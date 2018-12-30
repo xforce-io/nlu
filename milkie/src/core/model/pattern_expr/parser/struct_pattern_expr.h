@@ -8,40 +8,49 @@ class StructPatternExpr :public StructElement {
  public: 
   StructPatternExpr(
       const std::wstring &statement,
-      const std::shared_ptr<Pattern> &pattern,
-      const std::shared_ptr<PatternSet> &patternSet,
-      const std::shared_ptr<PatternExpr> &patternExpr,
-      const PatternExprs &items,
+      const Pattern *pattern,
+      const PatternSet *patternSet,
+      const PatternExpr *patternExpr,
+      const PatternExprs *items,
       const std::wstring &storage,
       PatternExpr::Category categoryPatternExpr);
   
   StructPatternExpr(
       const std::wstring &statement, 
-      std::shared_ptr<Pattern> &pattern);
+      Pattern *pattern);
 
   StructPatternExpr(
       const std::wstring &statement, 
-      std::shared_ptr<PatternSet> &patternSet);
+      PatternSet *patternSet);
 
   StructPatternExpr(
       const std::wstring &statement, 
-      std::shared_ptr<PatternExpr> &patternExpr);
+      PatternExpr *patternExpr);
+
+  const Pattern* GetPattern() const { return pattern_; }
+  const PatternSet* GetPatternSet() const { return patternSet_; }
+  const PatternExpr* GetPatternExpr() const { return patternExpr_; }
+  const PatternExprs* GetItems() const { return patternExprs_; }
+  const std::wstring& GetStorage() const { return storage_; }
+  PatternExpr::Category GetCategoryPatternExpr() const { return categoryPatternExpr_; }
+
+  static std::shared_ptr<StructPatternExpr> Parse(const std::wstring &blockKey, const std::wstring &statement);
 
  private:
-  std::shared_ptr<Pattern> pattern_;
-  std::shared_ptr<PatternSet> patternSet_;
-  std::shared_ptr<PatternExpr> patternExpr_;
-  const PatternExprs patternExprs_;
+  const Pattern *pattern_;
+  const PatternSet *patternSet_;
+  const PatternExpr *patternExpr_;
+  const PatternExprs *patternExprs_;
   const std::wstring storage_;
   PatternExpr::Category categoryPatternExpr_;
 };  
 
 StructPatternExpr::StructPatternExpr(
     const std::wstring &statement,
-    const std::shared_ptr<Pattern> &pattern,
-    const std::shared_ptr<PatternSet> &patternSet,
-    const std::shared_ptr<PatternExpr> &patternExpr,
-    const PatternExprs &items,
+    const Pattern *pattern,
+    const PatternSet *patternSet,
+    const PatternExpr *patternExpr,
+    const PatternExprs *items,
     const std::wstring &storage,
     PatternExpr::Category categoryPatternExpr) :
   StructElement(statement),
@@ -54,17 +63,15 @@ StructPatternExpr::StructPatternExpr(
 
 StructPatternExpr::StructPatternExpr(
     const std::wstring &statement, 
-    std::shared_ptr<Pattern> &pattern) :
+    Pattern *pattern) :
   StructPatternExpr(statement, pattern, NULL, NULL, NULL, ) {}
 
 StructPatternExpr::StructPatternExpr(
     const std::wstring &statement, 
-    std::shared_ptr<PatternSet> &patternSet);
+    PatternSet *patternSet);
 
 StructPatternExpr::StructPatternExpr(
     const std::wstring &statement, 
-    std::shared_ptr<PatternExpr> &patternExpr);
-
-
+    PatternExpr *patternExpr);
 
 }}}
