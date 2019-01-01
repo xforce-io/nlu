@@ -3,12 +3,14 @@ import os, sys
 kBuildPathPublicCpp = "../public-cpp/build/"
 
 kBuildPathBasic = "basic/build/"
+kBuildPathMilkie = "milkie/build/"
 kBuildPathNer = "ner/build/"
 kBuildPathSegmentor = "segmentor/build/"
 kBuildPathPosTagging = "pos_tagging/build/"
 kBuildPathCharles = "charles/build/"
 
 kDepPathBasic = "basic/deps/"
+kDepPathMilkie = "milkie/deps/"
 kDepPathNer = "ner/deps/"
 kDepPathSegmentor = "segmentor/deps/"
 kDepPathPosTagging = "pos_tagging/deps/"
@@ -27,6 +29,15 @@ def buildBasic() :
             (kBuildPathPublicCpp, kDepPathBasic))
     call("mkdir -p %s && cd %s && cmake ../ && make clean && make -j4 -s" % \
             (kBuildPathBasic, kBuildPathBasic))
+
+def buildMilkie() :
+    call("mkdir -p %s && rm -rf %s/*" % (kDepPathMilkie, kDepPathMilkie))
+    call("cp -rf %s/public-cpp %s/public-cpp" % \
+            (kBuildPathPublicCpp, kDepPathMilkie))
+    call("cp -rf %s/basic %s/basic" % \
+            (kBuildPathBasic, kDepPathMilkie))
+    call("mkdir -p %s && cd %s && cmake ../ && make clean && make -j4 -s" % \
+            (kBuildPathMilkie, kBuildPathMilkie))
 
 def buildNer() :
     call("mkdir -p %s && rm -rf %s/*" % (kDepPathNer, kDepPathNer))
@@ -65,6 +76,8 @@ def buildCharles() :
             (kBuildPathPublicCpp, kDepPathCharles))
     call("cp -rf %s/basic %s/basic/" % \
             (kBuildPathBasic, kDepPathCharles))
+    call("cp -rf %s/milkie %s/milkie/" % \
+            (kBuildPathMilkie, kDepPathCharles))
     call("cp -rf %s/ner %s/ner/" % \
             (kBuildPathNer, kDepPathCharles))
     call("cp -rf %s/segmentor %s/segmentor/" % \
@@ -85,6 +98,10 @@ if __name__ == "__main__" :
 
     buildBasic()
     if sys.argv[1] == "bas" :
+        sys.exit(0)
+
+    buildMilkie()
+    if sys.argv[1] == "mki" :
         sys.exit(0)
 
     buildPosTagging()
