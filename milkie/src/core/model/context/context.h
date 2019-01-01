@@ -65,7 +65,7 @@ void Context::Reset(const std::wstring &otherSentence) {
 
 std::shared_ptr<std::wstring> Context::GetCurPattern() const {
   if (stack_.empty()) {
-    return NULL;
+    return nullptr;
   }
 
   ssize_t topStartPos = stack_.top().GetStartPos();
@@ -85,7 +85,7 @@ void Context::StartMatch(ssize_t offset) {
 }
 
 void Context::StopMatch(bool succ) {
-  StopMatch(succ, NULL);
+  StopMatch(succ, nullptr);
 }
 
 void Context::StopMatch(bool succ, StorageItem *storageItem) {
@@ -93,7 +93,7 @@ void Context::StopMatch(bool succ, StorageItem *storageItem) {
   stack_.pop();
   if (succ) {
     stack_.top()->CopyStorage(*framePoped);
-    if (NULL != storageItem) {
+    if (nullptr != storageItem) {
       stack_.top()->SetStoragePattern(*storageItem);
     }
   } else {
@@ -102,13 +102,13 @@ void Context::StopMatch(bool succ, StorageItem *storageItem) {
 }
 
 void Context::SetStorage(const std::wstring *key, const StorageItem &storageItem) {
-  if (NULL != key) {
+  if (nullptr != key) {
     stack_.top()->SetStorage(*key, storageItem);
   }
 }
 
 void Context::SetStorageStr(const std::wstring *key, const std::wstring &value) {
-  if (NULL != key) {
+  if (nullptr != key) {
     stack_.top()->SetStorageStr(*key, value);
   }
 }
@@ -120,27 +120,27 @@ void Context::RemoveStorage(const std::wstring *key) {
 const StorageItem* Context::GetStorage(const std::wstring &key) {
   for (auto &frame : stack_) {
     const StorageItem* storageItem = frame->GetStorage(key);
-    if (NULL != storageItem) {
+    if (nullptr != storageItem) {
       return storageItem;
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 const Wstrings* Context::GetStorageAsItems(const std::wstring &key) {
   auto storageItem = GetStorage(key);
-  if (NULL != storageItem) {
+  if (nullptr != storageItem) {
     return &(storageItem->Get());
   }
-  return NULL;
+  return nullptr;
 }
 
 const std::wstring* Context::GetStorageAsStr(const std::wstring &key) {
   auto storageItem = GetStorage(key);
-  if (NULL != storageItem) {
+  if (nullptr != storageItem) {
     return &(storageItem->GetAsString());
   }
-  return NULL;
+  return nullptr;
 }
 
 void Context::SetStoragePattern(const StorageItem &storageItem) {
@@ -148,7 +148,7 @@ void Context::SetStoragePattern(const StorageItem &storageItem) {
 }
 
 const StorageItem* Context::GetStoragePattern() {
-  if (NULL != stack_.top()->GetStoragePattern()) {
+  if (nullptr != stack_.top()->GetStoragePattern()) {
     return stack_.top()->GetStoragePattern();
   } else {
     return new StorageItem(GetCurPattern());

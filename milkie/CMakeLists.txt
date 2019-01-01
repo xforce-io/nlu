@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.6.4)
 
-project(charles)
+project(milkie)
 
 include_directories(
   /usr/include/
@@ -17,10 +17,10 @@ set(LIB_DEPS
   ${CMAKE_SOURCE_DIR}/deps/public-cpp/lib/public-cpp/libpublic-cpp.a
 )
 
-add_executable(charles
-  ${SEG_FILES})
+add_executable(milkie
+  ${SEG_FILES} src/core/model/public.h src/core/public.h src/public.h src/core/model/pattern_expr/public.h src/core/model/variable/public.h src/core/model/refer/public.h)
 
-target_link_libraries(charles
+target_link_libraries(milkie
   ${LIB_DEPS}
   log4cplus
   pthread

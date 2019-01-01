@@ -1,4 +1,6 @@
 #include "../refer.h"
+#include "../../variable/variable.h"
+#include "../../pattern_expr/pattern_expr.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -24,7 +26,7 @@ bool Refer::Put(
     return false;
   }
 
-  std::wstring key = lineAfterProcess.substr(0, idxEq);
+  std::wstring theKey = lineAfterProcess.substr(0, idxEq);
   std::wstring value = lineAfterProcess.substr(idxEq+1);
   if (!Variable::IsVariableName(key)) {
     FATAL("invalid_dict_variable_key(" << key << ")");

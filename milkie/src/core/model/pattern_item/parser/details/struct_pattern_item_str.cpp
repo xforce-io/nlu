@@ -15,7 +15,7 @@ std::shared_ptr<StructPatternItemStr> StructPatternItemStr::Build(const std::str
         statement.substr(1, endStr-1));
   }
   FATAL("invalid_pattern_item[" << statement << "]");
-  return NULL;
+  return nullptr;
 }
 
 }}}

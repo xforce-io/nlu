@@ -33,8 +33,8 @@ class PatternSet {
 
 aho_corasick::wtrie* PatternSet::BuildPatternStrsTrie_(
     const std::unordered_set<std::wstring> *patternStrs) {
-  if (NULL == patternStrs) {
-    return NULL;
+  if (nullptr == patternStrs) {
+    return nullptr;
   }
 
   aho_corasick::wtrie *patternStrsTrie = new aho_corasick::wtrie();

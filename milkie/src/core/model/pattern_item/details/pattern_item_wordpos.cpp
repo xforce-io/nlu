@@ -10,7 +10,7 @@ PatternItemWordpos::PatternItemWordpos(const std::wstring &patternStr) {
 
 bool PatternItemWordpos::MatchPattern(const Context &context) {
   auto featureWordposes = context.GetSentence().GetFeatureSegmentsAtOffset(context.GetCurPos());
-  if (featureWordposes.get() == NULL) {
+  if (featureWordposes.get() == nullptr) {
     return false;
   }
 

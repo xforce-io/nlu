@@ -6,7 +6,7 @@ const std::wstring* PatternItem::AsStr() {
   if (typeid(*this) == typeid(PatternItemStr)) {
     return &(SCAST<PatternItemStr*>(this)->GetPatternStr());
   }
-  return NULL;
+  return nullptr;
 }
 
 std::shared_ptr<PatternItem> PatternItem::Build(const StructPatternItem &structPatternItem) {
@@ -18,16 +18,16 @@ std::shared_ptr<PatternItem> PatternItem::Build(const StructPatternItem &structP
       return std::make_shared<>(structPatternItemCommon.GetArgs(0));
     } else if (structPatternItemCommon.GetCategory() == PatternItem::kDep) {
       FATAL("[INTERNAL ERROR] dep_pattern_item_currently_not_supported");
-      return NULL;
+      return nullptr;
     } else {
       FATAL("[INTERNAL ERROR] invalid_pattern_item_category(" << 
           structPatternItemCommon.GetCategory() <<
           ")");
-      return NULL;
+      return nullptr;
     }
   } else {
     FATAL("[INTERNAL ERROR] invalid_pattern_item()");
-    return NULL;
+    return nullptr;
   }
 }
 

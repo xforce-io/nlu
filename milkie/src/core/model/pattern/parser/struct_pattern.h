@@ -49,7 +49,7 @@ std::shared_ptr<StructPattern> StructPattern::Parse(const std::wstring &statemen
     } else if (PatternItem::IsStartingChar(statement[curIdx]) && lastCharConnector) {
       lastCharConnector = false;
       auto structPatternItem = StructPatternItem::Build(statement.substr(curIdx));
-      if (structPatternItem.get() != NULL) {
+      if (structPatternItem.get() != nullptr) {
         structPatternItems->push_back(structPatternItem);
         curIdx += structPatternItem->GetStatement().length();
       } else {
@@ -64,7 +64,7 @@ std::shared_ptr<StructPattern> StructPattern::Parse(const std::wstring &statemen
     return std::make_shared<StructPattern>(statement.substr(0, curIdx), structPatternItems);
   } else {
     FATAL("invalid_pattern(" << statement << "]");
-    return NULL;
+    return nullptr;
   }
 }
 

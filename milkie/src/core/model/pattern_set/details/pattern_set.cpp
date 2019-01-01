@@ -8,7 +8,7 @@ PatternSet::PatternSet(const StructPatternSet &structPatternSet) :
 }
 
 bool PatternSet::MatchPattern(Context &context) {
-  if (NULL != patternStrsTrie_) {
+  if (nullptr != patternStrsTrie_) {
     int theBegin = -1;
     int theEnd = -1;
     std::wstring theValue = L"";
@@ -49,7 +49,7 @@ bool PatternSet::MatchPattern(Context &context) {
 }
 
 const std::wstring* PatternSet::AsStr() const {
-  if (NULL != patternStrsTrie_) {
+  if (nullptr != patternStrsTrie_) {
     if (structPatternSet_->GetPatternStrs().size() == 1) {
       return &*(structPatternSet_->GetPatternStrs().begin());
     }
@@ -58,15 +58,15 @@ const std::wstring* PatternSet::AsStr() const {
       return patternExprs_[0]->AsStr();
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 std::pair<std::shared_ptr<PatternSet>, int> PatternSet::Build(
     const std::wstring &blockKey, 
     const std::wstring &statement) {
   std::shared_ptr<StructPatternSet> structPatternSet = structPatternSet.Parse(blockKey, statement);
-  if (NULL == structPatternSet.get()) {
-    return std::make_pair(NULL, -1);
+  if (nullptr == structPatternSet.get()) {
+    return std::make_pair(nullptr, -1);
   }
   return std::make_pair(Build(*structPatternSet), structPatternSet->GetStatement().length());
 }

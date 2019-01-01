@@ -9,7 +9,7 @@ typedef std::vector<std::wstring> Wstrings;
 
 class Helper {
  public: 
-  std::wstring PreprocessExprLine(const std::wstring &line); 
+  static std::wstring PreprocessExprLine(const std::wstring &line);
 };
 
 }}}

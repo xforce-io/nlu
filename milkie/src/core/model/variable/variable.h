@@ -17,12 +17,12 @@ bool Variable::IsStartingChar(wchar_t c) {
   return L'$' == c;
 }
 
-std::wstring Variable::GetVariableName(const std::wstring &statement) {
+std::shared_ptr<std::wstring> Variable::GetVariableName(const std::wstring &statement) {
   return GetVariableName(statement, 0);
 }
 
 bool Variable::IsVariableName(const std::wstring &statement) {
-  for (size_t i=0; i < statement.length(); ++i) {
+  for (size_t idx=0; idx < statement.length(); ++idx) {
     wchar_t c = statement[idx];
     if (!IsValidChar(c, idx)) {
       return false;

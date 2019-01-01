@@ -7,7 +7,7 @@ std::shared_ptr<StructPatternSet> StructPatternSet::Parse(
     const std::wstring &statement) {
   if (statement.empty() || statement[0] != '[') {
     FATAL("invalid_pattern_set(" << blockKey << "|" << statement << "]");
-    return NULL;
+    return nullptr;
   }
 
 
@@ -44,9 +44,9 @@ std::shared_ptr<StructPatternSet> ParseForStrSet(
     return new StructPatternSet(
         statement.substr(0, curIdx+1),
         patternStrs,
-        NULL);
+        nullptr);
   } else {
-    return NULL;
+    return nullptr;
   }
 }
 
