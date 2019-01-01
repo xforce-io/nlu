@@ -10,10 +10,20 @@ PatternExpr::PatternExpr(
   if (NULL == pattern || 
       NULL == patternSet ||
       NULL == wildcardName) {
-    return ;
+    return;
   }
 
-  if (structPatternExpr->GetPattern())
+  if (structPatternExpr->GetPattern() != NULL) {
+    pattern_ = structPatternExpr_->GetPattern();
+    return;
+  } else if (structPatternExpr->GetPatternSet() != NULL) {
+    patternSet_ = structPatternExpr_->GetPatternSet();
+    return;
+  }
+
+  if (structPatternExpr->GetItems() != NULL) {
+    items_
+  }
 }
 
 }}}
