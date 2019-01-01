@@ -39,7 +39,7 @@ const std::wstring* Pattern::AsStr() {
   if (patternItems_.length() == 1) {
     return patternItems_[0]->AsStr();
   }
-  return NULL;
+  return nullptr;
 }
 
 bool Pattern::IsStartingChar(wchar_t c) {
@@ -55,7 +55,7 @@ PatternItems Pattern::CreatePatternItems(const StructPatternItems &structPattern
   PatternItems patternItems;
   for (auto &structPatternItem : structPatternItems) {
     auto patternItem = PatternItem::Build(*structPatternItem);
-    if (patternItem->get() == NULL) {
+    if (patternItem->get() == nullptr) {
       FATAL("illegal_pattern_item(" << structPatternItem->GetStatement() << ")");
     }
     patternItems.push_back(patternItem);

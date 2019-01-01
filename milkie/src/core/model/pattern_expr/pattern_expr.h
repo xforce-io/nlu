@@ -4,15 +4,12 @@
 
 namespace xforce { namespace nlu { namespace milkie {
 
-class PatternExpr {
- public:  
-  enum Category {
-    kOnce,
-    kZeroOrOnce,
-    kZeroOrMore, 
-    kOnceOrMore,
-  }; 
+class Pattern;
+class PatternSet;
+class StructPatternExpr;
 
+class PatternExpr {
+ public:
   PatternExpr(
       const Pattern *pattern, 
       const PatternSet *patternSet, 
@@ -24,27 +21,35 @@ class PatternExpr {
   inline explicit PatternExpr(const std::wstring &wildcardName);
   inline explicit PatternExpr(const StructPatternExpr &structPatternExpr);
 
+  CategoryPatternExpr GetRepeatPattern() const { return repeatPattern_; }
+  inline void SetStorageKey(const std::wstring &storageStored);
+
  private: 
   const Pattern *pattern_;
   const PatternSet *patternSet_;
   const std::wstring *wildcardName_;
   const StructPatternExpr *structPatternExpr_;
 
-  PatternExprs items_;
+  std::vector<std::shared_ptr<PatternExpr>> items_;
   std::wstring storage_;
-  Category repeatPattern_;
-};  
+  CategoryPatternExpr repeatPattern_;
+};
+
+typedef std::vector<std::shared_ptr<PatternExpr>> PatternExprs;
 
 PatternExpr::PatternExpr(const Pattern &pattern) :
-  PatternExpr(&pattern, NULL, NULL, NULL) {}
+  PatternExpr(&pattern, nullptr, nullptr, nullptr) {}
 
 PatternExpr::PatternExpr(const PatternSet &patternSet) :
-  PatternExpr(NULL, &patternSet, NULL, NULL) {}
+  PatternExpr(nullptr, &patternSet, nullptr, nullptr) {}
 
 PatternExpr::PatternExpr(const std::wstring &wildcardName) :
-  PatternExpr(NULL, NULL, &wildcardName, NULL) {}
+  PatternExpr(nullptr, nullptr, &wildcardName, nullptr) {}
 
 PatternExpr::PatternExpr(const StructPatternExpr &structPatternExpr) :
-  PatternExpr(NULL, NULL, NULL, &structPatternExpr) {}
+  PatternExpr(nullptr, nullptr, nullptr, &structPatternExpr) {}
+
+void PatternExpr::SetStorageKey(const std::wstring &storageStored) {
+}
 
 }}}

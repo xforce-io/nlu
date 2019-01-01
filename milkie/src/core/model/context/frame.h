@@ -36,7 +36,7 @@ class Frame {
 namespace xforce { namespace nlu { namespace milkie {
 
 Frame::Frame(ssize_t startPos) :
-    storagePattern_(NULL) {
+    storagePattern_(nullptr) {
   this->startPos_ = startPos;    
 }
 
@@ -54,7 +54,7 @@ void Frame::SetStorage(const std::wstring &key, const std::wstring &value) {
 }
 
 void Frame::SetStorage(const std::wstring &key, const StorageItem &storageItem) {
-  StorageItem *storageItem = NULL;
+  StorageItem *storageItem = nullptr;
   auto iter = storage_.find(key);
   if (iter == storage_.end()) {
     storageItem = new StorageItem();
@@ -83,12 +83,12 @@ const StorageItem* Frame::GetStorage(const std::wstring &key) {
   if (iter != storage_.end()) {
     return iter->second;
   } else {
-    return NULL;
+    return nullptr;
   }
 }
 
 void Frame::SetStoragePattern(const StorageItem &storageItem) {
-  if (storagePattern_ == NULL) {
+  if (storagePattern_ == nullptr) {
     storagePattern_ = new StorageItem();
   }
   storagePattern_->Add(storageItem);

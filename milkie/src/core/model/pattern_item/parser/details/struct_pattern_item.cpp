@@ -10,11 +10,11 @@ std::shared_ptr<StructPatternItem> StructPatternItem::Build(const std::wstring &
       return StructPatternItemCommon.Build(statement);
     } else {
       FATAL("invalid_leading_char_for_struct_pattern_item[" << statement << "]");
-      return NULL;
+      return nullptr;
     }
   } else {
     FATAL("invalid_statement_for_struct_pattern_item[" << statement << "]");
-    return NULL;
+    return nullptr;
   }
 }
 

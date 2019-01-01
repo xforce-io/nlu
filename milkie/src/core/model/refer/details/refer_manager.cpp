@@ -23,7 +23,7 @@ std::shared_ptr<PatternExpr> ReferManager::Get(
   if (iter != localDict_.end()) {
     return iter->second->Get(key);
   } else {
-    return NULL;
+    return nullptr;
   }
 }
 

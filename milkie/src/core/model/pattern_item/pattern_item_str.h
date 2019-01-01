@@ -1,6 +1,7 @@
 #pragma once
 
 #include "public.h"
+#include "pattern_item.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 

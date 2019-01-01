@@ -19,13 +19,13 @@ class StorageItem {
 };  
 
 StorageItem::StorageItem(const std::shared_ptr<std::wstring> &item) {
-  if (NULL != item->get()) {
+  if (nullptr != item->get()) {
     items_.push_back(*item);
   }
 }
 
 StorageItem::StorageItem() :
-  this(NULL) {}
+  this(nullptr) {}
 
 void StorageItem::Set(const std::wstring &value) {
   items_.push_back(value);
@@ -41,7 +41,7 @@ const std::wstring* StorageItem::GetAsString() const {
   if (items_.length() == 1) {
     return &(items_[0]);
   } else {
-    return NULL;
+    return nullptr;
   }
 }
 

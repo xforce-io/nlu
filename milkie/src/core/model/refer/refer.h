@@ -20,7 +20,7 @@ std::shared_ptr<PatternExpr> Refer::Get(const std::wstring &key) {
   if (iter != theMap_.end()) {
     return iter->second;
   } else {
-    return NULL;
+    return nullptr;
   }
 }
 

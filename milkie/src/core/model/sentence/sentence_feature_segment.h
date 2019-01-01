@@ -34,7 +34,7 @@ std::shared_ptr<basic::Segments> SentenceFeatureSegment::GetSegmentsFromOffset(s
   if (mark) {
     return segments;
   }
-  return NULL;
+  return nullptr;
 }
 
 const basic::Segment* SentenceFeatureSegment::GetSegmentAtOffset(ssize_t offset) const {
@@ -45,7 +45,7 @@ const basic::Segment* SentenceFeatureSegment::GetSegmentAtOffset(ssize_t offset)
     }
     accuLen += segment.GetLen();
   }
-  return NULL
+  return nullptr
 }
 
 }}}

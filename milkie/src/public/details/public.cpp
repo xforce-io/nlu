@@ -16,8 +16,8 @@ std::wstring Helper::PreprocessExprLine(const std::wstring &line) {
       inFilter = !inFilter;
     }
 
-    if (inStr || inFilter || c != L' ') {
-      result.append(curChar);
+    if (inStr || inFilter || curChar != L' ') {
+      result.append(1, curChar);
     }
   }
   return result;

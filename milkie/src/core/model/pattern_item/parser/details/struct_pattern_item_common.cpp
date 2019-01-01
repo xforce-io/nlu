@@ -20,7 +20,7 @@ std::shared_ptr<StructPatternItemCommon> StructPatternItemCommon::Build(const st
 
     if (bypassLeftBrackets >= bypassRightBrackets) {
       FATAL("invalid_pattern_item[" << statement << "]");
-      return NULL;
+      return nullptr;
     }
 
     std::vector<std::wstring> args;
@@ -38,7 +38,7 @@ std::shared_ptr<StructPatternItemCommon> StructPatternItemCommon::Build(const st
     }
   }
   FATAL("invalid_pattern_item[" << statement << "]");
-  return NULL;
+  return nullptr;
 }
 
 }}}

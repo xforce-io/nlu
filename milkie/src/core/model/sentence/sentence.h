@@ -41,14 +41,14 @@ std::wstring Sentence::GetFeatureContent(ssize_t offset) const {
 }
 
 std::shared_ptr<basic::Segments> Sentence::GetFeatureSegmentsFromOffset(ssize_t offset) const {
-  if (NULL == featureSegment_) {
+  if (nullptr == featureSegment_) {
     featureSegment_ = new SentenceFeatureSegment(*nluContext_);
   }
   return featureSegment_->GetSegmentsFromOffset(offset);
 }
 
 const basic::Segments* Sentence::GetFeatureSegmentsAtOffset(ssize_t offset) const {
-  if (NULL == featureSegment_) {
+  if (nullptr == featureSegment_) {
     featureSegment_ = new SentenceFeatureSegment(*nluContext_);
   }
   return featureSegment_->GetSegmentAtOffset(offset);
