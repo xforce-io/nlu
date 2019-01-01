@@ -4,17 +4,15 @@
 
 namespace xforce { namespace nlu { namespace milkie {
 
-class NluContext;  
-
 class SentenceFeature {
  public:
-  inline explicit SentenceFeature(std::shared_ptr<NluContext> &nluContext);
+  inline explicit SentenceFeature(std::shared_ptr<basic::NluContext> &nluContext);
 
- private:  
-  std::shared_ptr<NluContext> nluContext_;
+ protected:
+  std::shared_ptr<basic::NluContext> nluContext_;
 };
 
-SentenceFeature::SentenceFeature(std::shared_ptr<NluContext> &nluContext) :
+SentenceFeature::SentenceFeature(std::shared_ptr<basic::NluContext> &nluContext) :
   nluContext_(nluContext) {}
 
 }}}

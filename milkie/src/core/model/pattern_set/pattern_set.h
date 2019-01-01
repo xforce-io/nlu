@@ -1,8 +1,13 @@
 #pragma once
 
 #include "public.h"
+#include "parser/struct_pattern_set.h"
 
 namespace xforce { namespace nlu { namespace milkie {
+
+class Context;
+class Pattern;
+class PatternExprs;
 
 class PatternSet {
  public: 
@@ -10,15 +15,15 @@ class PatternSet {
 
   bool MatchPattern(Context &context);
 
-  const aho_corasick::wtrie& GetPatternStrs() const { return *patternStrsTrie; }
+  const aho_corasick::wtrie& GetPatternStrs() const { return *patternStrsTrie_; }
   const PatternExprs& GetPatternExprs() const { return patternExprs_; }
-  const std::string& GetRepr() const { return structPatternSet_->GetStatement(); }
+  const std::wstring& GetRepr() const { return structPatternSet_->GetStatement(); }
 
   const std::string& AsStr() const;
 
-  static bool IsStartingChar(wchar_t c) const;
+  static bool IsStartingChar(wchar_t c);
   static std::pair<std::shared_ptr<PatternSet>, int> Build(const std::wstring &blockKey, const std::wstring &statement);
-  static std::shared_ptr<Pattern> Build(const StructPattern &structPattern);
+  static std::shared_ptr<Pattern> Build(const StructPatternSet &structPatternSet);
 
  private:
   aho_corasick::wtrie* BuildPatternStrsTrie_(
@@ -49,7 +54,7 @@ aho_corasick::wtrie* PatternSet::BuildPatternStrsTrie_(
   return patternStrsTrie;
 }
 
-bool PatternSet::IsStartingChar(wchar_t c) const {
+bool PatternSet::IsStartingChar(wchar_t c) {
   return L'[' == c;
 }
 

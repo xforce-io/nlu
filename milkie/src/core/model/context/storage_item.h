@@ -6,20 +6,20 @@ namespace xforce { namespace nlu { namespace milkie {
 
 class StorageItem {
  public: 
-  inline explicit StorageItem(const std::shared_ptr<std::wstring> &item);
+  inline explicit StorageItem(const std::wstring *item);
   inline StorageItem();
 
   inline void Set(const std::wstring &value);
   inline void Add(const StorageItem &storageItem);
   const Wstrings& Get() const { return items_; }
-  inline std::wstring GetAsString() const;
+  inline const std::wstring* GetAsString() const;
 
  private:   
    std::vector<std::wstring> items_; 
 };  
 
-StorageItem::StorageItem(const std::shared_ptr<std::wstring> &item) {
-  if (nullptr != item->get()) {
+StorageItem::StorageItem(const std::wstring *item) {
+  if (nullptr != item) {
     items_.push_back(*item);
   }
 }
@@ -38,7 +38,7 @@ void StorageItem::Add(const StorageItem &storageItem) {
 }
 
 const std::wstring* StorageItem::GetAsString() const {
-  if (items_.length() == 1) {
+  if (items_.size() == 1) {
     return &(items_[0]);
   } else {
     return nullptr;

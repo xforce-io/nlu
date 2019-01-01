@@ -21,7 +21,7 @@ class PatternExpr {
   inline explicit PatternExpr(const std::wstring &wildcardName);
   inline explicit PatternExpr(const StructPatternExpr &structPatternExpr);
 
-  CategoryPatternExpr GetRepeatPattern() const { return repeatPattern_; }
+  CategoryPatternExpr::Category GetRepeatPattern() const { return repeatPattern_; }
   inline void SetStorageKey(const std::wstring &storageStored);
 
  private: 
@@ -31,8 +31,8 @@ class PatternExpr {
   const StructPatternExpr *structPatternExpr_;
 
   std::vector<std::shared_ptr<PatternExpr>> items_;
-  std::wstring storage_;
-  CategoryPatternExpr repeatPattern_;
+  const std::wstring *storage_;
+  CategoryPatternExpr::Category repeatPattern_;
 };
 
 typedef std::vector<std::shared_ptr<PatternExpr>> PatternExprs;

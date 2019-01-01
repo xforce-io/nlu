@@ -1,13 +1,19 @@
 #pragma once
 
+#include "public.h"
+
 namespace xforce { namespace nlu { namespace milkie {
 
+class Frame;
+class Sentence;
+class StorageItem;
+
 class Context {
- public: 
+ public:
   Context(
-      const basic::NluContext &nluContext,
+      basic::NluContext &nluContext,
       ssize_t curPos,
-      std::stack<std::shared_ptr<Frame>> stack); 
+      std::stack<std::shared_ptr<Frame>> stack);
   virtual ~Context();
 
   inline void Reset();
@@ -34,10 +40,18 @@ class Context {
   inline Context* Copy();
 
  private:
-  Sentence *sentence_; 
+  Sentence *sentence_;
   ssize_t curPos_;
   std::stack<std::shared_ptr<Frame>> stack_;
-};  
+};
+
+}}}
+
+#include "../sentence/sentence.h"
+#include "frame.h"
+#include "storage_item.h"
+
+namespace xforce { namespace nlu { namespace milkie {
 
 Context::Context(
     const basic::NluContext &nluContext,

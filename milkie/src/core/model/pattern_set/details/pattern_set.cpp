@@ -1,10 +1,12 @@
 #include "../pattern_set.h"
+#include "../../context/context.h"
+#include "../../pattern_expr/pattern_expr.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
 PatternSet::PatternSet(const StructPatternSet &structPatternSet) :
-    patternExprs_(structPatternSet.GetPatternExprs()) {
-  patternStrsTrie_ = BuildPatternStrsTrie_();
+    patternExprs_(*structPatternSet.GetPatternExprs()) {
+  patternStrsTrie_ = BuildPatternStrsTrie_(structPatternSet.GetPatternStrs());
 }
 
 bool PatternSet::MatchPattern(Context &context) {

@@ -14,15 +14,22 @@ class Sentence {
 
   inline const std::wstring& GetSentence() const;
   inline std::wstring GetFeatureContent(ssize_t offset) const;
-  inline std::shared_ptr<basic::Segments> GetFeatureSegmentsFromOffset(ssize_t offset) const;
-  inline const basic::Segments* GetFeatureSegmentsAtOffset(ssize_t offset) const;
-  const NluContext& GetNluContext() const { return *nluContext_; }
+  inline std::shared_ptr<basic::Segments> GetFeatureSegmentsFromOffset(ssize_t offset);
+  inline const basic::Segment* GetFeatureSegmentAtOffset(ssize_t offset);
+  const basic::NluContext& GetNluContext() const { return *nluContext_; }
 
  protected: 
   std::shared_ptr<basic::NluContext> nluContext_;
   SentenceFeatureContent *featureContent_;
   SentenceFeatureSegment *featureSegment_;
-};  
+};
+
+}}}
+
+#include "sentence_feature_content.h"
+#include "sentence_feature_segment.h"
+
+namespace xforce { namespace nlu { namespace milkie {
 
 Sentence::Sentence(std::shared_ptr<basic::NluContext> nluContext) :
     nluContext_(nluContext) {
@@ -30,26 +37,26 @@ Sentence::Sentence(std::shared_ptr<basic::NluContext> nluContext) :
 }
 
 Sentence::Sentence(const std::wstring &sentence) :
-  this(std::make_shared<basic::NluContext>(sentence)) {}
+  Sentence(std::make_shared<basic::NluContext>(sentence)) {}
 
 const std::wstring& Sentence::GetSentence() const {
-  return nluContext_->GetText();
+  return nluContext_->GetQuery();
 }
 
 std::wstring Sentence::GetFeatureContent(ssize_t offset) const {
   return featureContent_->GetContent(offset);
 }
 
-std::shared_ptr<basic::Segments> Sentence::GetFeatureSegmentsFromOffset(ssize_t offset) const {
+std::shared_ptr<basic::Segments> Sentence::GetFeatureSegmentsFromOffset(ssize_t offset) {
   if (nullptr == featureSegment_) {
-    featureSegment_ = new SentenceFeatureSegment(*nluContext_);
+    featureSegment_ = new SentenceFeatureSegment(nluContext_);
   }
   return featureSegment_->GetSegmentsFromOffset(offset);
 }
 
-const basic::Segments* Sentence::GetFeatureSegmentsAtOffset(ssize_t offset) const {
+const basic::Segment* Sentence::GetFeatureSegmentAtOffset(ssize_t offset) {
   if (nullptr == featureSegment_) {
-    featureSegment_ = new SentenceFeatureSegment(*nluContext_);
+    featureSegment_ = new SentenceFeatureSegment(nluContext_);
   }
   return featureSegment_->GetSegmentAtOffset(offset);
 }

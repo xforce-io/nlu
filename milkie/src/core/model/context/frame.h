@@ -14,7 +14,7 @@ class Frame {
   inline void SetStartPos(ssize_t startPos);
   ssize_t GetStartPos() const { return startPos_; }
   void SetStorage(const std::wstring &key, const std::wstring &value);
-  void SetStorage(const std::wstring &key, const StorageItem &storageItem);
+  void SetStorage(const std::wstring &key, StorageItem &newItems);
   void SetStorageStr(const std::wstring &key, const std::wstring &value);
   void RemoveStorage(const std::wstring &key);
   const StorageItem* GetStorage(const std::wstring &key);
@@ -49,11 +49,11 @@ void Frame::SetStorage(const std::wstring &key, const std::wstring &value) {
   if (iter != storage_.end()) {
     iter->second->Set(value);
   } else {
-    storage_.insert(std::make_pair(key, new StorageItem(&value));
+    storage_.insert(std::make_pair(key, new StorageItem(&value)));
   }
 }
 
-void Frame::SetStorage(const std::wstring &key, const StorageItem &storageItem) {
+void Frame::SetStorage(const std::wstring &key, StorageItem &newItems) {
   StorageItem *storageItem = nullptr;
   auto iter = storage_.find(key);
   if (iter == storage_.end()) {
@@ -62,7 +62,7 @@ void Frame::SetStorage(const std::wstring &key, const StorageItem &storageItem) 
   } else {
     storageItem = iter->second;
   }
-  storageItem->Add(storageItem);
+  newItems.Add(*storageItem);
 }
 
 void Frame::SetStorageStr(const std::wstring &key, const std::wstring &value) {
@@ -104,7 +104,7 @@ void Frame::CopyStorage(const Frame &frame) {
     if (iter2 != storage_.end()) {
       iter2->second->Add(*(iter->second));
     } else {
-      storage_->insert(std::make_pair(iter->first, iter->second));
+      storage_.insert(std::make_pair(iter->first, iter->second));
     }
   }
 }

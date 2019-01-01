@@ -1,18 +1,19 @@
 #pragma once
 
 #include "public.h"
+#include "sentence_feature.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
 class SentenceFeatureSegment :public SentenceFeature {
  public:
-  inline explicit SentenceFeatureSegment(std::shared_ptr<basic::NluContext> &nluContext);
+  inline explicit SentenceFeatureSegment(std::shared_ptr<basic::NluContext> nluContext);
 
   std::shared_ptr<basic::Segments> GetSegmentsFromOffset(ssize_t offset);
   const basic::Segment* GetSegmentAtOffset(ssize_t offset) const;
 };
 
-SentenceFeatureSegment::SentenceFeatureSegment(std::shared_ptr<NluContext> &nluContext) :
+SentenceFeatureSegment::SentenceFeatureSegment(std::shared_ptr<basic::NluContext> nluContext) :
     SentenceFeature(nluContext) {}
 
 std::shared_ptr<basic::Segments> SentenceFeatureSegment::GetSegmentsFromOffset(ssize_t offset) {
@@ -45,7 +46,7 @@ const basic::Segment* SentenceFeatureSegment::GetSegmentAtOffset(ssize_t offset)
     }
     accuLen += segment.GetLen();
   }
-  return nullptr
+  return nullptr;
 }
 
 }}}

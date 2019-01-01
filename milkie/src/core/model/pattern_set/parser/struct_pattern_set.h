@@ -1,18 +1,22 @@
 #pragma once
 
-#include "public.h"
+#include "../public.h"
+#include "../../struct_element.h"
 
 namespace xforce { namespace nlu { namespace milkie {
+
+class PatternExpr;
+class PatternExprs;
 
 class StructPatternSet :public StructElement {
  public: 
   inline StructPatternSet(
       const std::wstring &statement,
-      const std::unordered_set<std::wstring> &patternStrs,
-      const std::vector<std::shared_ptr<PatternExpr>> &patternExprs);
+      const std::unordered_set<std::wstring> *patternStrs,
+      const PatternExprs *patternExprs);
 
-  inline const std::unordered_set<std::wstring>& GetPatternStrs() const;
-  inline const PatternExprs& GetPatternExprs() const; 
+  inline const std::unordered_set<std::wstring>* GetPatternStrs() const;
+  inline const PatternExprs* GetPatternExprs() const;
 
   static std::shared_ptr<StructPatternSet> Parse(
       const std::wstring &blockKey,
@@ -28,22 +32,22 @@ class StructPatternSet :public StructElement {
 
  private:
   const std::unordered_set<std::wstring> *patternStrs_;
-  const std::vector<std::shared_ptr<PatternExpr>> *patternExprs_;
+  const PatternExprs *patternExprs_;
 };
 
 StructPatternSet::StructPatternSet(
       const std::wstring &statement,
-      const std::unordered_set<std::wstring> &patternStrs,
-      const std::vector<std::shared_ptr<PatternExpr>> &patternExprs) :
+      const std::unordered_set<std::wstring> *patternStrs,
+      const PatternExprs *patternExprs) :
   StructElement(statement),
-  patternStrs_(&patternStrs),
-  patternExprs_(&patternExprs) {}
+  patternStrs_(patternStrs),
+  patternExprs_(patternExprs) {}
 
-const std::unordered_set<std::wstring>& GetPatternStrs() const {
-  return *patternStrs_;
+const std::unordered_set<std::wstring>* StructPatternSet::GetPatternStrs() const {
+  return patternStrs_;
 }
 
-const PatternExprs& GetPatternExprs() const {
+const PatternExprs* StructPatternSet::GetPatternExprs() const {
   return patternExprs_;
 }
 
