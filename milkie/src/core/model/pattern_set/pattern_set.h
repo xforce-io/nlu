@@ -7,7 +7,7 @@ namespace xforce { namespace nlu { namespace milkie {
 
 class Context;
 class Pattern;
-class PatternExprs;
+class PatternExpr;
 
 class PatternSet {
  public: 
@@ -19,7 +19,7 @@ class PatternSet {
   const PatternExprs& GetPatternExprs() const { return patternExprs_; }
   const std::wstring& GetRepr() const { return structPatternSet_->GetStatement(); }
 
-  const std::string& AsStr() const;
+  const std::wstring* AsStr() const;
 
   static bool IsStartingChar(wchar_t c);
   static std::pair<std::shared_ptr<PatternSet>, int> Build(const std::wstring &blockKey, const std::wstring &statement);
@@ -33,7 +33,7 @@ class PatternSet {
   const StructPatternSet *structPatternSet_;
   size_t maxLengthPatternStrs_; 
   aho_corasick::wtrie *patternStrsTrie_;
-  const PatternExprs &patternExprs_;
+  const std::vector<std::shared_ptr<PatternExpr>> &patternExprs_;
 };
 
 aho_corasick::wtrie* PatternSet::BuildPatternStrsTrie_(

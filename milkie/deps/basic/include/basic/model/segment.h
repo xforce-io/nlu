@@ -18,10 +18,12 @@ class Segment {
   Pos::Type GetPos() const { return pos_; }
   size_t GetOffset() const { return offset_; }
   size_t GetLen() const { return len_; }
+  inline std::wstring GetQuery(const std::wstring &query) const;
 
   inline void operator=(const Segment &segment);
 
   void Dump(JsonType &jsonType);
+
 
  private:
   Pos::Type pos_;
@@ -59,10 +61,15 @@ void Segment::SetLen(size_t len) {
   len_ = len;
 }
 
+std::wstring Segment::GetQuery(const std::wstring &query) const {
+  return query.substr(offset_, len_);
+}
+
 void Segment::operator=(const Segment &segment) {
   pos_ = segment.pos_;
   offset_ = segment.offset_;
   len_ = segment.len_;
 }
+
 
 }}}

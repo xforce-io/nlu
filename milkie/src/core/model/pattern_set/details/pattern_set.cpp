@@ -42,7 +42,7 @@ bool PatternSet::MatchPattern(Context &context) {
     }
   } else {
     for (auto &patternExpr : patternExprs_) {
-      if (patternExpr->MatchPattern(context, false)) {
+      if (patternExpr.MatchPattern(context, false)) {
         return true;
       }
     }
@@ -52,8 +52,8 @@ bool PatternSet::MatchPattern(Context &context) {
 
 const std::wstring* PatternSet::AsStr() const {
   if (nullptr != patternStrsTrie_) {
-    if (structPatternSet_->GetPatternStrs().size() == 1) {
-      return &*(structPatternSet_->GetPatternStrs().begin());
+    if (structPatternSet_->GetPatternStrs()->size() == 1) {
+      return &*(structPatternSet_->GetPatternStrs()->begin());
     }
   } else {
     if (patternExprs_.size() == 1) {

@@ -1,12 +1,16 @@
 #pragma once
 
-#include "public.h"
+#include "../public.h"
+#include "../../struct_element.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
 class PatternItem;  
 
 class StructPatternItem : public StructElement {
+ public:
+  typedef std::vector<std::shared_ptr<StructPatternItem>> Vector;
+
  public: 
   inline StructPatternItem(
       const std::wstring &statement, 
@@ -19,13 +23,11 @@ class StructPatternItem : public StructElement {
   const Wstrings& GetArgs() const { return args_; }
   const std::wstring& GetArgs(size_t i) const { return args_[i]; }
 
-  static std::shared_ptr<StructPatternItem> Build(const std::wstring &statement);
+  static std::shared_ptr<StructPatternItem> Parse(const std::wstring &statement);
 
  private:  
   const Wstrings args_;
 };  
-
-typedef std::vector<std::shared_ptr<StructPatternItem>> StructPatternItems;
 
 StructPatternItem::StructPatternItem(
     const std::wstring &statement, 

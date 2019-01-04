@@ -1,33 +1,38 @@
 #include "../pattern_item_wordpos.h"
+#include "../../context/context.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
-const wchar_t PatternItemWordpos::kSep == L'-'; 
+const wchar_t PatternItemWordpos::kSep = L'-';
 
 PatternItemWordpos::PatternItemWordpos(const std::wstring &patternStr) {
   regex_ = CreatePattern_(patternStr);
 }
 
-bool PatternItemWordpos::MatchPattern(const Context &context) {
-  auto featureWordposes = context.GetSentence().GetFeatureSegmentsAtOffset(context.GetCurPos());
-  if (featureWordposes.get() == nullptr) {
+PatternItemWordpos::~PatternItemWordpos() {
+  XFC_DELETE(regex_)
+}
+
+bool PatternItemWordpos::MatchPattern(Context &context) {
+  auto featureWordposes = context.GetSentence().GetFeatureSegmentsFromOffset(context.GetCurPos());
+  if (nullptr == featureWordposes) {
     return false;
   }
 
   std::wstringstream ss;
-  for (auto segment : *featureWordposes) {
+  for (auto &segment : *featureWordposes) {
     ss << segment.GetPos() << kSep;
   }
 
   std::wcmatch wcm;
-  if (std::regex_search(ss.str(), wcm, ss.str())) { 
+  if (std::regex_search(ss.str().c_str(), wcm, *regex_)) {
     const std::wstring &matched = wcm[0].str();
     if (ss.str().substr(0, matched.length()) == matched) {
       Wstrings items;
       StrHelper::SplitStr(matched, kSep, items);
-      contentMatched_ = "";
-      for (size_t i=0; i < items.length(); ++i) {
-        contentMatched_ += featureWordposes[i].GetQuery(
+      contentMatched_ = L"";
+      for (size_t i=0; i < items.size(); ++i) {
+        contentMatched_ += (*featureWordposes)[i].GetQuery(
             context.GetSentence().GetSentence());
       }
       return true;
@@ -52,8 +57,5 @@ std::wregex* PatternItemWordpos::CreatePattern_(const std::wstring &patternStr) 
   return new std::wregex(tmpPattern);
 }
 
-PatternItemWordpos::~PatternItemWordpos() {
-  XFC_DELETE(regex_)
-}
 
 }}}

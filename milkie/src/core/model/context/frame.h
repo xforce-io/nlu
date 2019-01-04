@@ -19,13 +19,13 @@ class Frame {
   void RemoveStorage(const std::wstring &key);
   const StorageItem* GetStorage(const std::wstring &key);
   void SetStoragePattern(const StorageItem &storageItem);
-  const StorageItem* GetStoragePattern();
+  StorageItem* GetStoragePattern();
   void CopyStorage(const Frame &frame);
   void DumpStorge();
 
  private:
   ssize_t startPos_;
-  std::unordered_map<std::wstring, StorageItem*> storage_; 
+  std::unordered_map<std::wstring, StorageItem*> storage_;
   StorageItem *storagePattern_;
 };  
 
@@ -94,7 +94,7 @@ void Frame::SetStoragePattern(const StorageItem &storageItem) {
   storagePattern_->Add(storageItem);
 }
 
-const StorageItem* Frame::GetStoragePattern() {
+StorageItem* Frame::GetStoragePattern() {
   return storagePattern_;
 }
 

@@ -2,8 +2,15 @@
 #include "../../../pattern/pattern.h"
 #include "../../../pattern_set/pattern_set.h"
 #include "../../../pattern_expr/pattern_expr.h"
+#include "../../../variable/variable.h"
+#include "../../../refer/refer_manager.h"
 
 namespace xforce { namespace nlu { namespace milkie {
+
+StructPatternExpr::~StructPatternExpr() {
+  XFC_DELETE(storage_)
+  XFC_DELETE(patternExprs_)
+}
 
 std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
     const std::wstring &blockKey, 
@@ -50,7 +57,7 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
         } else {
           items.push_back(std::make_shared<PatternExpr>(variableName.substr(1)));
         }
-        curIdx += variableName.length() + 1;
+        curIdx += variableName->length() + 1;
       } else if (curIdx+1 < statement.length() &&
           L'-' == curChar &&
           L'>' == statement[curIdx+1]) {
@@ -68,11 +75,11 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
         storage = Variable::GetVariableName(statement, curIdx);
         curIdx += storage.length();
       } else if (L'*' == curChar) {
-        categoryPatternExpr = PatternExpr::kZeroOrMore;
+        categoryPatternExpr = CategoryPatternExpr::kZeroOrMore;
       } else if (L'+' == curChar) {
-        categoryPatternExpr = PatternExpr::kOnceOrMore;
+        categoryPatternExpr = CategoryPatternExpr::kOnceOrMore;
       } else if (L'?' == curChar) {
-        categoryPatternExpr = PatternExpr::kZeroOrOnce;
+        categoryPatternExpr = CategoryPatternExpr::kZeroOrOnce;
       } else if (L'}' == curChar) {
         if (items.empty()) {
           FATAL("invalid_pattern_expr(" << statement << ")");
@@ -93,7 +100,7 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
     }
   } else if (Variable::IsStartingChar(startingChar)) {
     auto variableName = Variable::GetVariableName(statement, 1);
-    auto patternExpr = ReferManager::Get().Get(blockKey, variableName);
+    auto patternExpr = ReferManager::Get().Get(blockKey, *variableName);
     if (patternExpr.get() == nullptr) {
       FATAL("unknown_dict_key(" << variableName << ")");
       return nullptr;
@@ -101,8 +108,8 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
 
     patternExpr->SetStorageKey(variableName);
     return std::make_shared<StructPatternExpr>(
-        statement.substr(0, variableName.length() + 1),
-        patternExpr->get());
+        statement.substr(0, variableName->length() + 1),
+        patternExpr);
   }
   FATAL("invalid_pattern_expr_starting_char(" << statement << ")");
   return nullptr;

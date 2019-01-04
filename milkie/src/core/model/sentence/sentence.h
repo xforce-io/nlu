@@ -17,6 +17,7 @@ class Sentence {
   inline std::shared_ptr<basic::Segments> GetFeatureSegmentsFromOffset(ssize_t offset);
   inline const basic::Segment* GetFeatureSegmentAtOffset(ssize_t offset);
   const basic::NluContext& GetNluContext() const { return *nluContext_; }
+  std::shared_ptr<basic::NluContext> GetNluContext() { return nluContext_; }
 
  protected: 
   std::shared_ptr<basic::NluContext> nluContext_;

@@ -1,29 +1,32 @@
 #pragma once
 
-#include "public.h"
+#include "../public.h"
+#include "struct_pattern_item.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
 class StructPatternItemStr : public StructPatternItem {
- public: 
+ public:
   inline StructPatternItemStr(
-      const std::string &statement, 
-      const std::vector<std::string> &args, 
-      const std::string &patternStr);
+      const std::wstring &statement,
+      const std::vector<std::wstring> &args,
+      const std::wstring &patternStr);
 
   std::shared_ptr<PatternItem> BuildPattern();
 
-  static std::shared_ptr<StructPatternItemStr> Build(const std::string &statement);
+  static std::shared_ptr<StructPatternItemStr> Build(const std::wstring &statement);
 
   const std::wstring& GetPatternStr() const { return patternStr_; }
- 
+
  private:
-  std::wstring patternStr_; 
+  std::wstring patternStr_;
 };
 
 StructPatternItemStr::StructPatternItemStr(
-      const std::string &statement, 
-      const std::vector<std::string> &args, 
-      const std::string &patternStr) :
-  StructPatternItem(),
+      const std::wstring &statement,
+      const std::vector<std::wstring> &args,
+      const std::wstring &patternStr) :
+  StructPatternItem(statement, args),
   patternStr_(patternStr) {}
+
+}}}

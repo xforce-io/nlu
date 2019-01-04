@@ -4,39 +4,42 @@
 
 namespace xforce { namespace nlu { namespace milkie {
     
-class Context;    
+class Context;
+class StructPatternItem;
 
 class PatternItem {
- public: 
-  enum Category {
-    kPos,
-    kDep,
-    kInvalid
-  };
+ public:
+  typedef std::vector<std::shared_ptr<PatternItem>> Vector;
 
-  bool MatchPattern(Context &context);
+ public:
+  virtual bool MatchPattern(Context &context) = 0;
   const std::wstring& GetContentMatched() const { return contentMatched_; }
   virtual const std::wstring* AsStr() const;
+  virtual ~PatternItem() {}
 
  public: 
-  inline static PatternItem::Category ParseCategory(const std::wstring &category);
+  inline static CategoryPatternItem::Category ParseCategory(const std::wstring &category);
   inline static bool IsStartingChar(wchar_t c);
-  inline static std::pair<std::shared_ptr<PatternItem>, int> Build(const std::wstring &statement);
+  inline static std::pair<std::shared_ptr<PatternItem>, ssize_t> Build(const std::wstring &statement);
   static std::shared_ptr<PatternItem> Build(const StructPatternItem &structPatternItem);
- 
- private: 
+
+ protected:
   std::wstring contentMatched_;
 };
 
-typedef std::vector<std::shared_ptr<PatternItem>> PatternItems;
+}}}
 
-PatternItem::Category PatternItem::ParseCategory(const std::string &category) {
-  if ("Pos" == category) {
-    return kPos;
-  } else if ("Dep" == category) {
-    return kDep;
+#include "parser/struct_pattern_item.h"
+
+namespace xforce { namespace nlu { namespace milkie {
+
+CategoryPatternItem::Category PatternItem::ParseCategory(const std::wstring &category) {
+  if (L"Pos" == category) {
+    return CategoryPatternItem::kPos;
+  } else if (L"Dep" == category) {
+    return CategoryPatternItem::kDep;
   } else {
-    return kInvalid;
+    return CategoryPatternItem::kInvalid;
   }
 }
 
@@ -44,9 +47,10 @@ bool PatternItem::IsStartingChar(wchar_t c) {
   return '"' == c || '#' == c;
 }
 
-std::pair<std::shared_ptr<PatternItem>, int> PatternItem::Build(const std::wstring &statement) {
-  auto structPatternItem = StructPatternItem::Build(statement);
-  return std::make_pair(structPatternItem, structPatternItem.GetStatement().length());
+std::pair<std::shared_ptr<PatternItem>, ssize_t> PatternItem::Build(const std::wstring &statement) {
+  auto structPatternItem = StructPatternItem::Parse(statement);
+  return std::make_pair(Build(*structPatternItem), structPatternItem->GetStatement().length());
 }
+
 
 }}}

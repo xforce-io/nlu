@@ -1,8 +1,9 @@
 #pragma once
 
-#include "public.h"
+#include "../public.h"
 #include "../../struct_element.h"
 #include "../../pattern/parser/struct_pattern.h"
+#include "../../pattern_item/parser/struct_pattern_item.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -10,28 +11,28 @@ class StructPattern :public StructElement {
  public:
   inline StructPattern(
       const std::wstring &statement,
-      const StructPatternItems &structPatternItems);
+      const StructPatternItem::Vector &structPatternItems);
 
-  const StructPatternItems& GetPatternItems() const { return structPatternItems_; }
+  const StructPatternItem::Vector& GetPatternItems() const { return structPatternItems_; }
 
   static std::shared_ptr<StructPattern> Parse(const std::wstring &statement);
 
  private:    
-  StructPatternItems structPatternItems_;
+  const StructPatternItem::Vector &structPatternItems_;
 };
 
 }}}
 
+#include "../../pattern_item/parser/struct_pattern_item.h"
 #include "../../pattern_item/pattern_item.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
 StructPattern::StructPattern(
     const std::wstring &statement,
-    const std::vector<std::shared_ptr<StructPatternItem>> &structPatternItems) :
-  StructElement(statement) {
-  structPatternItems_ = structPatternItems;
-}
+    const StructPatternItem::Vector &structPatternItems) :
+  StructElement(statement),
+  structPatternItems_(structPatternItems) {}
 
 std::shared_ptr<StructPattern> StructPattern::Parse(const std::wstring &statement) {
   std::vector<std::shared_ptr<StructPatternItem>> structPatternItems;
@@ -43,14 +44,14 @@ std::shared_ptr<StructPattern> StructPattern::Parse(const std::wstring &statemen
       ++curIdx;
     } else if ('&' == statement[curIdx] &&
         curIdx < statement.length() - 1 &&
-        '&' == statement.charAt(curIdx+1)) {
+        '&' == statement[curIdx+1]) {
       lastCharConnector = true;
       curIdx += 2;
     } else if (PatternItem::IsStartingChar(statement[curIdx]) && lastCharConnector) {
       lastCharConnector = false;
-      auto structPatternItem = StructPatternItem::Build(statement.substr(curIdx));
+      auto structPatternItem = StructPatternItem::Parse(statement.substr(curIdx));
       if (structPatternItem.get() != nullptr) {
-        structPatternItems->push_back(structPatternItem);
+        structPatternItems.push_back(structPatternItem);
         curIdx += structPatternItem->GetStatement().length();
       } else {
         exit = true;

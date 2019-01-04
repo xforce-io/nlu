@@ -11,7 +11,7 @@ class PatternItemStr : public PatternItem {
  public: 
   explicit PatternItemStr(const std::wstring &patternStr);
 
-  bool MatchPattern(const Context &context);
+  bool MatchPattern(Context &context) final;
   const std::wstring& GetPatternStr() const { return patternStr_; } 
 
  private:

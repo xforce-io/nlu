@@ -19,7 +19,7 @@ set(LIB_DEPS
 )
 
 add_executable(milkie
-  ${SEG_FILES} src/core/model/public.h src/core/public.h src/public.h src/core/model/pattern_expr/public.h src/core/model/variable/public.h src/core/model/refer/public.h)
+  ${SEG_FILES} src/core/model/public.h src/core/public.h src/public.h src/core/model/pattern_expr/public.h src/core/model/variable/public.h src/core/model/refer/public.h src/core/model/pattern/details/pattern.cpp)
 
 target_link_libraries(milkie
   ${LIB_DEPS}

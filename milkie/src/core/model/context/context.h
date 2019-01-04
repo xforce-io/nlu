@@ -11,7 +11,7 @@ class StorageItem;
 class Context {
  public:
   Context(
-      basic::NluContext &nluContext,
+      std::shared_ptr<basic::NluContext> nluContext,
       ssize_t curPos,
       std::stack<std::shared_ptr<Frame>> stack);
   virtual ~Context();
@@ -19,6 +19,7 @@ class Context {
   inline void Reset();
   inline void Reset(const std::wstring &otherSentence);
   const Sentence& GetSentence() const { return *sentence_; }
+  Sentence& GetSentence() { return *sentence_; }
   void Pass(ssize_t n);
   void SetCurPos(ssize_t curPos);
   ssize_t GetCurPos() const { return curPos_; }
@@ -26,15 +27,15 @@ class Context {
   inline void StartMatch();
   inline void StartMatch(ssize_t offset);
   inline void StopMatch(bool succ);
-  inline void StopMatch(bool succ, const StorageItem &storageItem);
-  inline void SetStorage(const std::wstring *key, const StorageItem &storageItem);
+  inline void StopMatch(bool succ, StorageItem *storageItem);
+  inline void SetStorage(const std::wstring *key, StorageItem &storageItem);
   inline void SetStorageStr(const std::wstring *key, const std::wstring &value);
   inline void RemoveStorage(const std::wstring *key);
   inline const StorageItem* GetStorage(const std::wstring &key);
   inline const Wstrings* GetStorageAsItems(const std::wstring &key);
   inline const std::wstring* GetStorageAsStr(const std::wstring &key);
-  inline void SetStoragePattern(const StorageItem &storageItem);
-  inline const StorageItem* GetStoragePattern();
+  inline void SetStoragePattern(StorageItem &storageItem);
+  inline StorageItem* GetStoragePattern();
   inline bool End() const;
   inline size_t Length() const;
   inline Context* Copy();
@@ -54,7 +55,7 @@ class Context {
 namespace xforce { namespace nlu { namespace milkie {
 
 Context::Context(
-    const basic::NluContext &nluContext,
+    std::shared_ptr<basic::NluContext> nluContext,
     ssize_t curPos,
     std::stack<std::shared_ptr<Frame>> stack) {
   sentence_ = new Sentence(nluContext);
@@ -82,11 +83,11 @@ std::shared_ptr<std::wstring> Context::GetCurPattern() const {
     return nullptr;
   }
 
-  ssize_t topStartPos = stack_.top().GetStartPos();
+  ssize_t topStartPos = stack_.top()->GetStartPos();
   return std::make_shared<std::wstring>(
       sentence_->GetSentence().substr(
         topStartPos, 
-        curPos_ - topStartPos);
+        curPos_ - topStartPos));
 }
 
 void Context::StartMatch() {
@@ -115,7 +116,7 @@ void Context::StopMatch(bool succ, StorageItem *storageItem) {
   }
 }
 
-void Context::SetStorage(const std::wstring *key, const StorageItem &storageItem) {
+void Context::SetStorage(const std::wstring *key, StorageItem &storageItem) {
   if (nullptr != key) {
     stack_.top()->SetStorage(*key, storageItem);
   }
@@ -132,11 +133,18 @@ void Context::RemoveStorage(const std::wstring *key) {
 }
 
 const StorageItem* Context::GetStorage(const std::wstring &key) {
-  for (auto &frame : stack_) {
+  std::stack<std::shared_ptr<Frame>> tmpStack;
+  while (!stack_.empty()) {
+    auto frame = stack_.top();
     const StorageItem* storageItem = frame->GetStorage(key);
     if (nullptr != storageItem) {
       return storageItem;
     }
+    tmpStack.push(frame);
+  }
+
+  while (!tmpStack.empty()) {
+      stack_.push(tmpStack.top());
   }
   return nullptr;
 }
@@ -152,20 +160,20 @@ const Wstrings* Context::GetStorageAsItems(const std::wstring &key) {
 const std::wstring* Context::GetStorageAsStr(const std::wstring &key) {
   auto storageItem = GetStorage(key);
   if (nullptr != storageItem) {
-    return &(storageItem->GetAsString());
+    return storageItem->GetAsString();
   }
   return nullptr;
 }
 
-void Context::SetStoragePattern(const StorageItem &storageItem) {
+void Context::SetStoragePattern(StorageItem &storageItem) {
   stack_.top()->SetStoragePattern(storageItem);
 }
 
-const StorageItem* Context::GetStoragePattern() {
+StorageItem* Context::GetStoragePattern() {
   if (nullptr != stack_.top()->GetStoragePattern()) {
     return stack_.top()->GetStoragePattern();
   } else {
-    return new StorageItem(GetCurPattern());
+    return new StorageItem(&*GetCurPattern());
   }
 }
 
