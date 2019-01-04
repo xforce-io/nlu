@@ -1,6 +1,6 @@
 #pragma once
 
-#include "public.h"
+#include "../../../public.h"
 #include "parser/struct_pattern_set.h"
 
 namespace xforce { namespace nlu { namespace milkie {

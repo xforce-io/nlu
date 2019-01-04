@@ -1,6 +1,6 @@
 #pragma once
 
-#include "public.h"
+#include "../../../public.h"
 #include "../pattern_item/pattern_item.h"
 #include "../pattern_item/parser/struct_pattern_item.h"
 

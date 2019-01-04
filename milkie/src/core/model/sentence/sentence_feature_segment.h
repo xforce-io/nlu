@@ -1,6 +1,6 @@
 #pragma once
 
-#include "public.h"
+#include "../../../public.h"
 #include "sentence_feature.h"
 
 namespace xforce { namespace nlu { namespace milkie {
