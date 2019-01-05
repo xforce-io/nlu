@@ -7,6 +7,9 @@ namespace xforce { namespace nlu { namespace basic {
 
 class Segment {
  public:
+  typedef std::vector<Segment> Vector;
+
+ public:
   inline Segment();
   inline Segment(Pos::Type pos, size_t offset, size_t len);
   inline Segment(size_t offset, size_t len);
@@ -28,8 +31,6 @@ class Segment {
   size_t offset_;
   size_t len_;
 };
-
-typedef std::vector<Segment> Segments;
 
 Segment::Segment() :
   pos_(Pos::kUndef),

@@ -14,7 +14,7 @@ class Sentence {
 
   inline const std::wstring& GetSentence() const;
   inline std::wstring GetFeatureContent(ssize_t offset) const;
-  inline std::shared_ptr<basic::Segments> GetFeatureSegmentsFromOffset(ssize_t offset);
+  inline std::shared_ptr<basic::Segment::Vector> GetFeatureSegmentsFromOffset(ssize_t offset);
   inline const basic::Segment* GetFeatureSegmentAtOffset(ssize_t offset);
   const basic::NluContext& GetNluContext() const { return *nluContext_; }
   std::shared_ptr<basic::NluContext> GetNluContext() { return nluContext_; }
@@ -48,7 +48,7 @@ std::wstring Sentence::GetFeatureContent(ssize_t offset) const {
   return featureContent_->GetContent(offset);
 }
 
-std::shared_ptr<basic::Segments> Sentence::GetFeatureSegmentsFromOffset(ssize_t offset) {
+std::shared_ptr<basic::Segment::Vector> Sentence::GetFeatureSegmentsFromOffset(ssize_t offset) {
   if (nullptr == featureSegment_) {
     featureSegment_ = new SentenceFeatureSegment(nluContext_);
   }

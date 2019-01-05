@@ -1,4 +1,4 @@
-#include "../public.h"
+#include "../struct_pattern_item_common.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 

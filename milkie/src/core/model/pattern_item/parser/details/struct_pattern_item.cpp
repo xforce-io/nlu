@@ -2,7 +2,7 @@
 
 namespace xforce { namespace nlu { namespace milkie {
 
-std::shared_ptr<StructPatternItem> StructPatternItem::Build(const std::wstring &statement) {
+std::shared_ptr<StructPatternItem> StructPatternItem::Parse(const std::wstring &statement) {
   if (!statement.empty()) {
     if ('"' == statement[0]) {
       return StructPatternItemStr.Build(statement);

@@ -92,8 +92,8 @@ namespace aho_corasick {
 		public:
 			explicit node(const interval_collection& intervals)
 				: d_point(0)
-				, d_left(nullptrptr)
-				, d_right(nullptrptr)
+				, d_left(nullptr)
+				, d_right(nullptr)
 				, d_intervals()
 			{
 				d_point = determine_median(intervals);
@@ -314,9 +314,9 @@ namespace aho_corasick {
 
 		explicit state(size_t depth)
 			: d_depth(depth)
-			, d_root(depth == 0 ? this : nullptrptr)
+			, d_root(depth == 0 ? this : nullptr)
 			, d_success()
-			, d_failure(nullptrptr)
+			, d_failure(nullptr)
 			, d_emits() {}
 
 		ptr next_state(CharType character) const {
@@ -329,7 +329,7 @@ namespace aho_corasick {
 
 		ptr add_state(CharType character) {
 			auto next = next_state_ignore_root_state(character);
-			if (next == nullptrptr) {
+			if (next == nullptr) {
 				next = new state<CharType>(d_depth + 1);
 				d_success[character].reset(next);
 			}
@@ -373,11 +373,11 @@ namespace aho_corasick {
 
 	private:
 		ptr next_state(CharType character, bool ignore_root_state) const {
-			ptr result = nullptrptr;
+			ptr result = nullptr;
 			auto found = d_success.find(character);
 			if (found != d_success.end()) {
 				result = found->second.get();
-			} else if (!ignore_root_state && d_root != nullptrptr) {
+			} else if (!ignore_root_state && d_root != nullptr) {
 				result = d_root;
 			}
 			return result;
@@ -543,7 +543,7 @@ namespace aho_corasick {
 
 		state_ptr_type get_state(state_ptr_type cur_state, CharType c) const {
 			state_ptr_type result = cur_state->next_state(c);
-			while (result == nullptrptr) {
+			while (result == nullptr) {
 				cur_state = cur_state->failure();
 				result = cur_state->next_state(c);
 			}
@@ -571,7 +571,7 @@ namespace aho_corasick {
 					q.push(target_state);
 
 					state_ptr_type trace_failure_state = cur_state->failure();
-					while (trace_failure_state->next_state(transition) == nullptrptr) {
+					while (trace_failure_state->next_state(transition) == nullptr) {
 						trace_failure_state = trace_failure_state->failure();
 					}
 					state_ptr_type new_failure_state = trace_failure_state->next_state(transition);
