@@ -42,7 +42,7 @@ bool PatternSet::MatchPattern(Context &context) {
     }
   } else {
     for (auto &patternExpr : patternExprs_) {
-      if (patternExpr.MatchPattern(context, false)) {
+      if (patternExpr->MatchPattern(context, false)) {
         return true;
       }
     }
@@ -63,7 +63,7 @@ const std::wstring* PatternSet::AsStr() const {
   return nullptr;
 }
 
-std::pair<std::shared_ptr<PatternSet>, int> PatternSet::Build(
+std::pair<std::shared_ptr<PatternSet>, ssize_t> PatternSet::Build(
     const std::wstring &blockKey, 
     const std::wstring &statement) {
   std::shared_ptr<StructPatternSet> structPatternSet = structPatternSet.Parse(blockKey, statement);

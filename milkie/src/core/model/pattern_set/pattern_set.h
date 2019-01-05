@@ -23,8 +23,8 @@ class PatternSet {
   const std::wstring* AsStr() const;
 
   static bool IsStartingChar(wchar_t c);
-  static std::pair<std::shared_ptr<PatternSet>, int> Build(const std::wstring &blockKey, const std::wstring &statement);
-  static std::shared_ptr<Pattern> Build(const StructPatternSet &structPatternSet);
+  static std::pair<std::shared_ptr<PatternSet>, ssize_t > Build(const std::wstring &blockKey, const std::wstring &statement);
+  static std::shared_ptr<PatternSet> Build(const StructPatternSet &structPatternSet);
 
  private:
   aho_corasick::wtrie* BuildPatternStrsTrie_(
