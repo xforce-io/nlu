@@ -12,7 +12,7 @@ void Refer::Put(
 }
 
 bool Refer::Put(
-    const std::wstring &key, 
+    const std::wstring &blockKey,
     const std::wstring &line) {
   std::wstring trimed = StrHelper::Trim(line);
   if (trimed.empty()) {
@@ -28,8 +28,8 @@ bool Refer::Put(
 
   std::wstring theKey = lineAfterProcess.substr(0, idxEq);
   std::wstring value = lineAfterProcess.substr(idxEq+1);
-  if (!Variable::IsVariableName(key)) {
-    FATAL("invalid_dict_variable_key(" << key << ")");
+  if (!Variable::IsVariableName(blockKey)) {
+    FATAL("invalid_dict_variable_key(" << blockKey << ")");
     return false;
   }
 
@@ -38,7 +38,7 @@ bool Refer::Put(
     FATAL("invalid_dict_val(" << value << ")");
     return false;
   }
-  Put(key, ret.first);
+  Put(blockKey, ret.first);
   return true;
 }
 
