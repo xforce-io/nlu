@@ -74,7 +74,23 @@ std::shared_ptr<StructPatternSet> StructPatternSet::ParseForPatternExprSet(
     } else if (']' == statement[curIdx]) {
       reachEndMark = true;
       exit = true;
-    } else if (PatternExpr::)
+    } else if (PatternExpr::IsPatternExprStartingChar(statement[curIdx])) {
+      auto ret = PatternExpr::Build(blockKey, statement.substr(curIdx));
+      patternExprs.push_back(ret.first);
+      curIdx += ret.second;
+    } else {
+      exit = true;
+    }
+  }
+
+  if (reachEndMark) {
+    return std::make_shared<StructPatternSet>(
+            statement.substr(0, curIdx+1),
+            nullptr,
+            patternExprs);
+  } else {
+    FATAL("invalid_pattern_set(" << blockKey << "|" << statement << ")");
+    return nullptr;
   }
 }
 
