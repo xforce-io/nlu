@@ -24,11 +24,13 @@ std::shared_ptr<StructPatternSet> StructPatternSet::Parse(
 std::shared_ptr<StructPatternSet> StructPatternSet::ParseForStrSet(
     const std::wstring &blockKey,
     const std::wstring &statement) {
+  UNUSE(blockKey)
+
   std::unordered_set<std::wstring> patternStrs;
   ssize_t curIdx = 1;
   bool reachEndMark = false;
   bool exit = false;
-  while (!exit && curIdx < statement.length()) {
+  while (!exit && curIdx < (ssize_t)statement.length()) {
     if (' ' == statement[curIdx] ||
         ',' == statement[curIdx]) {
       ++curIdx;
@@ -65,7 +67,7 @@ std::shared_ptr<StructPatternSet> StructPatternSet::ParseForPatternExprSet(
   ssize_t curIdx = 1;
   bool reachEndMark = false;
   bool exit = false;
-  while (!exit && curIdx < statement.length()) {
+  while (!exit && curIdx < (ssize_t)statement.length()) {
     if (' ' == statement[curIdx] ||
         ',' == statement[curIdx]) {
       ++curIdx;

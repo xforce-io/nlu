@@ -18,6 +18,7 @@ bool Pattern::MatchPattern(Context &context) {
     }
   }
   context.Pass(patternItems_.front()->GetContentMatched().length());
+  return true;
 }
 
 }}}

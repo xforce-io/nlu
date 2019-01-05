@@ -18,8 +18,6 @@ class StructPatternItem : public StructElement {
 
   virtual ~StructPatternItem() {}
 
-  virtual std::shared_ptr<PatternItem> BuildPattern() = 0;
-
   const Wstrings& GetArgs() const { return args_; }
   const std::wstring& GetArgs(size_t i) const { return args_[i]; }
 
