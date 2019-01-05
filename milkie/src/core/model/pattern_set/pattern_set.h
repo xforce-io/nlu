@@ -2,6 +2,7 @@
 
 #include "../../../public.h"
 #include "parser/struct_pattern_set.h"
+#include "../pattern_expr/pattern_expr.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -16,7 +17,7 @@ class PatternSet {
   bool MatchPattern(Context &context);
 
   const aho_corasick::wtrie& GetPatternStrs() const { return *patternStrsTrie_; }
-  const PatternExprs& GetPatternExprs() const { return patternExprs_; }
+  const PatternExpr::Vector& GetPatternExprs() const { return patternExprs_; }
   const std::wstring& GetRepr() const { return structPatternSet_->GetStatement(); }
 
   const std::wstring* AsStr() const;
@@ -33,7 +34,7 @@ class PatternSet {
   const StructPatternSet *structPatternSet_;
   size_t maxLengthPatternStrs_; 
   aho_corasick::wtrie *patternStrsTrie_;
-  const std::vector<std::shared_ptr<PatternExpr>> &patternExprs_;
+  const PatternExpr::Vector &patternExprs_;
 };
 
 aho_corasick::wtrie* PatternSet::BuildPatternStrsTrie_(

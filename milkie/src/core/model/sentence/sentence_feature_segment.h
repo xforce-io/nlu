@@ -9,15 +9,15 @@ class SentenceFeatureSegment :public SentenceFeature {
  public:
   inline explicit SentenceFeatureSegment(std::shared_ptr<basic::NluContext> nluContext);
 
-  std::shared_ptr<basic::Segments> GetSegmentsFromOffset(ssize_t offset);
+  std::shared_ptr<basic::Segment::Vector> GetSegmentsFromOffset(ssize_t offset);
   const basic::Segment* GetSegmentAtOffset(ssize_t offset) const;
 };
 
 SentenceFeatureSegment::SentenceFeatureSegment(std::shared_ptr<basic::NluContext> nluContext) :
     SentenceFeature(nluContext) {}
 
-std::shared_ptr<basic::Segments> SentenceFeatureSegment::GetSegmentsFromOffset(ssize_t offset) {
-  std::shared_ptr<basic::Segments> segments = std::make_shared<basic::Segments>();
+std::shared_ptr<basic::Segment::Vector> SentenceFeatureSegment::GetSegmentsFromOffset(ssize_t offset) {
+  std::shared_ptr<basic::Segment::Vector> segments = std::make_shared<basic::Segment::Vector>();
 
   size_t accuLen = 0;
   bool mark = false;

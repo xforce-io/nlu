@@ -1,11 +1,12 @@
 #include "../struct_pattern_item_common.h"
+#include "../../pattern_item.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
 std::shared_ptr<StructPatternItemCommon> StructPatternItemCommon::Build(const std::wstring &statement) {
   ssize_t endName = statement.find('(');
   if (endName>=0) {
-    PatternItem::Category category = PatternItem::ParseCategory(statement.substr(1, statement.length() - 1));
+    CategoryPatternItem::Category category = PatternItem::ParseCategory(statement.substr(1, statement.length() - 1));
     ssize_t bypassLeftBrackets = 0;
     ssize_t bypassRightBrackets = 0;
     ssize_t idx = endName+1;
@@ -33,8 +34,8 @@ std::shared_ptr<StructPatternItemCommon> StructPatternItemCommon::Build(const st
       }
     }
 
-    if (args.length() >= 1) {
-      return new StructPatternItemCommon(statement, args, category);
+    if (args.size() >= 1) {
+      return std::make_shared<StructPatternItemCommon>(statement, args, category);
     }
   }
   FATAL("invalid_pattern_item[" << statement << "]");

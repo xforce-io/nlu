@@ -12,8 +12,6 @@ class StructPatternItemStr : public StructPatternItem {
       const std::vector<std::wstring> &args,
       const std::wstring &patternStr);
 
-  std::shared_ptr<PatternItem> BuildPattern();
-
   static std::shared_ptr<StructPatternItemStr> Build(const std::wstring &statement);
 
   const std::wstring& GetPatternStr() const { return patternStr_; }

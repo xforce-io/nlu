@@ -1,4 +1,7 @@
+#include <memory>
 #include "../struct_pattern_set.h"
+#include "../struct_pattern_set.h"
+#include "../../../pattern_expr/pattern_expr.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -10,10 +13,15 @@ std::shared_ptr<StructPatternSet> StructPatternSet::Parse(
     return nullptr;
   }
 
-
+  auto structPatternSet = ParseForStrSet(blockKey, statement);
+  if (nullptr != structPatternSet) {
+    return structPatternSet;
+  } else {
+    return ParseForPatternExprSet(blockKey, statement);
+  }
 }
 
-std::shared_ptr<StructPatternSet> ParseForStrSet(
+std::shared_ptr<StructPatternSet> StructPatternSet::ParseForStrSet(
     const std::wstring &blockKey,
     const std::wstring &statement) {
   std::unordered_set<std::wstring> patternStrs;
@@ -30,7 +38,7 @@ std::shared_ptr<StructPatternSet> ParseForStrSet(
     } else if ('"' == statement[curIdx]) {
       ssize_t endIdx = statement.find('"', curIdx+1);
       if (endIdx>=0) {
-        patternStrs.push_back(statement.substr(curIdx+1, endIdx-curIdx-1));
+        patternStrs.insert(statement.substr(curIdx+1, endIdx-curIdx-1));
         curIdx = endIdx+1;
       } else {
         exit = true;
@@ -41,7 +49,7 @@ std::shared_ptr<StructPatternSet> ParseForStrSet(
   }
 
   if (reachEndMark) {
-    return new StructPatternSet(
+    return std::make_shared<StructPatternSet>(
         statement.substr(0, curIdx+1),
         patternStrs,
         nullptr);
@@ -64,8 +72,7 @@ std::shared_ptr<StructPatternSet> StructPatternSet::ParseForPatternExprSet(
     } else if (']' == statement[curIdx]) {
       reachEndMark = true;
       exit = true;
-    } else if ()
-      //TODO
+    } else if (PatternExpr::)
   }
 }
 

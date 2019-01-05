@@ -23,7 +23,7 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
     auto ret = PatternSet::Build(blockKey, statement);
     return std::make_shared<StructPatternExpr>(statement.substr(0, ret.second), ret.first.get());
   } else if (PatternExpr::IsExactStartingChar(startingChar)) {
-    PatternExprs items;
+    PatternExpr::Vector items;
     std::wstring storage;
     CategoryPatternExpr::Category categoryPatternExpr;
 
@@ -34,13 +34,13 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
         ++curIdx;
       } else if (Pattern::IsStartingChar(curChar)) {
         auto ret = Pattern::Build(statement.substr(curIdx));
-        items.push_back(std::make_pair<PatternExpr>(*(ret.first));
+        items.push_back(std::make_shared<PatternExpr>(*(ret.first));
         curIdx += ret.second;
       } else if (PatternSet::IsStartingChar(curChar)) {
         auto ret = PatternSet::Build(blockKey, statement.substr(curIdx));
-        items.push_back(std::make_pair<PatternExpr>(*(ret.first))));
+        items.push_back(std::make_shared<PatternExpr>(*(ret.first))));
         curIdx += ret.second;
-      } else if (PatternExpr::IsStartingChar(curChar)) {
+      } else if (PatternExpr::IsExactStartingChar(curChar)) {
         auto ret = PatternExpr::Build(blockKey, statement.substr(curIdx));
         items.push_back(std::make_shared<PatternExpr>(*(ret.first))));
         curIdx += ret.second;
@@ -52,7 +52,7 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
             FATAL("unknown_dict_key_in_expr(" << variableName << ")");
             return nullptr;
           }
-          patternExpr->SetStorageKey(variableName);
+          patternExpr->SetStorageKey(*variableName);
           items.push_back(patternExpr);
         } else {
           items.push_back(std::make_shared<PatternExpr>(variableName.substr(1)));
@@ -106,7 +106,7 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
       return nullptr;
     }
 
-    patternExpr->SetStorageKey(variableName);
+    patternExpr->SetStorageKey(*variableName);
     return std::make_shared<StructPatternExpr>(
         statement.substr(0, variableName->length() + 1),
         patternExpr);

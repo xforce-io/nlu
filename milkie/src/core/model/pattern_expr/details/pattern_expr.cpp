@@ -3,6 +3,7 @@
 #include "../../pattern/pattern.h"
 #include "../../pattern_set/pattern_set.h"
 #include "../../../../conf/conf.h"
+#include "../../variable/variable.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -221,6 +222,53 @@ const std::wstring* PatternExpr::AsStr() const {
     return patternSet_->AsStr();
   }
   return nullptr;
+}
+
+bool PatternExpr::IsExactStartingChar(char c) {
+  return '{' == c;
+}
+
+bool PatternExpr::IsPatternExprStartingChar(char c) {
+  return IsPatternExprExactStartingChar(c) ||
+    IsPatternExprPrefixStartingChar(c);
+}
+
+bool PatternExpr::IsPatternExprExactStartingChar(char c) {
+  return Pattern::IsStartingChar(c) ||
+    PatternSet::IsStartingChar(c) ||
+    PatternExpr::IsExactStartingChar(c) ||
+    Variable::IsStartingChar(c);
+}
+
+bool PatternExpr::IsPatternExprPrefixStartingChar(char c) {
+  return '^' == c;
+}
+
+std::pair<std::shared_ptr<PatternExpr>, ssize_t> PatternExpr::Build(
+        const std::wstring &blockKey,
+        const std::wstring &statement) {
+  auto structPatternExpr = StructPatternExpr::Parse(blockKey, statement);
+  if (nullptr == structPatternExpr) {
+    return std::make_pair(nullptr, -1);
+  }
+
+  if (nullptr == structPatternExpr->GetPatternExpr()) {
+    return std::make_pair(
+            std::make_shared<PatternExpr>(structPatternExpr),
+            structPatternExpr->GetStatement().length());
+  } else {
+    return std::make_pair(
+            structPatternExpr->GetPatternExpr(),
+            structPatternExpr->GetStatement().length());
+  }
+}
+
+std::shared_ptr<PatternExpr> PatternExpr::Build(std::shared_ptr<Pattern> &pattern) {
+  return std::make_shared<PatternExpr>(pattern);
+}
+
+std::shared_ptr<PatternExpr> PatternExpr::Build(std::shared_ptr<PatternSet> &patternSet) {
+  return std::make_shared<PatternExpr>(patternSet);
 }
 
 void PatternExpr::DebugMatch_(Context &context, ssize_t startIdx, bool ok) {

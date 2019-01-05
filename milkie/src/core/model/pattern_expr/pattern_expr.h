@@ -11,6 +11,9 @@ class StructPatternExpr;
 
 class PatternExpr {
  public:
+  typedef std::vector<std::shared_ptr<PatternExpr>> Vector;
+
+ public:
   PatternExpr(
       std::shared_ptr<Pattern> pattern,
       std::shared_ptr<PatternSet> patternSet,
@@ -19,10 +22,10 @@ class PatternExpr {
 
   virtual ~PatternExpr();
 
-  inline explicit PatternExpr(std::shared_ptr<Pattern> pattern);
-  inline explicit PatternExpr(std::shared_ptr<PatternSet> patternSet);
+  inline explicit PatternExpr(std::shared_ptr<Pattern> &pattern);
+  inline explicit PatternExpr(std::shared_ptr<PatternSet> &patternSet);
   inline explicit PatternExpr(const std::wstring &wildcardName);
-  inline explicit PatternExpr(const StructPatternExpr &structPatternExpr);
+  inline explicit PatternExpr(std::shared_ptr<StructPatternExpr> &structPatternExpr);
 
   CategoryPatternExpr::Category GetRepeatPattern() const { return repeatPattern_; }
   std::wstring GetRepr() const;
@@ -35,6 +38,16 @@ class PatternExpr {
   void StopMatch(bool succ, Context &context, bool singleton);
   const std::wstring* AsWildcard() const { return wildcardName_; }
   const std::wstring* AsStr() const;
+
+  static bool IsExactStartingChar(char c);
+  static bool IsPatternExprStartingChar(char c);
+  static bool IsPatternExprExactStartingChar(char c);
+  static bool IsPatternExprPrefixStartingChar(char c);
+  static std::pair<std::shared_ptr<PatternExpr>, ssize_t> Build(
+          const std::wstring &blockKey,
+          const std::wstring &statement);
+  static std::shared_ptr<PatternExpr> Build(std::shared_ptr<Pattern> &pattern);
+  static std::shared_ptr<PatternExpr> Build(std::shared_ptr<PatternSet> &patternSet);
 
  private:
   void DebugMatch_(Context &context, ssize_t startIdx, bool ok);
@@ -56,19 +69,17 @@ class PatternExpr {
   static std::unordered_set<std::string> invalidFullPosForWildcard_;
 };
 
-typedef std::vector<std::shared_ptr<PatternExpr>> PatternExprs;
-
 PatternExpr::PatternExpr(std::shared_ptr<Pattern> &pattern) :
   PatternExpr(pattern, nullptr, nullptr, nullptr) {}
 
 PatternExpr::PatternExpr(std::shared_ptr<PatternSet> &patternSet) :
-  PatternExpr(nullptr, &patternSet, nullptr, nullptr) {}
+  PatternExpr(nullptr, patternSet, nullptr, nullptr) {}
 
 PatternExpr::PatternExpr(const std::wstring &wildcardName) :
   PatternExpr(nullptr, nullptr, &wildcardName, nullptr) {}
 
-PatternExpr::PatternExpr(const StructPatternExpr &structPatternExpr) :
-  PatternExpr(nullptr, nullptr, nullptr, &structPatternExpr) {}
+PatternExpr::PatternExpr(std::shared_ptr<StructPatternExpr> &structPatternExpr) :
+  PatternExpr(nullptr, nullptr, nullptr, structPatternExpr) {}
 
 void PatternExpr::SetStorageKey(const std::wstring &storageStored) {
     if (nullptr == storage_) {

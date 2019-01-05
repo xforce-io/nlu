@@ -17,7 +17,7 @@ class StructPatternExpr :public StructElement {
       std::shared_ptr<Pattern> pattern,
       std::shared_ptr<PatternSet> patternSet,
       std::shared_ptr<PatternExpr> patternExpr,
-      const PatternExprs *items,
+      const PatternExpr::Vector *items,
       const std::wstring *storage,
       CategoryPatternExpr::Category categoryPatternExpr);
   
@@ -38,7 +38,7 @@ class StructPatternExpr :public StructElement {
   std::shared_ptr<Pattern> GetPattern() const { return pattern_; }
   std::shared_ptr<PatternSet> GetPatternSet() const { return patternSet_; }
   std::shared_ptr<PatternExpr> GetPatternExpr() const { return patternExpr_; }
-  const PatternExprs* GetItems() const { return patternExprs_; }
+  const PatternExpr::Vector* GetItems() const { return patternExprs_; }
   const std::wstring* GetStorage() const { return storage_; }
   CategoryPatternExpr::Category GetCategoryPatternExpr() const { return categoryPatternExpr_; }
 
@@ -48,7 +48,7 @@ class StructPatternExpr :public StructElement {
   std::shared_ptr<Pattern> pattern_;
   std::shared_ptr<PatternSet> patternSet_;
   std::shared_ptr<PatternExpr> patternExpr_;
-  PatternExprs *patternExprs_;
+  PatternExpr::Vector *patternExprs_;
   std::wstring *storage_;
   CategoryPatternExpr::Category categoryPatternExpr_;
 };  
@@ -58,7 +58,7 @@ StructPatternExpr::StructPatternExpr(
     std::shared_ptr<Pattern> pattern,
     std::shared_ptr<PatternSet> patternSet,
     std::shared_ptr<PatternExpr> patternExpr,
-    const PatternExprs *items,
+    const PatternExpr::Vector *items,
     const std::wstring *storage,
     CategoryPatternExpr::Category categoryPatternExpr) :
       StructElement(statement),
@@ -69,7 +69,7 @@ StructPatternExpr::StructPatternExpr(
       storage_(nullptr),
       categoryPatternExpr_(categoryPatternExpr) {
   if (nullptr != items) {
-    patternExprs_ = new PatternExprs(*items);
+    patternExprs_ = new PatternExpr::Vector(*items);
   }
 
   if (nullptr != storage) {
