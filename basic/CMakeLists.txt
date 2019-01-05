@@ -45,14 +45,11 @@ add_custom_command(TARGET basic
   COMMAND cp ${BASIC_SRC_DIR}/public.h ${BASIC_INC_OUTPUT_PATH}/
   COMMAND cp ${BASIC_SRC_DIR}/public/public.h ${BASIC_INC_OUTPUT_PATH}/public/
   COMMAND cp ${BASIC_SRC_DIR}/public/dep.h ${BASIC_INC_OUTPUT_PATH}/public/
-  COMMAND cp ${BASIC_SRC_DIR}/data/public.h ${BASIC_INC_OUTPUT_PATH}/data/
   COMMAND cp ${BASIC_SRC_DIR}/data/manager.h ${BASIC_INC_OUTPUT_PATH}/data/
   COMMAND cp ${BASIC_SRC_DIR}/data/dict_item.h ${BASIC_INC_OUTPUT_PATH}/data/
   COMMAND cp ${BASIC_SRC_DIR}/data/word_dict.h ${BASIC_INC_OUTPUT_PATH}/data/
-  COMMAND cp ${BASIC_SRC_DIR}/model/public.h ${BASIC_INC_OUTPUT_PATH}/model/
   COMMAND cp ${BASIC_SRC_DIR}/model/nlu_context.h ${BASIC_INC_OUTPUT_PATH}/model/
   COMMAND cp ${BASIC_SRC_DIR}/model/segment.h ${BASIC_INC_OUTPUT_PATH}/model/
-  COMMAND cp ${BASIC_SRC_DIR}/model/pos/public.h ${BASIC_INC_OUTPUT_PATH}/model/pos/
   COMMAND cp ${BASIC_SRC_DIR}/model/pos/pos.h ${BASIC_INC_OUTPUT_PATH}/model/pos/
   COMMAND git log | head -n 1 > ${BASIC_OUTPUT_PATH}/version
 )
