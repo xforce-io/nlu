@@ -1,6 +1,6 @@
 #pragma once
 
-#include "public.h"
+#include "../../public.h"
 #include "pos/pos.h"
 
 namespace xforce { namespace nlu { namespace basic {
