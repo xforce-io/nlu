@@ -21,7 +21,7 @@ bool Refer::Put(
 
   std::wstring lineAfterProcess = Helper::PreprocessExprLine(trimed);
   ssize_t idxEq = lineAfterProcess.find(L'=');
-  if (idxEq<0 || idxEq == 0 || idxEq == lineAfterProcess.length() - 1) {
+  if (idxEq<0 || idxEq == 0 || idxEq == (ssize_t)(lineAfterProcess.length() - 1)) {
     FATAL("invalid_dict_line_pattern(" << lineAfterProcess << ")");
     return false;
   }

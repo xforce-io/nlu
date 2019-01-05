@@ -10,7 +10,7 @@ std::shared_ptr<StructPatternItemCommon> StructPatternItemCommon::Build(const st
     ssize_t bypassLeftBrackets = 0;
     ssize_t bypassRightBrackets = 0;
     ssize_t idx = endName+1;
-    while (idx < statement.length() && bypassLeftBrackets >= bypassRightBrackets) {
+    while (idx < (ssize_t)statement.length() && bypassLeftBrackets >= bypassRightBrackets) {
       if (statement[idx] == '(') {
         ++bypassLeftBrackets;
       } else if (statement[idx] == ')') {
@@ -28,7 +28,7 @@ std::shared_ptr<StructPatternItemCommon> StructPatternItemCommon::Build(const st
     std::wstring argsStr = StrHelper::Trim(statement.substr(endName+1, idx-endName-2));
     if (!argsStr.empty()) {
       std::vector<std::wstring> argsItems;
-      StrHelper::SplitStr(argsStr, ',', argsItems);
+      StrHelper::SplitStr(argsStr, L',', argsItems);
       for (auto argItem : argsItems) {
         args.push_back(argItem);
       }

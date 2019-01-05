@@ -58,6 +58,8 @@ Context::Context(
     std::shared_ptr<basic::NluContext> nluContext,
     ssize_t curPos,
     std::stack<std::shared_ptr<Frame>> stack) {
+  UNUSE(curPos)
+  UNUSE(stack)
   sentence_ = new Sentence(nluContext);
 }
 
@@ -178,7 +180,7 @@ StorageItem* Context::GetStoragePattern() {
 }
 
 bool Context::End() const {
-  return curPos_ == sentence_->GetSentence().length();
+  return curPos_ == (ssize_t)(sentence_->GetSentence().length());
 }
 
 size_t Context::Length() const {

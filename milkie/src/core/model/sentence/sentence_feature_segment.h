@@ -22,7 +22,7 @@ std::shared_ptr<basic::Segment::Vector> SentenceFeatureSegment::GetSegmentsFromO
   size_t accuLen = 0;
   bool mark = false;
   for (auto &segment : *segments) {
-    if (offset == accuLen) {
+    if (offset == (ssize_t)accuLen) {
       mark = true;
     }
 

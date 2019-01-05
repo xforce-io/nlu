@@ -25,7 +25,7 @@ StorageItem::StorageItem(const std::wstring *item) {
 }
 
 StorageItem::StorageItem() :
-  this(nullptr) {}
+  StorageItem(nullptr) {}
 
 void StorageItem::Set(const std::wstring &value) {
   items_.push_back(value);

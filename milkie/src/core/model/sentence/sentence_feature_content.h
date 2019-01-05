@@ -17,7 +17,7 @@ class SentenceFeatureContent :public SentenceFeature {
 
 SentenceFeatureContent::SentenceFeatureContent(std::shared_ptr<basic::NluContext> &nluContext) :
     SentenceFeature(nluContext),
-    content_(nluContext.GetQuery()) {}
+    content_(nluContext->GetQuery()) {}
 
 std::wstring SentenceFeatureContent::GetContent(ssize_t offset) {
   return content_.substr(offset);

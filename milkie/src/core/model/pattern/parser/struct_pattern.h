@@ -39,11 +39,11 @@ std::shared_ptr<StructPattern> StructPattern::Parse(const std::wstring &statemen
   ssize_t curIdx = 0;
   bool exit = false;
   bool lastCharConnector = true;
-  while (!exit && curIdx < statement.length()) {
+  while (!exit && curIdx < (ssize_t)statement.length()) {
     if (' ' == statement[curIdx]) {
       ++curIdx;
     } else if ('&' == statement[curIdx] &&
-        curIdx < statement.length() - 1 &&
+        curIdx < (ssize_t)(statement.length() - 1) &&
         '&' == statement[curIdx+1]) {
       lastCharConnector = true;
       curIdx += 2;
