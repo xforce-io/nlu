@@ -146,7 +146,7 @@ ssize_t PatternExpr::MatchFromIdx(ssize_t fromIdx, Context &context) {
   ssize_t idx = fromIdx;
   while (idx < items_.size()) {
     auto patternExpr = items_[idx];
-    if (nullptr != patternExpr.AsWildcard()) {
+    if (nullptr != patternExpr->AsWildcard()) {
       return -(idx+1);
     }
 
