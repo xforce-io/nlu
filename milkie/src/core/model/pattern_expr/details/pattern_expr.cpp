@@ -185,7 +185,7 @@ bool PatternExpr::MatchForWildcard(Context &context, ssize_t itemIdx) {
         oldCurPos != offset &&
         context.GetCurPos() == context.GetSentence().GetSentence().length()) {
       context.SetStorageStr(
-              items_[itemIdx-1].AsWildcard(),
+              items_[itemIdx-1]->AsWildcard(),
               context.GetSentence().GetSentence().substr(oldCurPos, offset-oldCurPos));
       context.StopMatch(true);
       context.SetStorage(storage_, *(context.GetStoragePattern()));
@@ -287,14 +287,14 @@ void PatternExpr::DebugMatch_(Context &context, ssize_t startIdx, bool ok) {
   }
 }
 
-std::unordered_set<char> CreateInvalidLeadPosForWildcard() {
+std::unordered_set<char> PatternExpr::CreateInvalidLeadPosForWildcard() {
   std::unordered_set<char> result;
   result.insert('y');
   result.insert('w');
   return result;
 }
 
-std::unordered_set<std::string> CreateInvalidFullPosForWildcard() {
+std::unordered_set<std::string> PatternExpr::CreateInvalidFullPosForWildcard() {
   std::unordered_set<std::string> result;
   result.insert("vshi");
   result.insert("vyou");

@@ -9,8 +9,8 @@ class SentenceFeatureSegment :public SentenceFeature {
  public:
   inline explicit SentenceFeatureSegment(std::shared_ptr<basic::NluContext> nluContext);
 
-  std::shared_ptr<basic::Segment::Vector> GetSegmentsFromOffset(ssize_t offset);
-  const basic::Segment* GetSegmentAtOffset(ssize_t offset) const;
+  inline std::shared_ptr<basic::Segment::Vector> GetSegmentsFromOffset(ssize_t offset);
+  inline const basic::Segment* GetSegmentAtOffset(ssize_t offset) const;
 };
 
 SentenceFeatureSegment::SentenceFeatureSegment(std::shared_ptr<basic::NluContext> nluContext) :

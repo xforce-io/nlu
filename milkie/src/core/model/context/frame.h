@@ -13,14 +13,14 @@ class Frame {
 
   inline void SetStartPos(ssize_t startPos);
   ssize_t GetStartPos() const { return startPos_; }
-  void SetStorage(const std::wstring &key, const std::wstring &value);
-  void SetStorage(const std::wstring &key, StorageItem &newItems);
-  void SetStorageStr(const std::wstring &key, const std::wstring &value);
-  void RemoveStorage(const std::wstring &key);
-  const StorageItem* GetStorage(const std::wstring &key);
-  void SetStoragePattern(const StorageItem &storageItem);
-  StorageItem* GetStoragePattern();
-  void CopyStorage(const Frame &frame);
+  inline void SetStorage(const std::wstring &key, const std::wstring &value);
+  inline void SetStorage(const std::wstring &key, StorageItem &newItems);
+  inline void SetStorageStr(const std::wstring &key, const std::wstring &value);
+  inline void RemoveStorage(const std::wstring &key);
+  inline const StorageItem* GetStorage(const std::wstring &key);
+  inline void SetStoragePattern(const StorageItem &storageItem);
+  inline StorageItem* GetStoragePattern();
+  inline void CopyStorage(const Frame &frame);
   void DumpStorge();
 
  private:

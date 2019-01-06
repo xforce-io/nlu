@@ -10,7 +10,7 @@ class StorageItem;
 
 class Context {
  public:
-  Context(
+  inline Context(
       std::shared_ptr<basic::NluContext> nluContext,
       ssize_t curPos,
       std::stack<std::shared_ptr<Frame>> stack);
@@ -20,8 +20,8 @@ class Context {
   inline void Reset(const std::wstring &otherSentence);
   const Sentence& GetSentence() const { return *sentence_; }
   Sentence& GetSentence() { return *sentence_; }
-  void Pass(ssize_t n);
-  void SetCurPos(ssize_t curPos);
+  inline void Pass(ssize_t n);
+  inline void SetCurPos(ssize_t curPos);
   ssize_t GetCurPos() const { return curPos_; }
   inline std::shared_ptr<std::wstring> GetCurPattern() const;
   inline void StartMatch();
@@ -63,10 +63,6 @@ Context::Context(
   sentence_ = new Sentence(nluContext);
 }
 
-Context::~Context() {
-  XFC_DELETE(sentence_)
-}
-
 void Context::Reset() {
   curPos_ = 0;  
   while (!stack_.empty()) {
@@ -78,6 +74,14 @@ void Context::Reset() {
 void Context::Reset(const std::wstring &otherSentence) {
   sentence_ = new Sentence(otherSentence);
   Reset();
+}
+
+void Context::Pass(ssize_t n) {
+  curPos_ += n;
+}
+
+void Context::SetCurPos(ssize_t curPos) {
+  curPos_ = curPos;
 }
 
 std::shared_ptr<std::wstring> Context::GetCurPattern() const {

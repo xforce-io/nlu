@@ -7,7 +7,7 @@ namespace xforce { namespace nlu { namespace basic {
 
 class NluContext {
  public:
-  explicit NluContext(const std::wstring &query); 
+  inline explicit NluContext(const std::wstring &query); 
 
   const std::wstring& GetQuery() const { return query_; }
   const Segment::Vector& GetSegments() const { return segments_; }
