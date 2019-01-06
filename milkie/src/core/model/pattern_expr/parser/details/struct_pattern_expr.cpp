@@ -42,7 +42,7 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
         curIdx += ret.second;
       } else if (PatternExpr::IsExactStartingChar(curChar)) {
         auto ret = PatternExpr::Build(blockKey, statement.substr(curIdx));
-        items.push_back(std::make_shared<PatternExpr>(*(ret.first))));
+        items.push_back(std::make_shared<PatternExpr>(*(ret.first)));
         curIdx += ret.second;
       } else if (Variable::IsStartingChar(curChar)) {
         std::shared_ptr<std::wstring> variableName = Variable::GetVariableName(statement, curIdx+1);
@@ -72,7 +72,7 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
           return nullptr;
         }
 
-        storage = Variable::GetVariableName(statement, curIdx);
+        storage = *(Variable::GetVariableName(statement, curIdx));
         curIdx += storage.length();
       } else if (L'*' == curChar) {
         categoryPatternExpr = CategoryPatternExpr::kZeroOrMore;
