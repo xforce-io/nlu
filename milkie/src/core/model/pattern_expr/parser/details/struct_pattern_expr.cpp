@@ -18,10 +18,10 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
   wchar_t startingChar = statement[0];
   if (Pattern::IsStartingChar(startingChar)) {
     auto ret = Pattern::Build(statement);
-    return std::make_shared<StructPatternExpr>(statement.substr(0, ret.second), ret.first.get());
+    return std::make_shared<StructPatternExpr>(statement.substr(0, ret.second), ret.first);
   } else if (PatternSet::IsStartingChar(startingChar)) {
     auto ret = PatternSet::Build(blockKey, statement);
-    return std::make_shared<StructPatternExpr>(statement.substr(0, ret.second), ret.first.get());
+    return std::make_shared<StructPatternExpr>(statement.substr(0, ret.second), ret.first);
   } else if (PatternExpr::IsExactStartingChar(startingChar)) {
     PatternExpr::Vector items;
     std::wstring storage;
@@ -34,15 +34,15 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
         ++curIdx;
       } else if (Pattern::IsStartingChar(curChar)) {
         auto ret = Pattern::Build(statement.substr(curIdx));
-        items.push_back(std::make_shared<PatternExpr>(*(ret.first)));
+        items.push_back(std::make_shared<PatternExpr>(ret.first));
         curIdx += ret.second;
       } else if (PatternSet::IsStartingChar(curChar)) {
         auto ret = PatternSet::Build(blockKey, statement.substr(curIdx));
-        items.push_back(std::make_shared<PatternExpr>(*(ret.first)));
+        items.push_back(std::make_shared<PatternExpr>(ret.first));
         curIdx += ret.second;
       } else if (PatternExpr::IsExactStartingChar(curChar)) {
         auto ret = PatternExpr::Build(blockKey, statement.substr(curIdx));
-        items.push_back(std::make_shared<PatternExpr>(*(ret.first)));
+        items.push_back(ret.first);
         curIdx += ret.second;
       } else if (Variable::IsStartingChar(curChar)) {
         std::shared_ptr<std::wstring> variableName = Variable::GetVariableName(statement, curIdx+1);
@@ -91,7 +91,7 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
             nullptr,
             nullptr,
             &items,
-            storage,
+            &storage,
             categoryPatternExpr);
       } else {
         FATAL("invalid_pattern_expr(" << statement << ")");

@@ -53,7 +53,7 @@ std::shared_ptr<StructPatternSet> StructPatternSet::ParseForStrSet(
   if (reachEndMark) {
     return std::make_shared<StructPatternSet>(
         statement.substr(0, curIdx+1),
-        patternStrs,
+        &patternStrs,
         nullptr);
   } else {
     return nullptr;
@@ -87,7 +87,7 @@ std::shared_ptr<StructPatternSet> StructPatternSet::ParseForPatternExprSet(
     return std::make_shared<StructPatternSet>(
             statement.substr(0, curIdx+1),
             nullptr,
-            patternExprs);
+            &patternExprs);
   } else {
     FATAL("invalid_pattern_set(" << blockKey << "|" << statement << ")");
     return nullptr;

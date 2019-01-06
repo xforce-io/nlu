@@ -3,6 +3,8 @@
 
 namespace xforce { namespace nlu { namespace milkie {
 
+ReferManager ReferManager::referManager_;  
+
 bool ReferManager::PutLocalRefer(
     const std::wstring &blockKey, 
     const std::wstring &line) {

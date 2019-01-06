@@ -15,7 +15,7 @@ class StructPattern :public StructElement {
 
   const StructPatternItem::Vector& GetPatternItems() const { return structPatternItems_; }
 
-  static std::shared_ptr<StructPattern> Parse(const std::wstring &statement);
+  inline static std::shared_ptr<StructPattern> Parse(const std::wstring &statement);
 
  private:    
   const StructPatternItem::Vector &structPatternItems_;

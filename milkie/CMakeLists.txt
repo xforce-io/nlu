@@ -16,10 +16,11 @@ FILE(GLOB_RECURSE SEG_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -std=c++11 -DUNICODE -Wno-sign-compare")
 set(LIB_DEPS 
   ${CMAKE_SOURCE_DIR}/deps/public-cpp/lib/public-cpp/libpublic-cpp.a
+  ${CMAKE_SOURCE_DIR}/deps/basic/lib/basic/libbasic.a
 )
 
-add_executable(milkie
-  ${SEG_FILES} src/public.h src/core/model/pattern_expr/public.h src/core/model/pattern/details/pattern.cpp)
+add_library(milkie
+  ${SEG_FILES})
 
 target_link_libraries(milkie
   ${LIB_DEPS}

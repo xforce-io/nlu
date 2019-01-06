@@ -12,7 +12,7 @@ class PatternExpr;
 
 class StructPatternExpr :public StructElement {
  public: 
-  StructPatternExpr(
+  inline StructPatternExpr(
       const std::wstring &statement,
       std::shared_ptr<Pattern> pattern,
       std::shared_ptr<PatternSet> patternSet,
@@ -21,15 +21,15 @@ class StructPatternExpr :public StructElement {
       const std::wstring *storage,
       CategoryPatternExpr::Category categoryPatternExpr);
   
-  StructPatternExpr(
+  inline StructPatternExpr(
       const std::wstring &statement, 
       std::shared_ptr<Pattern> &pattern);
 
-  StructPatternExpr(
+  inline StructPatternExpr(
       const std::wstring &statement, 
       std::shared_ptr<PatternSet> &patternSet);
 
-  StructPatternExpr(
+  inline StructPatternExpr(
       const std::wstring &statement, 
       std::shared_ptr<PatternExpr> &patternExpr);
 

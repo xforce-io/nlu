@@ -66,7 +66,7 @@ const std::wstring* PatternSet::AsStr() const {
 std::pair<std::shared_ptr<PatternSet>, ssize_t> PatternSet::Build(
     const std::wstring &blockKey, 
     const std::wstring &statement) {
-  std::shared_ptr<StructPatternSet> structPatternSet = structPatternSet::Parse(blockKey, statement);
+  std::shared_ptr<StructPatternSet> structPatternSet = StructPatternSet::Parse(blockKey, statement);
   if (nullptr == structPatternSet.get()) {
     return std::make_pair(nullptr, -1);
   }

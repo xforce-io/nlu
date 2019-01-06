@@ -22,12 +22,12 @@ class PatternSet {
 
   const std::wstring* AsStr() const;
 
-  static bool IsStartingChar(wchar_t c);
+  inline static bool IsStartingChar(wchar_t c);
   static std::pair<std::shared_ptr<PatternSet>, ssize_t > Build(const std::wstring &blockKey, const std::wstring &statement);
   static std::shared_ptr<PatternSet> Build(const StructPatternSet &structPatternSet);
 
  private:
-  aho_corasick::wtrie* BuildPatternStrsTrie_(
+  inline aho_corasick::wtrie* BuildPatternStrsTrie_(
       const std::unordered_set<std::wstring> *patternStrs);
 
  private:
@@ -36,6 +36,10 @@ class PatternSet {
   aho_corasick::wtrie *patternStrsTrie_;
   const PatternExpr::Vector &patternExprs_;
 };
+
+bool PatternSet::IsStartingChar(wchar_t c) {
+  return L'[' == c;
+}
 
 aho_corasick::wtrie* PatternSet::BuildPatternStrsTrie_(
     const std::unordered_set<std::wstring> *patternStrs) {
@@ -53,10 +57,6 @@ aho_corasick::wtrie* PatternSet::BuildPatternStrsTrie_(
     }
   }
   return patternStrsTrie;
-}
-
-bool PatternSet::IsStartingChar(wchar_t c) {
-  return L'[' == c;
 }
 
 }}}
