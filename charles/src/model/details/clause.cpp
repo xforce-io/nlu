@@ -10,7 +10,7 @@ Clause::Clause(const std::wstring &clause) :
   featureSegments_(NULL) {}
 
 void Clause::Segment() {
-  basic::Segments segments;
+  basic::Segment::Vector segments;
   std::vector<std::shared_ptr<ner::NameEntity>> nameEntities;
   BaseModules::Get().GetSegmentor().Parse(clause_, segments, nameEntities);
 
