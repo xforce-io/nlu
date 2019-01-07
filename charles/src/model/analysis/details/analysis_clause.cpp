@@ -10,7 +10,7 @@ AnalysisClause::AnalysisClause(const std::wstring &clause) :
   clause_(clause) {}
 
 void AnalysisClause::Segment() {
-  basic::Segments segments;
+  basic::Segment::Vector segments;
   std::vector<std::shared_ptr<ner::NameEntity>> nameEntities;
   BaseModules::Get().GetSegmentor().Parse(clause_, segments, nameEntities);
   featureSegments_ = std::make_shared<FeatureSegments>(clause_, segments);
