@@ -2,7 +2,7 @@
 
 #include "public.h"
 
-namespace xforce { namespace nlu { namespace milkie {
+namespace xforce { namespace nlu { namespace ner {
 
 class Conf {
  public: 

@@ -7,7 +7,7 @@ namespace xforce { namespace nlu { namespace ner {
 
 class PersonName : public NameEntity {
  private:
-  typedef std::tr1::unordered_set<wchar_t> WcharSet;
+  typedef std::unordered_set<wchar_t> WcharSet;
 
  public: 
   explicit PersonName(const std::wstring &name, size_t offset); 

@@ -36,12 +36,15 @@ class StrHelper {
     template <typename T>
 	  inline static std::string GetStr(IN T num );
 
-    inline static std::string Trim(const std::string &str);
-    inline static bool NaiveChar(char c);
+    template <typename StrType>
+    inline static StrType Trim(const StrType &str);
 
-    /////////////////////////////////////////
-    // wstring
-    /////////////////////////////////////////
+    template <typename CharType>
+    inline static bool NaiveChar(CharType c);
+
+    template <typename StrType>
+    inline static void ToLowerCase(StrType &str);
+
     inline static char* Wstr2Str(const std::wstring &wstr);
     inline static bool Wstr2Str(const std::wstring &wstr, std::string &str);
     inline static bool Str2Wstr(const char *str, std::wstring &wstr);
@@ -114,7 +117,8 @@ std::string StrHelper::GetStr(IN T num ) {
     return ss.str();
 }
 
-std::string StrHelper::Trim(const std::string &str) {
+template <typename StrType>
+StrType StrHelper::Trim(const StrType &str) {
   size_t start = 0;
   while (start < str.length() && NaiveChar(str[start])) {
     ++start;
@@ -128,15 +132,25 @@ std::string StrHelper::Trim(const std::string &str) {
   if (start != str.length()) {
     return str.substr(start, end-start+1);
   } else {
-    return std::string();
+    return StrType();
   }
 }
 
-bool StrHelper::NaiveChar(char c) {
+template <typename CharType>
+bool StrHelper::NaiveChar(CharType c) {
   return c == '\t' ||
     c == ' ' ||
     c == '\r' ||
     c == '\n';
+}
+
+template <typename StrType>
+void StrHelper::ToLowerCase(StrType &str) {
+  for (size_t i=0; i < str.length(); ++i) {
+    if (str[i] >= 'A' && str[i] <= 'Z') {
+      str[i] += 32;
+    }
+  }
 }
 
 char* StrHelper::Wstr2Str(const std::wstring &wstr) {

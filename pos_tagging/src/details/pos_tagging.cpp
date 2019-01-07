@@ -4,7 +4,7 @@ namespace xforce { namespace nlu { namespace pos {
 
 void PosTagging::Tagging(
     const std::wstring &clause,
-    basic::Segments &segments) {
+    basic::Segment::Vector &segments) {
   for (size_t i=0; i < segments.size(); ++i) {
     basic::Segment &segment = segments[i];
     std::wstring word = clause.substr(
