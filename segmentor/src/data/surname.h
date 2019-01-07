@@ -6,7 +6,7 @@ namespace xforce { namespace nlu { namespace segmentor {
 
 class Surname {
  private: 
-  typedef std::tr1::unordered_map<wchar_t, std::wstring> Container; 
+  typedef std::unordered_map<wchar_t, std::wstring> Container; 
  
  public:
   Surname() {}

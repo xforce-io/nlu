@@ -23,6 +23,10 @@ void TriggerRefer::Process(
     const std::wstring &query, 
     int offset, 
     std::list<TriggeredNodes*> &results) {
+  UNUSE(graph)
+  UNUSE(query)  
+  UNUSE(offset)
+  UNUSE(results)
 }
 
 }}}

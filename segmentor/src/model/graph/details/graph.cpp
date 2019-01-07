@@ -24,14 +24,14 @@ Graph::Graph(const std::wstring &query) :
   posToNumNodes_[query_.length() + 1]->push_back(nodeEnd_);
 }
 
-void Graph::Process(basic::Segments &segments, NameEntities &nameEntities) {
+void Graph::Process(basic::Segment::Vector &segments, NameEntities &nameEntities) {
   CreateNodes_();
   candidateNodes_->EstablishPrevs();
   Optimize_();
   MakeResults_(segments, nameEntities);
 }
 
-void Graph::Profile(basic::Segments &segments, NameEntities &nameEntities) {
+void Graph::Profile(basic::Segment::Vector &segments, NameEntities &nameEntities) {
   Process(segments, nameEntities);
   MakeProfileInfo_();
   DumpProfile_();
@@ -136,7 +136,7 @@ void Graph::Optimize_(Node &curNode) {
   curNode.SetBestScore(bestScore);
 } 
 
-void Graph::MakeResults_(basic::Segments &segments, NameEntities &nameEntities) {
+void Graph::MakeResults_(basic::Segment::Vector &segments, NameEntities &nameEntities) {
   Node *curNode = candidateNodes_->GetItems().back().first;
   while (!curNode->IsBegin()) {
     curNode = curNode->GetBestPrev();

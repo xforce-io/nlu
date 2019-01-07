@@ -8,7 +8,7 @@ class Nature;
 
 class NatureDict {
  private:   
-  typedef std::tr1::unordered_map<std::string, Nature*> Container; 
+  typedef std::unordered_map<std::string, Nature*> Container; 
   
  public:
   NatureDict() {} 

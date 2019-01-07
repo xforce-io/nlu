@@ -76,8 +76,6 @@ def buildCharles() :
             (kBuildPathPublicCpp, kDepPathCharles))
     call("cp -rf %s/basic %s/basic/" % \
             (kBuildPathBasic, kDepPathCharles))
-    call("cp -rf %s/milkie %s/milkie/" % \
-            (kBuildPathMilkie, kDepPathCharles))
     call("cp -rf %s/ner %s/ner/" % \
             (kBuildPathNer, kDepPathCharles))
     call("cp -rf %s/segmentor %s/segmentor/" % \

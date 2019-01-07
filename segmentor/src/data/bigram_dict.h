@@ -6,8 +6,8 @@ namespace xforce { namespace nlu { namespace segmentor {
 
 class BigramDict {
  private:
-  typedef std::tr1::unordered_map<std::wstring, uint32_t> Inner; 
-  typedef std::tr1::unordered_map<std::wstring, Inner*> Container;
+  typedef std::unordered_map<std::wstring, uint32_t> Inner; 
+  typedef std::unordered_map<std::wstring, Inner*> Container;
  
  public:
   BigramDict() {}

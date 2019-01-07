@@ -10,8 +10,8 @@ class CandidateNodes;
 
 class Graph {
  public: 
-  typedef std::tr1::unordered_map<int, double> PrioredNegLogPossi;
-  typedef std::tr1::unordered_set<int> OffsetsProcessed;
+  typedef std::unordered_map<int, double> PrioredNegLogPossi;
+  typedef std::unordered_set<int> OffsetsProcessed;
   typedef std::queue<int> OffsetsToProcess;
   typedef std::vector<std::shared_ptr<ner::NameEntity>> NameEntities;
   typedef std::vector<NodesVec*> PosToNumNodes;
@@ -24,8 +24,8 @@ class Graph {
  public:
   explicit Graph(const std::wstring &query);
 
-  void Process(OUT basic::Segments &segments, OUT NameEntities &nameEntities);
-  void Profile(OUT basic::Segments &segments, OUT NameEntities &nameEntities);
+  void Process(OUT basic::Segment::Vector &segments, OUT NameEntities &nameEntities);
+  void Profile(OUT basic::Segment::Vector &segments, OUT NameEntities &nameEntities);
 
   inline void AddPrioredNegLogPossi(int offset, size_t len, double score);
   inline void AddMaxPrioredNegLogPossi(const Node &node);
@@ -44,7 +44,7 @@ class Graph {
   void CreateNodes_();
   void Optimize_();
   void Optimize_(Node &curNode);
-  void MakeResults_(OUT basic::Segments &segments, OUT NameEntities &nameEntities);
+  void MakeResults_(OUT basic::Segment::Vector &segments, OUT NameEntities &nameEntities);
   void MakeProfileInfo_();
   void DumpProfile_();
 

@@ -9,8 +9,8 @@ class Node;
 class CandidateNodes {
  private: 
   typedef std::vector<std::pair<Node*, bool>> Items;
-  typedef std::tr1::unordered_map<int, size_t> Map; 
-  typedef std::tr1::unordered_map<int, std::list<Node*>*> EndToNode;
+  typedef std::unordered_map<int, size_t> Map; 
+  typedef std::unordered_map<int, std::list<Node*>*> EndToNode;
 
  public:
   void AddNode(Node &node, bool hiConvinced);

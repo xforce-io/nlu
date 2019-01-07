@@ -9,7 +9,7 @@ class SimpleTrie;
 
 class WordDict {
  private:
-  typedef std::tr1::unordered_map<std::wstring, CoreDictItem*> Container; 
+  typedef std::unordered_map<std::wstring, CoreDictItem*> Container; 
  
  public: 
   bool Init(const std::vector<std::string> &filepaths);
