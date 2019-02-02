@@ -18,6 +18,7 @@ class Frame {
   inline void SetStorageStr(const std::wstring &key, const std::wstring &value);
   inline void RemoveStorage(const std::wstring &key);
   inline const StorageItem* GetStorage(const std::wstring &key);
+  inline void GetStorages(std::unordered_map<std::wstring, std::wstring> &kvs);
   inline void SetStoragePattern(const StorageItem &storageItem);
   inline StorageItem* GetStoragePattern();
   inline void CopyStorage(const Frame &frame);
@@ -84,6 +85,16 @@ const StorageItem* Frame::GetStorage(const std::wstring &key) {
     return iter->second;
   } else {
     return nullptr;
+  }
+}
+
+void Frame::GetStorages(std::unordered_map<std::wstring, std::wstring> &kvs) {
+  for (auto iter = storage_.begin(); iter != storage_.end(); ++iter) {
+    StorageItem *value = iter->second;
+    const std::wstring *wstr = value->GetAsString();
+    if (nullptr != wstr) {
+      kvs.insert(std::make_pair(iter->first, *wstr));
+    }
   }
 }
 

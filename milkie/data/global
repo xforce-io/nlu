@@ -1,4 +1,4 @@
-PATTERN_EXPR_UNION_START(whatis)
+PATTERN_EXPR_UNION_BEGIN(whatis)
 
   whatIsPhrase = [$WhatIs, $HowToInterpret]
   whatissocalled = { {$SoCalled ?} $*sbv {$Def ?} }
@@ -11,9 +11,12 @@ PATTERN_EXPR_UNION_START(whatis)
   <sbv>
 PATTERN_EXPR_UNION_END
 
-FEATURE_EXTRACTOR_START(someone)
+FEATURE_EXTRACTOR_BEGIN(someone)
 
-  { #Pos(aP+) "的" #Pos(nP+) } => #Chunk(vp)
+  { #Pos(aP+) "的" #Pos(nP+) }
 
 FEATURE_EXTRACTOR_END
 
+PARSER_BEGIN(global)
+  { { #Reg(\d{4}) |condition| -> year } => ner.time }
+PARSER_END

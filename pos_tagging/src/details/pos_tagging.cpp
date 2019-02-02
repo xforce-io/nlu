@@ -23,6 +23,7 @@ void PosTagging::Tagging(
   }
 
   // rule for adv '很'
+  // { "很" #Pos(=>a)}
   for (size_t i=0; i < segments.size() - 1; ++i) {
     if (clause.substr(segments[i].GetOffset(), segments[i].GetLen()) == L"很" && 
         segments[i+1].GetPos() == basic::Pos::kUndef) {

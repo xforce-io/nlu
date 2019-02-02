@@ -34,6 +34,12 @@ class Context {
   inline const StorageItem* GetStorage(const std::wstring &key);
   inline const Wstrings* GetStorageAsItems(const std::wstring &key);
   inline const std::wstring* GetStorageAsStr(const std::wstring &key);
+
+  /*
+   * mark : str env supported only now
+   */
+  inline void GetStorages(std::unordered_map<std::wstring, std::wstring> &kvs);
+
   inline void SetStoragePattern(StorageItem &storageItem);
   inline StorageItem* GetStoragePattern();
   inline bool End() const;
@@ -169,6 +175,21 @@ const std::wstring* Context::GetStorageAsStr(const std::wstring &key) {
     return storageItem->GetAsString();
   }
   return nullptr;
+}
+
+void Context::GetStorages(std::unordered_map<std::wstring, std::wstring> &kvs) {
+  kvs.clear();
+
+  std::stack<std::shared_ptr<Frame>> tmpStack;
+  while (!stack_.empty()) {
+    auto frame = stack_.top();
+    frame->GetStorages(kvs);
+    tmpStack.push(frame);
+  }
+
+  while (!tmpStack.empty()) {
+      stack_.push(tmpStack.top());
+  }
 }
 
 void Context::SetStoragePattern(StorageItem &storageItem) {
