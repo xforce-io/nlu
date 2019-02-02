@@ -119,7 +119,7 @@ void Context::StopMatch(bool succ, StorageItem *storageItem) {
   std::shared_ptr<Frame> framePoped = stack_.top();
   stack_.pop();
   if (succ) {
-    stack_.top()->CopyStorage(*framePoped);
+    stack_.top()->GetStorage().Merge(framePoped->GetStorage());
     if (nullptr != storageItem) {
       stack_.top()->SetStoragePattern(*storageItem);
     }
@@ -130,25 +130,25 @@ void Context::StopMatch(bool succ, StorageItem *storageItem) {
 
 void Context::SetStorage(const std::wstring *key, StorageItem &storageItem) {
   if (nullptr != key) {
-    stack_.top()->SetStorage(*key, storageItem);
+    stack_.top()->GetStorage().Set(*key, storageItem);
   }
 }
 
 void Context::SetStorageStr(const std::wstring *key, const std::wstring &value) {
   if (nullptr != key) {
-    stack_.top()->SetStorageStr(*key, value);
+    stack_.top()->GetStorage().SetStr(*key, value);
   }
 }
 
 void Context::RemoveStorage(const std::wstring *key) {
-  stack_.top()->RemoveStorage(*key);
+  stack_.top()->GetStorage().Remove(*key);
 }
 
 const StorageItem* Context::GetStorage(const std::wstring &key) {
   std::stack<std::shared_ptr<Frame>> tmpStack;
   while (!stack_.empty()) {
     auto frame = stack_.top();
-    const StorageItem* storageItem = frame->GetStorage(key);
+    const StorageItem* storageItem = frame->GetStorage().Get(key);
     if (nullptr != storageItem) {
       return storageItem;
     }
@@ -183,7 +183,7 @@ void Context::GetStorages(std::unordered_map<std::wstring, std::wstring> &kvs) {
   std::stack<std::shared_ptr<Frame>> tmpStack;
   while (!stack_.empty()) {
     auto frame = stack_.top();
-    frame->GetStorages(kvs);
+    frame->GetStorage().GetStrs(kvs);
     tmpStack.push(frame);
   }
 
