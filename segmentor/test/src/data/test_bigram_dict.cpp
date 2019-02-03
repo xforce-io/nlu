@@ -2,9 +2,11 @@
 #include "../../../src/data/bigram_dict.h"
 #include "../../../src/segmentor.h"
 
-LOGGER_IMPL(xforce::xforce_logger, "segmentor")
-
 using namespace xforce::nlu::segmentor;
+
+namespace xforce {
+LOGGER_IMPL(xforce_logger, "segmentor")
+}
 
 int main(int argc, char **argv) {
   setlocale(LC_ALL, "");

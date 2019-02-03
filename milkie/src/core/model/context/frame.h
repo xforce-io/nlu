@@ -10,7 +10,7 @@ class StorageItem;
 class Frame {
  public: 
   inline explicit Frame(ssize_t startPos);
-  virtual ~Frame();
+  inline virtual ~Frame();
 
   inline void SetStartPos(ssize_t startPos);
   ssize_t GetStartPos() const { return startPos_; }
