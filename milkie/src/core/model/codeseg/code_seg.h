@@ -21,7 +21,7 @@ class CodeSeg {
    */
   int Match(Context &context);
 
-  static CodeSeg* Build(const std::wstring &expr);
+  static std::shared_ptr<CodeSeg> Build(const std::wstring &expr);
   inline static bool IsStartingChar(char c);
 
  private:

@@ -48,11 +48,11 @@ int CodeSeg::Match(Context &context) {
   return -1;
 }
 
-CodeSeg* CodeSeg::Build(const std::wstring &code) {
+std::shared_ptr<CodeSeg> CodeSeg::Build(const std::wstring &code) {
   if (code.at(0) != L'|' || code.at(code.length()-1) != L'|' || code.length() <= 2) {
     return nullptr;
   }
-  return new CodeSeg(code);
+  return std::make_shared<CodeSeg>(code);
 }
 
 }}}

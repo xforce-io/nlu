@@ -20,7 +20,7 @@ class Storage {
 
   inline const std::unordered_map<std::wstring, StorageItem*> Get() const;
 
-  inline const void GetStrs(std::unordered_map<std::wstring, std::wstring> &kvs);
+  inline void GetStrs(std::unordered_map<std::wstring, std::wstring> &kvs);
 
   inline void Merge(const Storage &storage);
 
@@ -79,7 +79,7 @@ const std::unordered_map<std::wstring, StorageItem*> Storage::Get() const {
   return storage_;
 }
 
-const void Storage::GetStrs(std::unordered_map<std::wstring, std::wstring> &kvs) {
+void Storage::GetStrs(std::unordered_map<std::wstring, std::wstring> &kvs) {
   kvs.clear();
   for (auto iter = storage_.begin(); iter != storage_.end(); ++iter) {
     auto value = iter->second->GetAsString();
@@ -90,7 +90,7 @@ const void Storage::GetStrs(std::unordered_map<std::wstring, std::wstring> &kvs)
 }
 
 void Storage::Merge(const Storage &storage) {
-  for (auto iter = storage_.begin(); iter != storage_.end(); ++iter) {
+  for (auto iter = storage.storage_.begin(); iter != storage.storage_.end(); ++iter) {
     auto iter2 = storage_.find(iter->first);
     if (iter2 != storage_.end()) {
       iter2->second->Add(*(iter->second));

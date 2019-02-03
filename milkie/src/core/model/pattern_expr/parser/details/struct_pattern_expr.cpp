@@ -25,7 +25,7 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
     return std::make_shared<StructPatternExpr>(statement.substr(0, ret.second), ret.first);
   } else if (PatternExpr::IsExactStartingChar(startingChar)) {
     PatternExpr::Vector items;
-    CodeSeg *filter;
+    std::shared_ptr<CodeSeg> filter;
     std::wstring storage;
     CategoryPatternExpr::Category categoryPatternExpr;
 
@@ -93,6 +93,7 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
                 nullptr,
                 nullptr,
                 &items,
+                filter,
                 &storage,
                 categoryPatternExpr);
       } else if (CodeSeg::IsStartingChar(startingChar)) {
