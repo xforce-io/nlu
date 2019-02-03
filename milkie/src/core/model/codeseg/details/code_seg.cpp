@@ -1,10 +1,11 @@
 #include "../code_seg.h"
+#include "../../context/context.h"
 
 #include <lua/lua.hpp>
 
 namespace xforce { namespace nlu { namespace milkie {
 
-CodeSeg::CodeSeg(const std::string &code)
+CodeSeg::CodeSeg(const std::wstring &code)
     :code_(code) {
   lock_ = new SpinLock();
   luaState_ = luaL_newstate();
@@ -16,20 +17,20 @@ CodeSeg::~CodeSeg() {
   XFC_DELETE(lock_)
 }
 
-int CodeSeg::Match() {
+int CodeSeg::Match(Context &context) {
   lock_->Lock();
   lua_newtable(luaState_);
-  Request::const_iterator iter;
-  for (iter = request.begin(); iter != request.end(); ++iter) {
-    assert(iter->first != NULL);
-    assert(iter->second != NULL);
-    lua_pushstring(luaState_, iter->first);
-    lua_pushstring(luaState_, iter->second);
+
+  std::unordered_map<std::wstring, std::wstring> kvs;
+  context.GetStorages(kvs);
+  for (auto iter = kvs.begin(); iter != kvs.end(); ++iter) {
+    lua_pushstring(luaState_, StrHelper::Wstr2Str(iter->first));
+    lua_pushstring(luaState_, StrHelper::Wstr2Str(iter->second));
     lua_settable(luaState_, -3);
   }
   lua_setglobal(luaState_, "request");
 
-  int ret = luaL_loadstring(luaState_, code_.c_str());
+  int ret = luaL_loadstring(luaState_, StrHelper::Wstr2Str(code_));
   XFC_FAIL_HANDLE(LUA_OK!=ret)
 
   ret = lua_pcall(luaState_, 0, 0, 0);
@@ -45,6 +46,13 @@ int CodeSeg::Match() {
   lua_pop(luaState_, 1);
   lock_->Unlock();
   return -1;
+}
+
+CodeSeg* CodeSeg::Build(const std::wstring &code) {
+  if (code.at(0) != L'|' || code.at(code.length()-1) != L'|' || code.length() <= 2) {
+    return nullptr;
+  }
+  return new CodeSeg(code);
 }
 
 }}}

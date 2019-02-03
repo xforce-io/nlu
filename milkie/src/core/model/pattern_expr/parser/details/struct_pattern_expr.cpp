@@ -4,6 +4,7 @@
 #include "../../../pattern_expr/pattern_expr.h"
 #include "../../../variable/variable.h"
 #include "../../../refer/refer_manager.h"
+#include "../../../codeseg/code_seg.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -24,6 +25,7 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
     return std::make_shared<StructPatternExpr>(statement.substr(0, ret.second), ret.first);
   } else if (PatternExpr::IsExactStartingChar(startingChar)) {
     PatternExpr::Vector items;
+    CodeSeg *filter;
     std::wstring storage;
     CategoryPatternExpr::Category categoryPatternExpr;
 
@@ -86,13 +88,25 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
           return nullptr;
         }
         return std::make_shared<StructPatternExpr>(
-            statement.substr(0, curIdx+1),
-            nullptr,
-            nullptr,
-            nullptr,
-            &items,
-            &storage,
-            categoryPatternExpr);
+                statement.substr(0, curIdx + 1),
+                nullptr,
+                nullptr,
+                nullptr,
+                &items,
+                &storage,
+                categoryPatternExpr);
+      } else if (CodeSeg::IsStartingChar(startingChar)) {
+        ssize_t endOfFilter = statement.find(L"|}", curIdx+1);
+        if (endOfFilter<0) {
+          endOfFilter = statement.find(L"|->", curIdx+1);
+          if (endOfFilter<0) {
+            FATAL("invalid_filter_starting_in(" << statement.substr(curIdx) << ")");
+            return nullptr;
+          }
+        }
+
+        filter = CodeSeg::Build(statement.substr(curIdx, endOfFilter+1-curIdx));
+        curIdx = endOfFilter+1;
       } else {
         FATAL("invalid_pattern_expr(" << statement << ")");
         return nullptr;

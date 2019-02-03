@@ -6,9 +6,11 @@ class lua_State;
 
 namespace xforce { namespace nlu { namespace milkie {
 
+class Context;
+
 class CodeSeg {
  public:
-  explicit CodeSeg(const std::string &code);
+  explicit CodeSeg(const std::wstring &code);
   virtual ~CodeSeg();
 
   /*
@@ -17,12 +19,19 @@ class CodeSeg {
    *     == 0 => succ in matching
    *      < 0 => error happened
    */
-  int Match();
+  int Match(Context &context);
+
+  static CodeSeg* Build(const std::wstring &expr);
+  inline static bool IsStartingChar(char c);
 
  private:
   mutable xforce::SpinLock *lock_;
   lua_State *luaState_;
-  std::string code_;
+  std::wstring code_;
 };
+
+bool CodeSeg::IsStartingChar(char c) {
+  return '|' == c;
+}
 
 }}}

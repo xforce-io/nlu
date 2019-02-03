@@ -9,6 +9,7 @@ namespace xforce { namespace nlu { namespace milkie {
 class Pattern;
 class PatternSet;
 class PatternExpr;
+class CodeSeg;
 
 class StructPatternExpr :public StructElement {
  public: 
@@ -18,6 +19,7 @@ class StructPatternExpr :public StructElement {
       std::shared_ptr<PatternSet> patternSet,
       std::shared_ptr<PatternExpr> patternExpr,
       const PatternExpr::Vector *items,
+      std::shared_ptr<CodeSeg> filter,
       const std::wstring *storage,
       CategoryPatternExpr::Category categoryPatternExpr);
   
@@ -39,6 +41,7 @@ class StructPatternExpr :public StructElement {
   std::shared_ptr<PatternSet> GetPatternSet() const { return patternSet_; }
   std::shared_ptr<PatternExpr> GetPatternExpr() const { return patternExpr_; }
   const PatternExpr::Vector* GetItems() const { return patternExprs_; }
+  std::shared_ptr<CodeSeg> GetFilter() const { return filter_; }
   const std::wstring* GetStorage() const { return storage_; }
   CategoryPatternExpr::Category GetCategoryPatternExpr() const { return categoryPatternExpr_; }
 
@@ -49,6 +52,7 @@ class StructPatternExpr :public StructElement {
   std::shared_ptr<PatternSet> patternSet_;
   std::shared_ptr<PatternExpr> patternExpr_;
   PatternExpr::Vector *patternExprs_;
+  std::shared_ptr<CodeSeg> filter_;
   std::wstring *storage_;
   CategoryPatternExpr::Category categoryPatternExpr_;
 };  
@@ -59,6 +63,7 @@ StructPatternExpr::StructPatternExpr(
     std::shared_ptr<PatternSet> patternSet,
     std::shared_ptr<PatternExpr> patternExpr,
     const PatternExpr::Vector *items,
+    std::shared_ptr<CodeSeg> filter,
     const std::wstring *storage,
     CategoryPatternExpr::Category categoryPatternExpr) :
       StructElement(statement),
@@ -66,6 +71,7 @@ StructPatternExpr::StructPatternExpr(
       patternSet_(patternSet),
       patternExpr_(patternExpr),
       patternExprs_(nullptr),
+      filter_(filter),
       storage_(nullptr),
       categoryPatternExpr_(categoryPatternExpr) {
   if (nullptr != items) {
@@ -80,16 +86,16 @@ StructPatternExpr::StructPatternExpr(
 StructPatternExpr::StructPatternExpr(
     const std::wstring &statement,
     std::shared_ptr<Pattern> &pattern) :
-  StructPatternExpr(statement, pattern, nullptr, nullptr, nullptr, nullptr, CategoryPatternExpr::kNone) {}
+  StructPatternExpr(statement, pattern, nullptr, nullptr, nullptr, nullptr, nullptr, CategoryPatternExpr::kNone) {}
 
 StructPatternExpr::StructPatternExpr(
     const std::wstring &statement, 
     std::shared_ptr<PatternSet> &patternSet) :
-  StructPatternExpr(statement, nullptr, patternSet, nullptr, nullptr, nullptr, CategoryPatternExpr::kNone) {}
+  StructPatternExpr(statement, nullptr, patternSet, nullptr, nullptr, nullptr, nullptr, CategoryPatternExpr::kNone) {}
 
 StructPatternExpr::StructPatternExpr(
     const std::wstring &statement, 
     std::shared_ptr<PatternExpr> &patternExpr) :
-  StructPatternExpr(statement, nullptr, nullptr, patternExpr, nullptr, nullptr, CategoryPatternExpr::kNone) {}
+  StructPatternExpr(statement, nullptr, nullptr, patternExpr, nullptr, nullptr, nullptr, CategoryPatternExpr::kNone) {}
 
 }}}

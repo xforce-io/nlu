@@ -8,6 +8,7 @@ namespace xforce { namespace nlu { namespace milkie {
 class Pattern;
 class PatternSet;
 class StructPatternExpr;
+class CodeSeg;
 
 class PatternExpr {
  public:
@@ -62,6 +63,7 @@ class PatternExpr {
   std::shared_ptr<StructPatternExpr> structPatternExpr_;
 
   std::vector<std::shared_ptr<PatternExpr>> items_;
+  std::shared_ptr<CodeSeg> filter_;
   const std::wstring *storage_;
   CategoryPatternExpr::Category repeatPattern_;
 

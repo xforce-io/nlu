@@ -4,6 +4,7 @@
 #include "../../pattern_set/pattern_set.h"
 #include "../../../../conf/conf.h"
 #include "../../variable/variable.h"
+#include "../../codeseg/code_seg.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -33,6 +34,10 @@ PatternExpr::PatternExpr(
 
   if (structPatternExpr->GetItems() != nullptr) {
     items_ = *(structPatternExpr_->GetItems());
+  }
+
+  if (structPatternExpr->GetFilter() != nullptr) {
+    filter_ = structPatternExpr_->GetFilter();
   }
 
   if (nullptr != structPatternExpr_) {
@@ -137,6 +142,11 @@ bool PatternExpr::MatchPattern(Context &context, bool singleton) {
     return ret;
   }
 
+  if (nullptr != filter_ && filter_->Match(context) > 0) {
+    context.StopMatch(false);
+    DebugMatch_(context, startIdx, false);
+  }
+
   StopMatch(true, context, singleton);
   DebugMatch_(context, startIdx, true);
   return true;
@@ -187,8 +197,13 @@ bool PatternExpr::MatchForWildcard(Context &context, ssize_t itemIdx) {
       context.SetStorageStr(
               items_[itemIdx-1]->AsWildcard(),
               context.GetSentence().GetSentence().substr(oldCurPos, offset-oldCurPos));
-      context.StopMatch(true);
-      context.SetStorage(storage_, *(context.GetStoragePattern()));
+      if (nullptr == filter_ || filter_->Match(context)) {
+        context.StopMatch(true);
+        context.SetStorage(storage_, *(context.GetStoragePattern()));
+        return true;
+      } else {
+        context.RemoveStorage(items_[itemIdx-1]->AsWildcard());
+      }
     }
 
     if (offset == context.Length()) {
