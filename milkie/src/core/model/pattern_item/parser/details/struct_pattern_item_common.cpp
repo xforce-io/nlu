@@ -6,7 +6,7 @@ namespace xforce { namespace nlu { namespace milkie {
 std::shared_ptr<StructPatternItemCommon> StructPatternItemCommon::Build(const std::wstring &statement) {
   ssize_t endName = statement.find('(');
   if (endName>=0) {
-    CategoryPatternItem::Category category = PatternItem::ParseCategory(statement.substr(1, statement.length() - 1));
+    CategoryPatternItem::Category category = PatternItem::ParseCategory(statement.substr(1, endName-1));
     ssize_t bypassLeftBrackets = 0;
     ssize_t bypassRightBrackets = 0;
     ssize_t idx = endName+1;

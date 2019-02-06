@@ -19,7 +19,11 @@ set(BASIC_SRC_DIR "${CMAKE_SOURCE_DIR}/src/")
 
 FILE(GLOB_RECURSE BASIC_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -std=c++11 -O2")
+message(${BASIC_FILES})
+
+set(CMAKE_CXX_COMPILER g++)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -O2")
 
 add_library(basic
   ${BASIC_FILES})

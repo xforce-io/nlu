@@ -14,6 +14,8 @@ class Context {
       std::shared_ptr<basic::NluContext> nluContext,
       ssize_t curPos,
       std::stack<std::shared_ptr<Frame>> stack);
+  inline Context(std::shared_ptr<basic::NluContext> nluContext);
+  inline Context(const std::wstring &sentenceStr);
   virtual ~Context();
 
   inline void Reset();
@@ -64,10 +66,16 @@ Context::Context(
     std::shared_ptr<basic::NluContext> nluContext,
     ssize_t curPos,
     std::stack<std::shared_ptr<Frame>> stack) {
-  UNUSE(curPos)
-  UNUSE(stack)
   sentence_ = new Sentence(nluContext);
+  curPos_ = curPos;
+  stack_ = stack;
 }
+
+Context::Context(std::shared_ptr<basic::NluContext> nluContext) :
+  Context(nluContext, 0, std::stack<std::shared_ptr<Frame>>()) {}
+
+Context::Context(const std::wstring &sentenceStr) :
+  Context(std::make_shared<basic::NluContext>(sentenceStr)) {}
 
 void Context::Reset() {
   curPos_ = 0;  
