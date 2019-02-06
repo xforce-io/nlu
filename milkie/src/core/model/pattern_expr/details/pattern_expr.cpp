@@ -8,8 +8,8 @@
 
 namespace xforce { namespace nlu { namespace milkie {
 
-std::unordered_set<char> PatternExpr::invalidLeadPosForWildcard_ = PatternExpr::CreateInvalidLeadPosForWildcard();
-std::unordered_set<std::string> PatternExpr::invalidFullPosForWildcard_ = PatternExpr::CreateInvalidFullPosForWildcard();
+std::unordered_set<wchar_t> PatternExpr::invalidLeadPosForWildcard_ = PatternExpr::CreateInvalidLeadPosForWildcard();
+std::unordered_set<std::wstring> PatternExpr::invalidFullPosForWildcard_ = PatternExpr::CreateInvalidFullPosForWildcard();
 
 PatternExpr::PatternExpr(
     std::shared_ptr<Pattern> pattern,
@@ -302,18 +302,18 @@ void PatternExpr::DebugMatch_(Context &context, ssize_t startIdx, bool ok) {
   }
 }
 
-std::unordered_set<char> PatternExpr::CreateInvalidLeadPosForWildcard() {
-  std::unordered_set<char> result;
-  result.insert('y');
-  result.insert('w');
+std::unordered_set<wchar_t> PatternExpr::CreateInvalidLeadPosForWildcard() {
+  std::unordered_set<wchar_t> result;
+  result.insert(L'y');
+  result.insert(L'w');
   return result;
 }
 
-std::unordered_set<std::string> PatternExpr::CreateInvalidFullPosForWildcard() {
-  std::unordered_set<std::string> result;
-  result.insert("vshi");
-  result.insert("vyou");
-  result.insert("ry");
+std::unordered_set<std::wstring> PatternExpr::CreateInvalidFullPosForWildcard() {
+  std::unordered_set<std::wstring> result;
+  result.insert(L"vshi");
+  result.insert(L"vyou");
+  result.insert(L"ry");
   return result;
 }
 

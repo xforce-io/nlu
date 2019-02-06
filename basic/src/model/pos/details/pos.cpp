@@ -67,35 +67,35 @@ Pos::Type Pos::GetPos(const std::string &pos) {
   };
 }
 
-const std::string& Pos::Str(Pos::Type type) {
-  static const std::string kN = "n";
-  static const std::string kT = "t";
-  static const std::string kS = "s";
-  static const std::string kF = "f";
-  static const std::string kM = "m";
-  static const std::string kQ = "q";
-  static const std::string kR = "r";
-  static const std::string kV = "v";
-  static const std::string kA = "a";
-  static const std::string kZ = "z";
-  static const std::string kB = "b";
-  static const std::string kD = "d";
-  static const std::string kP = "p";
-  static const std::string kC = "c";
-  static const std::string kU = "u";
-  static const std::string kY = "y";
-  static const std::string kO = "o";
-  static const std::string kE = "e";
-  static const std::string kH = "h";
-  static const std::string kK = "k";
-  static const std::string kGn = "gn";
-  static const std::string kGv = "gv";
-  static const std::string kX = "x";
-  static const std::string kI = "i";
-  static const std::string kL = "l";
-  static const std::string kJ = "j";
-  static const std::string kW = "w";
-  static const std::string kUndef = "undef";
+const std::wstring& Pos::Str(Pos::Type type) {
+  static const std::wstring kN = L"n";
+  static const std::wstring kT = L"t";
+  static const std::wstring kS = L"s";
+  static const std::wstring kF = L"f";
+  static const std::wstring kM = L"m";
+  static const std::wstring kQ = L"q";
+  static const std::wstring kR = L"r";
+  static const std::wstring kV = L"v";
+  static const std::wstring kA = L"a";
+  static const std::wstring kZ = L"z";
+  static const std::wstring kB = L"b";
+  static const std::wstring kD = L"d";
+  static const std::wstring kP = L"p";
+  static const std::wstring kC = L"c";
+  static const std::wstring kU = L"u";
+  static const std::wstring kY = L"y";
+  static const std::wstring kO = L"o";
+  static const std::wstring kE = L"e";
+  static const std::wstring kH = L"h";
+  static const std::wstring kK = L"k";
+  static const std::wstring kGn = L"gn";
+  static const std::wstring kGv = L"gv";
+  static const std::wstring kX = L"x";
+  static const std::wstring kI = L"i";
+  static const std::wstring kL = L"l";
+  static const std::wstring kJ = L"j";
+  static const std::wstring kW = L"w";
+  static const std::wstring kUndef = L"undef";
   switch (type) {
     case Pos::kN :
       return kN;

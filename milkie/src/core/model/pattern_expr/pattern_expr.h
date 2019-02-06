@@ -53,8 +53,8 @@ class PatternExpr {
  private:
   void DebugMatch_(Context &context, ssize_t startIdx, bool ok);
 
-  static std::unordered_set<char> CreateInvalidLeadPosForWildcard();
-  static std::unordered_set<std::string> CreateInvalidFullPosForWildcard();
+  static std::unordered_set<wchar_t> CreateInvalidLeadPosForWildcard();
+  static std::unordered_set<std::wstring> CreateInvalidFullPosForWildcard();
 
  private: 
   std::shared_ptr<Pattern> pattern_;
@@ -67,8 +67,8 @@ class PatternExpr {
   const std::wstring *storage_;
   CategoryPatternExpr::Category repeatPattern_;
 
-  static std::unordered_set<char> invalidLeadPosForWildcard_;
-  static std::unordered_set<std::string> invalidFullPosForWildcard_;
+  static std::unordered_set<wchar_t> invalidLeadPosForWildcard_;
+  static std::unordered_set<std::wstring> invalidFullPosForWildcard_;
 };
 
 PatternExpr::PatternExpr(std::shared_ptr<Pattern> &pattern) :

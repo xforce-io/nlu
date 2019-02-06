@@ -21,13 +21,14 @@ bool PatternItemWordpos::MatchPattern(Context &context) {
 
   std::wstringstream ss;
   for (auto &segment : *featureWordposes) {
-    ss << segment.GetPos() << kSep;
+    ss << basic::Pos::Str(segment.GetPos()) << kSep;
   }
 
+  std::wstring patternToMatch = ss.str();
   std::wcmatch wcm;
-  if (std::regex_search(ss.str().c_str(), wcm, *regex_)) {
+  if (std::regex_search(patternToMatch.c_str(), wcm, *regex_)) {
     const std::wstring &matched = wcm[0].str();
-    if (ss.str().substr(0, matched.length()) == matched) {
+    if (patternToMatch.substr(0, matched.length()) == matched) {
       Wstrings items;
       StrHelper::SplitStr(matched, kSep, items);
       contentMatched_ = L"";
@@ -42,19 +43,25 @@ bool PatternItemWordpos::MatchPattern(Context &context) {
 }
 
 std::wregex* PatternItemWordpos::CreatePattern_(const std::wstring &patternStr) {
-  std::wstring tmpPattern = patternStr;
+  std::wstringstream wss;
 
   size_t cntSep = 0;
   for (size_t i=0; i < patternStr.length(); ++i) {
     if (kSep == patternStr[i]) {
       ++cntSep;
     }
+
+    if (L'P' == patternStr[i]) {
+      wss << L"[a-z0-9]*";
+    } else {
+      wss << patternStr[i];
+    }
   }
 
   if (0 == cntSep) {
-    tmpPattern.append(1, kSep);
+    wss << kSep;
   }
-  return new std::wregex(tmpPattern);
+  return new std::wregex(wss.str());
 }
 
 

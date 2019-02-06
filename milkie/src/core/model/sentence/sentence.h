@@ -11,6 +11,7 @@ class Sentence {
  public: 
   inline explicit Sentence(std::shared_ptr<basic::NluContext> nluContext);
   inline explicit Sentence(const std::wstring &sentence);
+  virtual ~Sentence();
 
   inline const std::wstring& GetSentence() const;
   inline std::wstring GetFeatureContent(ssize_t offset) const;
@@ -33,7 +34,8 @@ class Sentence {
 namespace xforce { namespace nlu { namespace milkie {
 
 Sentence::Sentence(std::shared_ptr<basic::NluContext> nluContext) :
-    nluContext_(nluContext) {
+    nluContext_(nluContext),
+    featureSegment_(nullptr) {
   featureContent_ = new SentenceFeatureContent(nluContext);
 }
 
