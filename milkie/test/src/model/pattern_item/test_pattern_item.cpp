@@ -10,6 +10,7 @@
 LOGGER_IMPL(xforce::xforce_logger, L"milkie")
 
 using namespace xforce::nlu::milkie;
+using namespace xforce::nlu::basic;
 
 int main(int argc, char **argv) {
   setlocale(LC_ALL, "");
@@ -41,5 +42,11 @@ TEST(test_all, match) {
   ret = PatternItem::Build(L"#Pos(aP-uP-nP-)");
 
   context = std::make_shared<Context>(L"美味的方便面才好吃");
+
+  basic::Segments segments;
+  segments.push_back(Segment(Pos::kA, 0, 2));
+  segments.push_back(Segment(Pos::kU, 2, 1));
+  segments.push_back(Segment(Pos::kN, 3, 3));
+  context.GetSentence().GetNluContext()->SetSegments(segments);
   ASSERT_TRUE(ret.first->MatchPattern(*(context.get())));
 }
