@@ -11,7 +11,7 @@ class Conf {
   bool Init(const xforce::JsonType &filepath); 
 
   inline bool GetDebugMode() const;
- 
+
   static Conf& Get() { return *conf_; }
   static void Tini();
 
