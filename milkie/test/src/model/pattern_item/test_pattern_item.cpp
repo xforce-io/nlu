@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
   return RUN_ALL_TESTS();
 }
 
-TEST(test_all, build) {
+TEST(testAll, build) {
   auto ret = PatternItem::Build(L"\"123\" 12");
   ASSERT_TRUE(typeid(*(ret.first)) == typeid(PatternItemStr));
 
@@ -31,7 +31,7 @@ TEST(test_all, build) {
   ASSERT_TRUE(typeid(*(ret.first)) == typeid(PatternItemWordpos));
 }
 
-TEST(test_all, match) {
+TEST(testAll, match) {
   auto ret = PatternItem::Build(L"\"123\" 12");
   std::shared_ptr<Context> context = std::make_shared<Context>(L"123");
   ASSERT_TRUE(ret.first->MatchPattern(*context));
