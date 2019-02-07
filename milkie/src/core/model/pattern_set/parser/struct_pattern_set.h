@@ -31,17 +31,25 @@ class StructPatternSet :public StructElement {
       const std::wstring &statement);
 
  private:
-  const std::unordered_set<std::wstring> *patternStrs_;
-  const PatternExpr::Vector *patternExprs_;
+  std::unordered_set<std::wstring> *patternStrs_;
+  PatternExpr::Vector *patternExprs_;
 };
 
 StructPatternSet::StructPatternSet(
       const std::wstring &statement,
       const std::unordered_set<std::wstring> *patternStrs,
       const PatternExpr::Vector *patternExprs) :
-  StructElement(statement),
-  patternStrs_(patternStrs),
-  patternExprs_(patternExprs) {}
+  StructElement(statement) {
+  if (nullptr != patternStrs) {
+    patternStrs_ = new std::unordered_set<std::wstring>();
+    *patternStrs_ = *patternStrs;
+  }
+
+  if (nullptr != patternExprs) {
+    patternExprs_ = new PatternExpr::Vector();
+    *patternExprs_ = *patternExprs;
+  }
+}
 
 const std::unordered_set<std::wstring>* StructPatternSet::GetPatternStrs() const {
   return patternStrs_;
