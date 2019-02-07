@@ -45,7 +45,7 @@ add_executable(testPatternItem
   ${CMAKE_SOURCE_DIR}/src/model/pattern_item/test_pattern_item.cpp
 )
 
-add_executable(testPatternItemRepr
+add_executable(testStructPatternItem
   ${LOCAL_CPP_FILES}
-  ${CMAKE_SOURCE_DIR}/src/model/pattern_item/test_pattern_item_repr.cpp
+  ${CMAKE_SOURCE_DIR}/src/model/pattern_item/test_struct_pattern_item.cpp
 )
