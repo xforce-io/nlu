@@ -13,16 +13,6 @@ ReferManager::~ReferManager() {
   XFC_DELETE(globalDict_)
 }
 
-void ReferManager::BuildGlobalDict() {
-  const std::string& referFilepath = Conf::Get().GetReferFilepath();
-  if (nullptr == globalDict_) {
-    globalDict_ = new Refer();
-
-  } else {
-
-  }
-}
-
 bool ReferManager::PutLocalRefer(
     const std::wstring &blockKey, 
     const std::wstring &line) {

@@ -18,7 +18,8 @@ int main(int argc, char **argv) {
 
 TEST(testAll, build) {
   auto ret = PatternSet::Build(L"global", L"[\"美味的方便面\" && #Pos(aP-uP-nP-), \"就是的\"]");
-  ASSERT_TRUE(ret.first->GetPatternExprs().size() == 4);
+  std::cout << ret.first->GetPatternExprs().size() << std::endl;
+  ASSERT_TRUE(ret.first->GetPatternExprs().size() == 2);
 
   auto context = std::make_shared<Context>(L"美味的方便面才好吃");
   Segment::Vector segments;
@@ -26,16 +27,16 @@ TEST(testAll, build) {
   segments.push_back(Segment(Pos::kU, 2, 1));
   segments.push_back(Segment(Pos::kN, 3, 3));
   context->GetSentence().GetNluContext()->SetSegments(segments);
-  ASSERT_TRUE(ret.first->MatchPattern(*(context.get()));
+  ASSERT_TRUE(ret.first->MatchPattern(*(context.get())));
 
   context = std::make_shared<Context>(L"美味的牛肉才好吃");
-  ASSERT_TRUE(ret.first->MatchPattern(*(context.get()));
+  ASSERT_TRUE(ret.first->MatchPattern(*(context.get())));
 
   context = std::make_shared<Context>(L"就是的吗");
-  ASSERT_TRUE(ret.first->MatchPattern(*(context.get()));
+  ASSERT_TRUE(ret.first->MatchPattern(*(context.get())));
 
   context = std::make_shared<Context>(L"就是说吗");
-  ASSERT_TRUE(!ret.first->MatchPattern(*(context.get()));
+  ASSERT_TRUE(!ret.first->MatchPattern(*(context.get())));
 
   /*
    * TODO: add global refer
@@ -43,4 +44,3 @@ TEST(testAll, build) {
   ASSERT_TRUE(ret.first->MatchPattern(*(context.get()));
    */
 }
-

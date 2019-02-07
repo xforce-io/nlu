@@ -10,7 +10,6 @@ class ReferManager {
   ReferManager();
   virtual ~ReferManager();
 
-  void BuildGlobalDict();
   bool PutLocalRefer(const std::wstring &blockKey, const std::wstring &line);
   std::shared_ptr<PatternExpr> Get(const std::wstring &blockKey, const std::wstring &key);
 

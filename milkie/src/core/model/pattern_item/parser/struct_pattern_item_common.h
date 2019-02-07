@@ -30,6 +30,8 @@ StructPatternItemCommon::StructPatternItemCommon(
     const Wstrings &args,
     CategoryPatternItem::Category category) :
   StructPatternItem(statement, args),
-  category_(category) {}
+  category_(category) {
+  std::cout << "B" << std::endl;
+}
 
 }}}

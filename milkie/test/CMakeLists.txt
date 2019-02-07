@@ -49,3 +49,8 @@ add_executable(testStructPatternItem
   ${LOCAL_CPP_FILES}
   ${CMAKE_SOURCE_DIR}/src/model/pattern_item/test_struct_pattern_item.cpp
 )
+
+add_executable(testPatternSet
+  ${LOCAL_CPP_FILES}
+  ${CMAKE_SOURCE_DIR}/src/model/pattern_set/test_pattern_set.cpp
+)

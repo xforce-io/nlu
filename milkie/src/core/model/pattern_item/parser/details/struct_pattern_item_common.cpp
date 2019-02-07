@@ -21,6 +21,7 @@ std::shared_ptr<StructPatternItemCommon> StructPatternItemCommon::Build(const st
 
     if (bypassLeftBrackets >= bypassRightBrackets) {
       FATAL("invalid_pattern_item[" << statement << "]");
+      std::cout << "C" << std::endl;
       return nullptr;
     }
 
@@ -35,7 +36,7 @@ std::shared_ptr<StructPatternItemCommon> StructPatternItemCommon::Build(const st
     }
 
     if (args.size() >= 1) {
-      return std::make_shared<StructPatternItemCommon>(statement, args, category);
+      return std::make_shared<StructPatternItemCommon>(statement.substr(0, idx), args, category);
     }
   }
   FATAL("invalid_pattern_item[" << statement << "]");

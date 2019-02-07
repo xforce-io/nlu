@@ -15,7 +15,8 @@ PatternExpr::PatternExpr(
     std::shared_ptr<Pattern> pattern,
     std::shared_ptr<PatternSet> patternSet,
     const std::wstring *wildcardName,
-    std::shared_ptr<StructPatternExpr> structPatternExpr) {
+    std::shared_ptr<StructPatternExpr> structPatternExpr) :
+    wildcardName_(nullptr) {
   if (nullptr == pattern ||
       nullptr == patternSet ||
       nullptr == wildcardName) {
