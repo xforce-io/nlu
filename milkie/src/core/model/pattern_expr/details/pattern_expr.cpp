@@ -152,6 +152,7 @@ bool PatternExpr::MatchPattern(Context &context, bool singleton) {
   if (nullptr != filter_ && filter_->Match(context) > 0) {
     context.StopMatch(false);
     DebugMatch_(context, startIdx, false);
+    return false;
   }
 
   StopMatch(true, context, singleton);
