@@ -34,7 +34,8 @@ namespace xforce { namespace nlu { namespace milkie {
 
 Frame::Frame(ssize_t startPos) :
     storagePattern_(nullptr) {
-  this->startPos_ = startPos;    
+  this->startPos_ = startPos;
+  storage_ = new Storage();
 }
 
 Frame::~Frame() {
