@@ -112,10 +112,12 @@ std::shared_ptr<std::wstring> Context::GetCurPattern() const {
 
 void Context::StartMatch() {
   stack_.push(std::make_shared<Frame>(curPos_));
+  std::cout << "push "<< stack_.size() << std::endl;
 }
 
 void Context::StartMatch(ssize_t offset) {
   stack_.push(std::make_shared<Frame>(curPos_));
+  std::cout << "push "<< stack_.size() << std::endl;
   curPos_ = offset;
 }
 
@@ -135,6 +137,7 @@ void Context::StopMatch(bool succ, StorageItem *storageItem) {
   } else {
     curPos_ = framePoped->GetStartPos();
   }
+  std::cout << "pop "<< stack_.size() << std::endl;
 }
 
 void Context::SetStorage(const std::wstring *key, StorageItem &storageItem) {
