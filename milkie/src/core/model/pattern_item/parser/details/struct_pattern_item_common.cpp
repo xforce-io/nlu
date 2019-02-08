@@ -21,7 +21,6 @@ std::shared_ptr<StructPatternItemCommon> StructPatternItemCommon::Build(const st
 
     if (bypassLeftBrackets >= bypassRightBrackets) {
       FATAL("invalid_pattern_item[" << statement << "]");
-      std::cout << "C" << std::endl;
       return nullptr;
     }
 

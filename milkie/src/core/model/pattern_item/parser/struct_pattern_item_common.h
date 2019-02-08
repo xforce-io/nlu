@@ -31,7 +31,6 @@ StructPatternItemCommon::StructPatternItemCommon(
     CategoryPatternItem::Category category) :
   StructPatternItem(statement, args),
   category_(category) {
-  std::cout << "B" << std::endl;
 }
 
 }}}

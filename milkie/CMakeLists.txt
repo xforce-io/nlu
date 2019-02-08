@@ -24,7 +24,7 @@ set(LIB_DEPS
 find_library(LUA_LIBRARY lua ./3rd/lua-5.3.5/lib NO_DEFAULT_PATH)
 
 add_library(milkie
-  ${SEG_FILES} src/core/model/codeseg/code_seg.h src/core/model/codeseg/details/code_seg.cpp src/core/model/context/storage.h test/src/model/pattern_item/test_pattern_item_repr.cpp)
+  ${SEG_FILES} src/core/model/codeseg/code_seg.h src/core/model/codeseg/details/code_seg.cpp src/core/model/context/storage.h test/src/model/pattern_item/test_pattern_item_repr.cpp test/src/model/pattern/test_pattern.cpp)
 
 target_link_libraries(milkie
   ${LIB_DEPS}
