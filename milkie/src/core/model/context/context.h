@@ -10,10 +10,6 @@ class StorageItem;
 
 class Context {
  public:
-  inline Context(
-      std::shared_ptr<basic::NluContext> nluContext,
-      ssize_t curPos,
-      std::stack<std::shared_ptr<Frame>> stack);
   inline Context(std::shared_ptr<basic::NluContext> nluContext);
   inline Context(const std::wstring &sentenceStr);
   virtual ~Context();
@@ -62,17 +58,10 @@ class Context {
 
 namespace xforce { namespace nlu { namespace milkie {
 
-Context::Context(
-    std::shared_ptr<basic::NluContext> nluContext,
-    ssize_t curPos,
-    std::stack<std::shared_ptr<Frame>> stack) {
+Context::Context(std::shared_ptr<basic::NluContext> nluContext) {
   sentence_ = new Sentence(nluContext);
-  curPos_ = curPos;
-  stack_ = stack;
+  Reset();
 }
-
-Context::Context(std::shared_ptr<basic::NluContext> nluContext) :
-  Context(nluContext, 0, std::stack<std::shared_ptr<Frame>>()) {}
 
 Context::Context(const std::wstring &sentenceStr) :
   Context(std::make_shared<basic::NluContext>(sentenceStr)) {}
@@ -129,7 +118,7 @@ void Context::StopMatch(bool succ, StorageItem *storageItem) {
   std::shared_ptr<Frame> framePoped = stack_.top();
   stack_.pop();
   if (succ) {
-    std::cout << stack_.size() << std::endl;
+    std::cout << "succ " << stack_.size() << std::endl;
     stack_.top()->GetStorage().Merge(framePoped->GetStorage());
     if (nullptr != storageItem) {
       stack_.top()->SetStoragePattern(*storageItem);
