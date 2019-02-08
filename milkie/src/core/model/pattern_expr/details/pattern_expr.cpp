@@ -18,13 +18,18 @@ PatternExpr::PatternExpr(
     std::shared_ptr<StructPatternExpr> structPatternExpr) :
     wildcardName_(nullptr),
     storage_(nullptr) {
-  if (nullptr == pattern ||
-      nullptr == patternSet ||
-      nullptr == wildcardName) {
+  pattern_ = pattern;
+  patternSet_ = patternSet;
+  if (nullptr != wildcardName) {
+    wildcardName_ = new std::wstring(*wildcardName);
+  }
+  structPatternExpr_ = structPatternExpr;
+
+  if (nullptr != pattern ||
+      nullptr != patternSet ||
+      nullptr != wildcardName) {
     return;
   }
-
-  wildcardName_ = new std::wstring(*wildcardName);
 
   if (structPatternExpr->GetPattern() != nullptr) {
     pattern_ = structPatternExpr_->GetPattern();
