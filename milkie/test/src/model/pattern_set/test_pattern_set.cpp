@@ -30,7 +30,7 @@ TEST(testAll, build) {
   ASSERT_TRUE(ret.first->MatchPattern(*(context.get())));
 
   context = std::make_shared<Context>(L"美味的牛肉才好吃");
-  ASSERT_TRUE(ret.first->MatchPattern(*(context.get())));
+  ASSERT_TRUE(!ret.first->MatchPattern(*(context.get())));
 
   context = std::make_shared<Context>(L"就是的吗");
   ASSERT_TRUE(ret.first->MatchPattern(*(context.get())));
