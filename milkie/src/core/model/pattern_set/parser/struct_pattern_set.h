@@ -43,11 +43,15 @@ StructPatternSet::StructPatternSet(
   if (nullptr != patternStrs) {
     patternStrs_ = new std::unordered_set<std::wstring>();
     *patternStrs_ = *patternStrs;
+  } else {
+    patternStrs_ = nullptr;
   }
 
   if (nullptr != patternExprs) {
     patternExprs_ = new PatternExpr::Vector();
     *patternExprs_ = *patternExprs;
+  } else {
+    patternExprs_ = nullptr;
   }
 }
 
