@@ -127,6 +127,7 @@ void Context::StopMatch(bool succ, StorageItem *storageItem) {
   std::shared_ptr<Frame> framePoped = stack_.top();
   stack_.pop();
   if (succ) {
+    std::cout << stack_.size() << std::endl;
     stack_.top()->GetStorage().Merge(framePoped->GetStorage());
     if (nullptr != storageItem) {
       stack_.top()->SetStoragePattern(*storageItem);
