@@ -42,7 +42,6 @@ class Context {
   inline StorageItem* GetStoragePattern();
   inline bool End() const;
   inline size_t Length() const;
-  inline Context* Copy();
 
  private:
   Sentence *sentence_;
@@ -207,10 +206,6 @@ bool Context::End() const {
 
 size_t Context::Length() const {
   return sentence_->GetSentence().length();
-}
-
-Context* Context::Copy() {
-  return new Context(sentence_->GetNluContext(), curPos_, stack_);
 }
 
 }}}
