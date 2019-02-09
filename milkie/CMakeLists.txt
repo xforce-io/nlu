@@ -13,7 +13,7 @@ include_directories(
 link_directories(
 )
 
-FILE(GLOB_RECURSE SEG_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
+FILE(GLOB_RECURSE MILKIE_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -std=c++11 -DUNICODE -Wno-sign-compare")
 set(LIB_DEPS 
@@ -24,7 +24,7 @@ set(LIB_DEPS
 find_library(LUA_LIBRARY lua ./3rd/lua-5.3.5/lib NO_DEFAULT_PATH)
 
 add_library(milkie
-  ${SEG_FILES} src/core/model/codeseg/code_seg.h src/core/model/codeseg/details/code_seg.cpp src/core/model/context/storage.h test/src/model/pattern_item/test_pattern_item_repr.cpp test/src/model/pattern/test_pattern.cpp src/details/milkie.cpp test/src/model/pattern_expr/test_pattern_expr.cpp)
+  ${MILKIE_FILES})
 
 target_link_libraries(milkie
   ${LIB_DEPS}

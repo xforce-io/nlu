@@ -2,6 +2,9 @@
 
 #include "gtest/gtest.h"
 
+#include "../../../src/core/model/pattern_expr/pattern_expr.h"
+#include "../../../src/milkie.h"
+
 LOGGER_IMPL(xforce::xforce_logger, L"milkie")
 
 using namespace xforce::nlu::milkie;
@@ -24,6 +27,6 @@ TEST(testAll, all) {
 }
 
 void testcase0() {
-  auto ret = PatternExpr::Build(kTestBlockKey, "{$IsAAnchor -> desc}");
+  auto ret = PatternExpr::Build(kTestBlockKey, L"{$IsAAnchor -> desc}");
   ASSERT_TRUE(ret.second == 21);
 }
