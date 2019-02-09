@@ -13,7 +13,12 @@ class ReferManager {
   ReferManager();
   virtual ~ReferManager();
 
-  void BuildGlobalDict();
+  /*
+   * @return :
+   *        true  => succ
+   *        false => has error
+   */
+  bool BuildGlobalDict();
   bool AddToGlobalDict(const std::string &filepath);
   bool PutLocalRefer(const std::wstring &blockKey, const std::wstring &line);
   std::shared_ptr<PatternExpr> Get(const std::wstring &blockKey, const std::wstring &key);

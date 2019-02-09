@@ -59,3 +59,8 @@ add_executable(testPattern
   ${LOCAL_CPP_FILES}
   ${CMAKE_SOURCE_DIR}/src/model/pattern/test_pattern.cpp
 )
+
+add_executable(testPatternExpr
+  ${LOCAL_CPP_FILES}
+  ${CMAKE_SOURCE_DIR}/src/model/pattern_expr/test_pattern_expr.cpp
+)

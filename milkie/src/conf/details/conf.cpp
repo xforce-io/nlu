@@ -4,7 +4,15 @@ namespace xforce { namespace nlu { namespace milkie {
 
 Conf *Conf::conf_ = new Conf();
 
-Conf::Conf() {}  
+Conf::Conf() {}
+
+bool Conf::Init(const std::string &filepath) {
+  const JsonType *jsonType = JsonType::CreateConf(filepath);
+  if (nullptr == jsonType) {
+    return false;
+  }
+  return Init(*jsonType);
+}
 
 bool Conf::Init(const xforce::JsonType &confJson) {
   std::string referFiledir;

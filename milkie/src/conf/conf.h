@@ -8,7 +8,8 @@ class Conf {
  public: 
   Conf();
 
-  bool Init(const xforce::JsonType &filepath); 
+  bool Init(const std::string &filepath);
+  bool Init(const xforce::JsonType &confJson);
 
   inline bool GetDebugMode() const;
   inline const std::vector<std::string>& GetReferFilepaths() const;

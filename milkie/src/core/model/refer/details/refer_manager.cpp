@@ -15,13 +15,15 @@ ReferManager::~ReferManager() {
   XFC_DELETE(globalDict_)
 }
 
-void ReferManager::BuildGlobalDict() {
+bool ReferManager::BuildGlobalDict() {
+  bool hasError = false;
   const std::vector<std::string> referFilepaths = Conf::Get().GetReferFilepaths();
   std::vector<std::string> lines;
   std::vector<std::wstring> wlines;
   for (auto &referFilepath : referFilepaths) {
     bool ret = IOHelper::ReadLinesFromFilepath(referFilepath, lines);
     if (!ret) {
+      hasError = true;
       ERROR("fail_read_lines_from[" << referFilepath << "]");
       continue;
     }
@@ -31,6 +33,7 @@ void ReferManager::BuildGlobalDict() {
     std::wstring wline;
     auto ret = StrHelper::Str2Wstr(line, wline);
     if (!ret) {
+      hasError = true;
       ERROR("fail_convert_line[" << line << "]");
       continue;
     }
@@ -42,21 +45,24 @@ void ReferManager::BuildGlobalDict() {
     for (auto &wline : wlines) {
       auto ret = globalDict_->Put(kGlobal, wline);
       if (!ret) {
+        hasError = true;
         ERROR("fail_put_line[" << wline << "]");
         continue;
       }
     }
   } else {
-    Refer *newDict = new Refer();
+    auto newDict = new Refer();
     for (auto &wline : wlines) {
       bool ret = newDict->Put(kGlobal, wline);
       if (!ret) {
+        hasError = true;
         ERROR("fail_put_line[" << wline << "]");
         continue;
       }
     }
     globalDict_ = newDict;
   }
+  return !hasError;
 }
 
 bool ReferManager::AddToGlobalDict(const std::string &filepath) {
