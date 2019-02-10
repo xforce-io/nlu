@@ -50,7 +50,7 @@ aho_corasick::wtrie* PatternSet::BuildPatternStrsTrie_(
   aho_corasick::wtrie *patternStrsTrie = new aho_corasick::wtrie();
   for (auto patternStr : *patternStrs) {
     if (!patternStr.empty()) {
-      patternStrsTrie_->insert(patternStr);
+      patternStrsTrie->insert(patternStr);
       if (patternStr.length() > maxLengthPatternStrs_) {
         maxLengthPatternStrs_ = patternStr.length();
       }
