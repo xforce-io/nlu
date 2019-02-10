@@ -2,8 +2,9 @@
 
 #include "gtest/gtest.h"
 
-#include "../../../src/core/model/pattern_expr/pattern_expr.h"
 #include "../../../src/milkie.h"
+#include "../../../src/core/model/pattern_expr/pattern_expr.h"
+#include "../../../src/core/model/refer/refer_manager.h"
 
 LOGGER_IMPL(xforce::xforce_logger, L"milkie")
 
@@ -24,6 +25,7 @@ void testcase0();
 
 TEST(testAll, all) {
   ASSERT_TRUE(Milkie::Init("../conf/milkie.conf"));
+  ASSERT_TRUE(ReferManager::AddToGlobalDict("../../data/test/dict"));
   testcase0();
 }
 
