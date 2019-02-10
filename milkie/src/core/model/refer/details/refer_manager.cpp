@@ -4,7 +4,7 @@
 
 namespace xforce { namespace nlu { namespace milkie {
 
-const std::wstring ReferManager::kGlobal = "_GLOBAL_";
+const std::wstring ReferManager::kGlobal = L"_GLOBAL_";
 
 ReferManager ReferManager::referManager_;
 
@@ -24,7 +24,9 @@ bool ReferManager::BuildGlobalDict() {
     bool ret = IOHelper::ReadLinesFromFilepath(referFilepath, lines);
     if (!ret) {
       hasError = true;
-      ERROR("fail_read_lines_from[" << referFilepath << "]");
+      std::wstring wReferFilepath;
+      StrHelper::Str2Wstr(referFilepath, wReferFilepath);
+      ERROR("fail_read_lines_from[" << wReferFilepath << "]");
       continue;
     }
   }
@@ -34,7 +36,7 @@ bool ReferManager::BuildGlobalDict() {
     auto ret = StrHelper::Str2Wstr(line, wline);
     if (!ret) {
       hasError = true;
-      ERROR("fail_convert_line[" << line << "]");
+      ERROR("fail_convert_line[" << wline << "]");
       continue;
     }
     wlines.push_back(wline);
@@ -70,7 +72,9 @@ bool ReferManager::AddToGlobalDict(const std::string &filepath) {
 
   bool ret = IOHelper::ReadLinesFromFilepath(filepath, lines);
   if (!ret) {
-    ERROR("fail_read_lines_from[" << filepath << "]");
+    std::wstring wFilepath;
+    StrHelper::Str2Wstr(filepath, wFilepath);
+    ERROR("fail_read_lines_from[" << wFilepath << "]");
     return false;
   }
 
@@ -79,7 +83,7 @@ bool ReferManager::AddToGlobalDict(const std::string &filepath) {
     std::wstring wline;
     auto ret = StrHelper::Str2Wstr(line, wline);
     if (!ret) {
-      ERROR("fail_convert_line[" << line << "]");
+      ERROR("fail_convert_line[" << wline << "]");
       continue;
     }
     wlines.push_back(wline);
