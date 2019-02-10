@@ -38,7 +38,7 @@ bool Refer::Put(
     FATAL("invalid_dict_val(" << value << ")");
     return false;
   }
-  Put(blockKey, ret.first);
+  Put(theKey, ret.first);
   return true;
 }
 
