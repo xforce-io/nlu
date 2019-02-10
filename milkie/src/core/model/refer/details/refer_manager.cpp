@@ -116,6 +116,11 @@ bool ReferManager::PutLocalRefer(
 std::shared_ptr<PatternExpr> ReferManager::Get(
     const std::wstring &blockKey, 
     const std::wstring &key) {
+  auto patternExpr = globalDict_->Get(key);
+  if (nullptr != patternExpr) {
+    return patternExpr;
+  }
+
   auto iter = localDict_.find(blockKey);
   if (iter != localDict_.end()) {
     return iter->second->Get(key);
