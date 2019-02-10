@@ -9,6 +9,7 @@ Conf::Conf() {}
 bool Conf::Init(const std::string &filepath) {
   const JsonType *jsonType = JsonType::CreateConf(filepath);
   if (nullptr == jsonType) {
+    FATAL("fail_create_json_from_confpath");
     return false;
   }
   return Init(*jsonType);
@@ -19,7 +20,7 @@ bool Conf::Init(const xforce::JsonType &confJson) {
   int ret;
 
   XFC_FAIL_HANDLE_FATAL(
-      !confJson["debugMode"].IsStr(),
+      !confJson["debugMode"].IsBool(),
       "fail_get_debug_mode")
   debugMode_ = confJson["debugMode"].AsBool();
 
@@ -30,9 +31,8 @@ bool Conf::Init(const xforce::JsonType &confJson) {
 
   ret = xforce::IOHelper::ScanFiles(referFiledir, referFilepaths_);
   XFC_FAIL_HANDLE_FATAL(
-          ret <= 0,
+          ret<0,
           "file_scan_files_from_refer_filepath")
-
   return true;
 
   ERROR_HANDLE:

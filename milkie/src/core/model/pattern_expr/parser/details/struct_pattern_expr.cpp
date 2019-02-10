@@ -51,7 +51,7 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
         if (statement[curIdx+1] != L'*') {
           auto patternExpr = ReferManager::Get().Get(blockKey, *variableName);
           if (patternExpr.get() == nullptr) {
-            FATAL("unknown_dict_key_in_expr(" << variableName << ")");
+            FATAL("unknown_dict_key_in_expr(" << *variableName << ")");
             return nullptr;
           }
           patternExpr->SetStorageKey(*variableName);
