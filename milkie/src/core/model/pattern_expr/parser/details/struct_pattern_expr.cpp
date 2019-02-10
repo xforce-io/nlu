@@ -50,7 +50,7 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
         std::shared_ptr<std::wstring> variableName = Variable::GetVariableName(statement, curIdx+1);
         if (statement[curIdx+1] != L'*') {
           auto patternExpr = ReferManager::Get().Get(blockKey, *variableName);
-          if (patternExpr.get() != nullptr) {
+          if (patternExpr.get() == nullptr) {
             FATAL("unknown_dict_key_in_expr(" << variableName << ")");
             return nullptr;
           }
