@@ -22,6 +22,7 @@ int main(int argc, char **argv) {
 }
 
 void testcase0();
+void testcase1();
 
 TEST(testAll, all) {
   ASSERT_TRUE(Milkie::Init("../conf/milkie.conf"));
@@ -30,7 +31,14 @@ TEST(testAll, all) {
 }
 
 void testcase0() {
-  auto ret = PatternExpr::Build(kTestBlockKey, L"{$IsAAnchor -> desc}");
+  auto ret = PatternExpr::Build(kTestBlockKey, L"{$IsAAnchor -> desc }");
+  std::cout << ret.second << std::endl;
+  ASSERT_TRUE(ret.second == 21);
+}
+
+void testcase1() {
+  auto expr = L"{#Pos(dP-aP-) | ret = string.len(_pattern_) < 5 | -> target *}";
+  auto ret = PatternExpr::Build(kTestBlockKey, expr);
   std::cout << ret.second << std::endl;
   ASSERT_TRUE(ret.second == 21);
 }
