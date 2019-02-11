@@ -25,7 +25,7 @@ void testcase0();
 
 TEST(testAll, all) {
   ASSERT_TRUE(Milkie::Init("../conf/milkie.conf"));
-  ASSERT_TRUE(ReferManager::AddToGlobalDict("../../data/test/dict"));
+  ASSERT_TRUE(ReferManager::Get().AddToGlobalDict("../../data/test/dict"));
   testcase0();
 }
 
