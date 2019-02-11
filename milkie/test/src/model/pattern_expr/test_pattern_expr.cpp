@@ -37,7 +37,7 @@ void testcase0() {
 }
 
 void testcase1() {
-  auto expr = L"{#Pos(dP-aP-) | @_Len_() < 5 && @_Contain_($NegativeAdv) | -> target *}";
+  auto expr = L"{#Pos(dP-aP-) | ret = string.len(_pattern_) < 5 | -> target *}";
   auto ret = PatternExpr::Build(kTestBlockKey, expr);
   std::cout << ret.second << std::endl;
   ASSERT_TRUE(ret.second == 21);
