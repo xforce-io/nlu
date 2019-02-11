@@ -28,6 +28,10 @@ int CodeSeg::Match(Context &context) {
     lua_pushstring(luaState_, StrHelper::Wstr2Str(iter->second));
     lua_settable(luaState_, -3);
   }
+  lua_pushstring(luaState_, "_matched_");
+  lua_pushstring(luaState_, StrHelper::Wstr2Str(*(context.GetCurPattern())));
+  lua_settable(luaState_, -3);
+
   lua_setglobal(luaState_, "request");
 
   int ret = luaL_loadstring(luaState_, StrHelper::Wstr2Str(code_));
