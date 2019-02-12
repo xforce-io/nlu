@@ -50,7 +50,7 @@ void Storage::Set(const std::wstring &key, StorageItem &newItems) {
   } else {
     storageItem = iter->second;
   }
-  newItems.Add(*storageItem);
+  storageItem->Add(newItems);
 }
 
 void Storage::SetStr(const std::wstring &key, const std::wstring &value) {

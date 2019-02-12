@@ -141,20 +141,23 @@ void Context::RemoveStorage(const std::wstring *key) {
 }
 
 const StorageItem* Context::GetStorage(const std::wstring &key) {
+  const StorageItem *result = nullptr;
   std::stack<std::shared_ptr<Frame>> tmpStack;
   while (!stack_.empty()) {
     auto frame = stack_.top();
     const StorageItem* storageItem = frame->GetStorage().Get(key);
-    if (nullptr != storageItem) {
-      return storageItem;
+    if (nullptr != storageItem && nullptr == result) {
+      result = storageItem;
     }
     tmpStack.push(frame);
+    stack_.pop();
   }
 
   while (!tmpStack.empty()) {
       stack_.push(tmpStack.top());
+      tmpStack.pop();
   }
-  return nullptr;
+  return result;
 }
 
 const Wstrings* Context::GetStorageAsItems(const std::wstring &key) {
@@ -181,10 +184,12 @@ void Context::GetStorages(std::unordered_map<std::wstring, std::wstring> &kvs) {
     auto frame = stack_.top();
     frame->GetStorage().GetStrs(kvs);
     tmpStack.push(frame);
+    stack_.pop();
   }
 
   while (!tmpStack.empty()) {
       stack_.push(tmpStack.top());
+      tmpStack.pop();
   }
 }
 

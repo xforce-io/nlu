@@ -13,6 +13,7 @@ class StorageItem {
   inline void Add(const StorageItem &storageItem);
   const Wstrings& Get() const { return items_; }
   inline const std::wstring* GetAsString() const;
+  inline size_t Size() const;
 
  private:   
    std::vector<std::wstring> items_; 
@@ -43,6 +44,10 @@ const std::wstring* StorageItem::GetAsString() const {
   } else {
     return nullptr;
   }
+}
+
+size_t StorageItem::Size() const {
+  return items_.size();
 }
 
 }}}

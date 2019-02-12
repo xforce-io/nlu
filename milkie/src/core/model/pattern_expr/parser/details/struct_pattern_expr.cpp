@@ -78,10 +78,13 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
         curIdx += storage.length();
       } else if (L'*' == curChar) {
         categoryPatternExpr = CategoryPatternExpr::kZeroOrMore;
+        ++curIdx;
       } else if (L'+' == curChar) {
         categoryPatternExpr = CategoryPatternExpr::kOnceOrMore;
+        ++curIdx;
       } else if (L'?' == curChar) {
         categoryPatternExpr = CategoryPatternExpr::kZeroOrOnce;
+        ++curIdx;
       } else if (L'}' == curChar) {
         if (items.empty()) {
           FATAL("invalid_pattern_expr(" << statement << ")");
@@ -96,7 +99,7 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
                 filter,
                 &storage,
                 categoryPatternExpr);
-      } else if (CodeSeg::IsStartingChar(startingChar)) {
+      } else if (CodeSeg::IsStartingChar(curChar)) {
         ssize_t endOfFilter = statement.find(L"|}", curIdx+1);
         if (endOfFilter<0) {
           endOfFilter = statement.find(L"|->", curIdx+1);
