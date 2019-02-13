@@ -9,7 +9,7 @@
 namespace xforce { namespace nlu { namespace milkie {
 
 StructPatternExpr::~StructPatternExpr() {
-  XFC_DELETE(storageKey_)
+  XFC_DELETE(storageItem_)
   XFC_DELETE(patternExprs_)
 }
 
@@ -27,7 +27,7 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
     PatternExpr::Vector items;
     std::shared_ptr<CodeSeg> filter;
     std::wstring storageSpace;
-    std::wstring storageKey;
+    std::wstring storageItem;
     CategoryPatternExpr::Category categoryPatternExpr;
 
     ssize_t curIdx = 1;
@@ -91,8 +91,8 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
           return nullptr;
         }
 
-        storageKey = *(Variable::GetVariableName(statement, curIdx));
-        curIdx += storageKey.length();
+        storageItem = *(Variable::GetVariableName(statement, curIdx));
+        curIdx += storageItem.length();
       } else if (L'*' == curChar) {
         categoryPatternExpr = CategoryPatternExpr::kZeroOrMore;
         ++curIdx;
@@ -114,8 +114,8 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
                 nullptr,
                 &items,
                 filter,
-                &storageSpace,
-                &storageKey,
+                !storageSpace.empty() ? &storageSpace : nullptr,
+                !storageItem.empty() ? &storageItem : nullptr,
                 categoryPatternExpr);
       } else if (CodeSeg::IsStartingChar(curChar)) {
         ssize_t endOfFilter = statement.find(L"|}", curIdx+1);
