@@ -19,6 +19,8 @@ class PatternSet {
 
   bool MatchPattern(Context &context);
 
+  const aho_corasick::wtrie* GetPatternStrs() const { return patternStrsTrie_; }
+  const PatternExpr::Vector* GetPatternExprs() const { return patternExprs_; }
   const std::wstring& GetRepr() const { return structPatternSet_->GetStatement(); }
 
   const std::wstring* AsStr() const;

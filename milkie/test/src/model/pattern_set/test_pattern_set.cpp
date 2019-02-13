@@ -18,8 +18,7 @@ int main(int argc, char **argv) {
 
 TEST(testAll, build) {
   auto ret = PatternSet::Build(L"global", L"[\"美味的方便面\" && #Pos(aP-uP-nP-), \"就是的\"]");
-  std::cout << ret.first->GetPatternExprs().size() << std::endl;
-  ASSERT_TRUE(ret.first->GetPatternExprs().size() == 2);
+  ASSERT_TRUE(ret.first->GetPatternExprs()->size() == 2);
 
   auto context = std::make_shared<Context>(L"美味的方便面才好吃");
   Segment::Vector segments;
