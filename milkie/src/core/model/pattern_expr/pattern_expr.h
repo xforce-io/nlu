@@ -92,7 +92,8 @@ void PatternExpr::SetStorageKey(const std::wstring &item) {
   if (nullptr == storageKey_) {
     storageKey_ = new StorageKey();
   }
-  
+  storageKey_->SetSpace(nullptr);
+  storageKey_->SetItem(&item);
 }
 
 void PatternExpr::SetStorageKey(const StorageKey &storageKey) {

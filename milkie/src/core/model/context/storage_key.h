@@ -44,12 +44,16 @@ StorageKey::StorageKey(
 void StorageKey::SetSpace(const std::wstring *space) {
   if (nullptr != space) {
     space_ = std::make_shared<std::wstring>(*space);
+  } else {
+    space_ = nullptr;
   }
 }
 
 void StorageKey::SetItem(const std::wstring *item) {
   if (nullptr != item) {
     item_ = std::make_shared<std::wstring>(*item);
+  } else {
+    item_ = nullptr;
   }
 }
 
