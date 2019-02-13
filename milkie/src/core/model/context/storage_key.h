@@ -22,6 +22,8 @@ class StorageKey {
   inline void operator=(const StorageKey &storageKey);
   inline size_t Hash() const;
 
+  inline void GetRepr(std::wstring &repr) const;
+
  private:
   std::shared_ptr<std::wstring> space_;
   std::shared_ptr<std::wstring> item_;
@@ -82,6 +84,18 @@ size_t StorageKey::Hash() const {
     v1 = std::hash<std::wstring>()(*GetItem());
   }
   return v0 + 31 * v1;
+}
+
+void StorageKey::GetRepr(std::wstring &repr) const {
+  std::wstringstream ss;
+  if (nullptr != space_) {
+    ss << *space_;
+  }
+  ss << L'/';
+  if (nullptr != item_) {
+    ss << *item_;
+  }
+  repr = ss.str();
 }
 
 }}}
