@@ -1,31 +1,46 @@
 #pragma once
 
 #include "../../../public.h"
+#include "storage_key.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
 class StorageItem;
+class StorageKey;
 
 class Storage {
+ private:
+  struct HashVal {
+      size_t operator()(const StorageKey &storageKey) const{
+        return storageKey.Hash();
+      }
+  };
+
  public:
-  inline void Set(const std::wstring &key, const std::wstring &val);
+  typedef std::unordered_map<
+          StorageKey,
+          StorageItem*,
+          HashVal> Container;
 
-  inline void Set(const std::wstring &key, StorageItem &storageItem);
+ public:
+  inline void Set(const StorageKey &key, const std::wstring &val);
 
-  inline void SetStr(const std::wstring &key, const std::wstring &value);
+  inline void Set(const StorageKey &key, StorageItem &storageItem);
 
-  inline void Remove(const std::wstring &key);
+  inline void SetStr(const StorageKey &key, const std::wstring &value);
 
-  inline const StorageItem *Get(const std::wstring &key);
+  inline void Remove(const StorageKey &key);
 
-  inline const std::unordered_map<std::wstring, StorageItem*> Get() const;
+  inline const StorageItem* Get(const StorageKey &key);
 
-  inline void GetStrs(std::unordered_map<std::wstring, std::wstring> &kvs);
+  inline const Container& Get() const;
+
+  inline void GetStrs(std::unordered_map<StorageKey, std::wstring> &kvs);
 
   inline void Merge(const Storage &storage);
 
  private:
-  std::unordered_map<std::wstring, StorageItem*> storage_;
+  Container container_;
 };
 
 }}}
@@ -34,54 +49,54 @@ class Storage {
 
 namespace xforce { namespace nlu { namespace milkie {
 
-void Storage::Set(const std::wstring &key, const std::wstring &value) {
-  auto iter = storage_.find(key);
-  if (iter != storage_.end()) {
+void Storage::Set(const StorageKey &key, const std::wstring &value) {
+  auto iter = container_.find(key);
+  if (iter != container_.end()) {
     iter->second->Set(value);
   }
 }
 
-void Storage::Set(const std::wstring &key, StorageItem &newItems) {
+void Storage::Set(const StorageKey &key, StorageItem &newItems) {
   StorageItem *storageItem = nullptr;
-  auto iter = storage_.find(key);
-  if (iter == storage_.end()) {
+  auto iter = container_.find(key);
+  if (iter == container_.end()) {
     storageItem = new StorageItem();
-    storage_.insert(std::make_pair(key, storageItem));
+    container_.insert(std::make_pair(key, storageItem));
   } else {
     storageItem = iter->second;
   }
   storageItem->Add(newItems);
 }
 
-void Storage::SetStr(const std::wstring &key, const std::wstring &value) {
-  auto iter = storage_.find(key);
-  if (iter == storage_.end()) {
-    storage_.insert(std::make_pair(key, new StorageItem(&value)));
+void Storage::SetStr(const StorageKey &key, const std::wstring &value) {
+  auto iter = container_.find(key);
+  if (iter == container_.end()) {
+    container_.insert(std::make_pair(key, new StorageItem(&value)));
   } else {
     iter->second->Set(value);
   }
 }
 
-void Storage::Remove(const std::wstring &key) {
-  storage_.erase(key);
+void Storage::Remove(const StorageKey &key) {
+  container_.erase(key);
 }
 
-const StorageItem* Storage::Get(const std::wstring &key) {
-  auto iter = storage_.find(key);
-  if (iter != storage_.end()) {
+const StorageItem* Storage::Get(const StorageKey &key) {
+  auto iter = container_.find(key);
+  if (iter != container_.end()) {
     return iter->second;
   } else {
     return nullptr;
   }
 }
 
-const std::unordered_map<std::wstring, StorageItem*> Storage::Get() const {
-  return storage_;
+const Storage::Container& Storage::Get() const {
+  return container_;
 }
 
-void Storage::GetStrs(std::unordered_map<std::wstring, std::wstring> &kvs) {
+void Storage::GetStrs(std::unordered_map<StorageKey, std::wstring> &kvs) {
   kvs.clear();
-  for (auto iter = storage_.begin(); iter != storage_.end(); ++iter) {
+  for (auto iter = container_.begin(); iter != container_.end(); ++iter) {
     auto value = iter->second->GetAsString();
     if (nullptr != value) {
       kvs.insert(std::make_pair(iter->first, *value));
@@ -90,12 +105,12 @@ void Storage::GetStrs(std::unordered_map<std::wstring, std::wstring> &kvs) {
 }
 
 void Storage::Merge(const Storage &storage) {
-  for (auto iter = storage.storage_.begin(); iter != storage.storage_.end(); ++iter) {
-    auto iter2 = storage_.find(iter->first);
-    if (iter2 != storage_.end()) {
+  for (auto iter = storage.container_.begin(); iter != storage.container_.end(); ++iter) {
+    auto iter2 = container_.find(iter->first);
+    if (iter2 != container_.end()) {
       iter2->second->Add(*(iter->second));
     } else {
-      storage_.insert(std::make_pair(iter->first, iter->second));
+      container_.insert(std::make_pair(iter->first, iter->second));
     }
   }
 }

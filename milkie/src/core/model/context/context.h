@@ -7,6 +7,7 @@ namespace xforce { namespace nlu { namespace milkie {
 class Frame;
 class Sentence;
 class StorageItem;
+class StorageKey;
 
 class Context {
  public:
@@ -26,12 +27,20 @@ class Context {
   inline void StartMatch(ssize_t offset);
   inline void StopMatch(bool succ);
   inline void StopMatch(bool succ, StorageItem *storageItem);
-  inline void SetStorage(const std::wstring *key, StorageItem &storageItem);
-  inline void SetStorageStr(const std::wstring *key, const std::wstring &value);
-  inline void RemoveStorage(const std::wstring *key);
-  inline const StorageItem* GetStorage(const std::wstring &key);
-  inline const Wstrings* GetStorageAsItems(const std::wstring &key);
-  inline const std::wstring* GetStorageAsStr(const std::wstring &key);
+  inline void SetStorage(
+          const StorageKey &storageKey,
+          StorageItem &storageItem);
+
+  inline void SetStorageStr(
+          const StorageKey &storageKey,
+          const std::wstring &value);
+
+  inline void RemoveStorage(
+          const StorageKey &key);
+
+  inline const StorageItem* GetStorage(const StorageKey &key);
+  inline const Wstrings* GetStorageAsItems(const StorageKey &key);
+  inline const std::wstring* GetStorageAsStr(const StorageKey &key);
 
   /*
    * mark : str env supported only now
@@ -124,23 +133,23 @@ void Context::StopMatch(bool succ, StorageItem *storageItem) {
   }
 }
 
-void Context::SetStorage(const std::wstring *key, StorageItem &storageItem) {
-  if (nullptr != key) {
-    stack_.top()->GetStorage().Set(*key, storageItem);
-  }
+void Context::SetStorage(
+        const StorageKey &storageKey,
+        StorageItem &storageItem) {
+  stack_.top()->GetStorage().Set(storageKey, storageItem);
 }
 
-void Context::SetStorageStr(const std::wstring *key, const std::wstring &value) {
-  if (nullptr != key) {
-    stack_.top()->GetStorage().SetStr(*key, value);
-  }
+void Context::SetStorageStr(
+        const StorageKey &storageKey,
+        const std::wstring &value) {
+  stack_.top()->GetStorage().SetStr(storageKey, value);
 }
 
-void Context::RemoveStorage(const std::wstring *key) {
-  stack_.top()->GetStorage().Remove(*key);
+void Context::RemoveStorage(const StorageKey &storageKey) {
+  stack_.top()->GetStorage().Remove(storageKey);
 }
 
-const StorageItem* Context::GetStorage(const std::wstring &key) {
+const StorageItem* Context::GetStorage(const StorageKey &key) {
   const StorageItem *result = nullptr;
   std::stack<std::shared_ptr<Frame>> tmpStack;
   while (!stack_.empty()) {
@@ -160,7 +169,7 @@ const StorageItem* Context::GetStorage(const std::wstring &key) {
   return result;
 }
 
-const Wstrings* Context::GetStorageAsItems(const std::wstring &key) {
+const Wstrings* Context::GetStorageAsItems(const StorageKey &key) {
   auto storageItem = GetStorage(key);
   if (nullptr != storageItem) {
     return &(storageItem->Get());
@@ -168,7 +177,7 @@ const Wstrings* Context::GetStorageAsItems(const std::wstring &key) {
   return nullptr;
 }
 
-const std::wstring* Context::GetStorageAsStr(const std::wstring &key) {
+const std::wstring* Context::GetStorageAsStr(const StorageKey &key) {
   auto storageItem = GetStorage(key);
   if (nullptr != storageItem) {
     return storageItem->GetAsString();

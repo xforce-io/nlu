@@ -9,7 +9,7 @@
 namespace xforce { namespace nlu { namespace milkie {
 
 StructPatternExpr::~StructPatternExpr() {
-  XFC_DELETE(storage_)
+  XFC_DELETE(storageKey_)
   XFC_DELETE(patternExprs_)
 }
 
@@ -26,7 +26,8 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
   } else if (PatternExpr::IsExactStartingChar(startingChar)) {
     PatternExpr::Vector items;
     std::shared_ptr<CodeSeg> filter;
-    std::wstring storage;
+    std::wstring storageSpace;
+    std::wstring storageKey;
     CategoryPatternExpr::Category categoryPatternExpr;
 
     ssize_t curIdx = 1;
@@ -50,7 +51,7 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
         std::shared_ptr<std::wstring> variableName = Variable::GetVariableName(statement, curIdx+1);
         if (statement[curIdx+1] != L'*') {
           auto patternExpr = ReferManager::Get().Get(blockKey, *variableName);
-          if (patternExpr == nullptr) {
+          if (nullptr == patternExpr) {
             FATAL("unknown_dict_key_in_expr(" << *variableName << ")");
             return nullptr;
           }
@@ -60,6 +61,22 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
           items.push_back(std::make_shared<PatternExpr>(variableName->substr(1)));
         }
         curIdx += variableName->length() + 1;
+      } else if (curIdx+1 < statement.length() &&
+          L'=' == curChar &&
+          L'>' == statement[curIdx+1]) {
+        curIdx += 2;
+        while (curIdx < statement.length() &&
+            L' ' == statement[curIdx]) {
+          ++curIdx;
+        }
+
+        if (curIdx == statement.length()) {
+          FATAL("invalid_storage(" << statement << ")");
+          return nullptr;
+        }
+
+        storageSpace = *(Variable::GetVariableName(statement, curIdx));
+        curIdx += storageSpace.length();
       } else if (curIdx+1 < statement.length() &&
           L'-' == curChar &&
           L'>' == statement[curIdx+1]) {
@@ -74,8 +91,8 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
           return nullptr;
         }
 
-        storage = *(Variable::GetVariableName(statement, curIdx));
-        curIdx += storage.length();
+        storageKey = *(Variable::GetVariableName(statement, curIdx));
+        curIdx += storageKey.length();
       } else if (L'*' == curChar) {
         categoryPatternExpr = CategoryPatternExpr::kZeroOrMore;
         ++curIdx;
@@ -97,7 +114,8 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
                 nullptr,
                 &items,
                 filter,
-                &storage,
+                &storageSpace,
+                &storageKey,
                 categoryPatternExpr);
       } else if (CodeSeg::IsStartingChar(curChar)) {
         ssize_t endOfFilter = statement.find(L"|}", curIdx+1);

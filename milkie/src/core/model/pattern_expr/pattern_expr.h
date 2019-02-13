@@ -9,6 +9,7 @@ class Pattern;
 class PatternSet;
 class StructPatternExpr;
 class CodeSeg;
+class StorageKey;
 
 class PatternExpr {
  public:
@@ -28,9 +29,11 @@ class PatternExpr {
   inline explicit PatternExpr(const std::wstring &wildcardName);
   inline explicit PatternExpr(std::shared_ptr<StructPatternExpr> &structPatternExpr);
 
+  void SetFather(const PatternExpr &patternExpr);
   CategoryPatternExpr::Category GetRepeatPattern() const { return repeatPattern_; }
   std::wstring GetRepr() const;
-  inline void SetStorageKey(const std::wstring &storageStored);
+  inline void SetStorageKey(const std::wstring &item);
+  inline void SetStorageKey(const StorageKey &storageKey);
   inline bool ExactMatch(Context &context);
   inline bool ExactMatch(Context &context, bool singleton);
   bool MatchPattern(Context &context, bool singleton);
@@ -56,7 +59,9 @@ class PatternExpr {
   static std::unordered_set<wchar_t> CreateInvalidLeadPosForWildcard();
   static std::unordered_set<std::wstring> CreateInvalidFullPosForWildcard();
 
- private: 
+ private:
+  const PatternExpr *father_;
+
   std::shared_ptr<Pattern> pattern_;
   std::shared_ptr<PatternSet> patternSet_;
   const std::wstring *wildcardName_;
@@ -64,7 +69,7 @@ class PatternExpr {
 
   std::vector<std::shared_ptr<PatternExpr>> items_;
   std::shared_ptr<CodeSeg> filter_;
-  const std::wstring *storage_;
+  StorageKey *storageKey_;
   CategoryPatternExpr::Category repeatPattern_;
 
   static std::unordered_set<wchar_t> invalidLeadPosForWildcard_;
@@ -83,10 +88,18 @@ PatternExpr::PatternExpr(const std::wstring &wildcardName) :
 PatternExpr::PatternExpr(std::shared_ptr<StructPatternExpr> &structPatternExpr) :
   PatternExpr(nullptr, nullptr, nullptr, structPatternExpr) {}
 
-void PatternExpr::SetStorageKey(const std::wstring &storageStored) {
-    if (nullptr == storage_) {
-        storage_ = &storageStored;
-    }
+void PatternExpr::SetStorageKey(const std::wstring &item) {
+  if (nullptr == storageKey_) {
+    storageKey_ = new StorageKey();
+  }
+  
+}
+
+void PatternExpr::SetStorageKey(const StorageKey &storageKey) {
+  if (nullptr == storageKey_) {
+    storageKey_ = new StorageKey();
+  }
+  *storageKey_ = storageKey;
 }
 
 bool PatternExpr::ExactMatch(Context &context) {

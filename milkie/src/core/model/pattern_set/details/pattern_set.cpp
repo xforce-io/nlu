@@ -5,10 +5,17 @@
 namespace xforce { namespace nlu { namespace milkie {
 
 PatternSet::PatternSet(const StructPatternSet &structPatternSet) :
+    father_(nullptr),
     structPatternSet_(&structPatternSet),
     maxLengthPatternStrs_(0),
     patternExprs_(*structPatternSet.GetPatternExprs()) {
   patternStrsTrie_ = BuildPatternStrsTrie_(structPatternSet.GetPatternStrs());
+}
+
+void PatternSet::SetFather(const PatternExpr &patternExpr) {
+  for (auto &child : patternExprs_) {
+    child->SetFather(patternExpr);
+  }
 }
 
 bool PatternSet::MatchPattern(Context &context) {

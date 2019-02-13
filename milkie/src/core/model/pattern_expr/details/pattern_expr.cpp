@@ -16,8 +16,9 @@ PatternExpr::PatternExpr(
     std::shared_ptr<PatternSet> patternSet,
     const std::wstring *wildcardName,
     std::shared_ptr<StructPatternExpr> structPatternExpr) :
+    father_(nullptr),
     wildcardName_(nullptr),
-    storage_(nullptr) {
+    storageKey_(nullptr) {
   pattern_ = pattern;
   patternSet_ = patternSet;
   if (nullptr != wildcardName) {
@@ -28,6 +29,9 @@ PatternExpr::PatternExpr(
   if (nullptr != pattern ||
       nullptr != patternSet ||
       nullptr != wildcardName) {
+    if (nullptr != patternSet) {
+      patternSet_->SetFather(*this);
+    }
     return;
   }
 
@@ -36,11 +40,15 @@ PatternExpr::PatternExpr(
     return;
   } else if (structPatternExpr->GetPatternSet() != nullptr) {
     patternSet_ = structPatternExpr_->GetPatternSet();
+    patternSet_->SetFather(*this);
     return;
   }
 
   if (structPatternExpr->GetItems() != nullptr) {
     items_ = *(structPatternExpr_->GetItems());
+    for (auto &item : items_) {
+      item->SetFather(*this);
+    }
   }
 
   if (structPatternExpr->GetFilter() != nullptr) {
@@ -48,13 +56,17 @@ PatternExpr::PatternExpr(
   }
 
   if (nullptr != structPatternExpr_) {
-    storage_ = structPatternExpr_->GetStorage();
+    SetStorageKey(*(structPatternExpr_->GetStorageKey()));
     repeatPattern_ = structPatternExpr_->GetCategoryPatternExpr();
   }
 }
 
 PatternExpr::~PatternExpr() {
   XFC_DELETE(wildcardName_)
+}
+
+void PatternExpr::SetFather(const PatternExpr &patternExpr) {
+  father_ = &patternExpr;
 }
 
 std::wstring PatternExpr::GetRepr() const {
@@ -197,20 +209,26 @@ bool PatternExpr::MatchForWildcard(Context &context, ssize_t itemIdx) {
 
   ssize_t oldCurPos = context.GetCurPos();
   while (!exitInner) {
+    StorageKey storageKeyForWildcard = StorageKey(
+            storageKey_ != nullptr ? storageKey_->GetSpace() : nullptr,
+            items_[itemIdx-1]->AsWildcard());
+
     context.StartMatch(offset);
     ssize_t retInner = MatchFromIdx(itemIdx, context);
     if (0 == retInner &&
         oldCurPos != offset &&
         context.GetCurPos() == context.GetSentence().GetSentence().length()) {
       context.SetStorageStr(
-              items_[itemIdx-1]->AsWildcard(),
+              storageKeyForWildcard,
               context.GetSentence().GetSentence().substr(oldCurPos, offset-oldCurPos));
       if (nullptr == filter_ || filter_->Match(context)) {
         context.StopMatch(true);
-        context.SetStorage(storage_, *(context.GetStoragePattern()));
+        if (nullptr != storageKey_) {
+          context.SetStorage(*storageKey_, *(context.GetStoragePattern()));
+        }
         return true;
       } else {
-        context.RemoveStorage(items_[itemIdx-1]->AsWildcard());
+        context.RemoveStorage(storageKeyForWildcard);
       }
     }
 
@@ -225,8 +243,8 @@ bool PatternExpr::MatchForWildcard(Context &context, ssize_t itemIdx) {
 
 void PatternExpr::StopMatch(bool succ, Context &context, bool singleton) {
   if (succ) {
-    if (nullptr != storage_) {
-      context.SetStorage(storage_, *(context.GetStoragePattern()));
+    if (nullptr != storageKey_) {
+      context.SetStorage(*storageKey_, *(context.GetStoragePattern()));
       context.StopMatch(true);
     } else if (singleton) {
       context.StopMatch(true, context.GetStoragePattern());

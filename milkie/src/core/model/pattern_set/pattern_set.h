@@ -12,7 +12,9 @@ class PatternExpr;
 
 class PatternSet {
  public: 
-  explicit PatternSet(const StructPatternSet &structPatternSet); 
+  explicit PatternSet(const StructPatternSet &structPatternSet);
+
+  void SetFather(const PatternExpr &patternExpr);
 
   bool MatchPattern(Context &context);
 
@@ -23,7 +25,9 @@ class PatternSet {
   const std::wstring* AsStr() const;
 
   inline static bool IsStartingChar(wchar_t c);
-  static std::pair<std::shared_ptr<PatternSet>, ssize_t > Build(const std::wstring &blockKey, const std::wstring &statement);
+  static std::pair<std::shared_ptr<PatternSet>, ssize_t > Build(
+          const std::wstring &blockKey,
+          const std::wstring &statement);
   static std::shared_ptr<PatternSet> Build(const StructPatternSet &structPatternSet);
 
  private:
@@ -31,6 +35,8 @@ class PatternSet {
       const std::unordered_set<std::wstring> *patternStrs);
 
  private:
+  const PatternExpr *father_;
+
   const StructPatternSet *structPatternSet_;
   size_t maxLengthPatternStrs_; 
   aho_corasick::wtrie *patternStrsTrie_;

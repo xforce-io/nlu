@@ -24,7 +24,7 @@ set(LIB_DEPS
 find_library(LUA_LIBRARY lua ./3rd/lua-5.3.5/lib NO_DEFAULT_PATH)
 
 add_library(milkie
-  ${MILKIE_FILES})
+  ${MILKIE_FILES} src/core/model/context/storage_key.h)
 
 target_link_libraries(milkie
   ${LIB_DEPS}
