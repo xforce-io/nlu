@@ -39,8 +39,10 @@ class Context {
           const StorageKey &key);
 
   inline const StorageItem* GetStorage(const StorageKey &key);
+  inline const StorageItem* GetStorage(const wchar_t *item);
   inline const Wstrings* GetStorageAsItems(const StorageKey &key);
   inline const std::wstring* GetStorageAsStr(const StorageKey &key);
+  inline const std::wstring* GetStorageAsStr(const wchar_t *item);
 
   /*
    * mark : str env supported only now
@@ -169,6 +171,10 @@ const StorageItem* Context::GetStorage(const StorageKey &key) {
   return result;
 }
 
+const StorageItem* Context::GetStorage(const wchar_t *item) {
+  return GetStorage(*new StorageKey(nullptr, item));
+}
+
 const Wstrings* Context::GetStorageAsItems(const StorageKey &key) {
   auto storageItem = GetStorage(key);
   if (nullptr != storageItem) {
@@ -183,6 +189,10 @@ const std::wstring* Context::GetStorageAsStr(const StorageKey &key) {
     return storageItem->GetAsString();
   }
   return nullptr;
+}
+
+const std::wstring* Context::GetStorageAsStr(const wchar_t *item) {
+  return GetStorageAsStr(*new StorageKey(nullptr, item));
 }
 
 void Context::GetStorages(std::unordered_map<std::wstring, std::wstring> &kvs) {

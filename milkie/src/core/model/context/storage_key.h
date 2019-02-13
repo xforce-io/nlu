@@ -12,6 +12,10 @@ class StorageKey {
           const std::wstring *space,
           const std::wstring *item);
 
+  inline StorageKey(
+          const wchar_t *space,
+          const wchar_t *item);
+
   inline void SetSpace(const std::wstring *space);
   inline void SetItem(const std::wstring *item);
 
@@ -38,6 +42,18 @@ StorageKey::StorageKey(
 
   if (nullptr != item) {
     item_ = std::make_shared<std::wstring>(*item);
+  }
+}
+
+StorageKey::StorageKey(
+        const wchar_t *space,
+        const wchar_t *item) {
+  if (nullptr != space) {
+    space_ = std::make_shared<std::wstring>(space);
+  }
+
+  if (nullptr != item) {
+    item_ = std::make_shared<std::wstring>(item);
   }
 }
 
