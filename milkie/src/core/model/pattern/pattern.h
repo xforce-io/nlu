@@ -11,7 +11,7 @@ class Context;
 
 class Pattern {
  public:
-  inline explicit Pattern(const StructPattern &structPattern);
+  inline explicit Pattern(std::shared_ptr<StructPattern> &structPattern);
 
   bool MatchPattern(Context &context);
   const PatternItem::Vector & GetPatternItems() const { return patternItems_; }
@@ -23,10 +23,9 @@ class Pattern {
 
  private:
   inline static PatternItem::Vector CreatePatternItems(const StructPatternItem::Vector &structPatternItems);
-  inline static std::shared_ptr<Pattern> Build(const StructPattern &structPattern);
 
  private:
-  const StructPattern &structPattern_;
+  std::shared_ptr<StructPattern> structPattern_;
   PatternItem::Vector patternItems_;
 };
 
@@ -37,13 +36,13 @@ class Pattern {
 
 namespace xforce { namespace nlu { namespace milkie {
 
-Pattern::Pattern(const StructPattern &structPattern) :
+Pattern::Pattern(std::shared_ptr<StructPattern> &structPattern) :
     structPattern_(structPattern) {
-  patternItems_ = CreatePatternItems(structPattern.GetPatternItems());
+  patternItems_ = CreatePatternItems(structPattern->GetPatternItems());
 }
 
 const std::wstring& Pattern::GetRepr() const {
-  return structPattern_.GetStatement();
+  return structPattern_->GetStatement();
 }
 
 const std::wstring* Pattern::AsStr() const {
@@ -59,7 +58,9 @@ bool Pattern::IsStartingChar(wchar_t c) {
 
 std::pair<std::shared_ptr<Pattern>, size_t> Pattern::Build(const std::wstring &statement) {
   std::shared_ptr<StructPattern> structPattern = StructPattern::Parse(statement);
-  return std::make_pair(Build(*structPattern), structPattern->GetStatement().length());
+  return std::make_pair(
+          std::make_shared<Pattern>(structPattern),
+          structPattern->GetStatement().length());
 }
 
 PatternItem::Vector Pattern::CreatePatternItems(const StructPatternItem::Vector &structPatternItems) {
@@ -72,10 +73,6 @@ PatternItem::Vector Pattern::CreatePatternItems(const StructPatternItem::Vector 
     patternItems.push_back(patternItem);
   }
   return patternItems;
-}
-
-std::shared_ptr<Pattern> Pattern::Build(const StructPattern &structPattern) {
-  return std::make_shared<Pattern>(structPattern);
 }
 
 }}}
