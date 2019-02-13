@@ -8,13 +8,19 @@ PatternSet::PatternSet(const StructPatternSet &structPatternSet) :
     father_(nullptr),
     structPatternSet_(&structPatternSet),
     maxLengthPatternStrs_(0),
-    patternExprs_(*structPatternSet.GetPatternExprs()) {
+    patternExprs_(structPatternSet.GetPatternExprs()) {
   patternStrsTrie_ = BuildPatternStrsTrie_(structPatternSet.GetPatternStrs());
 }
 
+PatternSet::~PatternSet() {
+  XFC_DELETE(patternStrsTrie_)
+}
+
 void PatternSet::SetFather(const PatternExpr &patternExpr) {
-  for (auto &child : patternExprs_) {
-    child->SetFather(patternExpr);
+  if (nullptr != patternExprs_) {
+    for (auto &child : *patternExprs_) {
+      child->SetFather(patternExpr);
+    }
   }
 }
 
@@ -50,7 +56,7 @@ bool PatternSet::MatchPattern(Context &context) {
       return false;
     }
   } else {
-    for (auto &patternExpr : patternExprs_) {
+    for (auto &patternExpr : *patternExprs_) {
       if (patternExpr->MatchPattern(context, false)) {
         return true;
       }
@@ -65,8 +71,8 @@ const std::wstring* PatternSet::AsStr() const {
       return &*(structPatternSet_->GetPatternStrs()->begin());
     }
   } else {
-    if (patternExprs_.size() == 1) {
-      return patternExprs_[0]->AsStr();
+    if (patternExprs_->size() == 1) {
+      return (*patternExprs_)[0]->AsStr();
     }
   }
   return nullptr;

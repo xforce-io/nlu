@@ -13,13 +13,12 @@ class PatternExpr;
 class PatternSet {
  public: 
   explicit PatternSet(const StructPatternSet &structPatternSet);
+  virtual ~PatternSet();
 
   void SetFather(const PatternExpr &patternExpr);
 
   bool MatchPattern(Context &context);
 
-  const aho_corasick::wtrie& GetPatternStrs() const { return *patternStrsTrie_; }
-  const PatternExpr::Vector& GetPatternExprs() const { return patternExprs_; }
   const std::wstring& GetRepr() const { return structPatternSet_->GetStatement(); }
 
   const std::wstring* AsStr() const;
@@ -40,7 +39,7 @@ class PatternSet {
   const StructPatternSet *structPatternSet_;
   size_t maxLengthPatternStrs_; 
   aho_corasick::wtrie *patternStrsTrie_;
-  const PatternExpr::Vector &patternExprs_;
+  const PatternExpr::Vector *patternExprs_;
 };
 
 bool PatternSet::IsStartingChar(wchar_t c) {
