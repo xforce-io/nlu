@@ -9,7 +9,7 @@
 namespace xforce { namespace nlu { namespace milkie {
 
 StructPatternExpr::~StructPatternExpr() {
-  XFC_DELETE(storageItem_)
+  XFC_DELETE(storageKey_)
   XFC_DELETE(patternExprs_)
 }
 
