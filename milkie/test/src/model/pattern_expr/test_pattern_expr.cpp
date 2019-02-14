@@ -92,7 +92,7 @@ void testcase2() {
   ASSERT_TRUE(*(context->GetStorageAsStr(*new StorageKey(L"target", nullptr))) == L"苹果橘子不好吃吧");
   ASSERT_TRUE(*(context->GetStorageAsStr(*new StorageKey(L"target", L"noun"))) == L"苹果橘子");
   ASSERT_TRUE(*(context->GetStorageAsStr(*new StorageKey(L"target", L"yPhrase"))) == L"吧");
-/*
+
   context = std::make_shared<Context>(L"苹果不好吃");
   segments.clear();
   segments.push_back(Segment(Pos::kN, 0, 2));
@@ -100,10 +100,9 @@ void testcase2() {
   segments.push_back(Segment(Pos::kA, 3, 2));
   context->GetSentence().GetNluContext()->SetSegments(segments);
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
-  ASSERT_TRUE(*(context->GetStorageAsStr(L"target")) == L"苹果不好吃");
-  ASSERT_TRUE(*(context->GetStorageAsStr(L"noun")) == L"苹果");
-  ASSERT_TRUE(context->GetStorageAsStr(L"yPhrase") == nullptr);
-*/
+  ASSERT_TRUE(*(context->GetStorageAsStr(*new StorageKey(L"target", nullptr))) == L"苹果不好吃");
+  ASSERT_TRUE(*(context->GetStorageAsStr(*new StorageKey(L"target", L"noun"))) == L"苹果");
+  ASSERT_TRUE(context->GetStorageAsStr(*new StorageKey(L"target", L"yPhrase")) == nullptr);
 }
 
 void testcaseWildcard() {
