@@ -89,10 +89,9 @@ std::wstring PatternExpr::GetRepr() const {
 }
 
 void PatternExpr::NotifyStorageSpace(const std::wstring &storageSpace) {
-  if (nullptr == storageKey_) {
-    storageKey_ = new StorageKey();
+  if (nullptr != storageKey_) {
+    storageKey_->SetSpace(&storageSpace);
   }
-  storageKey_->SetSpace(&storageSpace);
 
   if (nullptr != patternSet_) {
     patternSet_->NotifyStorageSpace(storageSpace);
