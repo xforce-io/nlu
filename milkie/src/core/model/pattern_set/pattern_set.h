@@ -18,6 +18,7 @@ class PatternSet {
   void SetFather(const PatternExpr &patternExpr);
 
   bool MatchPattern(Context &context);
+  void NotifyStorageSpace(std::shared_ptr<std::wstring> storageSpace);
 
   const aho_corasick::wtrie* GetPatternStrs() const { return patternStrsTrie_; }
   const PatternExpr::Vector* GetPatternExprs() const { return patternExprs_; }

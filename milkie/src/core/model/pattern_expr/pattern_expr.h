@@ -34,6 +34,7 @@ class PatternExpr {
   std::wstring GetRepr() const;
   inline void SetStorageKey(const std::wstring &item);
   inline void SetStorageKey(const StorageKey &storageKey);
+  inline void NotifyStorageSpace(std::shared_ptr<std::wstring> storageSpace);
   inline bool ExactMatch(Context &context);
   inline bool ExactMatch(Context &context, bool singleton);
   bool MatchPattern(Context &context, bool singleton);
@@ -101,6 +102,13 @@ void PatternExpr::SetStorageKey(const StorageKey &storageKey) {
     storageKey_ = new StorageKey();
   }
   *storageKey_ = storageKey;
+}
+
+void PatternExpr::NotifyStorageSpace(std::shared_ptr<std::wstring> storageSpace) {
+  storageKey_->SetSpace(*storageSpace);
+  if (nullptr != patternSet_) {
+    patternSet_->NotifyStorageSpace(storageSpace);
+  }
 }
 
 bool PatternExpr::ExactMatch(Context &context) {

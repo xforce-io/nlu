@@ -58,6 +58,9 @@ PatternExpr::PatternExpr(
   if (nullptr != structPatternExpr_) {
     if (structPatternExpr_->GetStorageKey() != nullptr) {
       SetStorageKey(*(structPatternExpr_->GetStorageKey()));
+      if (storageKey_->GetSpace() != nullptr) {
+        NotifyStorageSpace(storageKey_->GetSpace());
+      }
     }
     repeatPattern_ = structPatternExpr_->GetCategoryPatternExpr();
   }

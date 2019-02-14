@@ -24,6 +24,14 @@ void PatternSet::SetFather(const PatternExpr &patternExpr) {
   }
 }
 
+void PatternSet::NotifyStorageSpace(std::shared_ptr<std::wstring> storageSpace) {
+  if (nullptr != patternExprs_) {
+    for (auto &child : *patternExprs_) {
+      child->NotifyStorageSpace(storageSpace);
+    }
+  }
+}
+
 bool PatternSet::MatchPattern(Context &context) {
   if (nullptr != patternStrsTrie_) {
     int theBegin = -1;
