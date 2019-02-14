@@ -93,6 +93,10 @@ void PatternExpr::NotifyStorageSpace(const std::wstring &storageSpace) {
   if (nullptr != patternSet_) {
     patternSet_->NotifyStorageSpace(storageSpace);
   }
+
+  for (auto &patternExpr : items_) {
+    patternExpr->NotifyStorageSpace(storageSpace);
+  }
 }
 
 bool PatternExpr::MatchPattern(Context &context, bool singleton) {
