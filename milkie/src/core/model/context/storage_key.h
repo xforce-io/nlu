@@ -82,7 +82,7 @@ const std::wstring* StorageKey::GetItem() const {
 }
 
 bool StorageKey::operator==(const StorageKey &storageKey) const {
-  return ((GetSpace() == nullptr &&
+  bool ret = ((GetSpace() == nullptr &&
               storageKey.GetSpace() == nullptr) ||
           (GetSpace() != nullptr &&
               storageKey.GetSpace() != nullptr &&
@@ -92,6 +92,7 @@ bool StorageKey::operator==(const StorageKey &storageKey) const {
           (GetItem() != nullptr &&
                storageKey.GetItem() != nullptr &&
                *GetItem() == *storageKey.GetItem()));
+  return ret;
 }
 
 void StorageKey::operator=(const StorageKey &storageKey) {
