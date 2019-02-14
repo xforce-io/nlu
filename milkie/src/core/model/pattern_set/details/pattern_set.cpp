@@ -1,6 +1,7 @@
 #include "../pattern_set.h"
 #include "../../context/context.h"
 #include "../../pattern_expr/pattern_expr.h"
+#include "../parser/struct_pattern_set.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -24,7 +25,7 @@ void PatternSet::SetFather(const PatternExpr &patternExpr) {
   }
 }
 
-void PatternSet::NotifyStorageSpace(std::shared_ptr<std::wstring> storageSpace) {
+void PatternSet::NotifyStorageSpace(const std::wstring &storageSpace) {
   if (nullptr != patternExprs_) {
     for (auto &child : *patternExprs_) {
       child->NotifyStorageSpace(storageSpace);
@@ -71,6 +72,10 @@ bool PatternSet::MatchPattern(Context &context) {
     }
     return false;
   }
+}
+
+const std::wstring& PatternSet::GetRepr() const { 
+  return structPatternSet_->GetStatement(); 
 }
 
 const std::wstring* PatternSet::AsStr() const {

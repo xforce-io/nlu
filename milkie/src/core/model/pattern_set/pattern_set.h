@@ -1,11 +1,11 @@
 #pragma once
 
 #include "../../../public.h"
-#include "parser/struct_pattern_set.h"
 #include "../pattern_expr/pattern_expr.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
+class StructPatternSet;
 class Context;
 class Pattern;
 class PatternExpr;
@@ -18,11 +18,11 @@ class PatternSet {
   void SetFather(const PatternExpr &patternExpr);
 
   bool MatchPattern(Context &context);
-  void NotifyStorageSpace(std::shared_ptr<std::wstring> storageSpace);
+  void NotifyStorageSpace(const std::wstring &storageSpace);
 
   const aho_corasick::wtrie* GetPatternStrs() const { return patternStrsTrie_; }
   const PatternExpr::Vector* GetPatternExprs() const { return patternExprs_; }
-  const std::wstring& GetRepr() const { return structPatternSet_->GetStatement(); }
+  const std::wstring& GetRepr() const;
 
   const std::wstring* AsStr() const;
 

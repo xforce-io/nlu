@@ -59,7 +59,7 @@ PatternExpr::PatternExpr(
     if (structPatternExpr_->GetStorageKey() != nullptr) {
       SetStorageKey(*(structPatternExpr_->GetStorageKey()));
       if (storageKey_->GetSpace() != nullptr) {
-        NotifyStorageSpace(storageKey_->GetSpace());
+        NotifyStorageSpace(*(storageKey_->GetSpace()));
       }
     }
     repeatPattern_ = structPatternExpr_->GetCategoryPatternExpr();
@@ -86,6 +86,13 @@ std::wstring PatternExpr::GetRepr() const {
     ss << "PatternExpr(" << structPatternExpr_->GetStatement() << ")";
   }
   return ss.str();
+}
+
+void PatternExpr::NotifyStorageSpace(const std::wstring &storageSpace) {
+  storageKey_->SetSpace(&storageSpace);
+  if (nullptr != patternSet_) {
+    patternSet_->NotifyStorageSpace(storageSpace);
+  }
 }
 
 bool PatternExpr::MatchPattern(Context &context, bool singleton) {
