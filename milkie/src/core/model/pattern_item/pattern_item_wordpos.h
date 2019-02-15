@@ -7,9 +7,9 @@ namespace xforce { namespace nlu { namespace milkie {
 
 class PatternItemWordpos : public PatternItem {
  private:
-  static const wchar_t kSep; 
+  static const wchar_t kSep;
 
- public: 
+ public:
   explicit PatternItemWordpos(const std::wstring &patternStr);
   virtual ~PatternItemWordpos();
 

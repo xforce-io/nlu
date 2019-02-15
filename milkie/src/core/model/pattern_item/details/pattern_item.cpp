@@ -2,6 +2,7 @@
 #include "../pattern_item_str.h"
 #include "../parser/struct_pattern_item_str.h"
 #include "../parser/struct_pattern_item_common.h"
+#include "../pattern_item_reg.h"
 #include "../pattern_item_wordpos.h"
 
 namespace xforce { namespace nlu { namespace milkie {
@@ -18,7 +19,9 @@ std::shared_ptr<PatternItem> PatternItem::Build(const StructPatternItem &structP
     return std::make_shared<PatternItemStr>(SCAST<const StructPatternItemStr&>(structPatternItem).GetPatternStr());
   } else if (typeid(structPatternItem) == typeid(StructPatternItemCommon)) {
     const StructPatternItemCommon &structPatternItemCommon = SCAST<const StructPatternItemCommon&>(structPatternItem);
-    if (structPatternItemCommon.GetCategory() == CategoryPatternItem::kPos) {
+    if (structPatternItemCommon.GetCategory() == CategoryPatternItem::kReg) {
+      return std::make_shared<PatternItemReg>(structPatternItemCommon.GetArgs(0));
+    } else if (structPatternItemCommon.GetCategory() == CategoryPatternItem::kPos) {
       return std::make_shared<PatternItemWordpos>(structPatternItemCommon.GetArgs(0));
     } else if (structPatternItemCommon.GetCategory() == CategoryPatternItem::kDep) {
       FATAL("[INTERNAL ERROR] dep_pattern_item_currently_not_supported");

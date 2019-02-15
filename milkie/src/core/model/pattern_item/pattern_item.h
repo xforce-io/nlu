@@ -34,7 +34,9 @@ class PatternItem {
 namespace xforce { namespace nlu { namespace milkie {
 
 CategoryPatternItem::Category PatternItem::ParseCategory(const std::wstring &category) {
-  if (L"Pos" == category) {
+  if (L"Reg" == category) {
+    return CategoryPatternItem::kReg;
+  } else if (L"Pos" == category) {
     return CategoryPatternItem::kPos;
   } else if (L"Dep" == category) {
     return CategoryPatternItem::kDep;

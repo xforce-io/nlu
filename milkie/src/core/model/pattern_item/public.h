@@ -7,6 +7,7 @@ namespace xforce { namespace nlu { namespace milkie {
 struct CategoryPatternItem {
  public:
   enum Category {
+    kReg,
     kPos,
     kDep,
     kInvalid
