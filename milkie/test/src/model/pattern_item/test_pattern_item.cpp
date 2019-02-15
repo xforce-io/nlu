@@ -49,4 +49,10 @@ TEST(testAll, match) {
   segments.push_back(Segment(Pos::kN, 3, 3));
   context->GetSentence().GetNluContext()->SetSegments(segments);
   ASSERT_TRUE(ret.first->MatchPattern(*(context.get())));
+
+  ret = PatternItem::Build(L"#Reg(\\d{4}年\\d{2}月)");
+
+  context = std::make_shared<Context>(L"2012年12月11号");
+  ASSERT_TRUE(ret.first->MatchPattern(*(context.get())));
+  ASSERT_TRUE(ret.first->GetContentMatched() == L"2012年12月");
 }
