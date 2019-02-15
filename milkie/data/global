@@ -1,22 +1,4 @@
-PATTERN_EXPR_UNION_BEGIN(whatis)
-
-  whatIsPhrase = [$WhatIs, $HowToInterpret]
-  whatissocalled = { {$SoCalled ?} $*sbv {$Def ?} }
-  { $Greeting { $YouKnow ?} $whatIsPhrase $whatissocalled $ModalParticleWithPunc }
-
-  isWhatPhrase = [$IsWhat, $HowToInterpret]
-  { $Greeting { $YouKnow ?} {$SoCalled ?} $*sbv $Def {$isWhatPhrase ?} $ModalParticleWithPunc }
-  { $Greeting { $YouKnow ?} {$SoCalled ?} $*sbv {$Def ?} $isWhatPhrase $ModalParticleWithPunc }
-
-  <sbv>
-PATTERN_EXPR_UNION_END
-
-FEATURE_EXTRACTOR_BEGIN(someone)
-
-  { #Pos(aP+) "的" #Pos(nP+) }
-
+FEATURE_EXTRACTOR_BEGIN(global)
+  { { #Reg(\d{4}) |condition| -> year } => ner.time }
 FEATURE_EXTRACTOR_END
 
-PARSER_BEGIN(global)
-  { { #Reg(\d{4}) |condition| -> year } => ner.time }
-PARSER_END
