@@ -50,9 +50,8 @@ bool WordDict::AddItem_(const std::string &name, const JsonType &jsonType) {
     return false;
   }
 
-  std::wstring nameWstr;
-  bool ret = StrHelper::Str2Wstr(name, nameWstr);
-  if (!ret) {
+  std::shared_ptr<std::wstring> nameWstr = StrHelper::Str2Wstr(name);
+  if (nullptr == nameWstr) {
     FATAL("fail_convert_name_to_wstr[" << name << "]");
     return false;
   }
@@ -66,7 +65,7 @@ bool WordDict::AddItem_(const std::string &name, const JsonType &jsonType) {
     }
     dictItems.push_back(dictItem);
   }
-  container_.insert(std::make_pair(nameWstr, dictItems));
+  container_.insert(std::make_pair(*nameWstr, dictItems));
   return true;
 }
 
