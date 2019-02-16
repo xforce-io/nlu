@@ -28,7 +28,7 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
     std::shared_ptr<CodeSeg> filter;
     std::wstring storageSpace;
     std::wstring storageItem;
-    CategoryPatternExpr::Category categoryPatternExpr;
+    CategoryPatternExpr::Category categoryPatternExpr = CategoryPatternExpr::kOnce;
 
     ssize_t curIdx = 1;
     while (curIdx < statement.length()) {
