@@ -14,6 +14,7 @@ class FeatureExtractor {
           const std::string &filepath);
 
   const std::string& GetFilepath() const { return filepath_; }
+  const std::wstring& GetName() const { return name_; }
   Errno::Code MatchPattern(Context &context);
 
  public: 

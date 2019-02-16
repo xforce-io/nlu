@@ -1,4 +1,4 @@
 FEATURE_EXTRACTOR_BEGIN(global)
-  { { #Reg(\d{4}年\d{2}月) |condition| -> year } => ner.time }
+  { {  {#Reg(\d{4}) | ret = _pn_ < 3000 and _pn_ > 0 | -> year} "年" {#Reg(\d{2}) | ret = _pn_ <= 12 and _pn_ >= 1 | -> month} "月" -> year } => ner.time }
 FEATURE_EXTRACTOR_END
 

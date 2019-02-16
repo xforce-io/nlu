@@ -24,7 +24,7 @@ set(LIB_DEPS
 find_library(LUA_LIBRARY lua ./3rd/lua-5.3.5/lib NO_DEFAULT_PATH)
 
 add_library(milkie
-  ${MILKIE_FILES} src/core/model/context/storage_key.h src/core/model/pattern_item/details/pattern_item_reg.cpp src/core/model/pattern_item/pattern_item_reg.h src/core/model/function/feature_extractor/parser/struct_feature_extractor.h src/core/model/function/feature_extractor/instruction_feature_extractor.h src/core/model/function/feature_extractor/details/instruction_feature_extractor.cpp src/core/model/function/feature_extractor/parser/details/struct_feature_extractor.cpp src/core/model/pattern/parser/details/struct_pattern.cpp src/core/model/function/feature_extractor/feature_extractor.h src/core/model/function/feature_extractor/details/feature_extractor.cpp src/errno.h test/src/model/function/feature_extractor/test_feature_extractor.cpp)
+  ${MILKIE_FILES} src/core/model/context/storage_key.h src/core/model/pattern_item/details/pattern_item_reg.cpp src/core/model/pattern_item/pattern_item_reg.h src/core/model/function/feature_extractor/parser/struct_feature_extractor.h src/core/model/function/feature_extractor/instruction_feature_extractor.h src/core/model/function/feature_extractor/details/instruction_feature_extractor.cpp src/core/model/function/feature_extractor/parser/details/struct_feature_extractor.cpp src/core/model/pattern/parser/details/struct_pattern.cpp src/core/model/function/feature_extractor/feature_extractor.h src/core/model/function/feature_extractor/details/feature_extractor.cpp src/errno.h test/src/model/function/feature_extractor/test_feature_extractor.cpp src/core/model/function/Manager.h src/core/model/function/details/Manager.cpp)
 
 target_link_libraries(milkie
   ${LIB_DEPS}
