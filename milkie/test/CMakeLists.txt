@@ -64,3 +64,8 @@ add_executable(testPatternExpr
   ${LOCAL_CPP_FILES}
   ${CMAKE_SOURCE_DIR}/src/model/pattern_expr/test_pattern_expr.cpp
 )
+
+add_executable(testFeatureExtractor
+  ${LOCAL_CPP_FILES}
+  ${CMAKE_SOURCE_DIR}/src/model/function/feature_extractor/test_feature_extractor.cpp
+)

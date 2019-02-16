@@ -1,0 +1,57 @@
+#include "../feature_extractor.h"
+#include "../instruction_feature_extractor.h"
+#include "../../../context/context.h"
+#include "../../../pattern_expr/pattern_expr.h"
+
+namespace xforce { namespace nlu { namespace milkie {
+
+FeatureExtractor::FeatureExtractor(
+    std::shared_ptr<StructFeatureExtractor> structFeatureExtractor,
+    const std::string &filepath) {
+  filepath_ = filepath;
+  name_ = structFeatureExtractor->GetName();
+  instructions_ = structFeatureExtractor->GetInstructions();
+}
+
+Errno::Code FeatureExtractor::MatchPattern(Context &context) {
+  context.Reset();
+  for (auto &instruction : instructions_) {
+    switch (instruction->GetCategoryInstruction()) {
+      case CategoryInstruction::kPatternExpr : {
+        if (
+            (instruction->GetMatchType() == MatchType::kExactMatch &&
+              instruction->GetPatternExpr()->ExactMatch(context)) ||
+            (instruction->GetMatchType() == MatchType::kPrefixMatch &&
+              instruction->GetPatternExpr()->MatchPattern(context, false))) {
+          return Errno::kOk;
+        }
+        break;
+      }
+      default : {
+        FATAL("invalid_feature_extractor_instruction["
+            << instruction->GetCategoryInstruction()
+            << "]");
+        return Errno::kOther;
+      }
+    }
+  }
+}
+
+bool FeatureExtractor::Build(
+      const std::string &filepath,
+      std::vector<std::shared_ptr<FeatureExtractor>> &featureExtractors) {
+  std::vector<std::shared_ptr<StructFeatureExtractor>> result;
+  bool ret = StructFeatureExtractor::Parse(filepath, result);
+  if (!ret) {
+    FATAL("fail_parse_struct_feature_extractor_from[" << filepath << "]");
+    return false;
+  }
+
+  for (auto &structFeatureExtractor : result) {
+    featureExtractors.push_back(std::make_shared<FeatureExtractor>(structFeatureExtractor, filepath));
+  }
+  return true;
+}
+
+}}}
+

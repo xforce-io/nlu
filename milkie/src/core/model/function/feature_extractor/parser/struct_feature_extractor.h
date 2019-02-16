@@ -7,13 +7,22 @@ namespace xforce { namespace nlu { namespace milkie {
 class InstructionFeatureExtractor;
 
 class StructFeatureExtractor {
- public:
-  static std::vector<std::shared_ptr<StructFeatureExtractor>> Parse(const std::wstring &filepath);
-
  private:
-  void ProcessSingleLine_(
-          const std::wstring &line,
-          std::vector<std::shared_ptr<StructFeatureExtractor>> &structFeatureExtractors);
+  static const std::wstring kKeywordBegin;
+  static const std::wstring kKeywordEnd;
+
+ public:
+  StructFeatureExtractor(
+          const std::wstring &name,
+          const std::vector<std::shared_ptr<InstructionFeatureExtractor>> &instructions);
+
+  const std::wstring& GetName() const { return name_; }
+  const std::vector<std::shared_ptr<InstructionFeatureExtractor>>& GetInstructions() const { return instructions_; }
+
+ public:
+  static bool Parse(
+          const std::string &filepath,
+          std::vector<std::shared_ptr<StructFeatureExtractor>> &results);
 
  private:
   std::wstring name_;

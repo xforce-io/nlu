@@ -6,16 +6,40 @@ namespace xforce { namespace nlu { namespace milkie {
 
 class PatternExpr;
 
+struct CategoryInstruction {
+    enum Type {
+        kFilter,
+        kPatternExpr,
+    };
+};
+
+struct MatchType {
+    enum Type {
+        kPrefixMatch,
+        kExactMatch,
+        kOtherMatch
+    };
+};
+
 class InstructionFeatureExtractor {
  public:
   InstructionFeatureExtractor(
-          std::shared_ptr<PatternExpr> patternExpr
-          );
+          CategoryInstruction::Type categoryInstruction,
+          std::shared_ptr<PatternExpr> patternExpr,
+          MatchType::Type matchType);
 
-  std::shared_ptr<PatternExpr> GetPatternExpr() { return patternExpr_; }
+  InstructionFeatureExtractor(
+          std::shared_ptr<PatternExpr> patternExpr,
+          MatchType::Type matchType);
+
+  CategoryInstruction::Type GetCategoryInstruction() const { return categoryInstruction_; }
+  std::shared_ptr<PatternExpr> GetPatternExpr() const { return patternExpr_; }
+  MatchType::Type GetMatchType() const { return matchType_; }
 
  private:
+  CategoryInstruction::Type categoryInstruction_;
   std::shared_ptr<PatternExpr> patternExpr_;
+  MatchType::Type matchType_;
 };
 
 }}}
