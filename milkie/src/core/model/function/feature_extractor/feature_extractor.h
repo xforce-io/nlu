@@ -16,7 +16,8 @@ class FeatureExtractor {
   const std::string& GetFilepath() const { return filepath_; }
   Errno::Code MatchPattern(Context &context);
 
-  bool Build(
+ public: 
+  static bool Build(
           const std::string &filepath,
           std::vector<std::shared_ptr<FeatureExtractor>> &featureExtractors);
 

@@ -35,6 +35,7 @@ Errno::Code FeatureExtractor::MatchPattern(Context &context) {
       }
     }
   }
+  return Errno::kNotMatched;
 }
 
 bool FeatureExtractor::Build(
@@ -43,7 +44,7 @@ bool FeatureExtractor::Build(
   std::vector<std::shared_ptr<StructFeatureExtractor>> result;
   bool ret = StructFeatureExtractor::Parse(filepath, result);
   if (!ret) {
-    FATAL("fail_parse_struct_feature_extractor_from[" << filepath << "]");
+    FATAL("fail_parse_struct_feature_extractor_from[" << *StrHelper::Str2Wstr(filepath) << "]");
     return false;
   }
 

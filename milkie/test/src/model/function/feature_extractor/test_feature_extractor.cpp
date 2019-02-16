@@ -18,5 +18,5 @@ int main(int argc, char **argv) {
 
 TEST(testAll, all) {
   std::vector<std::shared_ptr<FeatureExtractor>> featureExtractors;
-  FeatureExtractor::Build("", featureExtractors);
+  ASSERT_TRUE(FeatureExtractor::Build("../../data/global", featureExtractors));
 }

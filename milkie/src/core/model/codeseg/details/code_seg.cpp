@@ -24,17 +24,17 @@ int CodeSeg::Match(Context &context) {
   std::unordered_map<std::wstring, std::wstring> kvs;
   context.GetStorages(kvs);
   for (auto iter = kvs.begin(); iter != kvs.end(); ++iter) {
-    lua_pushstring(luaState_, StrHelper::Wstr2Str(iter->first));
-    lua_pushstring(luaState_, StrHelper::Wstr2Str(iter->second));
+    lua_pushstring(luaState_, StrHelper::Wstr2Str(iter->first)->c_str());
+    lua_pushstring(luaState_, StrHelper::Wstr2Str(iter->second)->c_str());
     lua_settable(luaState_, -3);
   }
   lua_pushstring(luaState_, "_pattern_");
-  lua_pushstring(luaState_, StrHelper::Wstr2Str(*(context.GetCurPattern())));
+  lua_pushstring(luaState_, StrHelper::Wstr2Str(*(context.GetCurPattern()))->c_str());
   lua_settable(luaState_, -3);
 
   lua_setglobal(luaState_, "request");
 
-  int ret = luaL_loadstring(luaState_, StrHelper::Wstr2Str(code_));
+  int ret = luaL_loadstring(luaState_, StrHelper::Wstr2Str(code_)->c_str());
   XFC_FAIL_HANDLE(LUA_OK!=ret)
 
   ret = lua_pcall(luaState_, 0, 0, 0);

@@ -24,22 +24,19 @@ bool ReferManager::BuildGlobalDict() {
     bool ret = IOHelper::ReadLinesFromFilepath(referFilepath, lines);
     if (!ret) {
       hasError = true;
-      std::wstring wReferFilepath;
-      StrHelper::Str2Wstr(referFilepath, wReferFilepath);
-      ERROR("fail_read_lines_from[" << wReferFilepath << "]");
+      ERROR("fail_read_lines_from[" << *StrHelper::Str2Wstr(referFilepath) << "]");
       continue;
     }
   }
 
   for(auto &line : lines) {
-    std::wstring wline;
-    auto ret = StrHelper::Str2Wstr(line, wline);
-    if (!ret) {
+    auto wline = StrHelper::Str2Wstr(line);
+    if (nullptr == wline) {
       hasError = true;
       ERROR("fail_convert_line[" << wline << "]");
       continue;
     }
-    wlines.push_back(wline);
+    wlines.push_back(*wline);
   }
 
   if (nullptr == globalDict_) {
@@ -72,21 +69,18 @@ bool ReferManager::AddToGlobalDict(const std::string &filepath) {
 
   bool ret = IOHelper::ReadLinesFromFilepath(filepath, lines);
   if (!ret) {
-    std::wstring wFilepath;
-    StrHelper::Str2Wstr(filepath, wFilepath);
-    ERROR("fail_read_lines_from[" << wFilepath << "]");
+    ERROR("fail_read_lines_from[" << *(StrHelper::Str2Wstr(filepath)) << "]");
     return false;
   }
 
   std::vector<std::wstring> wlines;
   for(auto &line : lines) {
-    std::wstring wline;
-    auto ret = StrHelper::Str2Wstr(line, wline);
-    if (!ret) {
+    auto wline = StrHelper::Str2Wstr(line);
+    if (nullptr == wline) {
       ERROR("fail_convert_line[" << wline << "]");
       continue;
     }
-    wlines.push_back(wline);
+    wlines.push_back(*wline);
   }
 
   for (auto &wline : wlines) {

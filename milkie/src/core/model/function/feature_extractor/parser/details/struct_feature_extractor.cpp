@@ -37,7 +37,7 @@ bool StructFeatureExtractor::Parse(
       curInstructions.clear();
       auto idxNameBegin = lineAfterProcess.find(L'(');
       auto idxNameEnd = lineAfterProcess.find(L')');
-      if (idxNameBegin<0 || idxNameEnd<0 || idxNameBegin>idxNameEnd) {
+      if (std::wstring::npos == idxNameBegin || std::wstring::npos == idxNameEnd || idxNameBegin>idxNameEnd) {
         FATAL("invalid_feature_extractor_declaration[" << lineAfterProcess << "]");
         return false;
       }
@@ -73,14 +73,14 @@ bool StructFeatureExtractor::Parse(
       curInstructions.push_back(
               std::make_shared<InstructionFeatureExtractor>(
                       patternExpr, matchType));
-    } else if (lineAfterProcess.find(L'=') >= 0) {
+    } else if (lineAfterProcess.find(L'=') != std::wstring::npos) {
       ret = ReferManager::Get().PutLocalRefer(curName, lineAfterProcess);
       if (!ret) {
         FATAL("fail_put_into_refer[" << curName << "]");
         return false;
       }
     } else {
-      FATAL("invalid_feature_extractor_line[" << line << "]");
+      FATAL("invalid_feature_extractor_line[" << *StrHelper::Str2Wstr(line) << "]");
       return false;
     }
   }

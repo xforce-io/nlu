@@ -7,9 +7,7 @@ namespace xforce { namespace nlu { namespace milkie {
 bool Milkie::Init(const std::string &confpath) {
   bool ret = Conf::Get().Init(confpath);
   if (!ret) {
-    std::wstring wConfpath;
-    StrHelper::Str2Wstr(confpath, wConfpath);
-    FATAL("fail_init_confpath[" << wConfpath << "]");
+    FATAL("fail_init_confpath[" << *StrHelper::Str2Wstr(confpath) << "]");
     return false;
   }
 
