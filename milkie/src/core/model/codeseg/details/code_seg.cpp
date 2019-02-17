@@ -5,8 +5,13 @@
 
 namespace xforce { namespace nlu { namespace milkie {
 
-CodeSeg::CodeSeg(const std::wstring &code)
-    :code_(code) {
+CodeSeg::CodeSeg(const std::wstring &code) {
+  if (code.find(L"ret =") == std::wstring::npos && code.find(L"ret=") == std::wstring::npos) {
+    code_ = std::wstring(L"ret = ") + code;
+  } else {
+    code_ = code;
+  }
+
   lock_ = new SpinLock();
   luaState_ = luaL_newstate();
   luaL_openlibs(luaState_);
@@ -40,7 +45,6 @@ int CodeSeg::Match(Context &context) {
     lua_pushinteger(luaState_, num);
     lua_settable(luaState_, -3);
   }
-
 
   lua_setglobal(luaState_, "request");
 
