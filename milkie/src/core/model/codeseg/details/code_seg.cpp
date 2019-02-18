@@ -33,20 +33,17 @@ int CodeSeg::Match(Context &context) {
     lua_pushstring(luaState_, StrHelper::Wstr2Str(iter->second)->c_str());
     lua_settable(luaState_, -3);
   }
+  lua_setglobal(luaState_, "r");
 
   auto curPattern = StrHelper::Wstr2Str(*(context.GetCurPattern()));
-  lua_pushstring(luaState_, "_p_");
   lua_pushstring(luaState_, curPattern->c_str());
-  lua_settable(luaState_, -3);
+  lua_setglobal(luaState_, "_p_");
 
   int num;
   if (StrHelper::GetNum(curPattern->c_str(), num)) {
-    lua_pushstring(luaState_, "_pn_");
     lua_pushinteger(luaState_, num);
-    lua_settable(luaState_, -3);
+    lua_setglobal(luaState_, "_pn_");
   }
-
-  lua_setglobal(luaState_, "request");
 
   int ret = luaL_loadstring(luaState_, StrHelper::Wstr2Str(code_)->c_str());
   XFC_FAIL_HANDLE(LUA_OK!=ret)
@@ -70,7 +67,7 @@ std::shared_ptr<CodeSeg> CodeSeg::Build(const std::wstring &code) {
   if (code.at(0) != L'|' || code.at(code.length()-1) != L'|' || code.length() <= 2) {
     return nullptr;
   }
-  return std::make_shared<CodeSeg>(code);
+  return std::make_shared<CodeSeg>(code.substr(1, code.length()-2));
 }
 
 }}}

@@ -180,7 +180,7 @@ bool PatternExpr::MatchPattern(Context &context, bool singleton) {
     return ret;
   }
 
-  if (nullptr != filter_ && filter_->Match(context) > 0) {
+  if (nullptr != filter_ && filter_->Match(context) <= 0) {
     context.StopMatch(false);
     DebugMatch_(context, startIdx, false);
     return false;
