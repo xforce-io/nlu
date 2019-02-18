@@ -1,8 +1,10 @@
-#include "../Manager.h"
+#include "../manager.h"
 #include "../../../../conf/conf.h"
 #include "../feature_extractor/feature_extractor.h"
 
 namespace xforce { namespace nlu { namespace milkie {
+
+std::shared_ptr<Manager> Manager::manager_;
 
 Manager::Manager(std::unordered_map<std::wstring, std::shared_ptr<FeatureExtractor>> featureExtractors) :
   featureExtractors_(featureExtractors) {}

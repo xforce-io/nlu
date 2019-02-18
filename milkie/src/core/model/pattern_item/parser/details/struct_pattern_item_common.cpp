@@ -27,10 +27,14 @@ std::shared_ptr<StructPatternItemCommon> StructPatternItemCommon::Build(const st
     std::vector<std::wstring> args;
     std::wstring argsStr = StrHelper::Trim(statement.substr(endName+1, idx-endName-2));
     if (!argsStr.empty()) {
-      std::vector<std::wstring> argsItems;
-      StrHelper::SplitStr(argsStr, L',', argsItems);
-      for (auto argItem : argsItems) {
-        args.push_back(argItem);
+      if (category != CategoryPatternItem::kReg) {
+        std::vector<std::wstring> argsItems;
+        StrHelper::SplitStr(argsStr, L',', argsItems);
+        for (auto argItem : argsItems) {
+          args.push_back(argItem);
+        }
+      } else {
+        args.push_back(argsStr);
       }
     }
 
