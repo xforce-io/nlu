@@ -2,11 +2,13 @@
 
 #include "../public.h"
 #include "pos/pos.h"
+#include "fragment/fragment.h"
 
 namespace xforce { namespace nlu { namespace basic {
 
-class Segment {
+class Segment : public Fragment {
  public:
+  typedef Fragment Super;
   typedef std::vector<Segment> Vector;
 
  public:
@@ -16,11 +18,7 @@ class Segment {
   inline Segment(size_t offset);
 
   inline void SetPos(Pos::Type pos);
-  inline void SetLen(size_t len);
-
   Pos::Type GetPos() const { return pos_; }
-  size_t GetOffset() const { return offset_; }
-  size_t GetLen() const { return len_; }
 
   inline std::wstring GetQuery(const std::wstring &sentence) const;
 
@@ -30,37 +28,23 @@ class Segment {
 
  private:
   Pos::Type pos_;
-  size_t offset_;
-  size_t len_;
 };
 
 Segment::Segment() :
-  pos_(Pos::kUndef),
-  offset_(-1),
-  len_(-1) {}
+  Fragment(-1, -1),
+  pos_(Pos::kUndef) {}
 
 Segment::Segment(Pos::Type pos, size_t offset, size_t len) :
-  pos_(pos),
-  offset_(offset),
-  len_(len) {}
+  Fragment(offset, len),
+  pos_(pos) {}
 
 Segment::Segment(size_t offset, size_t len) :
-  pos_(Pos::kUndef),
-  offset_(offset),
-  len_(len) {}
+  Fragment(offset, len),
+  pos_(Pos::kUndef) {}
 
 Segment::Segment(size_t offset) :
-  pos_(Pos::kUndef),
-  offset_(offset),
-  len_(-1) {}
-
-void Segment::SetPos(Pos::Type pos) {
-  pos_ = pos;
-}
-
-void Segment::SetLen(size_t len) {
-  len_ = len;
-}
+  Fragment(offset, -1),
+  pos_(Pos::kUndef) {}
 
 std::wstring Segment::GetQuery(const std::wstring &sentence) const {
   return sentence.substr(offset_, len_);

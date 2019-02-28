@@ -45,6 +45,7 @@ add_custom_command(TARGET basic
   COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/public
   COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/data
   COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/model/pos
+  COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/model/fragment
 
   COMMAND cp ${BASIC_SRC_DIR}/public.h ${BASIC_INC_OUTPUT_PATH}/
   COMMAND cp ${BASIC_SRC_DIR}/public/public.h ${BASIC_INC_OUTPUT_PATH}/public/
@@ -55,6 +56,12 @@ add_custom_command(TARGET basic
   COMMAND cp ${BASIC_SRC_DIR}/model/nlu_context.h ${BASIC_INC_OUTPUT_PATH}/model/
   COMMAND cp ${BASIC_SRC_DIR}/model/segment.h ${BASIC_INC_OUTPUT_PATH}/model/
   COMMAND cp ${BASIC_SRC_DIR}/model/pos/pos.h ${BASIC_INC_OUTPUT_PATH}/model/pos/
+  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
+  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
+  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set_label.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
+  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set_multi.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
+  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set_non_multi.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
+  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set_tree.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
   COMMAND git log | head -n 1 > ${BASIC_OUTPUT_PATH}/version
 )
 
