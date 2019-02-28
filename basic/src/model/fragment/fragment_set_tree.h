@@ -5,6 +5,8 @@
 namespace xforce { namespace nlu { namespace basic {
 
 class FragmentSetTree : public FragmentSetNonMulti {
+ public:
+  explicit FragmentSetTree(const std::wstring &text);
 };
 
 }}}

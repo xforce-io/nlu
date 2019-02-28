@@ -31,20 +31,20 @@ class Segment : public Fragment {
 };
 
 Segment::Segment() :
-  pos_(Pos::kUndef),
-  Fragment(-1, -1) {}
+  Fragment(-1, -1),
+  pos_(Pos::kUndef) {}
 
 Segment::Segment(Pos::Type pos, size_t offset, size_t len) :
-  pos_(pos),
-  Fragment(offset, len) {}
+  Fragment(offset, len),
+  pos_(pos) {}
 
 Segment::Segment(size_t offset, size_t len) :
-  pos_(Pos::kUndef),
-  Fragment(offset, len) {}
+  Fragment(offset, len),
+  pos_(Pos::kUndef) {}
 
 Segment::Segment(size_t offset) :
-  pos_(Pos::kUndef),
-  Fragment(offset, -1) {}
+  Fragment(offset, -1),
+  pos_(Pos::kUndef) {}
 
 std::wstring Segment::GetQuery(const std::wstring &sentence) const {
   return sentence.substr(offset_, len_);

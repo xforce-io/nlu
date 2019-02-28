@@ -3,6 +3,6 @@
 namespace xforce { namespace nlu { namespace basic {
 
 FragmentSetTree::FragmentSetTree(const std::wstring &text) :
-    FragmentSet(text) {}
+    FragmentSetNonMulti(text) {}
 
 }}}

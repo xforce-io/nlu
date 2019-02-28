@@ -16,7 +16,7 @@ class Confidence {
   inline Confidence();
   inline Confidence(int score);
 
-  inline int SetScore(int score);
+  inline void SetScore(int score);
   int GetScore() const { return score_; }
 
  private:
@@ -29,7 +29,7 @@ Confidence::Confidence() :
 Confidence::Confidence(int score) :
   score_(score) {}
 
-int Confidence::SetScore(int score) {
+void Confidence::SetScore(int score) {
   score_ = score;
 }
 
