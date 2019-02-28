@@ -16,9 +16,8 @@ void PosTagging::Tagging(
         segment.SetPos(dictItems->at(0)->pos);
       }
     } else {
-      std::string wordStr;
-      StrHelper::Wstr2Str(word, wordStr);
-      WARN("no_word_in_word_dict[" << wordStr << "]");
+      auto wordStr = StrHelper::Wstr2Str(word);
+      WARN("no_word_in_word_dict[" << *wordStr << "]");
     }
   }
 

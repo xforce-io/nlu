@@ -71,7 +71,7 @@ class Pos {
 
  public:
   static Pos::Type GetPos(const std::string &pos); 
-  static const std::string& Str(Pos::Type type);
+  static const std::wstring& Str(Pos::Type type);
 };
 
 class NotionOrForm {

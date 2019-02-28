@@ -46,6 +46,10 @@ Segment::Segment(size_t offset) :
   Fragment(offset, -1),
   pos_(Pos::kUndef) {}
 
+void Segment::SetPos(Pos::Type pos) {
+  pos_ = pos;
+}
+
 std::wstring Segment::GetQuery(const std::wstring &sentence) const {
   return sentence.substr(offset_, len_);
 }

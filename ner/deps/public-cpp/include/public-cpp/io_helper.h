@@ -4,6 +4,8 @@
 #include <fcntl.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <dirent.h>
+
 #include "common.h"
 
 namespace xforce {
@@ -28,6 +30,9 @@ class IOHelper {
   inline static bool CheckConn(int fd);
 
   inline static void Close(int fd);
+
+  static int ScanFiles(const std::string &inputDir, std::vector<std::string> &filepaths);
+  static bool ReadLinesFromFilepath(const std::string &filepath, std::vector<std::string> &lines);
 };
 
 bool IOHelper::IpToInt(const char* ipstr, uint32_t& ipint) {
