@@ -6,6 +6,7 @@ include_directories(
   /usr/include/
   /home/freeman/software/include/
   ${CMAKE_SOURCE_DIR}/deps/public-cpp/include/
+  ${CMAKE_SOURCE_DIR}/deps/basic/include/
   )
 
 link_directories(

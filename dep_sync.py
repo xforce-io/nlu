@@ -43,6 +43,8 @@ def buildNer() :
     call("mkdir -p %s && rm -rf %s/*" % (kDepPathNer, kDepPathNer))
     call("cp -rf %s/public-cpp %s/public-cpp" % \
             (kBuildPathPublicCpp, kDepPathNer))
+    call("cp -rf %s/basic %s/basic" % \
+            (kBuildPathBasic, kDepPathNer))
     call("mkdir -p %s && cd %s && cmake ../ && make clean && make -j4 -s" % \
             (kBuildPathNer, kBuildPathNer))
 
