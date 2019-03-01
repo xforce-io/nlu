@@ -26,10 +26,10 @@ void WordDict::PrefixMatch(
   simpleTrie_->PrefixesOf(strQuery.c_str(), strQuery.length(), prefixOffsets);
   for (auto iter = prefixOffsets.begin(); iter != prefixOffsets.end(); ++iter) {
     std::string tmpStr(strQuery.c_str(), *iter);
-    std::wstring tmpWstr;
-    XFC_ASSERT(StrHelper::Str2Wstr(tmpStr, tmpWstr));
+    auto tmpWstr = StrHelper::Str2Wstr(tmpStr);
+    XFC_ASSERT(tmpWstr != nullptr);
 
-    auto iter2 = container_.find(tmpWstr);
+    auto iter2 = container_.find(*tmpWstr);
     coreDictItems.push_back(iter2->second);
   }
 }
