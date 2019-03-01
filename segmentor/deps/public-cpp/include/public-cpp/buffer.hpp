@@ -28,7 +28,7 @@ class Buffer {
 };
 
 Buffer::Buffer() :
-  buf_(nullptr),
+  buf_(NULL),
   len_(0),
   size_(0) {}
 
@@ -45,7 +45,7 @@ void Buffer::Reserve(size_t size) {
 }
 
 Buffer::~Buffer() {
-  if (nullptr!=buf_) free(buf_);
+  if (NULL!=buf_) free(buf_);
 }
 
 }

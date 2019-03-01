@@ -32,7 +32,7 @@ const std::vector<DictItem*>* WordDict::GetDictItems(const std::wstring &word) c
   if (container_.end() != iter) {
     return &(iter->second);
   } else {
-    return nullptr;
+    return NULL;
   }
 }
 

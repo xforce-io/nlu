@@ -4,7 +4,10 @@
 
 namespace xforce { namespace nlu { namespace ner {
 
-class NameEntity {
+class NameEntity : public basic::Fragment {
+ private:
+  typedef basic::Fragment Super;
+
  public: 
   enum Category {
     kCategoryNone = -1,
@@ -20,20 +23,12 @@ class NameEntity {
 
   virtual int GetCategory() const = 0; 
 
-  size_t GetOffset() const { return offset_; }
-  size_t GetLen() const { return len_; }
-
   void Dump(JsonType &jsonType);
 
   virtual ~NameEntity() {}
- 
- protected:
-  size_t offset_; 
-  size_t len_;
 };
 
 NameEntity::NameEntity(size_t offset, size_t len) :
-  offset_(offset),
-  len_(len) {}
+  Super(offset, len) {}
 
 }}}
