@@ -8,7 +8,7 @@ class NameEntity : public basic::Fragment {
  private:
   typedef basic::Fragment Super;
 
- public: 
+ public:
   enum Category {
     kCategoryNone = -1,
     kCategoryTime = 1,

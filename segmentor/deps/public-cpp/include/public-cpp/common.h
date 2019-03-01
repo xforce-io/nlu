@@ -382,40 +382,40 @@
 
 #define XFC_DELETE(member) \
   do { \
-    if (likely(nullptr!=member)) { \
+    if (likely(NULL!=member)) { \
       if (xforce::MemProfile::GetFlag()) { \
         char _buf[xforce::kMaxSizeMemProfilekey]; \
         sprintf(_buf, "delete_%s_%d", __FILE__, __LINE__); \
         xforce::GMonitor::Get().Inc("mem_profile", _buf, malloc_usable_size(member)); \
       } \
       delete member; \
-      member=nullptr; \
+      member=NULL; \
     } \
   } while(0);
 
 #define XFC_DELETE_ARRAY(member) \
   do { \
-    if (likely(nullptr!=member)) { \
+    if (likely(NULL!=member)) { \
       if (xforce::MemProfile::GetFlag()) { \
         char _buf[xforce::kMaxSizeMemProfilekey]; \
         sprintf(_buf, "delete_%s_%d", __FILE__, __LINE__); \
         xforce::GMonitor::Get().Inc("mem_profile", _buf, malloc_usable_size(member)); \
       } \
       delete [] member; \
-      member=nullptr; \
+      member=NULL; \
     } \
   } while(0);
 
 #define XFC_FREE(member) \
   do { \
-    if (likely(nullptr!=member)) { \
+    if (likely(NULL!=member)) { \
       if (xforce::MemProfile::GetFlag()) { \
         char _buf[xforce::kMaxSizeMemProfilekey]; \
         sprintf(_buf, "delete_%s_%d", __FILE__, __LINE__); \
         xforce::GMonitor::Get().Inc("mem_profile", _buf, malloc_usable_size(member)); \
       } \
       ::free(member); \
-      member=nullptr; \
+      member=NULL; \
     } \
   } while(0);
 
@@ -444,25 +444,25 @@
 
 #define XFC_DELETE(member) \
   do { \
-    if (likely(nullptr!=member)) { \
+    if (likely(NULL!=member)) { \
       delete member; \
-      member=nullptr; \
+      member=NULL; \
     } \
   } while(0);
 
 #define XFC_DELETE_ARRAY(member) \
   do { \
-    if (likely(nullptr!=member)) { \
+    if (likely(NULL!=member)) { \
       delete [] member; \
-      member=nullptr; \
+      member=NULL; \
     } \
   } while(0);
 
 #define XFC_FREE(member) \
   do { \
-    if(likely(nullptr!=member)) { \
+    if(likely(NULL!=member)) { \
       ::free(member); \
-      member=nullptr; \
+      member=NULL; \
     } \
   } while(0);
 

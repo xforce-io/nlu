@@ -46,7 +46,7 @@ time_t Time::GetCurrentUsec(bool update) {
 
 void Time::UpdateTimer() {
   timeval t;
-  gettimeofday(&t, nullptr);
+  gettimeofday(&t, NULL);
   time_ = t.tv_sec*1000000 + t.tv_usec;
 }
 

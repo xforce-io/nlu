@@ -8,7 +8,7 @@ namespace xforce {
 
 class GMonitor {
  public:
-  static bool Init(const std::string& conf_path, MONITOR_TYPE* monitor=nullptr);
+  static bool Init(const std::string& conf_path, MONITOR_TYPE* monitor=NULL);
   static MONITOR_TYPE& Get() { return *monitor_; }
   static void Tini();
 
