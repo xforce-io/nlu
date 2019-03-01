@@ -5,7 +5,7 @@ namespace xforce { namespace nlu { namespace segmentor {
 
 bool NatureDict::Init(const std::string &dictpath) {
   FILE *fp = fopen(dictpath.c_str(), "r");
-  if (fp == NULL) {
+  if (fp == nullptr) {
     ERROR("fail_open_filepath[" << dictpath << "]");
     return false;
   }
@@ -14,7 +14,7 @@ bool NatureDict::Init(const std::string &dictpath) {
   char *line = fgets(buf, sizeof(buf), fp);
   std::vector<std::string> results;
   uint32_t maxLen = 0;
-  while (NULL!=line) {
+  while (nullptr!=line) {
     if (buf[strlen(buf) - 1] == '\n') {
       buf[strlen(buf) - 1] = '\0';
     }

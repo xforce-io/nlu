@@ -29,7 +29,7 @@ const Nature* NatureDict::GetNature(const std::string &name) const {
   if (iter != container_.end()) {
     return iter->second;
   } else {
-    return NULL;
+    return nullptr;
   }
 }
 

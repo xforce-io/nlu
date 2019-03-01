@@ -7,16 +7,16 @@ namespace xforce { namespace nlu { namespace segmentor {
 Node::Node(int offset, size_t len) {
   offset_ = offset;
   len_ = len;
-  bestPrev_ = NULL;
+  bestPrev_ = nullptr;
   bestScore_ = -1.0;
-  nameEntity_ = NULL;
+  nameEntity_ = nullptr;
   pos_ = basic::Pos::kUndef;
 }
 
 std::string Node::Str() const {
   std::stringstream ss;
   ss << "(" << this << "/" << offset_ << "/" << len_;
-  if (NULL != bestPrev_) {
+  if (nullptr != bestPrev_) {
     ss << "/" << bestPrev_ << "/" << bestScore_;
   }
   ss << ")";

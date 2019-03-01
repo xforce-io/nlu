@@ -15,7 +15,7 @@ class IOHelper {
   inline static bool IpToInt(const char* ipstr, uint32_t& ipint);
   static int CreateSocket(bool is_non_block=true); 
   static int Listen(const sockaddr_in& addr, size_t backlog=2048);
-  static int Accept(int listen_fd, char* ipbuf=NULL, int* port=NULL);
+  static int Accept(int listen_fd, char* ipbuf=nullptr, int* port=nullptr);
 
   /*
    * @return: <fd, whether need event>
@@ -46,7 +46,7 @@ bool IOHelper::IpToInt(const char* ipstr, uint32_t& ipint) {
 
     ipint += segvalue * (uint32_t)(1 << ((3-i)*8));
     cur = strchr(cur, '.');
-    if (3!=i && NULL==cur) {
+    if (3!=i && nullptr==cur) {
       return false;
     }
     cur+=1;

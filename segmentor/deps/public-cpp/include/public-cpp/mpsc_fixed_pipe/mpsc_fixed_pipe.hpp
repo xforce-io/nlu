@@ -39,14 +39,14 @@ class MPSCFixedPipe {
       size_t size_pipe, 
       size_t max_size_content,
       size_t threshold_sender_notify=kDefaultThresholdSenderNotify,
-      Notifier* notifier=NULL);
+      Notifier* notifier=nullptr);
 
   /* 
    * @sender interfaces
    */
   bool SendMsg(
       const MsgHeader& msg_header, 
-      const char* content=NULL,
+      const char* content=nullptr,
       uint32_t size_content=0);
 
   /* 
@@ -129,7 +129,7 @@ bool MPSCFixedPipe<MsgHeader, Notifier>::Init(
     size_t threshold_sender_notify,
     Notifier* notifier) {
   if ( size_pipe <= max_size_content+kMsgOffset
-      || ( 0!=threshold_sender_notify && NULL==notifier ) ) {
+      || ( 0!=threshold_sender_notify && nullptr==notifier ) ) {
     return false;
   }
 
@@ -138,7 +138,7 @@ bool MPSCFixedPipe<MsgHeader, Notifier>::Init(
   threshold_sender_notify_=threshold_sender_notify;
 
   pipe_ = new (std::nothrow) char [size_pipe_];
-  if (NULL==pipe_) return false;
+  if (nullptr==pipe_) return false;
 
   receiver_pace_=pipe_;
   EncodeSenderPaceFrom_(pipe_, 0);
@@ -205,7 +205,7 @@ size_t MPSCFixedPipe<MsgHeader, Notifier>::SizeSpace() const {
 template <typename MsgHeader, typename Notifier>
 time_t MPSCFixedPipe<MsgHeader, Notifier>::GetCurrentTimeUs() {
   timeval t;
-  gettimeofday(&t, NULL);
+  gettimeofday(&t, nullptr);
   return t.tv_sec*1000000 + t.tv_usec;
 }
 
@@ -220,10 +220,10 @@ MPSCFixedPipe<MsgHeader, Notifier>::ReceiveMsgWithNotify_(time_t timeo_ms) {
   Msg* msg;
   for (size_t i=0; i<kTimesBusyQuery; ++i) {
     msg = ReceiveMsg_();
-    if (NULL!=msg) return msg;
+    if (nullptr!=msg) return msg;
   }
 
-  if (0==timeo_ms) return NULL;
+  if (0==timeo_ms) return nullptr;
 
   notifier_->Wait(timeo_ms);
   return ReceiveMsg_();
@@ -235,10 +235,10 @@ MPSCFixedPipe<MsgHeader, Notifier>::ReceiveMsgWithoutNotify_(time_t timeo_ms) {
   Msg* msg;
   for (size_t i=0; i<kTimesBusyQuery; ++i) {
     msg = ReceiveMsg_();
-    if (NULL!=msg) return msg;
+    if (nullptr!=msg) return msg;
   }
 
-  if (0==timeo_ms) return NULL;
+  if (0==timeo_ms) return nullptr;
 
   time_t start_time = GetCurrentTimeUs();
   size_t round=0;
@@ -247,14 +247,14 @@ MPSCFixedPipe<MsgHeader, Notifier>::ReceiveMsgWithoutNotify_(time_t timeo_ms) {
     SleepUs(time_to_sleep_us);
 
     msg = ReceiveMsg_();
-    if (NULL!=msg) return msg;
+    if (nullptr!=msg) return msg;
 
     time_t current_time = GetCurrentTimeUs();
     if (start_time + timeo_ms*1000 < current_time) break;
 
     ++round;
   }
-  return NULL;
+  return nullptr;
 }
 
 template <typename MsgHeader, typename Notifier>
@@ -262,9 +262,9 @@ bool MPSCFixedPipe<MsgHeader, Notifier>::SendMsg_(
     const MsgHeader& msg_header,
     const char *content, 
     uint32_t size_content) {
-  char* pos_before_rewind=NULL;
+  char* pos_before_rewind=nullptr;
   Msg* msg = ReserveSpaceForSend_(size_content, pos_before_rewind);
-  if (unlikely(NULL==msg)) return false;
+  if (unlikely(nullptr==msg)) return false;
 
   msg->msg_header = msg_header;
   msg->size = size_content;
@@ -277,7 +277,7 @@ bool MPSCFixedPipe<MsgHeader, Notifier>::SendMsg_(
 
 template <typename MsgHeader, typename Notifier>
 MPSCFixedPipeMsg<MsgHeader>* MPSCFixedPipe<MsgHeader, Notifier>::ReceiveMsg_() { 
-  return HasTodoMPSCFixedPipeMsg_() ? RCAST<Msg*>(receiver_pace_) : NULL; 
+  return HasTodoMPSCFixedPipeMsg_() ? RCAST<Msg*>(receiver_pace_) : nullptr;
 }
 
 template <typename MsgHeader, typename Notifier>
@@ -289,7 +289,7 @@ time_t MPSCFixedPipe<MsgHeader, Notifier>::GetTimeToSleepUs_(size_t slot) {
 template <typename MsgHeader, typename Notifier>
 typename MPSCFixedPipe<MsgHeader, Notifier>::Msg* 
 MPSCFixedPipe<MsgHeader, Notifier>::ReserveSpaceForSend_(size_t size_content, char*& pos_before_rewind) {
-  if (unlikely(size_content>max_size_content_)) return NULL;
+  if (unlikely(size_content>max_size_content_)) return nullptr;
 
   size_t tmp_sender_pace_to=sender_pace_to_;
   char* tmp_sender_pace_to_ptr = DecodeSenderPacePtr_(tmp_sender_pace_to);
@@ -298,10 +298,10 @@ MPSCFixedPipe<MsgHeader, Notifier>::ReserveSpaceForSend_(size_t size_content, ch
   if (tmp_sender_pace_to_ptr>=tmp_receiver_pace) {
     if (tmp_sender_pace_to_ptr+size_need <= end_of_pipe_) {
       return CASSenderPaceTo_(tmp_sender_pace_to, tmp_sender_pace_to_ptr+size_need, false) ? 
-        RCAST<Msg*>(tmp_sender_pace_to_ptr) : NULL;
+        RCAST<Msg*>(tmp_sender_pace_to_ptr) : nullptr;
     } else if (pipe_+size_need < tmp_receiver_pace) {
       bool ret = CASSenderPaceTo_(tmp_sender_pace_to, pipe_+size_need, true);
-      if (unlikely(!ret)) return NULL;
+      if (unlikely(!ret)) return nullptr;
 
       pos_before_rewind=tmp_sender_pace_to_ptr;
       return RCAST<Msg*>(pipe_);
@@ -309,9 +309,9 @@ MPSCFixedPipe<MsgHeader, Notifier>::ReserveSpaceForSend_(size_t size_content, ch
   } else if (tmp_receiver_pace>tmp_sender_pace_to_ptr
       && tmp_sender_pace_to_ptr+size_need < tmp_receiver_pace) {
     return CASSenderPaceTo_(tmp_sender_pace_to, tmp_sender_pace_to_ptr+size_need, false) ? 
-      RCAST<Msg*>(tmp_sender_pace_to_ptr) : NULL;
+      RCAST<Msg*>(tmp_sender_pace_to_ptr) : nullptr;
   }
-  return NULL;
+  return nullptr;
 }
 
 template <typename MsgHeader, typename Notifier>
@@ -468,7 +468,7 @@ void MPSCFixedPipe<MsgHeader, Notifier>::SleepUs(time_t usecs) {
   struct timespec time;
   clock_gettime(CLOCK_MONOTONIC, &time);
   time.tv_nsec += (usecs<<10);
-  clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &time, NULL);
+  clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &time, nullptr);
 }
 
 }

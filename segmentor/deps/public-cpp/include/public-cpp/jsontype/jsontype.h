@@ -61,7 +61,7 @@ struct SharedJsonVal {
     static JsonType* ParseJson(const char*& str);
 
    private:
-    static JsonType* ReadinNull_(const char*& str);
+    static JsonType* Readinnullptr_(const char*& str);
     static JsonType* ReadinTrue_(const char*& str);
     static JsonType* ReadinFalse_(const char*& str);
     static JsonType* ReadinStr_(const char*& str);
@@ -131,7 +131,7 @@ class JsonType {
   JsonValType::Type Type() const { return shared_json_val_->type; }
   inline size_t Size() const;
 
-  inline bool IsNull() const; 
+  inline bool Isnullptr() const;
   inline bool IsBool() const;
   inline bool IsInt() const;
   inline bool IsDouble() const;
@@ -163,8 +163,8 @@ class JsonType {
   void DecRefCnt() { shared_json_val_->DecRefCnt(); }
 
  private:
-  inline const Self& Null_() const;
-  inline Self& Null_();
+  inline const Self& nullptr_() const;
+  inline Self& nullptr_();
   void Reset_(JsonValType::Type type = JsonValType::kInvalid, bool at_exit=false); 
   inline Self& Normalize_();
 
@@ -213,7 +213,7 @@ JsonType::JsonType(JsonValType::Type type) {
 }
 
 JsonType::JsonType(const JsonType& json_val) {
-  shared_json_val_=NULL;
+  shared_json_val_=nullptr;
   operator=(json_val);
 }
 
@@ -293,8 +293,8 @@ size_t JsonType::Size() const {
   }
 }
 
-bool JsonType::IsNull() const { 
-  return JsonValType::kNull == shared_json_val_->type; 
+bool JsonType::Isnullptr() const {
+  return JsonValType::kNull == shared_json_val_->type;
 }
 
 bool JsonType::IsBool() const { 
@@ -324,7 +324,7 @@ bool JsonType::IsDict() const {
 const JsonType& JsonType::operator[](size_t index) const {
   if (unlikely( JsonValType::kList != shared_json_val_->type
       || shared_json_val_->data.list_val->size() <= index )) {
-    return Null_();
+    return nullptr_();
   }
   return (*(shared_json_val_->data.list_val))[index];
 }
@@ -344,11 +344,11 @@ JsonType& JsonType::operator[](size_t index) {
 
 const JsonType& JsonType::operator[](const std::string& key) const {
   if (unlikely( JsonValType::kDict != shared_json_val_->type )) {
-    return Null_();
+    return nullptr_();
   }
 
   DictType::const_iterator iter = shared_json_val_->data.dict_val->find(key);
-  return shared_json_val_->data.dict_val->end() != iter ? iter->second : Null_();
+  return shared_json_val_->data.dict_val->end() != iter ? iter->second : nullptr_();
 }
 
 JsonType& JsonType::operator[](const std::string& key) {
@@ -365,14 +365,14 @@ JsonType& JsonType::operator[](const std::string& key) {
   return iter->second;
 }
 
-const JsonType& JsonType::Null_() const {
-  static Self null_val(JsonValType::kNull);
-  return null_val;
+const JsonType& JsonType::nullptr_() const {
+  static Self nullptr_val(JsonValType::kNull);
+  return nullptr_val;
 }
 
-JsonType& JsonType::Null_() {
-  static Self null_val(JsonValType::kNull);
-  return null_val;
+JsonType& JsonType::nullptr_() {
+  static Self nullptr_val(JsonValType::kNull);
+  return nullptr_val;
 }
 
 JsonType& JsonType::Normalize_() {

@@ -23,7 +23,7 @@ FILE(GLOB_RECURSE NER_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -std=c++11 -O2")
 
 add_library(ner
-  ${NER_FILES})
+  ${NER_FILES} src/public/dep.h)
 
 target_link_libraries(ner
   log4cplus

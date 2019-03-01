@@ -24,12 +24,12 @@ TEST(test_all, all) {
   std::string filepath = "../../data/regressionCases";
 
   FILE *fp = fopen(filepath.c_str(), "r");
-  ASSERT_TRUE(fp != NULL);
+  ASSERT_TRUE(fp != nullptr);
 
   char buf[4096];
   char *line = fgets(buf, sizeof(buf), fp);
   std::vector<std::string> results;
-  while (NULL!=line) {
+  while (nullptr!=line) {
     if (buf[strlen(buf) - 1] == '\n') {
       buf[strlen(buf) - 1] = '\0';
     }

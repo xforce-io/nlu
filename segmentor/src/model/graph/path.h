@@ -31,7 +31,7 @@ Node* Path::Begin() {
   if (!nodes_.empty()) {
     return nodes_.front();
   } else {
-    return NULL;
+    return nullptr;
   }
 }
 
@@ -39,7 +39,7 @@ Node* Path::End() {
   if (!nodes_.empty()) {
     return nodes_[nodes_.size() - 1];
   } else {
-    return NULL;
+    return nullptr;
   }
 }
 

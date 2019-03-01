@@ -78,7 +78,7 @@ template <typename Context, typename LockPolicy>
 EventsDriver<Context, LockPolicy>::EventsDriver(bool level_trigger) : 
   event_in_(EPOLLIN|EPOLLHUP|EPOLLERR),
   event_out_(EPOLLOUT|EPOLLHUP|EPOLLERR),
-  events_ready_(NULL), 
+  events_ready_(nullptr),
   init_(false) {
   if (!level_trigger) {
     event_in_ |= EPOLLET;
@@ -107,7 +107,7 @@ template <typename Context, typename LockPolicy>
 bool EventsDriver<Context, LockPolicy>::RegEvent(int fd, Op op, Event direction, Context* context, int timeo_ms) {
   XFC_RAII_INIT(-1)
 
-  XFC_BUG(NULL==context)
+  XFC_BUG(nullptr==context)
 
   int ret=-1;
   EventTimeo event_timeo;
@@ -116,7 +116,7 @@ bool EventsDriver<Context, LockPolicy>::RegEvent(int fd, Op op, Event direction,
     size_t old_size = fd_to_event_ctx_.size();
     fd_to_event_ctx_.resize(fd+1);
     for (size_t i=old_size; i < fd_to_event_ctx_.size(); ++i) {
-      fd_to_event_ctx_[i].context = NULL;
+      fd_to_event_ctx_[i].context = nullptr;
     }
   }
 
@@ -161,7 +161,7 @@ bool EventsDriver<Context, LockPolicy>::RegEvent(int fd, Op op, Event direction,
       ret = RegEventDel(fd);
       XFC_FAIL_HANDLE(0!=ret)
 
-      fd_to_event_ctx_[fd].context = NULL;
+      fd_to_event_ctx_[fd].context = nullptr;
       break;
   }
   return true;
@@ -179,7 +179,7 @@ bool EventsDriver<Context, LockPolicy>::RegEventDel(int fd) {
   }
 
   if (!lock_.Lock()) return false;
-  int ret = epoll_ctl(fd_epoll_, EPOLL_CTL_DEL, fd, NULL);
+  int ret = epoll_ctl(fd_epoll_, EPOLL_CTL_DEL, fd, nullptr);
   lock_.Unlock();
 
   if (0!=ret) {
@@ -187,7 +187,7 @@ bool EventsDriver<Context, LockPolicy>::RegEventDel(int fd) {
     return false;
   }
 
-  fd_to_event_ctx_[fd].context = NULL;
+  fd_to_event_ctx_[fd].context = nullptr;
   return true;
 }
 
@@ -201,18 +201,18 @@ void EventsDriver<Context, LockPolicy>::CheckReadyEvent(
   event = (EPOLLOUT == events_ready_[index_events_ready].events ? kOut : 
       (EPOLLIN == events_ready_[index_events_ready].events ? kIn : kErr));
   context = fd_to_event_ctx_[events_ready_[index_events_ready].data.fd].context;
-  XFC_BUG(NULL==context)
+  XFC_BUG(nullptr==context)
 }
 
 template <typename Context, typename LockPolicy>
 const std::vector<Context*>* EventsDriver<Context, LockPolicy>::RemoveTimeouts() { 
-  XFC_RAII_INIT(NULL)
+  XFC_RAII_INIT(nullptr)
 
   tmp_timeo_contexts_.clear();
   EventTimeo* event_timeo = heap_timeo_.Top();
-  while ( NULL!=event_timeo 
+  while ( nullptr!=event_timeo
       && event_timeo->expire_time_ms < Time::GetCurrentMsec(false) ) {
-    if (NULL != fd_to_event_ctx_[event_timeo->fd].context) {
+    if (nullptr != fd_to_event_ctx_[event_timeo->fd].context) {
       tmp_timeo_contexts_.push_back(fd_to_event_ctx_[event_timeo->fd].context);
     }
 
@@ -226,11 +226,11 @@ const std::vector<Context*>* EventsDriver<Context, LockPolicy>::RemoveTimeouts()
 
 template <typename Context, typename LockPolicy>
 std::vector<Context*>* EventsDriver<Context, LockPolicy>::ClearAll() {
-  XFC_RAII_INIT(NULL)
+  XFC_RAII_INIT(nullptr)
 
   tmp_all_contexts_.clear();
   for (size_t i=0; i < fd_to_event_ctx_.size(); ++i) {
-    if (NULL != fd_to_event_ctx_[i].context) {
+    if (nullptr != fd_to_event_ctx_[i].context) {
       tmp_all_contexts_.push_back(fd_to_event_ctx_[i].context);
       bool ret = RegEventDel(i);
       if (!ret) { FATAL("fail_reg_event"); }

@@ -20,7 +20,7 @@ struct DictItem {
 
 DictItem* DictItem::CreateFromJson(const JsonType &jsonType) {
   if (!jsonType.IsDict()) {
-    return NULL;
+    return nullptr;
   }
 
   DictItem *dictItem = new DictItem();

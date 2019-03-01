@@ -126,7 +126,7 @@ PoolObjsBase<Obj, LockPolicy>::PoolObjsBase(
   to_resize_(to_resize),
   new_if_no_resize_(new_if_no_resize),
   max_num_blocks_(max_num_blocks),
-  pool_objs_(NULL),
+  pool_objs_(nullptr),
   current_row_(0),
   current_col_(0),
   num_objs_alloc_(0),
@@ -173,9 +173,9 @@ bool PoolObjsBase<Obj, LockPolicy>::AllocABlock_() {
 
 template <typename Obj, typename LockPolicy>
 Obj* PoolObjsBase<Obj, LockPolicy>::Get() {
-  XFC_RAII_INIT(NULL)
+  XFC_RAII_INIT(nullptr)
 
-  if ( unlikely(!lock_policy_.Lock()) ) return NULL;
+  if ( unlikely(!lock_policy_.Lock()) ) return nullptr;
 
   Obj* ret;
   if (0!=current_col_) {
@@ -192,7 +192,7 @@ Obj* PoolObjsBase<Obj, LockPolicy>::Get() {
       XFC_NEW(ret, Obj)
       InitObj_(*ret);
     } else {
-      ret=NULL;
+      ret=nullptr;
     }
   }
   lock_policy_.Unlock();
@@ -202,7 +202,7 @@ Obj* PoolObjsBase<Obj, LockPolicy>::Get() {
 template <typename Obj, typename LockPolicy>
 void PoolObjsBase<Obj, LockPolicy>::Free(Obj* obj) {
   XFC_RAII_INIT()
-  if ( unlikely(NULL==obj || !lock_policy_.Lock()) ) {
+  if ( unlikely(nullptr==obj || !lock_policy_.Lock()) ) {
     return;
   } else if (!to_resize_) {
     if (NumObjsLeft() == init_num_objs_) {
@@ -263,7 +263,7 @@ template <typename Obj, typename LockPolicy>
 PoolObjsBase<Obj, LockPolicy>::~PoolObjsBase() {
   if (true != lock_policy_.Lock()) return;
 
-  if (NULL!=pool_objs_) {
+  if (nullptr!=pool_objs_) {
     for (size_t i=0; i<current_row_; ++i) {
       for (size_t j=0; j<num_objs_per_block_; ++j) {
         XFC_DELETE(pool_objs_[i][j]);

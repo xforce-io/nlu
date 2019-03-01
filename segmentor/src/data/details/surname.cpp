@@ -4,7 +4,7 @@ namespace xforce { namespace nlu { namespace segmentor {
 
 bool Surname::Init(const std::string &dictpath) {
   FILE *fp = fopen(dictpath.c_str(), "r");
-  if (fp == NULL) {
+  if (fp == nullptr) {
     ERROR("fail_open_filepath[" << dictpath << "]");
     return false;
   }
@@ -12,7 +12,7 @@ bool Surname::Init(const std::string &dictpath) {
   char buf[4096];
   char *line = fgets(buf, sizeof(buf), fp);
   std::vector<std::string> results;
-  while (NULL!=line) {
+  while (nullptr!=line) {
     if (buf[strlen(buf) - 1] == '\n') {
       buf[strlen(buf) - 1] = '\0';
     }

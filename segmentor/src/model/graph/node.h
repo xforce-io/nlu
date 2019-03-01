@@ -95,7 +95,7 @@ int Node::EndOffset() const {
 }
 
 bool Node::Optimized() const {
-  return bestPrev_ != NULL;
+  return bestPrev_ != nullptr;
 }
 
 bool Node::IsBegin() const {

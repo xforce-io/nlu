@@ -3,7 +3,7 @@
 namespace xforce { namespace nlu { namespace segmentor {
 
 TriggeredNodes::TriggeredNodes(Node *singleNode) {
-  if (NULL != singleNode) {
+  if (nullptr != singleNode) {
     nodes_.push_back(singleNode);
     len_ = singleNode->GetLen();
     endOffset_ = singleNode->GetOffset() + singleNode->GetLen();
@@ -14,7 +14,7 @@ TriggeredNodes::TriggeredNodes(Node *singleNode) {
 }
 
 TriggeredNodes::TriggeredNodes() :
-  TriggeredNodes(NULL) {}
+  TriggeredNodes(nullptr) {}
 
 TriggeredNodes::TriggeredNodes(int offset, size_t length) :
   TriggeredNodes(new Node(offset, length)) {}

@@ -4,7 +4,7 @@
 namespace xforce { namespace nlu { namespace segmentor {
 
 CoreDictNatures::CoreDictNatures() :
-  mainNature_(NULL),
+  mainNature_(nullptr),
   allFreq_(0) {}
 
 bool CoreDictNatures::Init(const std::string &expr) {
@@ -63,7 +63,7 @@ CoreDictNatures::~CoreDictNatures() {
 
 void CoreDictNatures::Init_() {
   ssize_t maxFreq = -1;
-  const CoreDictNature *tmpNature = NULL;
+  const CoreDictNature *tmpNature = nullptr;
   for (auto iter = coreDictNatures_.begin(); iter != coreDictNatures_.end(); ++iter) {
     const CoreDictNature *coreDictNature = *iter;
     if (maxFreq < ssize_t(coreDictNature->GetFreq())) {
@@ -77,7 +77,7 @@ void CoreDictNatures::Init_() {
     allFreq_ = 1;
   }
 
-  if (NULL != tmpNature) {
+  if (nullptr != tmpNature) {
     mainNature_ = tmpNature;
   }
 }

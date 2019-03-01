@@ -4,7 +4,7 @@
 namespace xforce { namespace nlu { namespace segmentor {
 
 NatureBigram::NatureBigram() :
-  count_(NULL) {}
+  count_(nullptr) {}
 
 bool NatureBigram::Init(const NatureDict &natureDict, const std::string &dictpath) {
   natureDict_ = &natureDict;
@@ -15,7 +15,7 @@ bool NatureBigram::Init(const NatureDict &natureDict, const std::string &dictpat
   }
 
   FILE *fp = fopen(dictpath.c_str(), "r");
-  if (NULL == fp) {
+  if (nullptr == fp) {
     ERROR("fail_open_filepath[" << dictpath << "]");
     return false;
   }
@@ -24,7 +24,7 @@ bool NatureBigram::Init(const NatureDict &natureDict, const std::string &dictpat
   char *line = fgets(buf, sizeof(buf), fp);
   std::vector<std::string> results;
   uint32_t numLine = 0;
-  while (NULL!=line) {
+  while (nullptr!=line) {
     if (buf[strlen(buf) - 1] == '\n') {
       buf[strlen(buf) - 1] = '\0';
     }

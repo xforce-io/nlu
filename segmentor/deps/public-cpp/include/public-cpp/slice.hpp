@@ -18,7 +18,7 @@ class Slice {
 };
 
 Slice::Slice() :
-  data_(NULL),
+  data_(nullptr),
   size_(0) {}
 
 Slice::Slice(const char* data, size_t size) :

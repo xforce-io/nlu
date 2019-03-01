@@ -52,7 +52,7 @@ class HeapBase {
   inline void UpdateTop(const Val& val);
   inline void Refresh(size_t sign);
   inline void RefreshTop();
-  Val* Top() const { return 0!=num_items_ ? &(heap_items_[1]->val) : NULL; }
+  Val* Top() const { return 0!=num_items_ ? &(heap_items_[1]->val) : nullptr; }
   inline void Pop();
   inline void Erase(size_t sign);
   inline Val* Item(IN size_t sign) const { return &(RCAST<Node*>(sign)->val); }
@@ -119,7 +119,7 @@ HeapBase<Val, Order, FeatureF>::HeapBase(size_t init_size_heap, FeatureF feature
   init_size_heap_(init_size_heap),
   feature_(feature),
   num_items_(0), 
-  heap_items_(NULL), 
+  heap_items_(nullptr),
   init_(false) {}
 
 XFC_HEAP_BASE_HEADER
@@ -207,7 +207,7 @@ XFC_HEAP_BASE_HEADER
 HeapBase<Val, Order, FeatureF>::~HeapBase() {
   Clear();
 
-  if (NULL!=heap_items_) {
+  if (nullptr!=heap_items_) {
     for (size_t i=0; i<size_container_; ++i) {
       XFC_DELETE(heap_items_[i])
     }
@@ -217,7 +217,7 @@ HeapBase<Val, Order, FeatureF>::~HeapBase() {
 
 XFC_HEAP_BASE_HEADER
 bool HeapBase<Val, Order, FeatureF>::Init_() {
-  heap_items_=NULL;
+  heap_items_=nullptr;
   num_items_=0;
   size_container_=init_size_heap_;
   XFC_MALLOC(heap_items_, Node**, sizeof(*heap_items_) * size_container_);
@@ -232,7 +232,7 @@ bool HeapBase<Val, Order, FeatureF>::Init_() {
 
 XFC_HEAP_BASE_HEADER
 void HeapBase<Val, Order, FeatureF>::Resize_() { 
-  Node** newheap_items_ = NULL;
+  Node** newheap_items_ = nullptr;
   int orig_size = sizeof(Node*) * size_container_;
   XFC_REALLOC(newheap_items_, heap_items_, Node**, (orig_size << 1));
   for(size_t i=0; i<size_container_; ++i) {

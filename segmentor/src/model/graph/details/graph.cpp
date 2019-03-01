@@ -113,7 +113,7 @@ void Graph::Optimize_(Node &curNode) {
     return;
   }
 
-  Node *bestPrev = NULL;
+  Node *bestPrev = nullptr;
   double bestScore = std::numeric_limits<double>::max();
   for (auto iter = curNode.GetPrevs().begin();
       iter != curNode.GetPrevs().end();
@@ -130,7 +130,7 @@ void Graph::Optimize_(Node &curNode) {
     }
   }
   
-  if (NULL != bestPrev) {
+  if (nullptr != bestPrev) {
     curNode.SetBestPrev(*bestPrev);
   }
   curNode.SetBestScore(bestScore);
@@ -140,7 +140,7 @@ void Graph::MakeResults_(basic::Segment::Vector &segments, NameEntities &nameEnt
   Node *curNode = candidateNodes_->GetItems().back().first;
   while (!curNode->IsBegin()) {
     curNode = curNode->GetBestPrev();
-    if (curNode->GetNameEntity() != NULL) {
+    if (curNode->GetNameEntity() != nullptr) {
       nameEntities.push_back(curNode->GetNameEntity());
     }
 
@@ -190,7 +190,7 @@ void Graph::MakeProfileInfo_() {
       Node *node = (*(posToNumNodes_[curIdx]))[0];
       profileItems_.push_back(std::make_pair(
             node,
-            (ConflictSubgraph*)NULL));
+            (ConflictSubgraph*)nullptr));
 
       size_t curNodeLen = node->GetLen();
       int curNodeOffset = node->GetOffset();
@@ -216,7 +216,7 @@ void Graph::MakeProfileInfo_() {
         *((*posToNumNodes_[nextIdx])[0]));
     conflictSubgraph->GeneratePaths();
     profileItems_.push_back(std::make_pair(
-          (const Node*)NULL,
+          (const Node*)nullptr,
           conflictSubgraph));
 
     curIdx = nextIdx;
@@ -227,9 +227,9 @@ void Graph::DumpProfile_() {
   for (size_t i=0; i < profileItems_.size() - 1; ++i) {
     auto curItem = profileItems_[i]; 
     auto nextItem = profileItems_[i+1];
-    if (curItem.first != NULL && nextItem.first != NULL) {
+    if (curItem.first != nullptr && nextItem.first != nullptr) {
       curItem.first->DumpProfile(*this, *(nextItem.first));
-    } else if (curItem.first != NULL && nextItem.second != NULL) {
+    } else if (curItem.first != nullptr && nextItem.second != nullptr) {
       nextItem.second->DumpProfile(*this);
     }
   }

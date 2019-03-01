@@ -39,13 +39,13 @@ const CoreDictItem* WordDict::GetCoreDictItem(const std::wstring &word) const {
     if (iter != container_.end()) {
       return iter->second;
     } else {
-      return NULL;
+      return nullptr;
     }
 }
 
 ssize_t WordDict::GetFreq(const std::wstring &word) const {
   const CoreDictItem *coreDictItem = GetCoreDictItem(word);
-  if (coreDictItem != NULL) {
+  if (coreDictItem != nullptr) {
     return coreDictItem->GetFreq();
   } else {
     return -1;
@@ -61,7 +61,7 @@ WordDict::~WordDict() {
 
 bool WordDict::Init_(const std::string &filepath) {
   FILE *fp = fopen(filepath.c_str(), "r");
-  if (fp == NULL) {
+  if (fp == nullptr) {
     ERROR("fail_open_filepath[" << filepath << "]");
     return false;
   }
@@ -69,7 +69,7 @@ bool WordDict::Init_(const std::string &filepath) {
   char buf[4096];
   char *line = fgets(buf, sizeof(buf), fp);
   std::vector<std::string> results;
-  while (NULL!=line) {
+  while (nullptr!=line) {
     if (buf[strlen(buf) - 1] == '\n') {
       buf[strlen(buf) - 1] = '\0';
     }

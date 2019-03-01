@@ -54,7 +54,7 @@ void ThreadMutex::Unlock() {
 }
 
 bool ThreadMutex::Init_() { 
-  if (0 == pthread_mutex_init(&mutex_, NULL)) {
+  if (0 == pthread_mutex_init(&mutex_, nullptr)) {
     init_=true;
     return true;
   } else {

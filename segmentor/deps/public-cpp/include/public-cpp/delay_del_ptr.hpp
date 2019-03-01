@@ -16,7 +16,7 @@ class DelayDelPtr {
 
  public:
   explicit DelayDelPtr(
-      Obj* obj=NULL,
+      Obj* obj=nullptr,
       bool to_delete=true,
       time_t delay_del_time_in_sec=kDefaultDelayDelTimeSec);
   
@@ -27,7 +27,7 @@ class DelayDelPtr {
   Obj& operator*() { return *obj_; }
   const Obj* operator->() const { return obj_; }
   Obj* operator->() { return obj_; }
-  bool IsNull() const { return NULL==obj_; }
+  bool Isnullptr() const { return nullptr==obj_; }
   void Change(Obj& obj);
   virtual ~DelayDelPtr();
 
@@ -55,7 +55,7 @@ DelayDelPtr<Obj>::DelayDelPtr(
 
 template <typename Obj>
 void DelayDelPtr<Obj>::Change(Obj& obj) {
-  time_t current_time = time(NULL);
+  time_t current_time = time(nullptr);
 
   lock_map_.Lock();
   if (!delay_del_ptr_map_.empty()) {
@@ -74,7 +74,7 @@ void DelayDelPtr<Obj>::Change(Obj& obj) {
     }
   }
 
-  if (NULL!=obj_) {
+  if (nullptr!=obj_) {
     delay_del_ptr_map_.insert(std::make_pair(version_, std::make_pair(obj_, current_time)));
     obj_=&obj;
     ++version_;
@@ -93,7 +93,7 @@ const Obj* DelayDelPtr<Obj>::Get(size_t version) const {
 
   lock_map_.Lock();
   typename DelayDelPtrMap::const_iterator iter = delay_del_ptr_map_.find(version);
-  const Obj* obj=NULL;
+  const Obj* obj=nullptr;
   if (delay_del_ptr_map_.end() != iter) {
     obj = iter->second.first;
   }
