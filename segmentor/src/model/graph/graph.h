@@ -24,8 +24,8 @@ class Graph {
  public:
   explicit Graph(const std::wstring &query);
 
-  void Process(OUT basic::Segment::Vector &segments, OUT NameEntities &nameEntities);
-  void Profile(OUT basic::Segment::Vector &segments, OUT NameEntities &nameEntities);
+  void Process(OUT basic::FragmentSet &segments, OUT basic::FragmentSet &nameEntities);
+  void Profile(OUT basic::FragmentSet &segments, OUT basic::FragmentSet &nameEntities);
 
   inline void AddPrioredNegLogPossi(int offset, size_t len, double score);
   inline void AddMaxPrioredNegLogPossi(const Node &node);

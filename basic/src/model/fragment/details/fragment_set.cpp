@@ -10,4 +10,10 @@ void FragmentSet::Add(std::shared_ptr<Fragment> fragment) {
   fragments_.push_back(fragment);
 }
 
+void FragmentSet::Add(const Fragment &fragment) {
+  auto newFragment = std::make_shared<Fragment>();
+  *newFragment = fragment;
+  Add(newFragment);
+}
+
 }}}

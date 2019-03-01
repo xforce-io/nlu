@@ -24,14 +24,14 @@ Graph::Graph(const std::wstring &query) :
   posToNumNodes_[query_.length() + 1]->push_back(nodeEnd_);
 }
 
-void Graph::Process(basic::Segment::Vector &segments, NameEntities &nameEntities) {
+void Graph::Process(basic::FragmentSet &segments, basic::FragmentSet &nameEntities) {
   CreateNodes_();
   candidateNodes_->EstablishPrevs();
   Optimize_();
   MakeResults_(segments, nameEntities);
 }
 
-void Graph::Profile(basic::Segment::Vector &segments, NameEntities &nameEntities) {
+void Graph::Profile(basic::FragmentSet &segments, basic::FragmentSet &nameEntities) {
   Process(segments, nameEntities);
   MakeProfileInfo_();
   DumpProfile_();
@@ -136,12 +136,14 @@ void Graph::Optimize_(Node &curNode) {
   curNode.SetBestScore(bestScore);
 } 
 
-void Graph::MakeResults_(basic::Segment::Vector &segments, NameEntities &nameEntities) {
+void Graph::MakeResults_(basic::FragmentSet &segments, basic::FragmentSet &nameEntities) {
+  std::vector<basic::Segment> tmpSegments;
+
   Node *curNode = candidateNodes_->GetItems().back().first;
   while (!curNode->IsBegin()) {
     curNode = curNode->GetBestPrev();
     if (curNode->GetNameEntity() != nullptr) {
-      nameEntities.push_back(curNode->GetNameEntity());
+      nameEntities.Add(curNode->GetNameEntity());
     }
 
     if (!curNode->IsBegin()) {
@@ -149,24 +151,28 @@ void Graph::MakeResults_(basic::Segment::Vector &segments, NameEntities &nameEnt
       if (curNode->GetPos() != basic::Pos::kUndef) {
         segment.SetPos(curNode->GetPos());
       }
-      segments.push_back(segment);
+      tmpSegments.push_back(segment);
     }
   }
 
-  for (size_t i=0; i < segments.size()/2; ++i) {
+  for (size_t i=0; i < tmpSegments.size()/2; ++i) {
     size_t one = i;
-    ssize_t other = segments.size() - 1 - i;
-    basic::Segment tmp = segments[one];
-    segments[one] = segments[other];
-    segments[other] = tmp;
+    ssize_t other = tmpSegments.size() - 1 - i;
+    basic::Segment tmp = tmpSegments[one];
+    tmpSegments[one] = tmpSegments[other];
+    tmpSegments[other] = tmp;
   }
 
-  for (size_t i=1; i < segments.size(); ++i) {
-    segments[i-1].SetLen(segments[i].GetOffset() - segments[i-1].GetOffset());
+  for (size_t i=1; i < tmpSegments.size(); ++i) {
+    tmpSegments[i-1].SetLen(tmpSegments[i].GetOffset() - tmpSegments[i-1].GetOffset());
   }
 
-  basic::Segment &lastSegment = segments[segments.size() - 1];
+  basic::Segment &lastSegment = tmpSegments[tmpSegments.size() - 1];
   lastSegment.SetLen(query_.length() - lastSegment.GetOffset());
+
+  for (auto &segment : tmpSegments) {
+    segments.Add(segment);
+  }
 }
 
 void Graph::MakeProfileInfo_() {

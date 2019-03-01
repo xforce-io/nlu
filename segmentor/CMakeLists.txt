@@ -5,8 +5,8 @@ project(segmentor)
 include_directories(
   /usr/include/
   ${CMAKE_SOURCE_DIR}/deps/public-cpp/include/
-  ${CMAKE_SOURCE_DIR}/deps/basic/include/
   ${CMAKE_SOURCE_DIR}/deps/ner/include/
+  ${CMAKE_SOURCE_DIR}/deps/basic/include/
 )
 
 link_directories(
