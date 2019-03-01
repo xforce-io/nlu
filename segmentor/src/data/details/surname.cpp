@@ -22,13 +22,12 @@ bool Surname::Init(const std::string &dictpath) {
     }
 
     if (strlen(buf) > 0) {
-      std::wstring wstr;
-      bool ret = StrHelper::Str2Wstr(buf, wstr);
-      if (!ret || wstr.empty()) {
+      auto wstr = StrHelper::Str2Wstr(buf);
+      if (nullptr == wstr) {
         ERROR("fail_parse_surname[" << buf << "]");
         return false;
       }
-      container_.insert(std::make_pair(wstr[0], wstr));
+      container_.insert(std::make_pair((*wstr)[0], *wstr));
     }
     line = fgets(buf, sizeof(buf), fp);
   }

@@ -8,7 +8,12 @@ bool CoreDictItem::Init(const std::vector<std::string> &items) {
     return false;
   }
 
-  StrHelper::Str2Wstr(items[0], name_);
+  auto tmp = StrHelper::Str2Wstr(items[0]);
+  if (tmp == nullptr) {
+    return false;
+  }
+
+  name_ = *tmp;
 
   coreDictNatures_ = new CoreDictNatures();
   bool ret = coreDictNatures_->Init(items[1]);

@@ -19,13 +19,13 @@ bool WordDict::Init(const std::vector<std::string> &filepaths) {
 void WordDict::PrefixMatch(
     const std::wstring &query, 
     std::vector<const CoreDictItem*> &coreDictItems) const {
-  std::string strQuery;
-  XFC_ASSERT(StrHelper::Wstr2Str(query, strQuery));
+  auto strQuery = StrHelper::Wstr2Str(query);
+  XFC_ASSERT(strQuery != nullptr);
 
   std::vector<size_t> prefixOffsets;
-  simpleTrie_->PrefixesOf(strQuery.c_str(), strQuery.length(), prefixOffsets);
+  simpleTrie_->PrefixesOf(strQuery->c_str(), strQuery->length(), prefixOffsets);
   for (auto iter = prefixOffsets.begin(); iter != prefixOffsets.end(); ++iter) {
-    std::string tmpStr(strQuery.c_str(), *iter);
+    std::string tmpStr(strQuery->c_str(), *iter);
     std::wstring tmpWstr;
     XFC_ASSERT(StrHelper::Str2Wstr(tmpStr, tmpWstr));
 

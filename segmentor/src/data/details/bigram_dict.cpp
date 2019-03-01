@@ -42,11 +42,11 @@ bool BigramDict::Init(const std::string &dictpath) {
         return false;
       }
 
-      std::wstring wstrWord0;
-      std::wstring wstrWord1;
-      XFC_ASSERT(StrHelper::Str2Wstr(results1[0], wstrWord0));
-      XFC_ASSERT(StrHelper::Str2Wstr(results1[1], wstrWord1));
-      AddToDict(wstrWord0, wstrWord1, num);  
+      auto wstrWord0 = StrHelper::Str2Wstr(results1[0]);
+      auto wstrWord1 = StrHelper::Str2Wstr(results1[1]);
+      XFC_ASSERT(wstrWord0 != nullptr);
+      XFC_ASSERT(wstrWord1 != nullptr);
+      AddToDict(*wstrWord0, *wstrWord1, num);  
     }
     line = fgets(buf, sizeof(buf), fp);
   }
