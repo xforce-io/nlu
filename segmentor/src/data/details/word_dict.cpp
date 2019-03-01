@@ -26,10 +26,10 @@ void WordDict::PrefixMatch(
   simpleTrie_->PrefixesOf(strQuery->c_str(), strQuery->length(), prefixOffsets);
   for (auto iter = prefixOffsets.begin(); iter != prefixOffsets.end(); ++iter) {
     std::string tmpStr(strQuery->c_str(), *iter);
-    std::wstring tmpWstr;
-    XFC_ASSERT(StrHelper::Str2Wstr(tmpStr, tmpWstr));
+    auto tmpWstr = StrHelper::Str2Wstr(tmpStr);
+    XFC_ASSERT(tmpWstr != nullptr);
 
-    auto iter2 = container_.find(tmpWstr);
+    auto iter2 = container_.find(*tmpWstr);
     coreDictItems.push_back(iter2->second);
   }
 }
@@ -91,9 +91,9 @@ bool WordDict::Init_(const std::string &filepath) {
         if (container_.find(coreDictItem->GetName()) == container_.end()) {
           container_.insert(std::make_pair(coreDictItem->GetName(), coreDictItem));
 
-          std::string strName;
-          XFC_ASSERT(StrHelper::Wstr2Str(coreDictItem->GetName(), strName));
-          simpleTrie_->Insert(strName.c_str(), strName.length());
+          auto strName = StrHelper::Wstr2Str(coreDictItem->GetName());
+          XFC_ASSERT(strName != nullptr);
+          simpleTrie_->Insert(strName->c_str(), strName->length());
         } else {
           XFC_DELETE(coreDictItem)
         }
