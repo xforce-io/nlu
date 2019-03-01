@@ -44,7 +44,7 @@ class Graph {
   void CreateNodes_();
   void Optimize_();
   void Optimize_(Node &curNode);
-  void MakeResults_(OUT basic::Segment::Vector &segments, OUT NameEntities &nameEntities);
+  void MakeResults_(OUT basic::FragmentSet &segments, OUT basic::FragmentSet &nameEntities);
   void MakeProfileInfo_();
   void DumpProfile_();
 
