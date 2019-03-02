@@ -12,8 +12,8 @@ class Segmentor {
 
   static void Parse(
       IN const std::wstring &query, 
-      OUT std::vector<basic::Segment> &segments,
-      OUT std::vector<std::shared_ptr<ner::NameEntity>> &nameEntities);
+      OUT basic::FragmentSet &segments,
+      OUT basic::FragmentSet &nameEntities);
 
   static void Tini();
 };
