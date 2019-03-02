@@ -26,7 +26,7 @@ set(LIB_DEPS
 )
 
 add_executable(charles
-  ${SEG_FILES} src/model/featureset/basic_featureset.h src/model/featureset/conflictset.h)
+  ${SEG_FILES})
 
 target_link_libraries(charles
   ${LIB_DEPS}
