@@ -7,6 +7,10 @@ namespace xforce { namespace nlu { namespace basic {
 
 class Fragment {
  public:
+  typedef std::vector<std::shared_ptr<Fragment>> Vec;
+  typedef std::list<std::shared_ptr<Fragment>> List;
+
+ public:
   inline Fragment();
   inline Fragment(size_t offset, size_t len);
 
@@ -30,9 +34,6 @@ class Fragment {
   size_t len_;
   Confidence confidence_;
 };
-
-typedef std::vector<std::shared_ptr<Fragment>> FragmentVec;
-typedef std::list<std::shared_ptr<Fragment>> FragmentList;
 
 Fragment::Fragment() :
   father_(nullptr) {}

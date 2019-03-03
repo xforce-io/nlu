@@ -58,11 +58,11 @@ add_custom_command(TARGET basic
   COMMAND cp ${BASIC_SRC_DIR}/model/confidence.h ${BASIC_INC_OUTPUT_PATH}/model/
   COMMAND cp ${BASIC_SRC_DIR}/model/pos/pos.h ${BASIC_INC_OUTPUT_PATH}/model/pos/
   COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
-  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
-  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set_label.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
-  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set_multi.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
-  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set_non_multi.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
-  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set_tree.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
+  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set.hpp ${BASIC_INC_OUTPUT_PATH}/model/fragment/
+  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set_label.hpp ${BASIC_INC_OUTPUT_PATH}/model/fragment/
+  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set_multi.hpp ${BASIC_INC_OUTPUT_PATH}/model/fragment/
+  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set_non_multi.hpp ${BASIC_INC_OUTPUT_PATH}/model/fragment/
+  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set_tree.hpp ${BASIC_INC_OUTPUT_PATH}/model/fragment/
   COMMAND git log | head -n 1 > ${BASIC_OUTPUT_PATH}/version
 )
 

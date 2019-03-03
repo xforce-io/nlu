@@ -8,7 +8,7 @@ class PosTagging {
  public: 
   static void Tagging(
       const std::wstring &clause,
-      basic::Segment::Vector &segments); 
+      basic::FragmentSet<basic::Segment> &segments);
 };
 
 }}}
