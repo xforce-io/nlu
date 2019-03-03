@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../../public.h"
+#include "storage_val.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -38,19 +39,18 @@ class Context {
   inline void RemoveStorage(
           const StorageKey &key);
 
-  inline const StorageVal* GetStorage(const StorageKey &key);
-  inline const StorageVal* GetStorage(const wchar_t *item);
-  inline const Wstrings* GetStorageAsItems(const StorageKey &key);
+  inline const std::shared_ptr<StorageVal> GetStorage(const StorageKey &key);
+  inline const std::shared_ptr<StorageVal> GetStorage(const wchar_t *item);
   inline const std::wstring* GetStorageAsStr(const StorageKey &key);
   inline const std::wstring* GetStorageAsStr(const wchar_t *item);
 
   /*
    * mark : str env supported only now
    */
-  inline void GetStorages(std::unordered_map<std::wstring, std::wstring> &kvs);
+  inline void GetStorages(std::unordered_map<std::wstring, std::shared_ptr<StorageVal>> &kvs);
 
   inline void SetStoragePattern(StorageVal &storageItem);
-  inline StorageVal* GetStoragePattern();
+  inline std::shared_ptr<StorageVal> GetStoragePattern();
   inline bool End() const;
   inline size_t Length() const;
 
@@ -151,13 +151,13 @@ void Context::RemoveStorage(const StorageKey &storageKey) {
   stack_.top()->GetStorage().Remove(storageKey);
 }
 
-const StorageVal* Context::GetStorage(const StorageKey &key) {
-  const StorageVal *result = nullptr;
+const std::shared_ptr<StorageVal> Context::GetStorage(const StorageKey &key) {
+  std::shared_ptr<StorageVal> result;
   std::stack<std::shared_ptr<Frame>> tmpStack;
   while (!stack_.empty()) {
     auto frame = stack_.top();
-    const StorageVal* storageItem = frame->GetStorage().Get(key);
-    if (nullptr != storageItem && nullptr == result) {
+    const std::shared_ptr<StorageVal> storageItem = frame->GetStorage().Get(key);
+    if (storageItem != nullptr && result == nullptr) {
       result = storageItem;
     }
     tmpStack.push(frame);
@@ -171,16 +171,8 @@ const StorageVal* Context::GetStorage(const StorageKey &key) {
   return result;
 }
 
-const StorageVal* Context::GetStorage(const wchar_t *item) {
-  return GetStorage(*new StorageKey(nullptr, item));
-}
-
-const Wstrings* Context::GetStorageAsItems(const StorageKey &key) {
-  auto storageItem = GetStorage(key);
-  if (nullptr != storageItem) {
-    return &(storageItem->Get());
-  }
-  return nullptr;
+const std::shared_ptr<StorageVal> Context::GetStorage(const wchar_t *item) {
+  return GetStorage(StorageKey(nullptr, item));
 }
 
 const std::wstring* Context::GetStorageAsStr(const StorageKey &key) {
@@ -192,16 +184,16 @@ const std::wstring* Context::GetStorageAsStr(const StorageKey &key) {
 }
 
 const std::wstring* Context::GetStorageAsStr(const wchar_t *item) {
-  return GetStorageAsStr(*new StorageKey(nullptr, item));
+  return GetStorageAsStr(StorageKey(nullptr, item));
 }
 
-void Context::GetStorages(std::unordered_map<std::wstring, std::wstring> &kvs) {
+void Context::GetStorages(std::unordered_map<std::wstring, std::shared_ptr<StorageVal>> &kvs) {
   kvs.clear();
 
   std::stack<std::shared_ptr<Frame>> tmpStack;
   while (!stack_.empty()) {
     auto frame = stack_.top();
-    frame->GetStorage().GetStrs(kvs);
+    frame->GetStorage().Get(kvs);
     tmpStack.push(frame);
     stack_.pop();
   }
@@ -216,11 +208,11 @@ void Context::SetStoragePattern(StorageVal &storageItem) {
   stack_.top()->SetStoragePattern(storageItem);
 }
 
-StorageVal* Context::GetStoragePattern() {
+std::shared_ptr<StorageVal> Context::GetStoragePattern() {
   if (nullptr != stack_.top()->GetStoragePattern()) {
     return stack_.top()->GetStoragePattern();
   } else {
-    return new StorageVal(&*GetCurPattern());
+    return std::make_shared<StorageVal>(&*GetCurPattern());
   }
 }
 

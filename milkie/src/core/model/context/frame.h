@@ -17,12 +17,12 @@ class Frame {
   const Storage &GetStorage() const { return *storage_; }
   Storage &GetStorage() { return *storage_; }
   inline void SetStoragePattern(const StorageVal &storageItem);
-  inline StorageVal* GetStoragePattern();
+  inline std::shared_ptr<StorageVal> GetStoragePattern();
 
  private:
   ssize_t startPos_;
   Storage *storage_;
-  StorageVal *storagePattern_;
+  std::shared_ptr<StorageVal> storagePattern_;
 };  
 
 }}}
@@ -39,7 +39,6 @@ Frame::Frame(ssize_t startPos) :
 }
 
 Frame::~Frame() {
-  XFC_DELETE(storagePattern_)
   XFC_DELETE(storage_)
 }
 
@@ -49,12 +48,12 @@ void Frame::SetStartPos(ssize_t startPos) {
 
 void Frame::SetStoragePattern(const StorageVal &storageItem) {
   if (storagePattern_ == nullptr) {
-    storagePattern_ = new StorageVal();
+    storagePattern_ = std::make_shared<StorageVal>();
   }
   storagePattern_->Add(storageItem);
 }
 
-StorageVal* Frame::GetStoragePattern() {
+std::shared_ptr<StorageVal> Frame::GetStoragePattern() {
   return storagePattern_;
 }
 

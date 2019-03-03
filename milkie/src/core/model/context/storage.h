@@ -2,6 +2,7 @@
 
 #include "../../../public.h"
 #include "storage_key.h"
+#include "storage_val.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -20,10 +21,13 @@ class Storage {
  public:
   typedef std::unordered_map<
           StorageKey,
-          StorageVal*,
+          std::shared_ptr<StorageVal>,
           HashVal> Container;
 
  public:
+  Storage();
+  virtual ~Storage();
+
   inline void Set(
       const StorageKey &key, 
       const std::wstring &content,
@@ -38,11 +42,11 @@ class Storage {
 
   inline void Remove(const StorageKey &key);
 
-  inline const StorageVal* Get(const StorageKey &key);
+  inline const std::shared_ptr<StorageVal> Get(const StorageKey &key);
 
   inline const Container& Get() const;
 
-  inline void GetStrs(std::unordered_map<std::wstring, StorageItem> &kvs);
+  inline void Get(std::unordered_map<std::wstring, std::shared_ptr<StorageVal>> &kvs);
 
   inline void Merge(const Storage &storage);
 
@@ -67,15 +71,15 @@ void Storage::Set(
 }
 
 void Storage::Set(const StorageKey &key, StorageVal &newItems) {
-  StorageVal *storageItem = nullptr;
+  std::shared_ptr<StorageVal> storageVal;
   auto iter = container_.find(key);
   if (iter == container_.end()) {
-    storageItem = new StorageVal();
-    container_.insert(std::make_pair(key, storageItem));
+    storageVal = std::make_shared<StorageVal>();
+    container_.insert(std::make_pair(key, storageVal));
   } else {
-    storageItem = iter->second;
+    storageVal = iter->second;
   }
-  storageItem->Add(newItems);
+  storageVal->Add(newItems);
 }
 
 void Storage::SetStr(
@@ -84,7 +88,7 @@ void Storage::SetStr(
     size_t offset) {
   auto iter = container_.find(key);
   if (iter == container_.end()) {
-    container_.insert(std::make_pair(key, new StorageVal(content, offset)));
+    container_.insert(std::make_pair(key, std::make_shared<StorageVal>(content, offset)));
   } else {
     iter->second->Set(content, offset);
   }
@@ -94,7 +98,7 @@ void Storage::Remove(const StorageKey &key) {
   container_.erase(key);
 }
 
-const StorageVal* Storage::Get(const StorageKey &key) {
+const std::shared_ptr<StorageVal> Storage::Get(const StorageKey &key) {
   auto iter = container_.find(key);
   if (iter != container_.end()) {
     return iter->second;
@@ -107,14 +111,14 @@ const Storage::Container& Storage::Get() const {
   return container_;
 }
 
-void Storage::GetStrs(std::unordered_map<std::wstring, StorageItem> &kvs) {
+void Storage::Get(std::unordered_map<std::wstring, std::shared_ptr<StorageVal>> &kvs) {
   kvs.clear();
   for (auto iter = container_.begin(); iter != container_.end(); ++iter) {
-    auto value = iter->second->GetAsString();
-    if (nullptr != value) {
+    auto value = iter->second;
+    if (value != nullptr) {
       std::wstring repr;
       iter->first.GetRepr(repr);
-      kvs.insert(std::make_pair(repr, *value));
+      kvs.insert(std::make_pair(repr, value));
     }
   }
 }
