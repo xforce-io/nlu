@@ -35,7 +35,7 @@ int CodeSeg::Match(Context &context) {
   }
   lua_setglobal(luaState_, "r");
 
-  auto curPattern = StrHelper::Wstr2Str(*(context.GetCurPattern()));
+  auto curPattern = StrHelper::Wstr2Str(*(context.GetCurPattern()->GetAsString()));
   lua_pushstring(luaState_, curPattern->c_str());
   lua_setglobal(luaState_, "_p_");
 
