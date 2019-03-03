@@ -4,12 +4,12 @@ namespace xforce { namespace nlu { namespace pos {
 
 void PosTagging::Tagging(
     const std::wstring &clause,
-    basic::Segment::Vector &segments) {
-  for (size_t i=0; i < segments.size(); ++i) {
-    basic::Segment &segment = segments[i];
+    basic::FragmentSet &segments) {
+  for (size_t i=0; i < segments.Size(); ++i) {
+    auto &segment = segments[i];
     std::wstring word = clause.substr(
-        segment.GetOffset(), 
-        segment.GetLen());
+        segment->GetOffset(),
+        segment->GetLen());
     const std::vector<basic::DictItem*>* dictItems = basic::Manager::Get().GetWordDict().GetDictItems(word);
     if (NULL != dictItems) {
       if (dictItems->size() == 1) {
@@ -23,10 +23,10 @@ void PosTagging::Tagging(
 
   // rule for adv '很'
   // { "很" #Pos(=>a)}
-  for (size_t i=0; i < segments.size() - 1; ++i) {
-    if (clause.substr(segments[i].GetOffset(), segments[i].GetLen()) == L"很" && 
-        segments[i+1].GetPos() == basic::Pos::kUndef) {
-      segments[i+1].SetPos(basic::Pos::kA);
+  for (size_t i=0; i < segments.Size() - 1; ++i) {
+    if (clause.substr(segments[i]->GetOffset(), segments[i]->GetLen()) == L"很" &&
+        segments[i+1]->GetPos() == basic::Pos::kUndef) {
+      segments[i+1]->SetPos(basic::Pos::kA);
       break;
     }
   }

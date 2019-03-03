@@ -19,8 +19,8 @@ class AnalysisClause : public AnalysisComponent {
  private: 
   std::wstring clause_;
 
-  std::shared_ptr<FeatureSegments> featureSegments_;  
-  std::vector<std::shared_ptr<FeatureNameEntity>> featureNameEntities_;
+  basic::FragmentSet featureSegments_;
+  basic::FragmentSet featureNameEntities_;
 };
 
 }}}
