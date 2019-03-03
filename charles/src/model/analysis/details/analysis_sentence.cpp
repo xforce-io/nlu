@@ -9,7 +9,7 @@ AnalysisSentence::AnalysisSentence(
   analysisClauses_(&analysisClauses) {}
 
 void AnalysisSentence::Dump(JsonType &jsonType) {
-  jsonType["sentence"] = StrHelper::Wstr2Str(sentence_);
+  jsonType["sentence"] = *(StrHelper::Wstr2Str(sentence_));
 }
 
 }}}

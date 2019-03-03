@@ -1,7 +1,5 @@
 #include "../clause.h"
 #include "../base_modules.h"
-#include "../feature/feature_segments.h"
-#include "../feature/feature_name_entity.h"
 
 namespace xforce { namespace nlu { namespace charles {
 

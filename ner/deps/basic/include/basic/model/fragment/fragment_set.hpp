@@ -35,7 +35,7 @@ void FragmentSet<FragmentType>::Add(std::shared_ptr<FragmentType> fragment) {
 
 template <typename FragmentType>
 void FragmentSet<FragmentType>::Add(const FragmentType &fragment) {
-  auto newFragment = std::make_shared<Fragment>();
+  auto newFragment = std::make_shared<FragmentType>();
   *newFragment = fragment;
   Add(newFragment);
 }
