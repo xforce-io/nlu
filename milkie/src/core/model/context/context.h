@@ -34,7 +34,8 @@ class Context {
 
   inline void SetStorageStr(
           const StorageKey &storageKey,
-          const std::wstring &value);
+          const std::wstring &content,
+          size_t offset);
 
   inline void RemoveStorage(
           const StorageKey &key);
@@ -137,14 +138,15 @@ void Context::StopMatch(bool succ, StorageVal *storageItem) {
 
 void Context::SetStorage(
         const StorageKey &storageKey,
-        StorageVal &storageItem) {
-  stack_.top()->GetStorage().Set(storageKey, storageItem);
+        StorageVal &storageVal) {
+  stack_.top()->GetStorage().Set(storageKey, storageVal);
 }
 
 void Context::SetStorageStr(
         const StorageKey &storageKey,
-        const std::wstring &value) {
-  stack_.top()->GetStorage().SetStr(storageKey, value);
+        const std::wstring &content,
+        size_t offset) {
+  stack_.top()->GetStorage().SetStr(storageKey, content, offset);
 }
 
 void Context::RemoveStorage(const StorageKey &storageKey) {
