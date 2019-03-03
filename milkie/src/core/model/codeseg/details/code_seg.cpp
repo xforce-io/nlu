@@ -26,11 +26,11 @@ int CodeSeg::Match(Context &context) {
   lock_->Lock();
   lua_newtable(luaState_);
 
-  std::unordered_map<std::wstring, std::wstring> kvs;
+  std::unordered_map<std::wstring, std::shared_ptr<StorageVal>> kvs;
   context.GetStorages(kvs);
   for (auto iter = kvs.begin(); iter != kvs.end(); ++iter) {
     lua_pushstring(luaState_, StrHelper::Wstr2Str(iter->first)->c_str());
-    lua_pushstring(luaState_, StrHelper::Wstr2Str(iter->second)->c_str());
+    lua_pushstring(luaState_, StrHelper::Wstr2Str(*(iter->second->GetAsString()))->c_str());
     lua_settable(luaState_, -3);
   }
   lua_setglobal(luaState_, "r");
