@@ -14,8 +14,16 @@ class FragmentSet {
 
   virtual void Add(std::shared_ptr<Fragment> fragment);
   void Add(const Fragment &fragment);
+
   inline const std::shared_ptr<Fragment>& operator[](size_t i) const;
   inline std::shared_ptr<Fragment>& operator[](size_t i);
+
+  template <typename FragmentType>
+  inline const std::shared_ptr<Fragment>& operator[](size_t i) const;
+
+  template <typename FragmentType>
+  inline std::shared_ptr<Fragment>& operator[](size_t i);
+
   inline size_t Size() const;
 
  protected:
@@ -30,6 +38,16 @@ const std::shared_ptr<Fragment>& FragmentSet::operator[](size_t i) const {
 
 std::shared_ptr<Fragment>& FragmentSet::operator[](size_t i) {
   return fragments_[i];
+}
+
+template <typename FragmentType>
+const std::shared_ptr<Fragment>& FragmentSet::operator[](size_t i) const {
+  return SCAST<std::shared_ptr<FragmentType>>(fragments_[i]);
+}
+
+template <typename FragmentType>
+std::shared_ptr<Fragment>& FragmentSet::operator[](size_t i) {
+  return SCAST<std::shared_ptr<FragmentType>>(fragments_[i]);
 }
 
 size_t FragmentSet::Size() const {

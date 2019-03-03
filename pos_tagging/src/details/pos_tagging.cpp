@@ -13,7 +13,7 @@ void PosTagging::Tagging(
     const std::vector<basic::DictItem*>* dictItems = basic::Manager::Get().GetWordDict().GetDictItems(word);
     if (NULL != dictItems) {
       if (dictItems->size() == 1) {
-        segment.SetPos(dictItems->at(0)->pos);
+        segment->SetPos(dictItems->at(0)->pos);
       }
     } else {
       auto wordStr = StrHelper::Wstr2Str(word);
