@@ -5,7 +5,7 @@
 
 namespace xforce { namespace nlu { namespace milkie {
 
-class StorageItem;
+class StorageVal;
 class StorageKey;
 
 class Storage {
@@ -19,19 +19,19 @@ class Storage {
  public:
   typedef std::unordered_map<
           StorageKey,
-          StorageItem*,
+          StorageVal*,
           HashVal> Container;
 
  public:
   inline void Set(const StorageKey &key, const std::wstring &val);
 
-  inline void Set(const StorageKey &key, StorageItem &storageItem);
+  inline void Set(const StorageKey &key, StorageVal &storageItem);
 
   inline void SetStr(const StorageKey &key, const std::wstring &value);
 
   inline void Remove(const StorageKey &key);
 
-  inline const StorageItem* Get(const StorageKey &key);
+  inline const StorageVal* Get(const StorageKey &key);
 
   inline const Container& Get() const;
 
@@ -45,7 +45,7 @@ class Storage {
 
 }}}
 
-#include "storage_item.h"
+#include "storage_val.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -56,11 +56,11 @@ void Storage::Set(const StorageKey &key, const std::wstring &value) {
   }
 }
 
-void Storage::Set(const StorageKey &key, StorageItem &newItems) {
-  StorageItem *storageItem = nullptr;
+void Storage::Set(const StorageKey &key, StorageVal &newItems) {
+  StorageVal *storageItem = nullptr;
   auto iter = container_.find(key);
   if (iter == container_.end()) {
-    storageItem = new StorageItem();
+    storageItem = new StorageVal();
     container_.insert(std::make_pair(key, storageItem));
   } else {
     storageItem = iter->second;
@@ -71,7 +71,7 @@ void Storage::Set(const StorageKey &key, StorageItem &newItems) {
 void Storage::SetStr(const StorageKey &key, const std::wstring &value) {
   auto iter = container_.find(key);
   if (iter == container_.end()) {
-    container_.insert(std::make_pair(key, new StorageItem(&value)));
+    container_.insert(std::make_pair(key, new StorageVal(&value)));
   } else {
     iter->second->Set(value);
   }
@@ -81,7 +81,7 @@ void Storage::Remove(const StorageKey &key) {
   container_.erase(key);
 }
 
-const StorageItem* Storage::Get(const StorageKey &key) {
+const StorageVal* Storage::Get(const StorageKey &key) {
   auto iter = container_.find(key);
   if (iter != container_.end()) {
     return iter->second;

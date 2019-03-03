@@ -6,7 +6,7 @@ namespace xforce { namespace nlu { namespace milkie {
 
 class Frame;
 class Sentence;
-class StorageItem;
+class StorageVal;
 class StorageKey;
 
 class Context {
@@ -26,10 +26,10 @@ class Context {
   inline void StartMatch();
   inline void StartMatch(ssize_t offset);
   inline void StopMatch(bool succ);
-  inline void StopMatch(bool succ, StorageItem *storageItem);
+  inline void StopMatch(bool succ, StorageVal *storageItem);
   inline void SetStorage(
           const StorageKey &storageKey,
-          StorageItem &storageItem);
+          StorageVal &storageItem);
 
   inline void SetStorageStr(
           const StorageKey &storageKey,
@@ -38,8 +38,8 @@ class Context {
   inline void RemoveStorage(
           const StorageKey &key);
 
-  inline const StorageItem* GetStorage(const StorageKey &key);
-  inline const StorageItem* GetStorage(const wchar_t *item);
+  inline const StorageVal* GetStorage(const StorageKey &key);
+  inline const StorageVal* GetStorage(const wchar_t *item);
   inline const Wstrings* GetStorageAsItems(const StorageKey &key);
   inline const std::wstring* GetStorageAsStr(const StorageKey &key);
   inline const std::wstring* GetStorageAsStr(const wchar_t *item);
@@ -49,8 +49,8 @@ class Context {
    */
   inline void GetStorages(std::unordered_map<std::wstring, std::wstring> &kvs);
 
-  inline void SetStoragePattern(StorageItem &storageItem);
-  inline StorageItem* GetStoragePattern();
+  inline void SetStoragePattern(StorageVal &storageItem);
+  inline StorageVal* GetStoragePattern();
   inline bool End() const;
   inline size_t Length() const;
 
@@ -64,7 +64,7 @@ class Context {
 
 #include "../sentence/sentence.h"
 #include "frame.h"
-#include "storage_item.h"
+#include "storage_val.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -122,7 +122,7 @@ void Context::StopMatch(bool succ) {
   StopMatch(succ, nullptr);
 }
 
-void Context::StopMatch(bool succ, StorageItem *storageItem) {
+void Context::StopMatch(bool succ, StorageVal *storageItem) {
   std::shared_ptr<Frame> framePoped = stack_.top();
   stack_.pop();
   if (succ) {
@@ -137,7 +137,7 @@ void Context::StopMatch(bool succ, StorageItem *storageItem) {
 
 void Context::SetStorage(
         const StorageKey &storageKey,
-        StorageItem &storageItem) {
+        StorageVal &storageItem) {
   stack_.top()->GetStorage().Set(storageKey, storageItem);
 }
 
@@ -151,12 +151,12 @@ void Context::RemoveStorage(const StorageKey &storageKey) {
   stack_.top()->GetStorage().Remove(storageKey);
 }
 
-const StorageItem* Context::GetStorage(const StorageKey &key) {
-  const StorageItem *result = nullptr;
+const StorageVal* Context::GetStorage(const StorageKey &key) {
+  const StorageVal *result = nullptr;
   std::stack<std::shared_ptr<Frame>> tmpStack;
   while (!stack_.empty()) {
     auto frame = stack_.top();
-    const StorageItem* storageItem = frame->GetStorage().Get(key);
+    const StorageVal* storageItem = frame->GetStorage().Get(key);
     if (nullptr != storageItem && nullptr == result) {
       result = storageItem;
     }
@@ -171,7 +171,7 @@ const StorageItem* Context::GetStorage(const StorageKey &key) {
   return result;
 }
 
-const StorageItem* Context::GetStorage(const wchar_t *item) {
+const StorageVal* Context::GetStorage(const wchar_t *item) {
   return GetStorage(*new StorageKey(nullptr, item));
 }
 
@@ -212,15 +212,15 @@ void Context::GetStorages(std::unordered_map<std::wstring, std::wstring> &kvs) {
   }
 }
 
-void Context::SetStoragePattern(StorageItem &storageItem) {
+void Context::SetStoragePattern(StorageVal &storageItem) {
   stack_.top()->SetStoragePattern(storageItem);
 }
 
-StorageItem* Context::GetStoragePattern() {
+StorageVal* Context::GetStoragePattern() {
   if (nullptr != stack_.top()->GetStoragePattern()) {
     return stack_.top()->GetStoragePattern();
   } else {
-    return new StorageItem(&*GetCurPattern());
+    return new StorageVal(&*GetCurPattern());
   }
 }
 

@@ -11,7 +11,7 @@ void PosTagging::Tagging(
         segment->GetOffset(),
         segment->GetLen());
     const std::vector<basic::DictItem*>* dictItems = basic::Manager::Get().GetWordDict().GetDictItems(word);
-    if (NULL != dictItems) {
+    if (dictItems != nullptr) {
       if (dictItems->size() == 1) {
         segment->SetPos(dictItems->at(0)->pos);
       }

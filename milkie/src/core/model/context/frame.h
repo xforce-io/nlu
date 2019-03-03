@@ -5,7 +5,7 @@
 namespace xforce { namespace nlu { namespace milkie {
 
 class Storage;
-class StorageItem;
+class StorageVal;
 
 class Frame {
  public: 
@@ -16,19 +16,19 @@ class Frame {
   ssize_t GetStartPos() const { return startPos_; }
   const Storage &GetStorage() const { return *storage_; }
   Storage &GetStorage() { return *storage_; }
-  inline void SetStoragePattern(const StorageItem &storageItem);
-  inline StorageItem* GetStoragePattern();
+  inline void SetStoragePattern(const StorageVal &storageItem);
+  inline StorageVal* GetStoragePattern();
 
  private:
   ssize_t startPos_;
   Storage *storage_;
-  StorageItem *storagePattern_;
+  StorageVal *storagePattern_;
 };  
 
 }}}
 
 #include "storage.h"
-#include "storage_item.h"
+#include "storage_val.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -47,14 +47,14 @@ void Frame::SetStartPos(ssize_t startPos) {
   this->startPos_ = startPos;
 }
 
-void Frame::SetStoragePattern(const StorageItem &storageItem) {
+void Frame::SetStoragePattern(const StorageVal &storageItem) {
   if (storagePattern_ == nullptr) {
-    storagePattern_ = new StorageItem();
+    storagePattern_ = new StorageVal();
   }
   storagePattern_->Add(storageItem);
 }
 
-StorageItem* Frame::GetStoragePattern() {
+StorageVal* Frame::GetStoragePattern() {
   return storagePattern_;
 }
 
