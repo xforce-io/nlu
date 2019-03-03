@@ -23,7 +23,7 @@ class Context {
   inline void Pass(ssize_t n);
   inline void SetCurPos(ssize_t curPos);
   ssize_t GetCurPos() const { return curPos_; }
-  inline std::shared_ptr<std::wstring> GetCurPattern() const;
+  inline std::shared_ptr<StorageVal> GetCurPattern() const;
   inline void StartMatch();
   inline void StartMatch(ssize_t offset);
   inline void StopMatch(bool succ);
@@ -98,16 +98,17 @@ void Context::SetCurPos(ssize_t curPos) {
   curPos_ = curPos;
 }
 
-std::shared_ptr<std::wstring> Context::GetCurPattern() const {
+std::shared_ptr<StorageVal> Context::GetCurPattern() const {
   if (stack_.empty()) {
     return nullptr;
   }
 
   ssize_t topStartPos = stack_.top()->GetStartPos();
-  return std::make_shared<std::wstring>(
+  return std::make_shared<StorageVal>(
       sentence_->GetSentence().substr(
         topStartPos, 
-        curPos_ - topStartPos));
+        curPos_ - topStartPos),
+      topStartPos);
 }
 
 void Context::StartMatch() {
@@ -211,10 +212,10 @@ void Context::SetStoragePattern(StorageVal &storageItem) {
 }
 
 std::shared_ptr<StorageVal> Context::GetStoragePattern() {
-  if (nullptr != stack_.top()->GetStoragePattern()) {
+  if (stack_.top()->GetStoragePattern() != nullptr) {
     return stack_.top()->GetStoragePattern();
   } else {
-    return std::make_shared<StorageVal>(&*GetCurPattern());
+    return GetCurPattern();
   }
 }
 
