@@ -19,8 +19,8 @@ class AnalysisClause : public AnalysisComponent {
  private: 
   std::wstring clause_;
 
-  basic::FragmentSet featureSegments_;
-  basic::FragmentSet featureNameEntities_;
+  basic::FragmentSet<basic::Segment> featureSegments_;
+  basic::FragmentSet<ner::NameEntity> featureNameEntities_;
 };
 
 }}}

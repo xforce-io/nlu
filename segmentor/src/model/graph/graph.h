@@ -24,8 +24,13 @@ class Graph {
  public:
   explicit Graph(const std::wstring &query);
 
-  void Process(OUT basic::FragmentSet &segments, OUT basic::FragmentSet &nameEntities);
-  void Profile(OUT basic::FragmentSet &segments, OUT basic::FragmentSet &nameEntities);
+  void Process(
+          OUT basic::FragmentSet<basic::Segment> &segments,
+          OUT basic::FragmentSet<ner::NameEntity> &nameEntities);
+
+  void Profile(
+          OUT basic::FragmentSet<basic::Segment> &segments,
+          OUT basic::FragmentSet<ner::NameEntity> &nameEntities);
 
   inline void AddPrioredNegLogPossi(int offset, size_t len, double score);
   inline void AddMaxPrioredNegLogPossi(const Node &node);
@@ -44,7 +49,10 @@ class Graph {
   void CreateNodes_();
   void Optimize_();
   void Optimize_(Node &curNode);
-  void MakeResults_(OUT basic::FragmentSet &segments, OUT basic::FragmentSet &nameEntities);
+  void MakeResults_(
+          OUT basic::FragmentSet<basic::Segment> &segments,
+          OUT basic::FragmentSet<ner::NameEntity> &nameEntities);
+
   void MakeProfileInfo_();
   void DumpProfile_();
 
