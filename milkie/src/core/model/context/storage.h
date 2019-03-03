@@ -25,9 +25,6 @@ class Storage {
           HashVal> Container;
 
  public:
-  Storage();
-  virtual ~Storage();
-
   inline void Set(
       const StorageKey &key, 
       const std::wstring &content,
