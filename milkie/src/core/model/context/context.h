@@ -27,7 +27,7 @@ class Context {
   inline void StartMatch();
   inline void StartMatch(ssize_t offset);
   inline void StopMatch(bool succ);
-  inline void StopMatch(bool succ, StorageVal *storageItem);
+  inline void StopMatch(bool succ, std::shared_ptr<StorageVal> storageItem);
   inline void SetStorage(
           const StorageKey &storageKey,
           StorageVal &storageItem);
@@ -124,12 +124,12 @@ void Context::StopMatch(bool succ) {
   StopMatch(succ, nullptr);
 }
 
-void Context::StopMatch(bool succ, StorageVal *storageItem) {
+void Context::StopMatch(bool succ, std::shared_ptr<StorageVal> storageItem) {
   std::shared_ptr<Frame> framePoped = stack_.top();
   stack_.pop();
   if (succ) {
     stack_.top()->GetStorage().Merge(framePoped->GetStorage());
-    if (nullptr != storageItem) {
+    if (storageItem != nullptr) {
       stack_.top()->SetStoragePattern(*storageItem);
     }
   } else {

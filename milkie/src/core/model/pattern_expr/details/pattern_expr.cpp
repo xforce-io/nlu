@@ -239,7 +239,8 @@ bool PatternExpr::MatchForWildcard(Context &context, ssize_t itemIdx) {
         context.GetCurPos() == context.GetSentence().GetSentence().length()) {
       context.SetStorageStr(
               storageKeyForWildcard,
-              context.GetSentence().GetSentence().substr(oldCurPos, offset-oldCurPos));
+              context.GetSentence().GetSentence().substr(oldCurPos, offset-oldCurPos),
+              oldCurPos);
       if (nullptr == filter_ || filter_->Match(context)) {
         context.StopMatch(true);
         if (nullptr != storageKey_) {
