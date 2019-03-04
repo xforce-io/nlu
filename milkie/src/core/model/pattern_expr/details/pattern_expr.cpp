@@ -305,6 +305,10 @@ bool PatternExpr::IsPatternExprPrefixStartingChar(char c) {
   return '^' == c;
 }
 
+bool PatternExpr::IsPatternExprPartlyStartingChar(char c) {
+  return '~' == c;
+}
+
 std::pair<std::shared_ptr<PatternExpr>, ssize_t> PatternExpr::Build(
         const std::wstring &blockKey,
         const std::wstring &statement) {

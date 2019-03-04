@@ -37,6 +37,8 @@ class PatternExpr {
   void NotifyStorageSpace(const std::wstring &storageSpace);
   inline bool ExactMatch(Context &context);
   inline bool ExactMatch(Context &context, bool singleton);
+  inline bool PartlyMatch(Context &context);
+  inline bool PartlyMatch(Context &context, bool singleton);
   bool MatchPattern(Context &context, bool singleton);
   ssize_t MatchFromIdx(ssize_t fromIdx, Context &context);
   bool MatchForWildcard(Context &context, ssize_t itemIdx);
@@ -48,6 +50,7 @@ class PatternExpr {
   static bool IsPatternExprStartingChar(char c);
   static bool IsPatternExprExactStartingChar(char c);
   static bool IsPatternExprPrefixStartingChar(char c);
+  static bool IsPatternExprPartlyStartingChar(char c);
   static std::pair<std::shared_ptr<PatternExpr>, ssize_t> Build(
           const std::wstring &blockKey,
           const std::wstring &statement);
@@ -105,11 +108,26 @@ void PatternExpr::SetStorageKey(const StorageKey &storageKey) {
 }
 
 bool PatternExpr::ExactMatch(Context &context) {
-  return MatchPattern(context, false) && context.End();
+  return ExactMatch(context, false);
 }
 
 bool PatternExpr::ExactMatch(Context &context, bool singleton) {
   return MatchPattern(context, singleton) && context.End();
+}
+
+bool PatternExpr::PartlyMatch(Context &context) {
+  return PartlyMatch(context, false);
+}
+
+bool PatternExpr::PartlyMatch(Context &context, bool singleton) {
+  for (size_t curPos=0; curPos < context.GetSentence().GetSentence().length(); ++curPos) {
+    context.Reset();
+    context.SetCurPos(curPos);
+    if (MatchPattern(context, singleton)) {
+      return true;
+    }
+  }
+  return false;
 }
 
 }}}

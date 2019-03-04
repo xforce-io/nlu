@@ -14,8 +14,8 @@ FeatureExtractor::FeatureExtractor(
 }
 
 Errno::Code FeatureExtractor::MatchPattern(Context &context) {
-  context.Reset();
   for (auto &instruction : instructions_) {
+    context.Reset();
     switch (instruction->GetCategoryInstruction()) {
       case CategoryInstruction::kPatternExpr : {
         if (
