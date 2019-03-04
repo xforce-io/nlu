@@ -291,7 +291,8 @@ bool PatternExpr::IsExactStartingChar(char c) {
 
 bool PatternExpr::IsPatternExprStartingChar(char c) {
   return IsPatternExprExactStartingChar(c) ||
-    IsPatternExprPrefixStartingChar(c);
+    IsPatternExprPrefixStartingChar(c) ||
+    IsPatternExprPartlyStartingChar(c);
 }
 
 bool PatternExpr::IsPatternExprExactStartingChar(char c) {
