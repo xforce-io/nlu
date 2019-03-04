@@ -50,7 +50,7 @@ TEST(testAll, all) {
   ASSERT_TRUE(err == Errno::kNotMatched);
 
   context = std::make_shared<Context>(L"我讲的是1932年11月啊");
-  err = timeFeatureExtractor->PartlyMatch(*context);
+  err = timeFeatureExtractor->MatchPattern(*context);
   ASSERT_TRUE(err == Errno::kOk);
   ASSERT_TRUE(*(context->GetStorageAsStr(storageKey)) == L"11");
   storageVal = context->GetStorage(storageKey);

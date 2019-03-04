@@ -22,7 +22,9 @@ Errno::Code FeatureExtractor::MatchPattern(Context &context) {
             (instruction->GetMatchType() == MatchType::kExactMatch &&
               instruction->GetPatternExpr()->ExactMatch(context)) ||
             (instruction->GetMatchType() == MatchType::kPrefixMatch &&
-              instruction->GetPatternExpr()->MatchPattern(context, false))) {
+              instruction->GetPatternExpr()->MatchPattern(context, false)) ||
+            (instruction->GetMatchType() == MatchType::kPartlyMatch &&
+             instruction->GetPatternExpr()->PartlyMatch(context, false))) {
           return Errno::kOk;
         }
         break;

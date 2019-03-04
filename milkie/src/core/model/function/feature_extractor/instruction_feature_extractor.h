@@ -17,6 +17,7 @@ struct MatchType {
     enum Type {
         kPrefixMatch,
         kExactMatch,
+        kPartlyMatch,
         kOtherMatch
     };
 };

@@ -54,6 +54,8 @@ bool StructFeatureExtractor::Parse(
       MatchType::Type matchType = MatchType::kOtherMatch;
       if (PatternExpr::IsPatternExprPrefixStartingChar(lineAfterProcess.at(0))) {
         matchType = MatchType::kPrefixMatch;
+      } else if (PatternExpr::IsPatternExprPartlyStartingChar(lineAfterProcess.at(0))) {
+        matchType = MatchType::kPartlyMatch;
       } else {
         matchType = MatchType::kExactMatch;
       }
