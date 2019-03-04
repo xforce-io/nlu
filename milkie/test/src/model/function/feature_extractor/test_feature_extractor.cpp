@@ -33,7 +33,13 @@ TEST(testAll, all) {
   auto context = std::make_shared<Context>(L"1992年11月10日");
   auto err = timeFeatureExtractor->MatchPattern(*context);
   ASSERT_TRUE(err == Errno::kOk);
-  ASSERT_TRUE(*(context->GetStorageAsStr(StorageKey(L"ner.time", L"month"))) == L"11");
+
+  StorageKey storageKey(L"ner.time", L"month");
+  ASSERT_TRUE(*(context->GetStorageAsStr(storageKey)) == L"11");
+
+  auto storageVal = context->GetStorage(storageKey);
+  ASSERT_TRUE(storageVal->Size() == 1);
+  ASSERT_TRUE(storageVal->Get()[0].GetOffset() == 5);
 
   context = std::make_shared<Context>(L"5000年11月10日");
   err = timeFeatureExtractor->MatchPattern(*context);
