@@ -35,14 +35,22 @@ int CodeSeg::Match(Context &context) {
   }
   lua_setglobal(luaState_, "r");
 
-  auto curPattern = StrHelper::Wstr2Str(*(context.GetCurPattern()->GetAsString()));
+  auto curPatternWstr = *(context.GetCurPattern()->GetAsString());
+  auto curPattern = StrHelper::Wstr2Str(curPatternWstr);
   lua_pushstring(luaState_, curPattern->c_str());
   lua_setglobal(luaState_, "_p_");
 
-  int num;
-  if (StrHelper::GetNum(curPattern->c_str(), num)) {
-    lua_pushinteger(luaState_, num);
-    lua_setglobal(luaState_, "_pn_");
+  if (code_.find(L"_pn_") >= 0) {
+    int num;
+    if (StrHelper::GetNum(curPattern->c_str(), num)) {
+      lua_pushinteger(luaState_, num);
+      lua_setglobal(luaState_, "_pn_");
+    }
+  }
+
+  if (code_.find(L"_pl_") >= 0) {
+    lua_pushinteger(luaState_, curPatternWstr.length());
+    lua_setglobal(luaState_, "_pl_");
   }
 
   int ret = luaL_loadstring(luaState_, StrHelper::Wstr2Str(code_)->c_str());
