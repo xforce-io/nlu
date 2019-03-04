@@ -40,7 +40,7 @@ int CodeSeg::Match(Context &context) {
   lua_pushstring(luaState_, curPattern->c_str());
   lua_setglobal(luaState_, "_p_");
 
-  if (code_.find(L"_pn_") >= 0) {
+  if (code_.find(L"_pn_") != std::wstring::npos) {
     int num;
     if (StrHelper::GetNum(curPattern->c_str(), num)) {
       lua_pushinteger(luaState_, num);
@@ -48,7 +48,7 @@ int CodeSeg::Match(Context &context) {
     }
   }
 
-  if (code_.find(L"_pl_") >= 0) {
+  if (code_.find(L"_pl_") != std::wstring::npos) {
     lua_pushinteger(luaState_, curPatternWstr.length());
     lua_setglobal(luaState_, "_pl_");
   }
