@@ -43,7 +43,7 @@ void testcase0() {
 }
 
 void testcase1() {
-  std::wstring expr = Helper::PreprocessExprLine(L"{#Pos(dP-aP-) | ret = string.len(_p_) < 5 | -> target *}");
+  std::wstring expr = Helper::PreprocessExprLine(L"{#Pos(dP-aP-) | ret = _pl_ < 5 | -> target *}");
   auto ret = PatternExpr::Build(kTestBlockKey, expr);
   ASSERT_TRUE(ret.first != nullptr);
 
