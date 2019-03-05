@@ -58,3 +58,30 @@ TEST(testAll, all) {
   ASSERT_TRUE(storageVal->Get()[0].GetOffset() == 9);
 
 }
+
+TEST(testBugfix, test) {
+  std::vector<std::shared_ptr<FeatureExtractor>> featureExtractors;
+  ASSERT_TRUE(FeatureExtractor::Build("../../data/global", featureExtractors));
+
+  std::shared_ptr<FeatureExtractor> testFeatureExtractor;
+  for (auto &featureExtractor : featureExtractors) {
+    if (featureExtractor->GetName() == L"test") {
+      testFeatureExtractor = featureExtractor;
+      break;
+    }
+  }
+
+  StorageKey storageKey(nullptr, L"modifier");
+
+  auto context = std::make_shared<Context>(L"这很奇怪啊");
+  Segment::Vector segments;
+  segments.push_back(Segment(Pos::kUndef, 0, 1));
+  segments.push_back(Segment(Pos::kUndef, 1, 1));
+  segments.push_back(Segment(Pos::kUndef, 2, 2));
+  segments.push_back(Segment(Pos::kUndef, 4, 1));
+  context->GetSentence().GetNluContext()->SetSegments(segments);
+ 
+  auto err = testFeatureExtractor->MatchPattern(*context);
+  ASSERT_TRUE(err == Errno::kOk);
+  ASSERT_TRUE((*(context->GetStorageAsStr(storageKey)) == L"奇怪"));
+}
