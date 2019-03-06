@@ -2,11 +2,13 @@
 
 #include "gtest/gtest.h"
 
+#include "../../../../../src/conf/conf.h"
 #include "../../../../../src/core/model/function/feature_extractor/feature_extractor.h"
 #include "../../../../../src/core/model/context/context.h"
 
 LOGGER_IMPL(xforce::xforce_logger, L"milkie")
 
+using namespace xforce;
 using namespace xforce::nlu::milkie;
 using namespace xforce::nlu::basic;
 
@@ -56,10 +58,11 @@ TEST(testAll, all) {
   storageVal = context->GetStorage(storageKey);
   ASSERT_TRUE(storageVal->Size() == 1);
   ASSERT_TRUE(storageVal->Get()[0].GetOffset() == 9);
-
 }
 
 TEST(testBugfix, test) {
+  ASSERT_TRUE(xforce::nlu::milkie::Conf::Get().Init("../conf/milkie.conf"));
+
   std::vector<std::shared_ptr<FeatureExtractor>> featureExtractors;
   ASSERT_TRUE(FeatureExtractor::Build("../../data/global", featureExtractors));
 
@@ -83,5 +86,5 @@ TEST(testBugfix, test) {
  
   auto err = testFeatureExtractor->MatchPattern(*context);
   ASSERT_TRUE(err == Errno::kOk);
-  ASSERT_TRUE((*(context->GetStorageAsStr(storageKey)) == L"奇怪"));
+  ASSERT_TRUE((*(context->GetStorageAsStr(storageKey)) == L"很"));
 }

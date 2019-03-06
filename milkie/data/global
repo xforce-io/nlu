@@ -4,5 +4,5 @@ FEATURE_EXTRACTOR_BEGIN(time)
 FEATURE_EXTRACTOR_END
 
 FEATURE_EXTRACTOR_BEGIN(test)
-  ~{ "很" { #Pos(P) -> modifier } }
+  ~{ "很" && #Pos(P) -> modifier }
 FEATURE_EXTRACTOR_END

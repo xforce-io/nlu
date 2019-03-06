@@ -27,7 +27,7 @@ set(LIB_DEPS
 )
 
 add_library(pos_tagging
-  ${SEG_FILES} src/data/gkb_zk.h src/data/details/gkb_zk.cpp src/data/manager.h src/data/details/manager.cpp)
+  ${SEG_FILES})
 
 target_link_libraries(pos_tagging
   ${LIB_DEPS}
