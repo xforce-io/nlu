@@ -9,6 +9,7 @@ template <typename FragmentType>
 class FragmentSet {
  public:
   explicit FragmentSet(const std::wstring &text);
+  virtual ~FragmentSet();
 
   virtual void Add(std::shared_ptr<FragmentType> fragment);
   void Add(const FragmentType &fragment);
@@ -27,6 +28,10 @@ class FragmentSet {
 template <typename FragmentType>
 FragmentSet<FragmentType>::FragmentSet(const std::wstring &text) :
     text_(&text) {}
+
+template <typename FragmentType>
+FragmentSet<FragmentType>::~FragmentSet() {
+}
 
 template <typename FragmentType>
 void FragmentSet<FragmentType>::Add(std::shared_ptr<FragmentType> fragment) {
