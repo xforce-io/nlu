@@ -60,7 +60,7 @@ void TriggerCompound::Process(
   if (isName) {
     for (auto iter = namesNodes->GetNodes().begin(); iter != namesNodes->GetNodes().end(); ++iter) {
       Node &node = **iter;
-      node.SetNameEntity(std::shared_ptr<ner::NameEntity>(new ner::PersonName(
+      node.SetNameEntity(std::shared_ptr<basic::NameEntity>(new ner::PersonName(
               query.substr(node.GetOffset(), node.GetLen()),
               node.GetOffset())));
       graph.AddMaxPrioredNegLogPossi(node);

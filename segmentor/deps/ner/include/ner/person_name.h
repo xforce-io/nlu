@@ -1,18 +1,17 @@
 #pragma once
 
 #include "public.h"
-#include "name_entity.h"
 
 namespace xforce { namespace nlu { namespace ner {
 
-class PersonName : public NameEntity {
+class PersonName : public basic::NameEntity {
  private:
   typedef std::unordered_set<wchar_t> WcharSet;
 
  public: 
   explicit PersonName(const std::wstring &name, size_t offset); 
 
-  virtual int GetCategory() const { return NameEntity::kCategoryName; }
+  virtual int GetCategory() const { return basic::NameEntity::kCategoryName; }
   const std::wstring& GetName() const { return name_; }
 
   inline static int PossibleName(const std::wstring &wstr, int offset, int len);

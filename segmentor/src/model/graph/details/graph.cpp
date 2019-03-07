@@ -26,7 +26,7 @@ Graph::Graph(const std::wstring &query) :
 
 void Graph::Process(
         basic::FragmentSet<basic::Segment> &segments,
-        basic::FragmentSet<ner::NameEntity> &nameEntities) {
+        basic::FragmentSet<basic::NameEntity> &nameEntities) {
   CreateNodes_();
   candidateNodes_->EstablishPrevs();
   Optimize_();
@@ -35,7 +35,7 @@ void Graph::Process(
 
 void Graph::Profile(
         basic::FragmentSet<basic::Segment> &segments,
-        basic::FragmentSet<ner::NameEntity> &nameEntities) {
+        basic::FragmentSet<basic::NameEntity> &nameEntities) {
   Process(segments, nameEntities);
   MakeProfileInfo_();
   DumpProfile_();
@@ -142,7 +142,7 @@ void Graph::Optimize_(Node &curNode) {
 
 void Graph::MakeResults_(
         basic::FragmentSet<basic::Segment> &segments,
-        basic::FragmentSet<ner::NameEntity> &nameEntities) {
+        basic::FragmentSet<basic::NameEntity> &nameEntities) {
   std::vector<basic::Segment> tmpSegments;
 
   Node *curNode = candidateNodes_->GetItems().back().first;

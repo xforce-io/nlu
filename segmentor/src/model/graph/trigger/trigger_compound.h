@@ -43,7 +43,7 @@ Node* TriggerCompound::AddNewPersonName_(
     size_t len) {
   auto newNode = new Node(offset, len);
   newNode->SetNameEntity(
-      std::shared_ptr<ner::NameEntity>(
+      std::shared_ptr<basic::NameEntity>(
           new ner::PersonName(query.substr(offset, len), offset)));
   triggeredNodes.AddNode(*newNode);
   return newNode;

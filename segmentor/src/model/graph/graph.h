@@ -13,7 +13,7 @@ class Graph {
   typedef std::unordered_map<int, double> PrioredNegLogPossi;
   typedef std::unordered_set<int> OffsetsProcessed;
   typedef std::queue<int> OffsetsToProcess;
-  typedef std::vector<std::shared_ptr<ner::NameEntity>> NameEntities;
+  typedef std::vector<std::shared_ptr<basic::NameEntity>> NameEntities;
   typedef std::vector<NodesVec*> PosToNumNodes;
   typedef typename std::vector< std::pair<const Node*, ConflictSubgraph*> > ProfileItems;
 
@@ -26,11 +26,11 @@ class Graph {
 
   void Process(
           OUT basic::FragmentSet<basic::Segment> &segments,
-          OUT basic::FragmentSet<ner::NameEntity> &nameEntities);
+          OUT basic::FragmentSet<basic::NameEntity> &nameEntities);
 
   void Profile(
           OUT basic::FragmentSet<basic::Segment> &segments,
-          OUT basic::FragmentSet<ner::NameEntity> &nameEntities);
+          OUT basic::FragmentSet<basic::NameEntity> &nameEntities);
 
   inline void AddPrioredNegLogPossi(int offset, size_t len, double score);
   inline void AddMaxPrioredNegLogPossi(const Node &node);
@@ -51,7 +51,7 @@ class Graph {
   void Optimize_(Node &curNode);
   void MakeResults_(
           OUT basic::FragmentSet<basic::Segment> &segments,
-          OUT basic::FragmentSet<ner::NameEntity> &nameEntities);
+          OUT basic::FragmentSet<basic::NameEntity> &nameEntities);
 
   void MakeProfileInfo_();
   void DumpProfile_();

@@ -4,16 +4,16 @@
 
 #ifndef UT_TEST
 
-LOGGER_IMPL(xforce::xforce_logger, "charles")
+LOGGER_IMPL(xforce::xforce_logger, L"charles")
 
 using namespace xforce;
 using namespace xforce::nlu;
 using namespace xforce::nlu::charles;
 
 int main() {
-  LOGGER_SYS_INIT("conf/log.conf")
-
   setlocale(LC_ALL, "");
+
+  LOGGER_SYS_INIT(L"conf/log.conf")
 
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("conf/charles.conf");
   if (NULL == conf) {

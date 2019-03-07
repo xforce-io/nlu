@@ -23,7 +23,7 @@ message(${BASIC_FILES})
 
 set(CMAKE_CXX_COMPILER g++)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -O2")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -DUNICODE")
 
 add_library(basic
   ${BASIC_FILES} src/model/fragment/fragment.h src/model/fragment/fragment_set.hpp src/model/fragment/conflict_set.hpp src/model/confidence.h src/model/details/confidence.cpp src/model/fragment/non_intersect_fragment_set.hpp src/model/fragment/fragment_set_multi.hpp src/model/fragment/fragment_set_label.hpp src/model/fragment/fragment_set_tree.hpp src/model/fragment/fragment_set_non_multi.hpp src/model/context.h src/model/details/context.cpp)
