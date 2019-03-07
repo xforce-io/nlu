@@ -1,11 +1,10 @@
 #pragma once
 
 #include "../public.h"
+#include "word_dict.h"
+#include "gkb_zk.h"
 
 namespace xforce { namespace nlu { namespace basic {
-
-class WordDict;
-class GkbZk;
 
 class Manager {
  public:
