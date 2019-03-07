@@ -1,6 +1,6 @@
 #include "../name_entity.h"
 
-namespace xforce { namespace nlu { namespace ner {
+namespace xforce { namespace nlu { namespace basic {
 
 void NameEntity::Dump(JsonType &jsonType) {
   jsonType["offset"] = offset_;

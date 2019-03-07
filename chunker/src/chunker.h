@@ -6,9 +6,14 @@ namespace xforce { namespace nlu { namespace chunker {
 
 class Chunker {
  public: 
-  static bool Init(const xforce::JsonType &confJson); 
+  bool Init(const xforce::JsonType &confJson);
 
-  static void Tini();
+  void Parse(
+          IN const std::wstring &query,
+          OUT basic::FragmentSet<basic::Segment> &segments,
+          OUT basic::FragmentSet<ner::NameEntity> &nameEntities);
+
+  void Tini();
 };  
 
 }}}

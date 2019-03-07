@@ -11,7 +11,7 @@ AnalysisClause::AnalysisClause(const std::wstring &clause) :
 
 void AnalysisClause::Segment() {
   BaseModules::Get().GetSegmentor().Parse(clause_, featureSegments_, featureNameEntities_);
-  pos::PosTagging::Tagging(clause_, featureSegments_);
+  BaseModules::Get().GetPosTagging().Tagging(clause_, featureSegments_);
 }
 
 void AnalysisClause::Dump(JsonType &jsonType) {

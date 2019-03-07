@@ -1,8 +1,8 @@
 #pragma once
 
-#include "public.h"
+#include "../public.h"
 
-namespace xforce { namespace nlu { namespace ner {
+namespace xforce { namespace nlu { namespace basic {
 
 class NameEntity : public basic::Fragment {
  private:

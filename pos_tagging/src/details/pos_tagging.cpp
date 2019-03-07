@@ -10,19 +10,12 @@ void PosTagging::Tagging(
     std::wstring word = clause.substr(
         segment->GetOffset(),
         segment->GetLen());
-    const std::vector<basic::DictItem*>* dictItems = basic::Manager::Get().GetWordDict().GetDictItems(word);
-    if (dictItems != nullptr) {
-      if (dictItems->size() == 1) {
-        segment->SetPos(dictItems->at(0)->pos);
-      }
-    } else {
-      auto wordStr = StrHelper::Wstr2Str(word);
-      WARN("no_word_in_word_dict[" << *wordStr << "]");
-    }
 
     auto poses = basic::Manager::Get().GetGkbZk().GetPos(word);
+    if (poses->size() == 1) {
+      segment->SetPos((*poses)[0]);
+    }
   }
-
 }
 
 }}}

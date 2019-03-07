@@ -26,7 +26,7 @@ set(CMAKE_CXX_COMPILER g++)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -O2")
 
 add_library(basic
-  ${BASIC_FILES} src/model/fragment/fragment.h src/model/fragment/fragment_set.hpp src/model/fragment/conflict_set.hpp src/model/confidence.h src/model/details/confidence.cpp src/model/fragment/non_intersect_fragment_set.hpp src/model/fragment/fragment_set_multi.hpp src/model/fragment/fragment_set_label.hpp src/model/fragment/fragment_set_tree.hpp src/model/fragment/fragment_set_non_multi.hpp)
+  ${BASIC_FILES} src/model/fragment/fragment.h src/model/fragment/fragment_set.hpp src/model/fragment/conflict_set.hpp src/model/confidence.h src/model/details/confidence.cpp src/model/fragment/non_intersect_fragment_set.hpp src/model/fragment/fragment_set_multi.hpp src/model/fragment/fragment_set_label.hpp src/model/fragment/fragment_set_tree.hpp src/model/fragment/fragment_set_non_multi.hpp src/model/context.h src/model/details/context.cpp)
 
 target_link_libraries(basic
   log4cplus
@@ -56,7 +56,9 @@ add_custom_command(TARGET basic
   COMMAND cp ${BASIC_SRC_DIR}/data/dict_item.h ${BASIC_INC_OUTPUT_PATH}/data/
   COMMAND cp ${BASIC_SRC_DIR}/model/nlu_context.h ${BASIC_INC_OUTPUT_PATH}/model/
   COMMAND cp ${BASIC_SRC_DIR}/model/segment.h ${BASIC_INC_OUTPUT_PATH}/model/
+  COMMAND cp ${BASIC_SRC_DIR}/model/name_entity.h ${BASIC_INC_OUTPUT_PATH}/model/
   COMMAND cp ${BASIC_SRC_DIR}/model/confidence.h ${BASIC_INC_OUTPUT_PATH}/model/
+  COMMAND cp ${BASIC_SRC_DIR}/model/context.h ${BASIC_INC_OUTPUT_PATH}/model/
   COMMAND cp ${BASIC_SRC_DIR}/model/pos/pos.h ${BASIC_INC_OUTPUT_PATH}/model/pos/
   COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
   COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set.hpp ${BASIC_INC_OUTPUT_PATH}/model/fragment/
