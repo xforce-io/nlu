@@ -20,7 +20,7 @@ void PosTagging::Tagging(
       WARN("no_word_in_word_dict[" << *wordStr << "]");
     }
 
-    auto poses = basic::Manager::Get().GetGkbZk().GetPos();
+    auto poses = basic::Manager::Get().GetGkbZk().GetPos(word);
   }
 
 }
