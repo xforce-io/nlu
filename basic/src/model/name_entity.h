@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../public.h"
+#include "fragment/fragment.h"
 
 namespace xforce { namespace nlu { namespace basic {
 
