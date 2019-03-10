@@ -9,7 +9,7 @@ CoreDictNatures::CoreDictNatures() :
 
 bool CoreDictNatures::Init(const std::string &expr) {
   if (expr.size() <= 2) {
-    ERROR("invalid_core_dict_natures[" << expr << "]");
+    ERROR("invalid_core_dict_natures[" << *StrHelper::Str2Wstr(expr) << "]");
     return false;
   }
 
@@ -19,7 +19,7 @@ bool CoreDictNatures::Init(const std::string &expr) {
     std::vector<std::string> kv;
     StrHelper::SplitStr(*iter, '=', kv);
     if (kv.size() != 2) {
-      ERROR("invalid_core_dict_natures_format[" << *iter << "]");
+      ERROR("invalid_core_dict_natures_format[" << *StrHelper::Str2Wstr(*iter) << "]");
       return false;
     }
 
@@ -27,14 +27,14 @@ bool CoreDictNatures::Init(const std::string &expr) {
     size_t val;
     bool ret = StrHelper::GetNum(kv[1].c_str(), val);
     if (!ret) {
-      ERROR("invalid_core_dict_natures_format[" << *iter << "]");
+      ERROR("invalid_core_dict_natures_format[" << *StrHelper::Str2Wstr(*iter) << "]");
       return false;
     }
       
     CoreDictNature *coreDictNature = new CoreDictNature();
     ret = coreDictNature->Init(key, val);
     if (!ret) {
-      ERROR("fail_init_core_dict_nature[" << key << "|" << val << "]");
+      ERROR("fail_init_core_dict_nature[" << *(StrHelper::Str2Wstr(key)) << "|" << val << "]");
       return false;
     }
     coreDictNatures_.push_back(coreDictNature);

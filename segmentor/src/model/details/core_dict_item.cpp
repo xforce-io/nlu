@@ -18,7 +18,7 @@ bool CoreDictItem::Init(const std::vector<std::string> &items) {
   coreDictNatures_ = new CoreDictNatures();
   bool ret = coreDictNatures_->Init(items[1]);
   if (!ret) {
-    WARN("fail_create_core_dict_natures_from[" << items[1] << "]");
+    WARN("fail_create_core_dict_natures_from[" << *StrHelper::Str2Wstr(items[1]) << "]");
     return false;
   }
   return true;

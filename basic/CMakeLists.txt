@@ -12,6 +12,8 @@ link_directories(
   /home/freeman/software/lib/
 )
 
+set(CMAKE_CXX_COMPILER g++)
+
 set(BASIC_OUTPUT_PATH basic/)
 set(BASIC_LIB_OUTPUT_PATH  ${BASIC_OUTPUT_PATH}/lib/basic)
 set(BASIC_INC_OUTPUT_PATH  ${BASIC_OUTPUT_PATH}/include/basic)
@@ -19,11 +21,7 @@ set(BASIC_SRC_DIR "${CMAKE_SOURCE_DIR}/src/")
 
 FILE(GLOB_RECURSE BASIC_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 
-message(${BASIC_FILES})
-
-set(CMAKE_CXX_COMPILER g++)
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -DUNICODE")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -DUNICODE=1")
 
 add_library(basic
   ${BASIC_FILES} src/model/fragment/fragment.h src/model/fragment/fragment_set.hpp src/model/fragment/conflict_set.hpp src/model/confidence.h src/model/details/confidence.cpp src/model/fragment/non_intersect_fragment_set.hpp src/model/fragment/fragment_set_multi.hpp src/model/fragment/fragment_set_label.hpp src/model/fragment/fragment_set_tree.hpp src/model/fragment/fragment_set_non_multi.hpp src/model/context.h src/model/details/context.cpp)

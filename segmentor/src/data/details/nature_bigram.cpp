@@ -16,7 +16,7 @@ bool NatureBigram::Init(const NatureDict &natureDict, const std::string &dictpat
 
   FILE *fp = fopen(dictpath.c_str(), "r");
   if (nullptr == fp) {
-    ERROR("fail_open_filepath[" << dictpath << "]");
+    ERROR("fail_open_filepath[" << *StrHelper::Str2Wstr(dictpath) << "]");
     return false;
   }
 

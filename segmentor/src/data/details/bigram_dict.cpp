@@ -5,7 +5,7 @@ namespace xforce { namespace nlu { namespace segmentor {
 bool BigramDict::Init(const std::string &dictpath) {
   FILE *fp = fopen(dictpath.c_str(), "r");
   if (fp == nullptr) {
-    ERROR("fail_open_filepath[" << dictpath << "]");
+    ERROR("fail_open_filepath[" << *StrHelper::Str2Wstr(dictpath) << "]");
     return false;
   }
 

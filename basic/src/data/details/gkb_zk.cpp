@@ -6,7 +6,7 @@ bool GkbZk::Init(const std::string &filepath) {
   std::vector<std::string> lines;
   bool ret = IOHelper::ReadLinesFromFilepath(filepath, lines);
   if (!ret) {
-    ERROR("fail_read_line_from[" << filepath << "]");
+    ERROR("fail_read_line_from[" << *StrHelper::Str2Wstr(filepath) << "]");
     return false;
   }
 

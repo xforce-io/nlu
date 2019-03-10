@@ -9,7 +9,7 @@ bool WordDict::Init(const std::vector<std::string> &filepaths) {
   for (auto iter = filepaths.begin(); iter != filepaths.end(); ++iter) {
     bool ret = Init_(*iter);
     if (!ret) {
-      ERROR("fail_init_word_dict[" << *iter << "]");
+      ERROR("fail_init_word_dict[" << *StrHelper::Str2Wstr(*iter) << "]");
       return false;
     }
   }
@@ -62,7 +62,7 @@ WordDict::~WordDict() {
 bool WordDict::Init_(const std::string &filepath) {
   FILE *fp = fopen(filepath.c_str(), "r");
   if (fp == nullptr) {
-    ERROR("fail_open_filepath[" << filepath << "]");
+    ERROR("fail_open_filepath[" << *StrHelper::Str2Wstr(filepath) << "]");
     return false;
   }
 

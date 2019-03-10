@@ -4,6 +4,7 @@ project(charles)
 
 include_directories(
   /usr/include/
+  /home/freeman/software/include/
   ${CMAKE_SOURCE_DIR}/deps/public-cpp/include/
   ${CMAKE_SOURCE_DIR}/deps/basic/include/
   ${CMAKE_SOURCE_DIR}/deps/ner/include/
@@ -12,11 +13,14 @@ include_directories(
 )
 
 link_directories(
+  /home/freeman/software/lib/
 )
+
+set(CMAKE_CXX_COMPILER g++)
 
 FILE(GLOB_RECURSE SEG_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -std=c++11 -DUNICODE")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -DUNICODE=1")
 set(LIB_DEPS 
   ${CMAKE_SOURCE_DIR}/deps/pos_tagging/lib/pos_tagging/libpos_tagging.a
   ${CMAKE_SOURCE_DIR}/deps/segmentor/lib/segmentor/libsegmentor.a
@@ -30,7 +34,7 @@ add_executable(charles
 
 target_link_libraries(charles
   ${LIB_DEPS}
-  log4cplus
+  log4cplusU
   pthread
   rt
   z

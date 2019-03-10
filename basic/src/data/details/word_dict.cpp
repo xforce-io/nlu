@@ -9,20 +9,20 @@ size_t WordDict::kMaxSizeDict = 100*1024*1024;
 bool WordDict::Init(const std::string &filepath) {
   FILE *fp = fopen(filepath.c_str(), "r");
   if (fp == NULL) {
-    ERROR("fail_open_filepath[" << filepath << "]");
+    ERROR("fail_open_filepath[" << *StrHelper::Str2Wstr(filepath) << "]");
     return false;
   }
 
   char *buf = new char [kMaxSizeDict];
   char *line = fgets(buf, kMaxSizeDict, fp);
   if (NULL == line) {
-    FATAL("fail_read_word_dict_from[" << filepath << "]");
+    FATAL("fail_read_word_dict_from[" << *StrHelper::Str2Wstr(filepath) << "]");
     return false;
   }
 
   const JsonType *jsonType = JsonType::ParseJson(buf);
   if (NULL == jsonType || !jsonType->IsDict()) {
-    FATAL("fail_parse_word_dict_from[" << filepath << "]");
+    FATAL("fail_parse_word_dict_from[" << *StrHelper::Str2Wstr(filepath) << "]");
     return false;
   }
 
@@ -52,7 +52,7 @@ bool WordDict::AddItem_(const std::string &name, const JsonType &jsonType) {
 
   std::shared_ptr<std::wstring> nameWstr = StrHelper::Str2Wstr(name);
   if (nullptr == nameWstr) {
-    FATAL("fail_convert_name_to_wstr[" << name << "]");
+    FATAL("fail_convert_name_to_wstr[" << *nameWstr << "]");
     return false;
   }
 
