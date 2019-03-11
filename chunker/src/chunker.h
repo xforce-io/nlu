@@ -11,7 +11,7 @@ class Chunker {
   void Parse(
           IN const std::wstring &query,
           OUT basic::FragmentSet<basic::Segment> &segments,
-          OUT basic::FragmentSet<ner::NameEntity> &nameEntities);
+          OUT basic::FragmentSet<basic::NameEntity> &nameEntities);
 
   void Tini();
 };  

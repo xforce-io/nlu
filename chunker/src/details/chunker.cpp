@@ -12,6 +12,13 @@ bool Chunker::Init(const xforce::JsonType &confJson) {
   return true;
 }
 
+void Chunker::Parse(
+        const std::wstring &query,
+        basic::FragmentSet<basic::Segment> &segments,
+        basic::FragmentSet<basic::NameEntity> &nameEntities) {
+
+}
+
 void Chunker::Tini() {
   Conf::Tini();
 }
