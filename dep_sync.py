@@ -115,16 +115,16 @@ if __name__ == "__main__" :
     if sys.argv[1] == "mki" :
         sys.exit(0)
 
-    buildPosTagging()
-    if sys.argv[1] == "pos" :
-        sys.exit(0)
-
     buildNer()
     if sys.argv[1] == "ner" :
         sys.exit(0)
 
     buildSegmentor()
     if sys.argv[1] == "seg" :
+        sys.exit(0)
+
+    buildPosTagging()
+    if sys.argv[1] == "pos" :
         sys.exit(0)
 
     buildChunker()
