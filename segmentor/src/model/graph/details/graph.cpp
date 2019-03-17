@@ -177,6 +177,7 @@ void Graph::MakeResults_(
   lastSegment.SetLen(query_.length() - lastSegment.GetOffset());
 
   for (auto &segment : tmpSegments) {
+    segment.SetStrFromSentence(query_);
     segments.Add(segment);
   }
 }

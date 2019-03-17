@@ -13,11 +13,7 @@ void PosTagging::SetPosForWordWithUniqPos_(
     basic::FragmentSet<basic::Segment> &segments) {
   for (size_t i=0; i < segments.Size(); ++i) {
     auto &segment = segments[i];
-    std::wstring word = clause.substr(
-        segment->GetOffset(),
-        segment->GetLen());
-
-    auto poses = basic::Manager::Get().GetGkbZk().GetPos(word);
+    auto poses = basic::Manager::Get().GetGkbZk().GetPos(*(segment->GetStr()));
     if (poses->size() == 1) {
       segment->SetPos((*poses)[0]);
     }
@@ -27,7 +23,12 @@ void PosTagging::SetPosForWordWithUniqPos_(
 void PosTagging::SetPosCtbFromPos_(
       const std::wstring &clause,
       basic::FragmentSet<basic::Segment> &segments) {
-
+  for (size_t i=0; i < segments.Size(); ++i) {
+    auto &segment = segments[i];
+    if (segment->GetPos() == basic::Pos::kN) {
+      segment->SetPos
+    }
+  }
 }
 
 }}}
