@@ -9,6 +9,15 @@ class PosTagging {
   static void Tagging(
       const std::wstring &clause,
       basic::FragmentSet<basic::Segment> &segments);
+
+ private:
+  static void SetPosForWordWithUniqPos_(
+      const std::wstring &clause,
+      basic::FragmentSet<basic::Segment> &segments);
+
+  static void SetPosCtbFromPos_(
+      const std::wstring &clause,
+      basic::FragmentSet<basic::Segment> &segments);
 };
 
 }}}
