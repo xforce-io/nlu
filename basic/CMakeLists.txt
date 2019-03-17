@@ -43,6 +43,7 @@ add_custom_command(TARGET basic
   COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/public
   COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/data
   COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/model/pos
+  COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/model/pos_ctb
   COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/model/fragment
 
   COMMAND cp ${BASIC_SRC_DIR}/public.h ${BASIC_INC_OUTPUT_PATH}/
@@ -58,6 +59,7 @@ add_custom_command(TARGET basic
   COMMAND cp ${BASIC_SRC_DIR}/model/confidence.h ${BASIC_INC_OUTPUT_PATH}/model/
   COMMAND cp ${BASIC_SRC_DIR}/model/context.h ${BASIC_INC_OUTPUT_PATH}/model/
   COMMAND cp ${BASIC_SRC_DIR}/model/pos/pos.h ${BASIC_INC_OUTPUT_PATH}/model/pos/
+  COMMAND cp ${BASIC_SRC_DIR}/model/pos_ctb/pos_ctb.h ${BASIC_INC_OUTPUT_PATH}/model/pos_ctb/
   COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
   COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set.hpp ${BASIC_INC_OUTPUT_PATH}/model/fragment/
   COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set_label.hpp ${BASIC_INC_OUTPUT_PATH}/model/fragment/
