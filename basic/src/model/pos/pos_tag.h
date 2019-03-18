@@ -4,7 +4,7 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
-class Pos {
+class PosTag {
  public: 
   enum Type {
     /*
@@ -70,8 +70,8 @@ class Pos {
   }; 
 
  public:
-  static Pos::Type GetPos(const std::string &pos); 
-  static const std::wstring& Str(Pos::Type type);
+  static PosTag::Type GetPos(const std::string &pos);
+  static const std::wstring& Str(PosTag::Type type);
 };
 
 class NotionOrForm {

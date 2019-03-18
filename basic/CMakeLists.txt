@@ -24,7 +24,7 @@ FILE(GLOB_RECURSE BASIC_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -DUNICODE=1")
 
 add_library(basic
-  ${BASIC_FILES} src/model/fragment/fragment.h src/model/fragment/fragment_set.hpp src/model/fragment/conflict_set.hpp src/model/confidence.h src/model/details/confidence.cpp src/model/fragment/non_intersect_fragment_set.hpp src/model/fragment/fragment_set_multi.hpp src/model/fragment/fragment_set_label.hpp src/model/fragment/fragment_set_tree.hpp src/model/fragment/fragment_set_non_multi.hpp src/model/context.h src/model/details/context.cpp src/model/chunk/chunk.h src/model/pos_ctb/pos_ctb.h)
+  ${BASIC_FILES} src/model/fragment/fragment.h src/model/fragment/fragment_set.hpp src/model/fragment/conflict_set.hpp src/model/confidence.h src/model/details/confidence.cpp src/model/fragment/non_intersect_fragment_set.hpp src/model/fragment/fragment_set_multi.hpp src/model/fragment/fragment_set_label.hpp src/model/fragment/fragment_set_tree.hpp src/model/fragment/fragment_set_non_multi.hpp src/model/context.h src/model/details/context.cpp src/model/syntax/syntax_tag.h src/model/pos_ctb/pos_ctb_tag.h)
 
 target_link_libraries(basic
   log4cplus

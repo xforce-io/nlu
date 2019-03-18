@@ -1,16 +1,17 @@
 #pragma once
 
 #include "../public.h"
-#include "pos/pos.h"
+#include "pos/pos_tag.h"
 #include "pos_ctb/pos_ctb.h"
 #include "fragment/fragment.h"
+#include "fragment/fragment_set.hpp"
 
 namespace xforce { namespace nlu { namespace basic {
 
 class Segment : public Fragment {
  public:
   typedef Fragment Super;
-  typedef std::vector<Segment> Vector;
+  typedef FragmentSet<Segment> Segments;
 
  public:
   inline Segment();

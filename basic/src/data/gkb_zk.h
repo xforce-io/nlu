@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../public.h"
-#include "../model/pos/pos.h"
+#include "../model/pos/pos_tag.h"
 
 namespace xforce { namespace nlu { namespace basic {
 

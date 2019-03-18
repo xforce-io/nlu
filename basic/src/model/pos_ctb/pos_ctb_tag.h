@@ -4,7 +4,7 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
-class PosCtb {
+class PosCtbTag {
  public:
   enum Type {
     kAd, //adverbs / 副词
