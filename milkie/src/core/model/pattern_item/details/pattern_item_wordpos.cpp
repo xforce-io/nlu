@@ -20,8 +20,8 @@ bool PatternItemWordpos::MatchPattern(Context &context) {
   }
 
   std::wstringstream ss;
-  for (auto &segment : *featureWordposes) {
-    ss << basic::Pos::Str(segment.GetPos()) << kSep;
+  for (auto &segment : featureWordposes->GetAll()) {
+    ss << basic::PosTag::Str(segment->GetPosTag()) << kSep;
   }
 
   std::wstring patternToMatch = ss.str();
@@ -33,7 +33,7 @@ bool PatternItemWordpos::MatchPattern(Context &context) {
       StrHelper::SplitStr(matched, kSep, items);
       contentMatched_ = L"";
       for (size_t i=0; i < items.size(); ++i) {
-        contentMatched_ += (*featureWordposes)[i].GetQuery(
+        contentMatched_ += (*featureWordposes)[i]->GetQuery(
             context.GetSentence().GetSentence());
       }
       return true;

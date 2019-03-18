@@ -70,7 +70,7 @@ class PosTag {
   }; 
 
  public:
-  static PosTag::Type GetPos(const std::string &pos);
+  static PosTag::Type GetPosTag(const std::string &pos);
   static const std::wstring& Str(PosTag::Type type);
 };
 

@@ -9,27 +9,27 @@ class SentenceFeatureSegment :public SentenceFeature {
  public:
   inline explicit SentenceFeatureSegment(std::shared_ptr<basic::NluContext> nluContext);
 
-  inline std::shared_ptr<basic::Segment::Vector> GetSegmentsFromOffset(ssize_t offset);
-  inline const basic::Segment* GetSegmentAtOffset(ssize_t offset) const;
+  inline std::shared_ptr<basic::Segment::Set> GetSegmentsFromOffset(ssize_t offset);
+  inline const std::shared_ptr<basic::Segment> GetSegmentAtOffset(ssize_t offset) const;
 };
 
 SentenceFeatureSegment::SentenceFeatureSegment(std::shared_ptr<basic::NluContext> nluContext) :
     SentenceFeature(nluContext) {}
 
-std::shared_ptr<basic::Segment::Vector> SentenceFeatureSegment::GetSegmentsFromOffset(ssize_t offset) {
-  std::shared_ptr<basic::Segment::Vector> segments = std::make_shared<basic::Segment::Vector>();
+std::shared_ptr<basic::Segment::Set> SentenceFeatureSegment::GetSegmentsFromOffset(ssize_t offset) {
+  std::shared_ptr<basic::Segment::Set> segments = std::make_shared<basic::Segment::Set>(nluContext_->GetQuery());
 
   size_t accuLen = 0;
   bool mark = false;
-  for (auto &segment : nluContext_->GetSegments()) {
+  for (auto &segment : nluContext_->GetSegments().GetAll()) {
     if (offset == (ssize_t)accuLen) {
       mark = true;
     }
 
     if (mark) {
-      segments->push_back(segment);
+      segments->Add(segment);
     }
-    accuLen += segment.GetLen();
+    accuLen += segment->GetLen();
   }
 
   if (mark) {
@@ -38,13 +38,13 @@ std::shared_ptr<basic::Segment::Vector> SentenceFeatureSegment::GetSegmentsFromO
   return nullptr;
 }
 
-const basic::Segment* SentenceFeatureSegment::GetSegmentAtOffset(ssize_t offset) const {
+const std::shared_ptr<basic::Segment> SentenceFeatureSegment::GetSegmentAtOffset(ssize_t offset) const {
   ssize_t accuLen = 0;
-  for (auto &segment : nluContext_->GetSegments()) {
+  for (auto &segment : nluContext_->GetSegments().GetAll()) {
     if (offset == accuLen) {
-      return &segment;
+      return segment;
     }
-    accuLen += segment.GetLen();
+    accuLen += segment->GetLen();
   }
   return nullptr;
 }

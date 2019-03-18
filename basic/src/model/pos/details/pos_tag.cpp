@@ -2,7 +2,7 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
-PosTag::Type PosTag::GetPos(const std::string &pos) {
+PosTag::Type PosTag::GetPosTag(const std::string &pos) {
   switch (pos[0]) {
     case 'n' :
       return PosTag::kN;

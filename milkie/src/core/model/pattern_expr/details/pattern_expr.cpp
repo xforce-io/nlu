@@ -218,7 +218,7 @@ bool PatternExpr::MatchForWildcard(Context &context, ssize_t itemIdx) {
 
   auto wordposAtPos = context.GetSentence().GetFeatureSegmentAtOffset(offset);
   if (nullptr != wordposAtPos) {
-    auto fullWordpos = basic::Pos::Str(wordposAtPos->GetPos());
+    auto fullWordpos = basic::PosTag::Str(wordposAtPos->GetPosTag());
     auto leadingWordpos = fullWordpos[0];
     if (PatternExpr::invalidLeadPosForWildcard_.find(leadingWordpos) != PatternExpr::invalidLeadPosForWildcard_.end() ||
         PatternExpr::invalidFullPosForWildcard_.find(fullWordpos) != PatternExpr::invalidFullPosForWildcard_.end()) {

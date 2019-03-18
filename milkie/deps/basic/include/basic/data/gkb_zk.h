@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../public.h"
-#include "../model/pos/pos.h"
+#include "../model/pos/pos_tag.h"
 
 namespace xforce { namespace nlu { namespace basic {
 
@@ -11,15 +11,15 @@ class GkbZk {
 
   bool Init(const std::string &filepath);
 
-  inline const std::shared_ptr<std::vector<Pos::Type>> GetPos(const std::wstring &str) const;
+  inline const std::shared_ptr<std::vector<PosTag::Type>> GetPos(const std::wstring &str) const;
 
   virtual ~GkbZk();
 
  private:
-  std::unordered_map<std::wstring, std::shared_ptr<std::vector<Pos::Type>>> charToPos_;
+  std::unordered_map<std::wstring, std::shared_ptr<std::vector<PosTag::Type>>> charToPos_;
 };
 
-const std::shared_ptr<std::vector<basic::Pos::Type>> GkbZk::GetPos(const std::wstring &str) const {
+const std::shared_ptr<std::vector<PosTag::Type>> GkbZk::GetPos(const std::wstring &str) const {
   auto iter = charToPos_.find(str);
   if (iter != charToPos_.end()) {
     return iter->second;

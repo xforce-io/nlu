@@ -9,20 +9,21 @@ class NluContext {
  public:
   inline explicit NluContext(const std::wstring &query); 
 
-  inline void SetSegments(const Segment::Vector &segments);
+  inline void SetSegments(const typename Segment::Set &segments);
 
   const std::wstring& GetQuery() const { return query_; }
-  const Segment::Vector& GetSegments() const { return segments_; }
+  const typename Segment::Set& GetSegments() const { return segments_; }
 
  private:
   std::wstring query_;
-  Segment::Vector segments_;
+  typename Segment::Set segments_;
 };  
 
 NluContext::NluContext(const std::wstring &query) :
-  query_(query) {}
+  query_(query),
+  segments_(query) {}
 
-void NluContext::SetSegments(const Segment::Vector &segments) {
+void NluContext::SetSegments(const typename Segment::Set &segments) {
   segments_ = segments;
 }
 

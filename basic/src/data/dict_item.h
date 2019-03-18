@@ -10,7 +10,7 @@ struct DictItem {
    inline static DictItem* CreateFromJson(const JsonType &jsonType);
 
  public: 
-   Pos::Type pos; 
+   PosTag::Type posTag; 
    std::string shape;
    std::string pinyin;
    NotionOrForm::Type notionOrForm;
@@ -24,7 +24,7 @@ DictItem* DictItem::CreateFromJson(const JsonType &jsonType) {
   }
 
   DictItem *dictItem = new DictItem();
-  dictItem->pos = Pos::GetPos(jsonType["pos"].AsStr());
+  dictItem->posTag = PosTag::GetPosTag(jsonType["pos"].AsStr());
   dictItem->shape = jsonType["shape"].AsStr();
   dictItem->pinyin = jsonType["pinyin"].AsStr();
   dictItem->notionOrForm = NotionOrForm::GetNotionOrForm(jsonType["notionOrForm"].AsStr());
