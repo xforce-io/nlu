@@ -2,7 +2,6 @@
 
 #include "../public.h"
 #include "segment.h"
-#include "chunk.h"
 
 namespace xforce { namespace nlu { namespace basic {
 
