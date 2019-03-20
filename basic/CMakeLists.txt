@@ -44,6 +44,7 @@ add_custom_command(TARGET basic
   COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/data
   COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/model/pos
   COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/model/pos_ctb
+  COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/model/syntax
   COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/model/fragment
 
   COMMAND cp ${BASIC_SRC_DIR}/public.h ${BASIC_INC_OUTPUT_PATH}/
