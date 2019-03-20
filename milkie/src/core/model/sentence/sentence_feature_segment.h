@@ -17,7 +17,7 @@ SentenceFeatureSegment::SentenceFeatureSegment(std::shared_ptr<basic::NluContext
     SentenceFeature(nluContext) {}
 
 std::shared_ptr<basic::Segment::Set> SentenceFeatureSegment::GetSegmentsFromOffset(ssize_t offset) {
-  std::shared_ptr<basic::Segment::Set> segments = std::make_shared<basic::Segment::Set>(nluContext_->GetQuery());
+  auto segments = std::make_shared<basic::Segment::Set>(nluContext_->GetQuery());
 
   size_t accuLen = 0;
   bool mark = false;
