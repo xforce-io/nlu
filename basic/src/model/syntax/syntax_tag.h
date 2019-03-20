@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../../public.h"
+
 namespace xforce { namespace nlu { namespace basic {
 
 class SyntaxTag {
@@ -24,6 +26,10 @@ class SyntaxTag {
       kVp, //Verb phrase / 动词短语
       kUndef,
   };
+
+ public:
+  static SyntaxTag::Type GetSyntaxTag(const std::wstring &syntaxTag);
+  static const std::wstring& Str(SyntaxTag::Type type);
 };
 
 }}}
