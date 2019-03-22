@@ -36,7 +36,7 @@ class Node {
   inline bool IsEnd() const;
   inline bool IsSpecial() const;
   inline int GetShapeCode() const;
-  inline basic::Pos::Type GetPos() const { return pos_; }
+  inline basic::PosTag::Type GetPosTag() const { return posTag_; }
 
   std::string Str() const;
 
@@ -53,7 +53,7 @@ class Node {
   Node *bestPrev_;
   double bestScore_;
 
-  basic::Pos::Type pos_;
+  basic::PosTag::Type posTag_;
 
   std::shared_ptr<basic::NameEntity> nameEntity_;
 };  
@@ -87,7 +87,7 @@ void Node::SetNameEntity(std::shared_ptr<basic::NameEntity> nameEntity) {
 }
 
 void Node::SetPosTag(basic::PosTag::Type posTag) {
-  pos_ = posTag;
+  posTag_ = posTag;
 }
 
 int Node::EndOffset() const {
