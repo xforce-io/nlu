@@ -14,11 +14,15 @@ bool Chunker::Init(const xforce::JsonType &confJson) {
 
 void Chunker::Parse(
         const std::wstring &query,
-        basic::FragmentSet<basic::Segment> &segments,
-        basic::FragmentSet<basic::NameEntity> &nameEntities) {
+        const basic::FragmentSet<basic::Segment> &segments,
+        const basic::FragmentSet<basic::NameEntity> &nameEntities,
+        basic::FragmentSet<basic::Chunk> &chunks) {
   for (size_t i=0; i < segments.Size(); ++i) {
     auto &segment = segments[i];
-    if (segment->GetP)
+    auto syntaxTag = basic::SyntaxTag::GetSyntaxTag(segment->GetPosCtbTag());
+    if (syntaxTag != basic::PosCtbTag::kUndef) {
+      chunks.Add(Chunker(syntaxTag));
+    }
   }
 }
 
