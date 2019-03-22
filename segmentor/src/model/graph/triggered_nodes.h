@@ -10,7 +10,7 @@ class TriggeredNodes {
   TriggeredNodes();
   TriggeredNodes(int offset, size_t length);
 
-  inline Node& AddNode(int offset, size_t len, basic::Pos::Type pos);
+  inline Node& AddNode(int offset, size_t len, basic::PosTag::Type posTag);
   inline Node& AddNode(int offset, size_t len);
   inline void AddNode(Node &node);
   inline const Node& GetNode() const;
@@ -32,15 +32,15 @@ class TriggeredNodes {
 
 namespace xforce { namespace nlu { namespace segmentor {
 
-Node& TriggeredNodes::AddNode(int offset, size_t len, basic::Pos::Type pos) {
+Node& TriggeredNodes::AddNode(int offset, size_t len, basic::PosTag::Type posTag) {
   Node *node = new Node(offset, len);
-  node->SetPosTag(pos);
+  node->SetPosTag(posTag);
   AddNode(*node);
   return *node;
 }
 
 Node& TriggeredNodes::AddNode(int offset, size_t len) {
-  return AddNode(offset, len, basic::Pos::kUndef);
+  return AddNode(offset, len, basic::PosTag::kUndef);
 }
 
 void TriggeredNodes::AddNode(Node &node) {

@@ -35,7 +35,7 @@ void TriggerCompound::Process(
           triggeredNodes->AddNode(
             lastOffset+1, 
             i-lastOffset-1));
-      triggeredNodes->AddNode(i, 1, basic::Pos::kC);
+      triggeredNodes->AddNode(i, 1, basic::PosTag::kC);
       nextOffset = i+1;
       break;
     } else if (L'以' == query[i] || L'及' == query[i+1]) {
@@ -43,7 +43,7 @@ void TriggerCompound::Process(
           triggeredNodes->AddNode(
             lastOffset+1,
             i-lastOffset-1));
-      triggeredNodes->AddNode(i, 2, basic::Pos::kC);
+      triggeredNodes->AddNode(i, 2, basic::PosTag::kC);
       nextOffset = i+2;
       break;
     }
