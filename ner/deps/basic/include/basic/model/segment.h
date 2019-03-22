@@ -1,32 +1,33 @@
 #pragma once
 
 #include "../public.h"
-#include "pos/pos.h"
-#include "pos_ctb/pos_ctb.h"
+#include "pos/pos_tag.h"
+#include "pos_ctb/pos_ctb_tag.h"
 #include "fragment/fragment.h"
+#include "fragment/fragment_set.hpp"
 
 namespace xforce { namespace nlu { namespace basic {
 
 class Segment : public Fragment {
  public:
   typedef Fragment Super;
-  typedef std::vector<Segment> Vector;
+  typedef FragmentSet<Segment> Set;
 
  public:
   inline Segment();
-  inline Segment(Pos::Type pos, size_t offset, size_t len);
+  inline Segment(PosTag::Type posTag, size_t offset, size_t len);
   inline Segment(size_t offset, size_t len);
   inline Segment(size_t offset);
   virtual ~Segment();
 
   inline void SetStr(const std::wstring &str);
   inline void SetStrFromSentence(const std::wstring &sentence);
-  inline void SetPos(Pos::Type pos);
-  inline void SetPosCtb(PosCtb::Type posCtb);
+  inline void SetPosTag(PosTag::Type posTag);
+  inline void SetPosCtbTag(PosCtbTag::Type posCtb);
 
   const std::wstring* GetStr() const { return str_; }
-  Pos::Type GetPos() const { return pos_; }
-  PosCtb::Type GetPosCtb() const { return posCtb_; }
+  PosTag::Type GetPosTag() const { return posTag_; }
+  PosCtbTag::Type GetPosCtbTag() const { return posCtbTag_; }
 
   inline std::wstring GetQuery(const std::wstring &sentence) const;
 
@@ -36,33 +37,33 @@ class Segment : public Fragment {
 
  private:
   std::wstring *str_;
-  Pos::Type pos_;
-  PosCtb::Type posCtb_;
+  PosTag::Type posTag_;
+  PosCtbTag::Type posCtbTag_;
 };
 
 Segment::Segment() :
   Fragment(-1, -1),
   str_(nullptr),
-  pos_(Pos::kUndef),
-  posCtb_(PosCtb::kUndef) {}
+  posTag_(PosTag::kUndef),
+  posCtbTag_(PosCtbTag::kUndef) {}
 
-Segment::Segment(Pos::Type pos, size_t offset, size_t len) :
+Segment::Segment(PosTag::Type posTag, size_t offset, size_t len) :
   Fragment(offset, len),
   str_(nullptr),
-  pos_(pos),
-  posCtb_(PosCtb::kUndef) {}
+  posTag_(posTag),
+  posCtbTag_(PosCtbTag::kUndef) {}
 
 Segment::Segment(size_t offset, size_t len) :
   Fragment(offset, len),
   str_(nullptr),
-  pos_(Pos::kUndef),
-  posCtb_(PosCtb::kUndef) {}
+  posTag_(PosTag::kUndef),
+  posCtbTag_(PosCtbTag::kUndef) {}
 
 Segment::Segment(size_t offset) :
   Fragment(offset, -1),
   str_(nullptr),
-  pos_(Pos::kUndef),
-  posCtb_(PosCtb::kUndef) {}
+  posTag_(PosTag::kUndef),
+  posCtbTag_(PosCtbTag::kUndef) {}
 
 void Segment::SetStr(const std::wstring &str) {
   str_ = new std::wstring(str);
@@ -72,12 +73,12 @@ void Segment::SetStrFromSentence(const std::wstring &sentence) {
   str_ = new std::wstring(sentence.substr(offset_, len_));
 }
 
-void Segment::SetPos(Pos::Type pos) {
-  pos_ = pos;
+void Segment::SetPosTag(PosTag::Type posTag) {
+  posTag_ = posTag;
 }
 
-void Segment::SetPosCtb(PosCtb::Type posCtb) {
-  posCtb_ = posCtb;
+void Segment::SetPosCtbTag(PosCtbTag::Type posCtb) {
+  posCtbTag_ = posCtb;
 }
 
 std::wstring Segment::GetQuery(const std::wstring &sentence) const {
@@ -85,8 +86,8 @@ std::wstring Segment::GetQuery(const std::wstring &sentence) const {
 }
 
 void Segment::operator=(const Segment &segment) {
-  pos_ = segment.pos_;
-  posCtb_ = segment.posCtb_;
+  posTag_ = segment.posTag_;
+  posCtbTag_ = segment.posCtbTag_;
   offset_ = segment.offset_;
   len_ = segment.len_;
 }

@@ -14,6 +14,8 @@ class FragmentSet {
   virtual void Add(std::shared_ptr<FragmentType> fragment);
   void Add(const FragmentType &fragment);
 
+  inline const std::vector<std::shared_ptr<FragmentType>> GetAll() const;
+
   inline const std::shared_ptr<FragmentType>& operator[](size_t i) const;
   inline std::shared_ptr<FragmentType>& operator[](size_t i);
 
@@ -43,6 +45,11 @@ void FragmentSet<FragmentType>::Add(const FragmentType &fragment) {
   auto newFragment = std::make_shared<FragmentType>();
   *newFragment = fragment;
   Add(newFragment);
+}
+
+template <typename FragmentType>
+const std::vector<std::shared_ptr<FragmentType>> FragmentSet<FragmentType>::GetAll() const {
+  return fragments_;
 }
 
 template <typename FragmentType>
