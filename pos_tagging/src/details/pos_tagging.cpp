@@ -16,7 +16,7 @@ void PosTagging::SetPosForWordWithUniqPos_(
     auto &segment = segments[i];
     auto poses = basic::Manager::Get().GetGkbZk().GetPos(*(segment->GetStr()));
     if (poses->size() == 1) {
-      segment->SetPos((*poses)[0]);
+      segment->SetPosTag((*poses)[0]);
     }
   }
 }
@@ -26,34 +26,34 @@ void PosTagging::SetPosCtbFromPos_(
       basic::FragmentSet<basic::Segment> &segments) {
   for (size_t i=0; i < segments.Size(); ++i) {
     auto &segment = segments[i];
-    auto pos = segment->GetPos();
-    if (basic::Pos::kN == pos) {
-      segment->SetPosCtb(basic::PosCtb::kNn);
-    } else if (basic::Pos::kT == pos) {
-      segment->SetPosCtb(basic::PosCtb::kNt);
-    } else if (basic::Pos::kS == pos ||
-        basic::Pos::kF == pos) {
-      segment->SetPosCtb(basic::PosCtb::kLc);
-    } else if (basic::Pos::kM == pos) {
-      segment->SetPosCtb(basic::PosCtb::kCd);
-    } else if (basic::Pos::kQ == pos) {
-      segment->SetPosCtb(basic::PosCtb::kM);
-    } else if (basic::Pos::kR == pos) {
-      segment->SetPosCtb(basic::PosCtb::kPn);
-    } else if (basic::Pos::kV == pos) {
-      segment->SetPosCtb(basic::PosCtb::kVv);
-    } else if (basic::Pos::kA == pos) {
-      segment->SetPosCtb(basic::PosCtb::kJj);
-    } else if (basic::Pos::kB == pos) {
-      segment->SetPosCtb(basic::PosCtb::kJj);
-    } else if (basic::Pos::kD == pos) {
-      segment->SetPosCtb(basic::PosCtb::kAd);
-    } else if (basic::Pos::kP == pos) {
-      segment->SetPosCtb(basic::PosCtb::kP);
-    } else if (basic::Pos::kC == pos) {
-      segment->SetPosCtb(basic::PosCtb::kCc);
-    } else if (basic::Pos::kW == pos) {
-      segment->SetPosCtb(basic::PosCtb::kPu);
+    auto pos = segment->GetPosTag();
+    if (basic::PosTag::kN == pos) {
+      segment->SetPosCtbTag(basic::PosCtbTag::kNn);
+    } else if (basic::PosTag::kT == pos) {
+      segment->SetPosCtbTag(basic::PosCtbTag::kNt);
+    } else if (basic::PosTag::kS == pos ||
+        basic::PosTag::kF == pos) {
+      segment->SetPosCtbTag(basic::PosCtbTag::kLc);
+    } else if (basic::PosTag::kM == pos) {
+      segment->SetPosCtbTag(basic::PosCtbTag::kCd);
+    } else if (basic::PosTag::kQ == pos) {
+      segment->SetPosCtbTag(basic::PosCtbTag::kM);
+    } else if (basic::PosTag::kR == pos) {
+      segment->SetPosCtbTag(basic::PosCtbTag::kPn);
+    } else if (basic::PosTag::kV == pos) {
+      segment->SetPosCtbTag(basic::PosCtbTag::kVv);
+    } else if (basic::PosTag::kA == pos) {
+      segment->SetPosCtbTag(basic::PosCtbTag::kJj);
+    } else if (basic::PosTag::kB == pos) {
+      segment->SetPosCtbTag(basic::PosCtbTag::kJj);
+    } else if (basic::PosTag::kD == pos) {
+      segment->SetPosCtbTag(basic::PosCtbTag::kAd);
+    } else if (basic::PosTag::kP == pos) {
+      segment->SetPosCtbTag(basic::PosCtbTag::kP);
+    } else if (basic::PosTag::kC == pos) {
+      segment->SetPosCtbTag(basic::PosCtbTag::kCc);
+    } else if (basic::PosTag::kW == pos) {
+      segment->SetPosCtbTag(basic::PosCtbTag::kPu);
     }
   }
 }

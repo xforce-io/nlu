@@ -4,7 +4,7 @@
 
 #include "basic/model/segment.h"
 #include "basic/model/fragment/fragment_set.hpp"
-#include "basic/model/pos/pos.h"
+#include "basic/model/pos/pos_tag.h"
 
 #include "basic/data/word_dict.h"
 #include "basic/data/dict_item.h"
