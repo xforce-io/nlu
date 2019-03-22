@@ -86,8 +86,8 @@ void Node::SetNameEntity(std::shared_ptr<basic::NameEntity> nameEntity) {
   nameEntity_ = nameEntity;
 }
 
-void Node::SetPos(basic::Pos::Type pos) {
-  pos_ = pos;
+void Node::SetPosTag(basic::PosTag::Type posTag) {
+  pos_ = posTag;
 }
 
 int Node::EndOffset() const {
