@@ -8,7 +8,7 @@ namespace xforce { namespace nlu { namespace milkie {
 class PatternItemSyntax : public PatternItem {
  public:
   explicit PatternItemSyntax(const std::wstring &pattern);
-  virtual ~PatternItemSyntax();
+  virtual ~PatternItemSyntax() {}
 
   bool MatchPattern(Context &context) final;
 

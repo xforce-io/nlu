@@ -6,6 +6,7 @@ namespace xforce { namespace nlu { namespace milkie {
 
 class SentenceFeatureContent;
 class SentenceFeatureSegment;
+class SentenceFeatureChunk;
 
 class Sentence {
  public: 
@@ -17,6 +18,8 @@ class Sentence {
   inline std::wstring GetFeatureContent(ssize_t offset) const;
   inline std::shared_ptr<basic::Segment::Set> GetFeatureSegmentsFromOffset(ssize_t offset);
   inline const std::shared_ptr<basic::Segment> GetFeatureSegmentAtOffset(ssize_t offset);
+  inline std::shared_ptr<basic::Chunk::Set> GetFeatureChunksFromOffset(ssize_t offset);
+  inline const std::shared_ptr<basic::Chunk> GetFeatureChunkAtOffset(ssize_t offset);
   const basic::NluContext& GetNluContext() const { return *nluContext_; }
   std::shared_ptr<basic::NluContext> GetNluContext() { return nluContext_; }
 
@@ -24,18 +27,21 @@ class Sentence {
   std::shared_ptr<basic::NluContext> nluContext_;
   SentenceFeatureContent *featureContent_;
   SentenceFeatureSegment *featureSegment_;
+  SentenceFeatureChunk *featureChunk_;
 };
 
 }}}
 
 #include "sentence_feature_content.h"
 #include "sentence_feature_segment.h"
+#include "sentence_feature_chunk.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
 Sentence::Sentence(std::shared_ptr<basic::NluContext> nluContext) :
     nluContext_(nluContext),
-    featureSegment_(nullptr) {
+    featureSegment_(nullptr),
+    featureChunk_(nullptr) {
   featureContent_ = new SentenceFeatureContent(nluContext);
 }
 
@@ -62,6 +68,20 @@ const std::shared_ptr<basic::Segment> Sentence::GetFeatureSegmentAtOffset(ssize_
     featureSegment_ = new SentenceFeatureSegment(nluContext_);
   }
   return featureSegment_->GetSegmentAtOffset(offset);
+}
+
+std::shared_ptr<basic::Chunk::Set> Sentence::GetFeatureChunksFromOffset(ssize_t offset) {
+  if (nullptr == featureChunk_) {
+    featureChunk_ = new SentenceFeatureChunk(nluContext_);
+  }
+  return featureChunk_->GetChunksFromOffset(offset);
+}
+
+const std::shared_ptr<basic::Chunk> Sentence::GetFeatureChunkAtOffset(ssize_t offset) {
+  if (nullptr == featureSegment_) {
+    featureChunk_ = new SentenceFeatureChunk(nluContext_);
+  }
+  return featureChunk_->GetChunkAtOffset(offset);
 }
 
 }}}

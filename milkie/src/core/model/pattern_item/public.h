@@ -9,7 +9,7 @@ struct CategoryPatternItem {
   enum Category {
     kReg,
     kPos,
-    kSyntax,
+    kChunk,
     kDep,
     kInvalid
   };

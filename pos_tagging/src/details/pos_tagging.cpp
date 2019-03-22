@@ -6,6 +6,7 @@ void PosTagging::Tagging(
     const std::wstring &clause,
     basic::FragmentSet<basic::Segment> &segments) {
   SetPosForWordWithUniqPos_(clause, segments);
+  SetPosCtbFromPos_(clause, segments);
 }
 
 void PosTagging::SetPosForWordWithUniqPos_(

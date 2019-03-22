@@ -40,6 +40,8 @@ CategoryPatternItem::Category PatternItem::ParseCategory(const std::wstring &cat
     return CategoryPatternItem::kPos;
   } else if (L"Dep" == category) {
     return CategoryPatternItem::kDep;
+  } else if (L"Chk" == category) {
+    return CategoryPatternItem::kChunk;
   } else {
     return CategoryPatternItem::kInvalid;
   }

@@ -21,25 +21,32 @@ std::shared_ptr<basic::Chunk::Set> SentenceFeatureChunk::GetChunksFromOffset(ssi
 
   size_t accuLen = 0;
   bool mark = false;
-  for (auto &segment : nluContext_->GetChunks().GetAll()) {
+  for (auto &chunk : nluContext_->GetChunks().GetAll()) {
     if (offset == (ssize_t)accuLen) {
       mark = true;
     }
 
     if (mark) {
-      segments->Add(segment);
+      chunks->Add(chunk);
     }
-    accuLen += segment->GetLen();
+    accuLen += chunk->GetLen();
   }
 
   if (mark) {
-    return segments;
+    return chunks;
   }
   return nullptr;
 }
 
 const std::shared_ptr<basic::Chunk> SentenceFeatureChunk::GetChunkAtOffset(ssize_t offset) const {
-
+  ssize_t accuLen = 0;
+  for (auto &chunk : nluContext_->GetChunks().GetAll()) {
+    if (offset == accuLen) {
+      return chunk;
+    }
+    accuLen += chunk->GetLen();
+  }
+  return nullptr;
 }
 
 }}}
