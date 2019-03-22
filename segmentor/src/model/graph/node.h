@@ -21,7 +21,7 @@ class Node {
   inline void SetBestPrev(Node &prev);
   inline void SetBestScore(double score);
   inline void SetNameEntity(std::shared_ptr<basic::NameEntity> ner);
-  inline void SetPos(basic::Pos::Type pos);
+  inline void SetPosTag(basic::PosTag::Type posTag);
 
   ssize_t GetOffset() const { return offset_; }
   size_t GetLen() const { return len_; }
@@ -86,8 +86,8 @@ void Node::SetNameEntity(std::shared_ptr<basic::NameEntity> nameEntity) {
   nameEntity_ = nameEntity;
 }
 
-void Node::SetPos(basic::Pos::Type pos) {
-  pos_ = pos;
+void Node::SetPosTag(basic::PosTag::Type posTag) {
+  pos_ = posTag;
 }
 
 int Node::EndOffset() const {

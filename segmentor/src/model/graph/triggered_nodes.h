@@ -34,7 +34,7 @@ namespace xforce { namespace nlu { namespace segmentor {
 
 Node& TriggeredNodes::AddNode(int offset, size_t len, basic::Pos::Type pos) {
   Node *node = new Node(offset, len);
-  node->SetPos(pos);
+  node->SetPosTag(pos);
   AddNode(*node);
   return *node;
 }
