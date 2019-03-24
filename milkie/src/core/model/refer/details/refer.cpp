@@ -33,7 +33,7 @@ bool Refer::Put(
     return false;
   }
 
-  auto ret = PatternExpr::Build(*referManager_, blockKey, value);
+  auto ret = PatternExpr::Build(referManager_, blockKey, value);
   if (ret.second != value.length()) {
     FATAL("invalid_dict_val(" << value << ")");
     return false;

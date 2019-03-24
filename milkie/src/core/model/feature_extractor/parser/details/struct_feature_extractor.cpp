@@ -63,9 +63,9 @@ bool StructFeatureExtractor::Parse(
 
       std::shared_ptr<PatternExpr> patternExpr;
       if (MatchType::kExactMatch == matchType) {
-        patternExpr = PatternExpr::Build(curName, lineAfterProcess).first;
+        patternExpr = PatternExpr::Build(referManager, curName, lineAfterProcess).first;
       } else {
-        patternExpr = PatternExpr::Build(curName, lineAfterProcess.substr(1)).first;
+        patternExpr = PatternExpr::Build(referManager, curName, lineAfterProcess.substr(1)).first;
       }
 
       if (patternExpr->GetRepeatPattern() != CategoryPatternExpr::kOnce) {

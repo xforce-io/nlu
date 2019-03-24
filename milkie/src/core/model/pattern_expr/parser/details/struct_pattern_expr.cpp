@@ -22,7 +22,7 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
     auto ret = Pattern::Build(statement);
     return std::make_shared<StructPatternExpr>(statement.substr(0, ret.second), ret.first);
   } else if (PatternSet::IsStartingChar(startingChar)) {
-    auto ret = PatternSet::Build(blockKey, statement);
+    auto ret = PatternSet::Build(referManager, blockKey, statement);
     return std::make_shared<StructPatternExpr>(statement.substr(0, ret.second), ret.first);
   } else if (PatternExpr::IsExactStartingChar(startingChar)) {
     PatternExpr::Vector items;
@@ -41,11 +41,11 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
         items.push_back(std::make_shared<PatternExpr>(ret.first));
         curIdx += ret.second;
       } else if (PatternSet::IsStartingChar(curChar)) {
-        auto ret = PatternSet::Build(blockKey, statement.substr(curIdx));
+        auto ret = PatternSet::Build(referManager, blockKey, statement.substr(curIdx));
         items.push_back(std::make_shared<PatternExpr>(ret.first));
         curIdx += ret.second;
       } else if (PatternExpr::IsExactStartingChar(curChar)) {
-        auto ret = PatternExpr::Build(blockKey, statement.substr(curIdx));
+        auto ret = PatternExpr::Build(referManager, blockKey, statement.substr(curIdx));
         items.push_back(ret.first);
         curIdx += ret.second;
       } else if (Variable::IsStartingChar(curChar)) {
