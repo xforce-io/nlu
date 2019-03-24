@@ -1,12 +1,49 @@
 #pragma once
 
 #include "../../public.h"
+#include "../pos_ctb/pos_ctb_tag.h"
 
 namespace xforce { namespace nlu { namespace basic {
 
 class SyntaxTag {
  public:
   enum Type {
+      //pos tags
+      kAd,
+      kAs,
+      kBa,
+      kCc,
+      kCd,
+      kCs,
+      kDec,
+      kDeg,
+      kDer,
+      kDev,
+      kDt,
+      kEtc,
+      kFw,
+      kIj,
+      kJj,
+      kLb,
+      kLc,
+      kM,
+      kMsp,
+      kNn,
+      kNr,
+      kNt,
+      kOd,
+      kOn,
+      kP,
+      kPn,
+      kPu,
+      kSb,
+      kSp,
+      kVa,
+      kVc,
+      kVe,
+      kVv,
+
+      //syntax tags
       kAdjp, //Adjective phrase / 形容词短语
       kAdvp, //Adverbial phrase headed by AD (adverb) / 由副词开头的副词短语
       kClp, //Classifier phrase / 量词短语
@@ -29,6 +66,7 @@ class SyntaxTag {
 
  public:
   static SyntaxTag::Type GetSyntaxTag(const std::wstring &syntaxTag);
+  static SyntaxTag::Type GetSyntaxTag(basic::PosCtbTag::Type posCtbTag);
   static const std::wstring& Str(SyntaxTag::Type type);
 };
 
