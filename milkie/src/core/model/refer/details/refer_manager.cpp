@@ -6,8 +6,6 @@ namespace xforce { namespace nlu { namespace milkie {
 
 const std::wstring ReferManager::kGlobal = L"_GLOBAL_";
 
-ReferManager ReferManager::referManager_;
-
 ReferManager::ReferManager() :
   globalDict_(nullptr) {}
 
@@ -15,9 +13,9 @@ ReferManager::~ReferManager() {
   XFC_DELETE(globalDict_)
 }
 
-bool ReferManager::BuildGlobalDict() {
+bool ReferManager::BuildGlobalDict(const Conf &conf) {
   bool hasError = false;
-  const std::vector<std::string> referFilepaths = Conf::Get().GetReferFilepaths();
+  const std::vector<std::string> referFilepaths = conf.GetReferFilepaths();
   std::vector<std::string> lines;
   std::vector<std::wstring> wlines;
   for (auto &referFilepath : referFilepaths) {
@@ -40,7 +38,7 @@ bool ReferManager::BuildGlobalDict() {
   }
 
   if (nullptr == globalDict_) {
-    globalDict_ = new Refer();
+    globalDict_ = new Refer(*this);
     for (auto &wline : wlines) {
       auto ret = globalDict_->Put(kGlobal, wline);
       if (!ret) {
@@ -50,7 +48,7 @@ bool ReferManager::BuildGlobalDict() {
       }
     }
   } else {
-    auto newDict = new Refer();
+    auto newDict = new Refer(*this);
     for (auto &wline : wlines) {
       bool ret = newDict->Put(kGlobal, wline);
       if (!ret) {

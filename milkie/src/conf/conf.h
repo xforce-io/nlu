@@ -14,14 +14,9 @@ class Conf {
   inline bool GetDebugMode() const;
   inline const std::vector<std::string>& GetReferFilepaths() const;
 
-  static Conf& Get() { return *conf_; }
-  static void Tini();
-
- private: 
+ private:
   bool debugMode_;
   std::vector<std::string> referFilepaths_;
-
-  static Conf *conf_;
 };
 
 bool Conf::GetDebugMode() const {

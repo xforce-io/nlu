@@ -1,35 +1,40 @@
 #include "../milkie.h"
 #include "../conf/conf.h"
 #include "../core/model/refer/refer_manager.h"
-#include "../core/model/function/manager.h"
+#include "../manager/manager.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
+Milkie::Milkie() :
+    conf_(new Conf()),
+    referManager_(new ReferManager()),
+    manager_(new Manager()) {}
+
 bool Milkie::Init(const std::string &confpath) {
-  bool ret = Conf::Get().Init(confpath);
+  bool ret = conf_->Init(confpath);
   if (!ret) {
     FATAL("fail_init_confpath[" << *StrHelper::Str2Wstr(confpath) << "]");
     return false;
   }
 
-  ret = ReferManager::Get().BuildGlobalDict();
+  ret = referManager_->BuildGlobalDict();
   if (!ret) {
     FATAL("fail_build_global_dict");
     return false;
   }
 
-  auto manager = Manager::BuildGlobalManager();
-  if (nullptr == manager) {
+  ret = manager_->Init(conf_->GetReferFilepaths());
+  if (!ret) {
     FATAL("fail_build_global_manager");
     return false;
   }
-
-  Manager::SetGlobalManager(manager);
   return true;
 }
 
-void Milkie::Tini() {
-  Conf::Tini();
+Milkie::~Milkie() {
+  XFC_DELETE(manager_)
+  XFC_DELETE(referManager_)
+  XFC_DELETE(conf_)
 }
 
 }}}

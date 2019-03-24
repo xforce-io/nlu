@@ -16,6 +16,7 @@ StructFeatureExtractor::StructFeatureExtractor(
 }
 
 bool StructFeatureExtractor::Parse(
+        ReferManager &referManager,
         const std::string &filepath,
         std::vector<std::shared_ptr<StructFeatureExtractor>> &results) {
   std::vector<std::string> lines;
@@ -76,7 +77,7 @@ bool StructFeatureExtractor::Parse(
               std::make_shared<InstructionFeatureExtractor>(
                       patternExpr, matchType));
     } else if (lineAfterProcess.find(L'=') != std::wstring::npos) {
-      ret = ReferManager::Get().PutLocalRefer(curName, lineAfterProcess);
+      ret = referManager.PutLocalRefer(curName, lineAfterProcess);
       if (!ret) {
         FATAL("fail_put_into_refer[" << curName << "]");
         return false;

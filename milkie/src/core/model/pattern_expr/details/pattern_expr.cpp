@@ -5,6 +5,7 @@
 #include "../../../../conf/conf.h"
 #include "../../variable/variable.h"
 #include "../../codeseg/code_seg.h"
+#include "../../refer/refer_manager.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -311,9 +312,10 @@ bool PatternExpr::IsPatternExprPartlyStartingChar(char c) {
 }
 
 std::pair<std::shared_ptr<PatternExpr>, ssize_t> PatternExpr::Build(
+        const ReferManager &referManager,
         const std::wstring &blockKey,
         const std::wstring &statement) {
-  auto structPatternExpr = StructPatternExpr::Parse(blockKey, statement);
+  auto structPatternExpr = StructPatternExpr::Parse(referManager, blockKey, statement);
   if (nullptr == structPatternExpr) {
     return std::make_pair(nullptr, -1);
   }

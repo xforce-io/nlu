@@ -14,6 +14,7 @@ StructPatternExpr::~StructPatternExpr() {
 }
 
 std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
+    const ReferManager &referManager,
     const std::wstring &blockKey, 
     const std::wstring &statement) {
   wchar_t startingChar = statement[0];
@@ -50,7 +51,7 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
       } else if (Variable::IsStartingChar(curChar)) {
         std::shared_ptr<std::wstring> variableName = Variable::GetVariableName(statement, curIdx+1);
         if (statement[curIdx+1] != L'*') {
-          auto patternExpr = ReferManager::Get().Get(blockKey, *variableName);
+          auto patternExpr = referManager.Get(blockKey, *variableName);
           if (nullptr == patternExpr) {
             FATAL("unknown_dict_key_in_expr(" << *variableName << ")");
             return nullptr;
@@ -136,7 +137,7 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
     }
   } else if (Variable::IsStartingChar(startingChar)) {
     auto variableName = Variable::GetVariableName(statement, 1);
-    auto patternExpr = ReferManager::Get().Get(blockKey, *variableName);
+    auto patternExpr = referManager.Get(blockKey, *variableName);
     if (patternExpr.get() == nullptr) {
       FATAL("unknown_dict_key(" << variableName << ")");
       return nullptr;

@@ -11,6 +11,7 @@ class PatternSet;
 class PatternExpr;
 class CodeSeg;
 class StorageKey;
+class ReferManager;
 
 class StructPatternExpr :public StructElement {
  public:
@@ -48,6 +49,7 @@ class StructPatternExpr :public StructElement {
   CategoryPatternExpr::Category GetCategoryPatternExpr() const { return categoryPatternExpr_; }
 
   static std::shared_ptr<StructPatternExpr> Parse(
+          const ReferManager &referManager,
           const std::wstring &blockKey,
           const std::wstring &statement);
 

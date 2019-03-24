@@ -1,9 +1,11 @@
 #pragma once
 
 #include "../../../public.h"
+#include "../../../core/model/refer/refer_manager.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
+class ReferManager;
 class InstructionFeatureExtractor;
 
 class StructFeatureExtractor {
@@ -21,6 +23,7 @@ class StructFeatureExtractor {
 
  public:
   static bool Parse(
+          ReferManager &referManager,
           const std::string &filepath,
           std::vector<std::shared_ptr<StructFeatureExtractor>> &results);
 

@@ -10,7 +10,11 @@ bool Chunker::Init(const xforce::JsonType &confJson) {
     return false;
   }
 
-  ret = milkie::Conf
+  ret = milkie::Milkie::Init("conf/milkie.conf");
+  if (!ret) {
+    FATAL("fail_init_milkie");
+    return false;
+  }
   return true;
 }
 

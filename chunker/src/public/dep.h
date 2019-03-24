@@ -6,3 +6,5 @@
 #include "basic/model/segment.h"
 #include "basic/model/name_entity.h"
 #include "basic/model/chunk.h"
+
+#include "milkie/milkie.h"

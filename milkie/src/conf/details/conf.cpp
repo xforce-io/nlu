@@ -2,8 +2,6 @@
 
 namespace xforce { namespace nlu { namespace milkie {
 
-Conf *Conf::conf_ = new Conf();
-
 Conf::Conf() {}
 
 bool Conf::Init(const std::string &filepath) {
@@ -37,10 +35,6 @@ bool Conf::Init(const xforce::JsonType &confJson) {
 
   ERROR_HANDLE:
   return false;
-}
-
-void Conf::Tini() {
-  XFC_DELETE(conf_)
 }
 
 }}}
