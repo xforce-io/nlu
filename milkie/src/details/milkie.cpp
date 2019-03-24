@@ -23,7 +23,7 @@ bool Milkie::Init(const std::string &confpath) {
     return false;
   }
 
-  ret = manager_->Init(conf_->GetReferFilepaths());
+  ret = manager_->Init(*conf_, *referManager_);
   if (!ret) {
     FATAL("fail_build_global_manager");
     return false;
