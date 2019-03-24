@@ -9,6 +9,8 @@ bool Chunker::Init(const xforce::JsonType &confJson) {
     FATAL("fail_init_conf[ner]");
     return false;
   }
+
+  ret = milkie::Conf
   return true;
 }
 
@@ -20,8 +22,8 @@ void Chunker::Parse(
   for (size_t i=0; i < segments.Size(); ++i) {
     auto &segment = segments[i];
     auto syntaxTag = basic::SyntaxTag::GetSyntaxTag(segment->GetPosCtbTag());
-    if (syntaxTag != basic::PosCtbTag::kUndef) {
-      chunks.Add(Chunker(syntaxTag));
+    if (syntaxTag != basic::SyntaxTag::kUndef) {
+      chunks.Add(basic::Chunk(syntaxTag, segment->GetOffset(), segment->GetLen()));
     }
   }
 }

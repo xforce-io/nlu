@@ -1,3 +1,4 @@
-FEATURE_EXTRACTOR_BEGIN(posTagging)
-    ~{#Chk(mn) -> chunk._np_}
+FEATURE_EXTRACTOR_BEGIN(chunker)
+    ~{#Chk(nn) #Chk(np) -> chunk._np_}
+    ~{#Chk(vv) #Chk(vp) -> chunk._vp_}
 FEATURE_EXTRACTOR_END
