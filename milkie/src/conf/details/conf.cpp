@@ -18,11 +18,6 @@ bool Conf::Init(const xforce::JsonType &confJson) {
   int ret;
 
   XFC_FAIL_HANDLE_FATAL(
-      !confJson["debugMode"].IsBool(),
-      "fail_get_debug_mode")
-  debugMode_ = confJson["debugMode"].AsBool();
-
-  XFC_FAIL_HANDLE_FATAL(
       !confJson["referFiledir"].IsStr(),
       "fail_get_refer_file_dir")
   referFiledir = confJson["referFiledir"].AsStr();

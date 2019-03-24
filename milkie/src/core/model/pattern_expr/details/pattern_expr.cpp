@@ -340,7 +340,7 @@ std::shared_ptr<PatternExpr> PatternExpr::Build(std::shared_ptr<PatternSet> &pat
 }
 
 void PatternExpr::DebugMatch_(Context &context, ssize_t startIdx, bool ok) {
-  if (Conf::Get().GetDebugMode()) {
+#ifdef DEBUG
     DEBUG("pattern_expr["
         << GetRepr()
         << "] match["
@@ -352,7 +352,7 @@ void PatternExpr::DebugMatch_(Context &context, ssize_t startIdx, bool ok) {
         << "] res["
         << ok
         << "]");
-  }
+#endif
 }
 
 std::unordered_set<wchar_t> PatternExpr::CreateInvalidLeadPosForWildcard() {
