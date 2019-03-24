@@ -10,6 +10,7 @@ class PatternSet;
 class StructPatternExpr;
 class CodeSeg;
 class StorageKey;
+class ReferManager;
 
 class PatternExpr {
  public:
@@ -52,6 +53,7 @@ class PatternExpr {
   static bool IsPatternExprPrefixStartingChar(char c);
   static bool IsPatternExprPartlyStartingChar(char c);
   static std::pair<std::shared_ptr<PatternExpr>, ssize_t> Build(
+          const ReferManager &referManager,
           const std::wstring &blockKey,
           const std::wstring &statement);
   static std::shared_ptr<PatternExpr> Build(std::shared_ptr<Pattern> &pattern);

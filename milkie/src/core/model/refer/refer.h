@@ -7,7 +7,7 @@ class PatternExpr;
 
 class Refer {
  public:
-  Refer(const ReferManager &referManager);
+  explicit Refer(const ReferManager &referManager);
 
   const ReferManager& GetReferManager() const { return referManager_; }
 

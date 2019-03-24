@@ -99,15 +99,15 @@ bool ReferManager::PutLocalRefer(
   if (iter != localDict_.end()) {
     localRefer = iter->second; 
   } else {
-    localRefer = std::make_shared<Refer>();
+    localRefer = std::make_shared<Refer>(*this);
     localDict_.insert(std::make_pair(blockKey, localRefer));
   }
   return localRefer->Put(blockKey, line);
 }
 
-std::shared_ptr<PatternExpr> ReferManager::Get(
+const std::shared_ptr<PatternExpr> ReferManager::Get(
     const std::wstring &blockKey, 
-    const std::wstring &key) {
+    const std::wstring &key) const {
   auto patternExpr = globalDict_->Get(key);
   if (nullptr != patternExpr) {
     return patternExpr;
