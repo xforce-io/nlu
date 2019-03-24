@@ -17,7 +17,7 @@ bool Milkie::Init(const std::string &confpath) {
     return false;
   }
 
-  ret = referManager_->BuildGlobalDict();
+  ret = referManager_->BuildGlobalDict(*conf_);
   if (!ret) {
     FATAL("fail_build_global_dict");
     return false;

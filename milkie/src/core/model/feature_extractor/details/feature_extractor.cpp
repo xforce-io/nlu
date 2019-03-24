@@ -1,7 +1,9 @@
 #include "../feature_extractor.h"
+#include "../parser/struct_feature_extractor.h"
 #include "../instruction_feature_extractor.h"
 #include "../../context/context.h"
 #include "../../pattern_expr/pattern_expr.h"
+#include "../../refer/refer_manager.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -41,10 +43,11 @@ Errno::Code FeatureExtractor::MatchPattern(Context &context) {
 }
 
 bool FeatureExtractor::Build(
+      ReferManager &referManager,
       const std::string &filepath,
       std::vector<std::shared_ptr<FeatureExtractor>> &featureExtractors) {
   std::vector<std::shared_ptr<StructFeatureExtractor>> result;
-  bool ret = StructFeatureExtractor::Parse(filepath, result);
+  bool ret = StructFeatureExtractor::Parse(referManager, filepath, result);
   if (!ret) {
     FATAL("fail_parse_struct_feature_extractor_from[" << *StrHelper::Str2Wstr(filepath) << "]");
     return false;

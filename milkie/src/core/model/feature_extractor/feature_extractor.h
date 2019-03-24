@@ -1,11 +1,13 @@
 #pragma once
 
 #include "../../../public.h"
-#include "parser/struct_feature_extractor.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
+class StructFeatureExtractor;  
 class Context;
+class ReferManager;
+class InstructionFeatureExtractor;
 
 class FeatureExtractor {
  public:
@@ -19,6 +21,7 @@ class FeatureExtractor {
 
  public: 
   static bool Build(
+          ReferManager &referManager,
           const std::string &filepath,
           std::vector<std::shared_ptr<FeatureExtractor>> &featureExtractors);
 
