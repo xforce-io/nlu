@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../../public.h"
-#include "../../../core/model/refer/refer_manager.h"
+#include "../../../../public.h"
+#include "../../refer/refer_manager.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 

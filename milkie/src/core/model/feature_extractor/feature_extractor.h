@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../public.h"
+#include "../../../public.h"
 #include "parser/struct_feature_extractor.h"
 
 namespace xforce { namespace nlu { namespace milkie {
