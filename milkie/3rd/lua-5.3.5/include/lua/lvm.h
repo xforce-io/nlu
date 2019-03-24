@@ -53,7 +53,7 @@
 ** return 1 with 'slot' pointing to 't[k]' (final result).  Otherwise,
 ** return 0 (meaning it will have to check metamethod) with 'slot'
 ** pointing to a nil 't[k]' (if 't' is a table) or NULL (otherwise).
-** 'f' is the raw get function to use.
+** 'f' is the raw get manager to use.
 */
 #define luaV_fastget(L,t,k,slot,f) \
   (!ttistable(t)  \

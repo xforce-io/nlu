@@ -49,11 +49,17 @@ add_custom_command(TARGET milkie
   COMMAND mkdir -p ${MILKIE_LIB_OUTPUT_PATH}
   COMMAND mkdir -p ${MILKIE_INC_OUTPUT_PATH}
   COMMAND mkdir -p ${MILKIE_INC_OUTPUT_PATH}/public
+  COMMAND mkdir -p ${MILKIE_INC_OUTPUT_PATH}/manager/feature_extractor
+  COMMAND mkdir -p ${MILKIE_INC_OUTPUT_PATH}/core/model/context
 
   COMMAND cp ${MILKIE_SRC_DIR}/milkie.h ${MILKIE_INC_OUTPUT_PATH}/
+  COMMAND cp ${MILKIE_SRC_DIR}/errno.h ${MILKIE_INC_OUTPUT_PATH}/
   COMMAND cp ${MILKIE_SRC_DIR}/public.h ${MILKIE_INC_OUTPUT_PATH}/
   COMMAND cp ${MILKIE_SRC_DIR}/public/public.h ${MILKIE_INC_OUTPUT_PATH}/public/
-  COMMAND cp ${MILKIE_SRC_DIR}/errno.h ${MILKIE_INC_OUTPUT_PATH}/
+  COMMAND cp ${MILKIE_SRC_DIR}/manager/manager.h ${MILKIE_INC_OUTPUT_PATH}/manager/
+  COMMAND cp ${MILKIE_SRC_DIR}/manager/feature_extractor/feature_extractor.h ${MILKIE_INC_OUTPUT_PATH}/manager/feature_extractor/
+  COMMAND cp ${MILKIE_SRC_DIR}/core/model/context/context.h ${MILKIE_INC_OUTPUT_PATH}/core/model/context/
+
   COMMAND git log | head -n 1 > ${MILKIE_OUTPUT_PATH}/version
 )
 

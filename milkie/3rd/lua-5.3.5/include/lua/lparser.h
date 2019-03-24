@@ -43,7 +43,7 @@ typedef enum {
             info = pc of corresponding jump instruction */
   VRELOCABLE,  /* expression can put result in any register;
                   info = instruction pc */
-  VCALL,  /* expression is a function call; info = instruction pc */
+  VCALL,  /* expression is a manager call; info = instruction pc */
   VVARARG  /* vararg expression; info = instruction pc */
 } expkind;
 
@@ -107,10 +107,10 @@ typedef struct Dyndata {
 struct BlockCnt;  /* defined in lparser.c */
 
 
-/* state needed to generate code for a given function */
+/* state needed to generate code for a given manager */
 typedef struct FuncState {
-  Proto *f;  /* current function header */
-  struct FuncState *prev;  /* enclosing function */
+  Proto *f;  /* current manager header */
+  struct FuncState *prev;  /* enclosing manager */
   struct LexState *ls;  /* lexical state */
   struct BlockCnt *bl;  /* chain of current blocks */
   int pc;  /* next position to code (equivalent to 'ncode') */

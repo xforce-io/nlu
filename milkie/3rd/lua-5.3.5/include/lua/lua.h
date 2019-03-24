@@ -75,7 +75,7 @@ typedef struct lua_State lua_State;
 
 
 
-/* minimum Lua stack available to a C function */
+/* minimum Lua stack available to a C manager */
 #define LUA_MINSTACK	20
 
 
@@ -95,7 +95,7 @@ typedef LUA_INTEGER lua_Integer;
 /* unsigned integer type */
 typedef LUA_UNSIGNED lua_Unsigned;
 
-/* type for continuation-function contexts */
+/* type for continuation-manager contexts */
 typedef LUA_KCONTEXT lua_KContext;
 
 
@@ -296,7 +296,7 @@ LUA_API int (lua_isyieldable) (lua_State *L);
 
 
 /*
-** garbage-collection function and options
+** garbage-collection manager and options
 */
 
 #define LUA_GCSTOP		0
@@ -453,7 +453,7 @@ struct lua_Debug {
   char istailcall;	/* (t) */
   char short_src[LUA_IDSIZE]; /* (S) */
   /* private part */
-  struct CallInfo *i_ci;  /* active function */
+  struct CallInfo *i_ci;  /* active manager */
 };
 
 /* }====================================================================== */

@@ -83,19 +83,19 @@ typedef struct stringtable {
 /*
 ** Information about a call.
 ** When a thread yields, 'func' is adjusted to pretend that the
-** top function has only the yielded values in its stack; in that
+** top manager has only the yielded values in its stack; in that
 ** case, the actual 'func' value is saved in field 'extra'.
-** When a function calls another with a continuation, 'extra' keeps
-** the function index so that, in case of errors, the continuation
-** function can be called with the correct top.
+** When a manager calls another with a continuation, 'extra' keeps
+** the manager index so that, in case of errors, the continuation
+** manager can be called with the correct top.
 */
 typedef struct CallInfo {
-  StkId func;  /* function index in the stack */
-  StkId	top;  /* top for this function */
+  StkId func;  /* manager index in the stack */
+  StkId	top;  /* top for this manager */
   struct CallInfo *previous, *next;  /* dynamic call link */
   union {
     struct {  /* only for Lua functions */
-      StkId base;  /* base for this function */
+      StkId base;  /* base for this manager */
       const Instruction *savedpc;
     } l;
     struct {  /* only for C functions */
@@ -105,7 +105,7 @@ typedef struct CallInfo {
     } c;
   } u;
   ptrdiff_t extra;
-  short nresults;  /* expected number of results from this function */
+  short nresults;  /* expected number of results from this manager */
   unsigned short callstatus;
 } CallInfo;
 
@@ -135,7 +135,7 @@ typedef struct CallInfo {
 ** 'global state', shared by all threads of this state
 */
 typedef struct global_State {
-  lua_Alloc frealloc;  /* function to reallocate memory */
+  lua_Alloc frealloc;  /* manager to reallocate memory */
   void *ud;         /* auxiliary data to 'frealloc' */
   l_mem totalbytes;  /* number of bytes currently allocated - GCdebt */
   l_mem GCdebt;  /* bytes allocated not yet compensated by the collector */
@@ -181,7 +181,7 @@ struct lua_State {
   lu_byte status;
   StkId top;  /* first free slot in the stack */
   global_State *l_G;
-  CallInfo *ci;  /* call info for current function */
+  CallInfo *ci;  /* call info for current manager */
   const Instruction *oldpc;  /* last pc traced */
   StkId stack_last;  /* last free slot in the stack */
   StkId stack;  /* stack base */
@@ -191,7 +191,7 @@ struct lua_State {
   struct lua_longjmp *errorJmp;  /* current error recover point */
   CallInfo base_ci;  /* CallInfo for first level (C calling Lua) */
   volatile lua_Hook hook;
-  ptrdiff_t errfunc;  /* current error handling function (stack index) */
+  ptrdiff_t errfunc;  /* current error handling manager (stack index) */
   int stacksize;
   int basehookcount;
   int hookcount;

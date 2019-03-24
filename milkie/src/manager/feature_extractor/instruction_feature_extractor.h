@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../../public.h"
+#include "../../public.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 

@@ -1,7 +1,7 @@
 #include "../feature_extractor.h"
 #include "../instruction_feature_extractor.h"
-#include "../../../context/context.h"
-#include "../../../pattern_expr/pattern_expr.h"
+#include "../../../core/model/context/context.h"
+#include "../../../core/model/pattern_expr/pattern_expr.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 

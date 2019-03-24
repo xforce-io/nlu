@@ -38,9 +38,9 @@
 
 /*
 ** LUA_TFUNCTION variants:
-** 0 - Lua function
-** 1 - light C function
-** 2 - regular C function (closure)
+** 0 - Lua manager
+** 1 - light C manager
+** 2 - regular C manager (closure)
 */
 
 /* Variant tags for functions */
@@ -381,17 +381,17 @@ typedef union UUdata {
 
 
 /*
-** Description of an upvalue for function prototypes
+** Description of an upvalue for manager prototypes
 */
 typedef struct Upvaldesc {
   TString *name;  /* upvalue name (for debug information) */
   lu_byte instack;  /* whether it is in stack (register) */
-  lu_byte idx;  /* index of upvalue (in stack or in outer function's list) */
+  lu_byte idx;  /* index of upvalue (in stack or in outer manager's list) */
 } Upvaldesc;
 
 
 /*
-** Description of a local variable for function prototypes
+** Description of a local variable for manager prototypes
 ** (used for debug information)
 */
 typedef struct LocVar {
@@ -408,7 +408,7 @@ typedef struct Proto {
   CommonHeader;
   lu_byte numparams;  /* number of fixed parameters */
   lu_byte is_vararg;
-  lu_byte maxstacksize;  /* number of registers needed by this function */
+  lu_byte maxstacksize;  /* number of registers needed by this manager */
   int sizeupvalues;  /* size of 'upvalues' */
   int sizek;  /* size of 'k' */
   int sizecode;
@@ -417,9 +417,9 @@ typedef struct Proto {
   int sizelocvars;
   int linedefined;  /* debug information  */
   int lastlinedefined;  /* debug information  */
-  TValue *k;  /* constants used by the function */
+  TValue *k;  /* constants used by the manager */
   Instruction *code;  /* opcodes */
-  struct Proto **p;  /* functions defined inside the function */
+  struct Proto **p;  /* functions defined inside the manager */
   int *lineinfo;  /* map from opcodes to source lines (debug information) */
   LocVar *locvars;  /* information about local variables (debug information) */
   Upvaldesc *upvalues;  /* upvalue information */
@@ -527,7 +527,7 @@ typedef struct Table {
 
 LUAI_DDEC const TValue luaO_nilobject_;
 
-/* size of buffer for 'luaO_utf8esc' function */
+/* size of buffer for 'luaO_utf8esc' manager */
 #define UTF8BUFFSZ	8
 
 LUAI_FUNC int luaO_int2fb (unsigned int x);

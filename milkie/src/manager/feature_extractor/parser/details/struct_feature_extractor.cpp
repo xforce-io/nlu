@@ -1,6 +1,6 @@
 #include "../struct_feature_extractor.h"
-#include "../../../../refer/refer_manager.h"
-#include "../../../../pattern_expr/pattern_expr.h"
+#include "../../../../core/model/refer/refer_manager.h"
+#include "../../../../core/model/pattern_expr/pattern_expr.h"
 #include "../../instruction_feature_extractor.h"
 
 namespace xforce { namespace nlu { namespace milkie {

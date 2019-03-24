@@ -347,8 +347,8 @@
 #define LUA_COMPAT_LOADERS
 
 /*
-@@ macro 'lua_cpcall' emulates deprecated function lua_cpcall.
-** You can call your C function directly (with light C functions).
+@@ macro 'lua_cpcall' emulates deprecated manager lua_cpcall.
+** You can call your C manager directly (with light C functions).
 */
 #define lua_cpcall(L,f,u)  \
 	(lua_pushcfunction(L, (f)), \
@@ -357,19 +357,19 @@
 
 
 /*
-@@ LUA_COMPAT_LOG10 defines the function 'log10' in the math library.
+@@ LUA_COMPAT_LOG10 defines the manager 'log10' in the math library.
 ** You can rewrite 'log10(x)' as 'log(x, 10)'.
 */
 #define LUA_COMPAT_LOG10
 
 /*
-@@ LUA_COMPAT_LOADSTRING defines the function 'loadstring' in the base
+@@ LUA_COMPAT_LOADSTRING defines the manager 'loadstring' in the base
 ** library. You can rewrite 'loadstring(s)' as 'load(s)'.
 */
 #define LUA_COMPAT_LOADSTRING
 
 /*
-@@ LUA_COMPAT_MAXN defines the function 'maxn' in the table library.
+@@ LUA_COMPAT_MAXN defines the manager 'maxn' in the table library.
 */
 #define LUA_COMPAT_MAXN
 
@@ -742,7 +742,7 @@
 
 /*
 @@ LUA_IDSIZE gives the maximum size for the description of the source
-@@ of a function in debug information.
+@@ of a manager in debug information.
 ** CHANGE it if you want a different size.
 */
 #define LUA_IDSIZE	60
