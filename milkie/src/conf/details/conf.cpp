@@ -14,8 +14,19 @@ bool Conf::Init(const std::string &filepath) {
 }
 
 bool Conf::Init(const xforce::JsonType &confJson) {
+  std::string exprFiledir;
   std::string referFiledir;
   int ret;
+
+  XFC_FAIL_HANDLE_FATAL(
+      !confJson["exprFiledir"].IsStr(),
+      "fail_get_expr_file_dir")
+  exprFiledir = confJson["exprFiledir"].AsStr();
+
+  ret = xforce::IOHelper::ScanFiles(exprFiledir, exprFilepaths_);
+  XFC_FAIL_HANDLE_FATAL(
+          ret<0,
+          "file_scan_files_from_expr_filepath")
 
   XFC_FAIL_HANDLE_FATAL(
       !confJson["referFiledir"].IsStr(),
