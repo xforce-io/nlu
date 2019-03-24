@@ -15,6 +15,11 @@ link_directories(
 
 set(CMAKE_CXX_COMPILER g++)
 
+set(MILKIE_OUTPUT_PATH milkie/)
+set(MILKIE_LIB_OUTPUT_PATH  ${MILKIE_OUTPUT_PATH}/lib/milkie)
+set(MILKIE_INC_OUTPUT_PATH  ${MILKIE_OUTPUT_PATH}/include/milkie)
+set(MILKIE_SRC_DIR "${CMAKE_SOURCE_DIR}/src/")
+
 FILE(GLOB_RECURSE MILKIE_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -Wno-sign-compare -ansi -std=c++11 -DUNICODE=1")
@@ -36,3 +41,25 @@ target_link_libraries(milkie
   rt
   z
   )
+
+add_custom_command(TARGET milkie 
+  PRE_BUILD
+
+  #make milkie
+  COMMAND mkdir -p ${MILKIE_LIB_OUTPUT_PATH}
+  COMMAND mkdir -p ${MILKIE_INC_OUTPUT_PATH}
+  COMMAND mkdir -p ${MILKIE_INC_OUTPUT_PATH}/public
+
+  COMMAND cp ${MILKIE_SRC_DIR}/milkie.h ${MILKIE_INC_OUTPUT_PATH}/
+  COMMAND cp ${MILKIE_SRC_DIR}/public.h ${MILKIE_INC_OUTPUT_PATH}/
+  COMMAND cp ${MILKIE_SRC_DIR}/public/public.h ${MILKIE_INC_OUTPUT_PATH}/public/
+  COMMAND cp ${MILKIE_SRC_DIR}/errno.h ${MILKIE_INC_OUTPUT_PATH}/
+  COMMAND git log | head -n 1 > ${MILKIE_OUTPUT_PATH}/version
+)
+
+add_custom_command(TARGET milkie
+  POST_BUILD
+
+  #make milkie
+  COMMAND cp libmilkie.a ${MILKIE_LIB_OUTPUT_PATH}
+)

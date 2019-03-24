@@ -80,6 +80,8 @@ def buildChunker() :
             (kBuildPathPublicCpp, kDepPathChunker))
     call("cp -rf %s/basic %s/basic/" % \
             (kBuildPathBasic, kDepPathChunker))
+    call("cp -rf %s/milkie %s/milkie/" % \
+            (kBuildPathMilkie, kDepPathChunker))
     call("mkdir -p %s && cd %s && cmake ../ && make clean && make -j4 -s" % \
             (kBuildPathChunker, kBuildPathChunker))
 
