@@ -2,6 +2,7 @@
 #include "../../context/context.h"
 #include "../../pattern_expr/pattern_expr.h"
 #include "../parser/struct_pattern_set.h"
+#include "../../refer/refer_manager.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -92,9 +93,10 @@ const std::wstring* PatternSet::AsStr() const {
 }
 
 std::pair<std::shared_ptr<PatternSet>, ssize_t> PatternSet::Build(
-    const std::wstring &blockKey, 
+    const ReferManager &referManager,
+    const std::wstring &blockKey,
     const std::wstring &statement) {
-  std::shared_ptr<StructPatternSet> structPatternSet = StructPatternSet::Parse(blockKey, statement);
+  std::shared_ptr<StructPatternSet> structPatternSet = StructPatternSet::Parse(referManager, blockKey, statement);
   if (nullptr == structPatternSet.get()) {
     return std::make_pair(nullptr, -1);
   }

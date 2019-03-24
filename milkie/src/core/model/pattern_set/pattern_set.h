@@ -9,6 +9,7 @@ class StructPatternSet;
 class Context;
 class Pattern;
 class PatternExpr;
+class ReferManager;
 
 class PatternSet {
  public: 
@@ -28,9 +29,11 @@ class PatternSet {
 
   inline static bool IsStartingChar(wchar_t c);
   static std::pair<std::shared_ptr<PatternSet>, ssize_t > Build(
+          const ReferManager &referManager,
           const std::wstring &blockKey,
           const std::wstring &statement);
-  static std::shared_ptr<PatternSet> Build(const StructPatternSet &structPatternSet);
+  static std::shared_ptr<PatternSet> Build(
+          const StructPatternSet &structPatternSet);
 
  private:
   inline aho_corasick::wtrie* BuildPatternStrsTrie_(

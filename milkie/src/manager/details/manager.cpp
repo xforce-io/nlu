@@ -1,6 +1,6 @@
 #include "../manager.h"
 #include "../../conf/conf.h"
-#include "../../model/core/feature_extractor/feature_extractor.h"
+#include "../../core/model/feature_extractor/feature_extractor.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
