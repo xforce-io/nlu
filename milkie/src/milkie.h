@@ -15,6 +15,7 @@ class Milkie {
 
   const Conf& GetConf() const { return *conf_; }
   const ReferManager& GetReferManager() const { return *referManager_; }
+  ReferManager& GetReferManager() { return *referManager_; }
   const Manager& GetManager() const { return *manager_; }
 
   virtual ~Milkie();
