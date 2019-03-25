@@ -3,7 +3,7 @@
 #include "gtest/gtest.h"
 
 #include "../../../../../src/conf/conf.h"
-#include "../../../../../src/core/model/function/feature_extractor/feature_extractor.h"
+#include "../../../../../src/core/model/feature_extractor/feature_extractor.h"
 #include "../../../../../src/core/model/context/context.h"
 
 LOGGER_IMPL(xforce::xforce_logger, L"milkie")
@@ -12,9 +12,18 @@ using namespace xforce;
 using namespace xforce::nlu::milkie;
 using namespace xforce::nlu::basic;
 
+Milkie *milkie;
+
+void initMilkie() {
+  milkie = new Milkie();
+  assert(milkie->Init("../conf/milkie.conf"));
+}
+
 int main(int argc, char **argv) {
   setlocale(LC_ALL, "");
   LOGGER_SYS_INIT(L"../conf/log.conf");
+
+  initMilkie();
 
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
@@ -22,7 +31,10 @@ int main(int argc, char **argv) {
 
 TEST(testAll, all) {
   std::vector<std::shared_ptr<FeatureExtractor>> featureExtractors;
-  ASSERT_TRUE(FeatureExtractor::Build("../../data/global", featureExtractors));
+  ASSERT_TRUE(FeatureExtractor::Build(
+        milkie->GetReferManager(),
+        "../../data/global", 
+        featureExtractors));
 
   std::shared_ptr<FeatureExtractor> timeFeatureExtractor;
   for (auto &featureExtractor : featureExtractors) {
