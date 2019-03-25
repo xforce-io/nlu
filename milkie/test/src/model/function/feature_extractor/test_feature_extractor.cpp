@@ -73,10 +73,11 @@ TEST(testAll, all) {
 }
 
 TEST(testBugfix, test) {
-  ASSERT_TRUE(xforce::nlu::milkie::Conf::Get().Init("../conf/milkie.conf"));
-
   std::vector<std::shared_ptr<FeatureExtractor>> featureExtractors;
-  ASSERT_TRUE(FeatureExtractor::Build("../../data/global", featureExtractors));
+  ASSERT_TRUE(FeatureExtractor::Build(
+          milkie->GetReferManager(),
+          "../../data/global",
+          featureExtractors));
 
   std::shared_ptr<FeatureExtractor> testFeatureExtractor;
   for (auto &featureExtractor : featureExtractors) {
