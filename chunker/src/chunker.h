@@ -6,6 +6,8 @@ namespace xforce { namespace nlu { namespace chunker {
 
 class Chunker {
  public: 
+  Chunker(); 
+
   bool Init(const xforce::JsonType &confJson);
 
   void Parse(
@@ -15,6 +17,9 @@ class Chunker {
           OUT basic::FragmentSet<basic::Chunk> &chunks);
 
   void Tini();
+
+ private: 
+  milkie::Milkie *milkie_;
 };  
 
 }}}

@@ -4,6 +4,9 @@
 
 namespace xforce { namespace nlu { namespace milkie {
 
+Refer::Refer(const ReferManager &referManager) :
+  referManager_(referManager) {}
+
 void Refer::Put(
     const std::wstring &key, 
     std::shared_ptr<PatternExpr> &patternExpr) {

@@ -2,6 +2,7 @@
 
 #include "gtest/gtest.h"
 
+#include "../../../../../src/milkie.h"
 #include "../../../../../src/conf/conf.h"
 #include "../../../../../src/core/model/feature_extractor/feature_extractor.h"
 #include "../../../../../src/core/model/context/context.h"
@@ -89,12 +90,13 @@ TEST(testBugfix, test) {
 
   StorageKey storageKey(nullptr, L"modifier");
 
-  auto context = std::make_shared<Context>(L"这很奇怪啊");
-  Segment::Vector segments;
-  segments.push_back(Segment(Pos::kUndef, 0, 1));
-  segments.push_back(Segment(Pos::kUndef, 1, 1));
-  segments.push_back(Segment(Pos::kUndef, 2, 2));
-  segments.push_back(Segment(Pos::kUndef, 4, 1));
+  auto query = L"这很奇怪啊";
+  auto context = std::make_shared<Context>(query);
+  FragmentSet<Segment> segments(query);
+  segments.Add(Segment(PosTag::kUndef, 0, 1));
+  segments.Add(Segment(PosTag::kUndef, 1, 1));
+  segments.Add(Segment(PosTag::kUndef, 2, 2));
+  segments.Add(Segment(PosTag::kUndef, 4, 1));
   context->GetSentence().GetNluContext()->SetSegments(segments);
  
   auto err = testFeatureExtractor->MatchPattern(*context);

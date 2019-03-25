@@ -41,12 +41,13 @@ TEST(testAll, match) {
 
   ret = PatternItem::Build(L"#Pos(aP-uP-nP-)");
 
-  context = std::make_shared<Context>(L"美味的方便面才好吃");
+  auto query = L"美味的方便面才好吃";
+  context = std::make_shared<Context>(query);
 
-  std::vector<Segment> segments;
-  segments.push_back(Segment(Pos::kA, 0, 2));
-  segments.push_back(Segment(Pos::kU, 2, 1));
-  segments.push_back(Segment(Pos::kN, 3, 3));
+  FragmentSet<Segment> segments(query);
+  segments.Add(Segment(PosTag::kA, 0, 2));
+  segments.Add(Segment(PosTag::kU, 2, 1));
+  segments.Add(Segment(PosTag::kN, 3, 3));
   context->GetSentence().GetNluContext()->SetSegments(segments);
   ASSERT_TRUE(ret.first->MatchPattern(*(context.get())));
 

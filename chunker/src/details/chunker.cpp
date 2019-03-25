@@ -1,16 +1,12 @@
 #include "../chunker.h"
-#include "../conf/conf.h"
 
 namespace xforce { namespace nlu { namespace chunker {
 
-bool Chunker::Init(const xforce::JsonType &confJson) {
-  bool ret = Conf::Get().Init(confJson);
-  if (!ret) {
-    FATAL("fail_init_conf[ner]");
-    return false;
-  }
+Chunker::Chunker() :
+  milkie_(new milkie::Milkie()) {}
 
-  ret = milkie::Milkie::Init("conf/milkie.conf");
+bool Chunker::Init(const xforce::JsonType &confJson) {
+  auto ret = milkie_->Init("conf/milkie.conf");
   if (!ret) {
     FATAL("fail_init_milkie");
     return false;
@@ -33,7 +29,6 @@ void Chunker::Parse(
 }
 
 void Chunker::Tini() {
-  Conf::Tini();
 }
 
 }}}

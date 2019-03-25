@@ -8,7 +8,7 @@ namespace xforce {
 /*
  * @notice : (1) no pool is used here, libs such as tcmalloc should be used to 
  *           speed up the process of insert and erase
- *           (2) remove `virtual` from destruct manager to save memory, this class
+ *           (2) remove `virtual` from destruct function to save memory, this class 
  *           should not be inherited
  */
 class SimpleTrie {
