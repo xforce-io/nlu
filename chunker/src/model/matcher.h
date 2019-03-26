@@ -9,12 +9,13 @@ class Matcher {
   Matcher();
 
   bool Init();
-  void Match();
+  void Match(const std::wstring &query);
 
   virtual ~Matcher();
 
  private:
   milkie::Milkie *milkie_;
+  std::shared_ptr<milkie::FeatureExtractor> featureExtractor_;
 };
 
 }}}
