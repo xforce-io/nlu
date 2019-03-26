@@ -103,7 +103,7 @@ void PatternExpr::NotifyStorageSpace(const std::wstring &storageSpace) {
   }
 }
 
-bool PatternExpr::MatchPattern(Context &context, bool singleton) {
+bool PatternExpr::MatchPattern(Context &context, bool singleton) const {
   ssize_t startIdx = context.GetCurPos();
   if (context.End()) {
     if (repeatPattern_ == CategoryPatternExpr::kZeroOrOnce ||
@@ -192,7 +192,7 @@ bool PatternExpr::MatchPattern(Context &context, bool singleton) {
   return true;
 }
 
-ssize_t PatternExpr::MatchFromIdx(ssize_t fromIdx, Context &context) {
+ssize_t PatternExpr::MatchFromIdx(ssize_t fromIdx, Context &context) const {
   ssize_t idx = fromIdx;
   while (idx < items_.size()) {
     auto patternExpr = items_[idx];
@@ -213,7 +213,7 @@ ssize_t PatternExpr::MatchFromIdx(ssize_t fromIdx, Context &context) {
   return 0;
 }
 
-bool PatternExpr::MatchForWildcard(Context &context, ssize_t itemIdx) {
+bool PatternExpr::MatchForWildcard(Context &context, ssize_t itemIdx) const {
   ssize_t offset = context.GetCurPos();
   bool exitInner = false;
 
@@ -262,7 +262,7 @@ bool PatternExpr::MatchForWildcard(Context &context, ssize_t itemIdx) {
   return false;
 }
 
-void PatternExpr::StopMatch(bool succ, Context &context, bool singleton) {
+void PatternExpr::StopMatch(bool succ, Context &context, bool singleton) const {
   if (succ) {
     if (nullptr != storageKey_) {
       context.SetStorage(*storageKey_, *(context.GetStoragePattern()));
@@ -339,7 +339,7 @@ std::shared_ptr<PatternExpr> PatternExpr::Build(std::shared_ptr<PatternSet> &pat
   return std::make_shared<PatternExpr>(patternSet);
 }
 
-void PatternExpr::DebugMatch_(Context &context, ssize_t startIdx, bool ok) {
+void PatternExpr::DebugMatch_(Context &context, ssize_t startIdx, bool ok) const {
 #ifdef DEBUG
     DEBUG("pattern_expr["
         << GetRepr()

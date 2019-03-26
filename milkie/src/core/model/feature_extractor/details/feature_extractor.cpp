@@ -15,7 +15,7 @@ FeatureExtractor::FeatureExtractor(
   instructions_ = structFeatureExtractor->GetInstructions();
 }
 
-Errno::Code FeatureExtractor::MatchPattern(Context &context) {
+Errno::Code FeatureExtractor::MatchPattern(Context &context) const {
   for (auto &instruction : instructions_) {
     context.Reset();
     switch (instruction->GetCategoryInstruction()) {

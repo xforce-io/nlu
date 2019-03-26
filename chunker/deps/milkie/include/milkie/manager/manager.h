@@ -12,7 +12,7 @@ class Manager {
  public:
   bool Init(const Conf &conf, ReferManager &referManager);
 
-  std::shared_ptr<FeatureExtractor> GetFeatureExtractor(const std::wstring &name);
+  const std::shared_ptr<FeatureExtractor> GetFeatureExtractor(const std::wstring &name) const;
   void PutFeatureExtractor(const std::wstring &name, std::shared_ptr<FeatureExtractor> featureExtractor);
 
  private:

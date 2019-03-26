@@ -36,14 +36,14 @@ class PatternExpr {
   inline void SetStorageKey(const std::wstring &item);
   inline void SetStorageKey(const StorageKey &storageKey);
   void NotifyStorageSpace(const std::wstring &storageSpace);
-  inline bool ExactMatch(Context &context);
-  inline bool ExactMatch(Context &context, bool singleton);
-  inline bool PartlyMatch(Context &context);
-  inline bool PartlyMatch(Context &context, bool singleton);
-  bool MatchPattern(Context &context, bool singleton);
-  ssize_t MatchFromIdx(ssize_t fromIdx, Context &context);
-  bool MatchForWildcard(Context &context, ssize_t itemIdx);
-  void StopMatch(bool succ, Context &context, bool singleton);
+  inline bool ExactMatch(Context &context) const;
+  inline bool ExactMatch(Context &context, bool singleton) const;
+  inline bool PartlyMatch(Context &context) const;
+  inline bool PartlyMatch(Context &context, bool singleton) const;
+  bool MatchPattern(Context &context, bool singleton) const;
+  ssize_t MatchFromIdx(ssize_t fromIdx, Context &context) const;
+  bool MatchForWildcard(Context &context, ssize_t itemIdx) const;
+  void StopMatch(bool succ, Context &context, bool singleton) const;
   const std::wstring* AsWildcard() const { return wildcardName_; }
   const std::wstring* AsStr() const;
 
@@ -60,7 +60,7 @@ class PatternExpr {
   static std::shared_ptr<PatternExpr> Build(std::shared_ptr<PatternSet> &patternSet);
 
  private:
-  void DebugMatch_(Context &context, ssize_t startIdx, bool ok);
+  void DebugMatch_(Context &context, ssize_t startIdx, bool ok) const;
 
   static std::unordered_set<wchar_t> CreateInvalidLeadPosForWildcard();
   static std::unordered_set<std::wstring> CreateInvalidFullPosForWildcard();
@@ -109,19 +109,19 @@ void PatternExpr::SetStorageKey(const StorageKey &storageKey) {
   *storageKey_ = storageKey;
 }
 
-bool PatternExpr::ExactMatch(Context &context) {
+bool PatternExpr::ExactMatch(Context &context) const {
   return ExactMatch(context, false);
 }
 
-bool PatternExpr::ExactMatch(Context &context, bool singleton) {
+bool PatternExpr::ExactMatch(Context &context, bool singleton) const {
   return MatchPattern(context, singleton) && context.End();
 }
 
-bool PatternExpr::PartlyMatch(Context &context) {
+bool PatternExpr::PartlyMatch(Context &context) const {
   return PartlyMatch(context, false);
 }
 
-bool PatternExpr::PartlyMatch(Context &context, bool singleton) {
+bool PatternExpr::PartlyMatch(Context &context, bool singleton) const {
   for (size_t curPos=0; curPos < context.GetSentence().GetSentence().length(); ++curPos) {
     context.Reset();
     context.SetCurPos(curPos);

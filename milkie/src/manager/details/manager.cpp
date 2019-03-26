@@ -22,7 +22,7 @@ bool Manager::Init(
   return true;
 }
 
-std::shared_ptr<FeatureExtractor> Manager::GetFeatureExtractor(const std::wstring &name) {
+const std::shared_ptr<FeatureExtractor> Manager::GetFeatureExtractor(const std::wstring &name) const {
   auto iter = featureExtractors_.find(name);
   if (featureExtractors_.end() != iter) {
     return iter->second;
