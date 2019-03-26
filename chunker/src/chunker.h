@@ -4,6 +4,8 @@
 
 namespace xforce { namespace nlu { namespace chunker {
 
+class Matcher;
+
 class Chunker {
  public: 
   Chunker(); 
@@ -18,8 +20,8 @@ class Chunker {
 
   void Tini();
 
- private: 
-  milkie::Milkie *milkie_;
-};  
+ private:
+  Matcher *matcher_;
+};
 
 }}}

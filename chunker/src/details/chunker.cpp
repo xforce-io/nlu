@@ -1,12 +1,13 @@
 #include "../chunker.h"
+#include "../model/matcher.h"
 
 namespace xforce { namespace nlu { namespace chunker {
 
 Chunker::Chunker() :
-  milkie_(new milkie::Milkie()) {}
+  matcher_(new Matcher()) {}
 
 bool Chunker::Init(const xforce::JsonType &confJson) {
-  auto ret = milkie_->Init("conf/milkie.conf");
+  auto ret = matcher_->Init();
   if (!ret) {
     FATAL("fail_init_milkie");
     return false;
