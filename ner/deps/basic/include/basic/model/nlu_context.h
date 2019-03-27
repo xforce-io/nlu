@@ -15,7 +15,9 @@ class NluContext {
 
   const std::wstring& GetQuery() const { return query_; }
   const typename Segment::Set& GetSegments() const { return segments_; }
+  typename Segment::Set& GetSegments() { return segments_; }
   const typename Chunk::Set& GetChunks() const { return chunks_; }
+  typename Chunk::Set& GetChunks() { return chunks_; }
 
  private:
   std::wstring query_;
