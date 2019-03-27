@@ -20,14 +20,15 @@ bool Matcher::Init() {
   return true;
 }
 
-void Matcher::Match(const std::wstring &query) {
-  auto context = std::make_shared<milkie::Context>(query);
+void Matcher::Match(basic::NluContext &nluContext) {
+  auto context = std::make_shared<milkie::Context>(nluContext.GetQuery());
   auto errCode = featureExtractor_->MatchPattern(*context);
   if (milkie::Errno::kOk != errCode) {
     return;
   }
 
-  milkie::StorageKey storageKey(nullptr, L"modifier");
+  std::unordered_map<std::wstring, std::shared_ptr<StorageVal>> storages;
+  context->GetStorages(&storages);
 }
 
 Matcher::~Matcher() {

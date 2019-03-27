@@ -9,7 +9,7 @@ class Matcher {
   Matcher();
 
   bool Init();
-  void Match(const std::wstring &query);
+  void Match(basic::NluContext &nluContext);
 
   virtual ~Matcher();
 
