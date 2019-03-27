@@ -63,6 +63,7 @@ add_custom_command(TARGET milkie
   COMMAND cp ${MILKIE_SRC_DIR}/core/model/context/context.h ${MILKIE_INC_OUTPUT_PATH}/core/model/context/
   COMMAND cp ${MILKIE_SRC_DIR}/core/model/context/storage_key.h ${MILKIE_INC_OUTPUT_PATH}/core/model/context/
   COMMAND cp ${MILKIE_SRC_DIR}/core/model/context/storage_val.h ${MILKIE_INC_OUTPUT_PATH}/core/model/context/
+  COMMAND cp ${MILKIE_SRC_DIR}/core/model/context/storage_item.h ${MILKIE_INC_OUTPUT_PATH}/core/model/context/
 
   COMMAND git log | head -n 1 > ${MILKIE_OUTPUT_PATH}/version
 )

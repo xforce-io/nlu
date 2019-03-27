@@ -5,6 +5,9 @@
 namespace xforce { namespace nlu { namespace chunker {
 
 class Matcher {
+ private:
+  static const std::wstring kChunkStoragePrefix;
+
  public:
   Matcher();
 

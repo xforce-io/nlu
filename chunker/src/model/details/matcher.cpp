@@ -2,6 +2,8 @@
 
 namespace xforce { namespace nlu { namespace chunker {
 
+const std::wstring Matcher::kChunkStoragePrefix = L"chunk.";
+
 Matcher::Matcher() :
     milkie_(new milkie::Milkie()) {}
 
@@ -27,8 +29,31 @@ void Matcher::Match(basic::NluContext &nluContext) {
     return;
   }
 
-  std::unordered_map<std::wstring, std::shared_ptr<StorageVal>> storages;
-  context->GetStorages(&storages);
+  std::unordered_map<std::wstring, std::shared_ptr<milkie::StorageVal>> storages;
+  context->GetStorages(storages);
+  for (auto storage : storages) {
+    if (storage.first.length() <= kChunkStoragePrefix.length()) {
+      continue;
+    }
+
+    auto prefix = storage.first.substr(0, kChunkStoragePrefix.length());
+    if (kChunkStoragePrefix != prefix) {
+      continue;
+    }
+
+    auto postfix = storage.first.substr(kChunkStoragePrefix.length());
+    auto syntaxTag = basic::SyntaxTag::GetSyntaxTag(postfix);
+    if (basic::SyntaxTag::kUndef == syntaxTag) {
+      ERROR("unknown_syntax_tag[" << syntaxTag << "]");
+      continue;
+    }
+
+    auto storageItems = storage.second->Get();
+    for (auto storageItem : storageItems) {
+      basic::Chunk chunk(syntaxTag, storageItem.);
+      nluContext.GetChunks().Add()
+    }
+  }
 }
 
 Matcher::~Matcher() {

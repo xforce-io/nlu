@@ -1,4 +1,4 @@
 FEATURE_EXTRACTOR_BEGIN(chunker)
-    ~{#Chk(nn) #Chk(np) -> chunk._np_}
-    ~{#Chk(vv) #Chk(vp) -> chunk._vp_}
+    ~{#Chk(nn) #Chk(np) -> chunk.np}
+    ~{#Chk(vv) #Chk(vp) -> chunk.vp}
 FEATURE_EXTRACTOR_END
