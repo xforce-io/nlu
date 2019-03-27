@@ -51,6 +51,7 @@ add_custom_command(TARGET milkie
   COMMAND mkdir -p ${MILKIE_INC_OUTPUT_PATH}/public
   COMMAND mkdir -p ${MILKIE_INC_OUTPUT_PATH}/core/model/feature_extractor
   COMMAND mkdir -p ${MILKIE_INC_OUTPUT_PATH}/core/model/context
+  COMMAND mkdir -p ${MILKIE_INC_OUTPUT_PATH}/core/model/sentence
 
   COMMAND cp ${MILKIE_SRC_DIR}/milkie.h ${MILKIE_INC_OUTPUT_PATH}/
   COMMAND cp ${MILKIE_SRC_DIR}/errno.h ${MILKIE_INC_OUTPUT_PATH}/
@@ -64,6 +65,11 @@ add_custom_command(TARGET milkie
   COMMAND cp ${MILKIE_SRC_DIR}/core/model/context/storage_key.h ${MILKIE_INC_OUTPUT_PATH}/core/model/context/
   COMMAND cp ${MILKIE_SRC_DIR}/core/model/context/storage_val.h ${MILKIE_INC_OUTPUT_PATH}/core/model/context/
   COMMAND cp ${MILKIE_SRC_DIR}/core/model/context/storage_item.h ${MILKIE_INC_OUTPUT_PATH}/core/model/context/
+  COMMAND cp ${MILKIE_SRC_DIR}/core/model/sentence/sentence.h ${MILKIE_INC_OUTPUT_PATH}/core/model/sentence/
+  COMMAND cp ${MILKIE_SRC_DIR}/core/model/sentence/sentence_feature.h ${MILKIE_INC_OUTPUT_PATH}/core/model/sentence/
+  COMMAND cp ${MILKIE_SRC_DIR}/core/model/sentence/sentence_feature_chunk.h ${MILKIE_INC_OUTPUT_PATH}/core/model/sentence/
+  COMMAND cp ${MILKIE_SRC_DIR}/core/model/sentence/sentence_feature_content.h ${MILKIE_INC_OUTPUT_PATH}/core/model/sentence/
+  COMMAND cp ${MILKIE_SRC_DIR}/core/model/sentence/sentence_feature_segment.h ${MILKIE_INC_OUTPUT_PATH}/core/model/sentence/
 
   COMMAND git log | head -n 1 > ${MILKIE_OUTPUT_PATH}/version
 )
