@@ -28,7 +28,7 @@ set(LIB_DEPS
 )
 
 add_library(chunker
-  ${SEG_FILES} src/model/matcher.h src/model/details/matcher.cpp test/src/model/test_matcher.cpp)
+  ${SEG_FILES} src/model/matcher.h src/model/details/matcher.cpp test/src/model/test_matcher.cpp src/conf/details/conf.cpp)
 
 target_link_libraries(chunker
   ${LIB_DEPS}

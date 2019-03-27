@@ -18,5 +18,8 @@ int main(int argc, char **argv) {
 }
 
 TEST(testAll, all) {
+  const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/chunker.conf");
+
   Matcher matcher;
+  assert(matcher.Init());
 }

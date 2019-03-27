@@ -1,4 +1,5 @@
 #include "../matcher.h"
+#include "../../conf/conf.h"
 
 namespace xforce { namespace nlu { namespace chunker {
 
@@ -8,7 +9,7 @@ Matcher::Matcher() :
     milkie_(new milkie::Milkie()) {}
 
 bool Matcher::Init() {
-  bool ret = milkie_->Init("conf/milkie.conf");
+  bool ret = milkie_->Init(Conf::Get().GetMilkieConfpath());
   if (!ret) {
     FATAL("fail_init[milkie]");
     return false;
