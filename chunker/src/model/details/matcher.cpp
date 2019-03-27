@@ -50,8 +50,11 @@ void Matcher::Match(basic::NluContext &nluContext) {
 
     auto storageItems = storage.second->Get();
     for (auto storageItem : storageItems) {
-      basic::Chunk chunk(syntaxTag, storageItem.);
-      nluContext.GetChunks().Add()
+      basic::Chunk chunk(
+              syntaxTag,
+              storageItem.GetOffset(),
+              storageItem.GetContent().length() + storageItem.GetOffset());
+      nluContext.GetChunks().Add(chunk);
     }
   }
 }
