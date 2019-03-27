@@ -31,7 +31,7 @@ void Matcher::Match(basic::NluContext &nluContext) {
 
   std::unordered_map<std::wstring, std::shared_ptr<milkie::StorageVal>> storages;
   context->GetStorages(storages);
-  for (auto storage : storages) {
+  for (auto &storage : storages) {
     if (storage.first.length() <= kChunkStoragePrefix.length()) {
       continue;
     }
@@ -49,7 +49,7 @@ void Matcher::Match(basic::NluContext &nluContext) {
     }
 
     auto storageItems = storage.second->Get();
-    for (auto storageItem : storageItems) {
+    for (auto &storageItem : storageItems) {
       basic::Chunk chunk(
               syntaxTag,
               storageItem.GetOffset(),
