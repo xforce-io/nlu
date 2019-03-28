@@ -1,0 +1,7 @@
+FEATURE_EXTRACTOR_BEGIN(chunker)
+    ~{#Chk(xp) #Chk(deg) -> chunk.dnp}
+    ~{#Chk(xp) #Chk(dev) -> chunk.dvp}
+    ~{"的" { {#Chk(vv) -> chunk.np} -> chunk.2.vp} }
+    ~{#Chk(nn) #Chk(np) -> chunk.np}
+    ~{#Chk(vv) #Chk(vp) -> chunk.vp}
+FEATURE_EXTRACTOR_END

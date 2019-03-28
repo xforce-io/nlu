@@ -1,0 +1,8 @@
+FEATURE_EXTRACTOR_BEGIN(time)
+  ^{ { {#Reg(\d{4}) |_pn_<3000 and _pn_>0| -> year} "年" {#Reg(\d{1,2}) |_pn_<=12 and _pn_>=1 | -> month} "月" } => ner.time }
+  ~{ { {#Reg(\d{4}) |_pn_<3000 and _pn_>0| -> year} "年" {#Reg(\d{1,2}) |_pn_<=12 and _pn_>=1 | -> month} "月" } => ner.time }
+FEATURE_EXTRACTOR_END
+
+FEATURE_EXTRACTOR_BEGIN(test)
+  ~{ "很" && #Pos(P) -> modifier }
+FEATURE_EXTRACTOR_END
