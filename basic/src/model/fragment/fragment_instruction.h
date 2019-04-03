@@ -5,6 +5,8 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
+class Fragment;  
+
 class FragmentInstruction {
  private:
   enum OpCategory {
@@ -24,7 +26,7 @@ class FragmentInstruction {
  private:
   OpCategory opCategory_;
   FragmentCategory::Category fragmentCategory_;
-  std::vector<const std::shared_ptr<Fragment>> fragments_;
+  std::vector<std::shared_ptr<Fragment>> fragments_;
 };
 
 FragmentInstruction::FragmentInstruction(

@@ -8,7 +8,7 @@ namespace xforce { namespace nlu { namespace basic {
 template <typename FragmentType>
 class FragmentSet {
  private:
-  typedef FragmentSet<FragmentType> Self; 
+  typedef FragmentSet<FragmentType> Self;
 
  public:
   explicit FragmentSet(const std::wstring &text);

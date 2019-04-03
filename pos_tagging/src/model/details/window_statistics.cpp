@@ -12,7 +12,6 @@ WindowStatistics* WindowStatistics::Create(const std::string &filepath) {
   std::vector<std::string> lines;
   bool ret = IOHelper::ReadLinesFromFilepath(filepath, lines);
   if (!ret) {
-    FATAL("fail_read_from[" << filepath << "]");
     return nullptr;
   }
 

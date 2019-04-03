@@ -14,8 +14,6 @@ class FragmentExecutor {
   typedef std::vector<FragmentInstruction> FragmentInstructions;
 
  public:
-  F
-
   void AddSegment(const Segment &segment);
   void AddChunk(const Chunk &chunk);
 

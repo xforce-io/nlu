@@ -69,6 +69,7 @@ add_custom_command(TARGET basic
   COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set_multi.hpp ${BASIC_INC_OUTPUT_PATH}/model/fragment/
   COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set_non_multi.hpp ${BASIC_INC_OUTPUT_PATH}/model/fragment/
   COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set_tree.hpp ${BASIC_INC_OUTPUT_PATH}/model/fragment/
+  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/manager_fragment_set.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
   COMMAND git log | head -n 1 > ${BASIC_OUTPUT_PATH}/version
 )
 
