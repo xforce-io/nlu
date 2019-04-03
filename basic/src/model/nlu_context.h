@@ -28,7 +28,7 @@ NluContext::NluContext(const std::wstring &query) :
   query_(query) {}
 
 void NluContext::SetSegments(const typename Segment::Set &segments) {
-  managerFragmentSet_.SetSegments(segments)
+  managerFragmentSet_.SetSegments(segments);
 }
 
 void NluContext::SetChunks(const typename Chunk::Set &chunks) {
