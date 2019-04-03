@@ -1,24 +1,26 @@
 #include "../pos_tagging.h"
+#include "../model/strategy_uniq.h"
 
 namespace xforce { namespace nlu { namespace pos {
 
-void PosTagging::Tagging(
-    const std::wstring &clause,
-    basic::FragmentSet<basic::Segment> &segments) {
-  SetPosForWordWithUniqPos_(clause, segments);
-  SetPosCtbFromPos_(clause, segments);
+PosTagging::PosTagging() {
+  strategies_.push_back(new StrategyUniq());
 }
 
-void PosTagging::SetPosForWordWithUniqPos_(
-    const std::wstring &clause,
-    basic::FragmentSet<basic::Segment> &segments) {
-  for (size_t i=0; i < segments.Size(); ++i) {
-    auto &segment = segments[i];
-    auto poses = basic::Manager::Get().GetGkbZk().GetPos(*(segment->GetStr()));
-    if (poses->size() == 1) {
-      segment->SetPosTag((*poses)[0]);
-    }
+PosTagging::~PosTagging() {
+  for (auto *strategy : strategies_) {
+    delete strategy;
   }
+}
+
+void PosTagging::Process(basic::NluContext &nluContext) {
+  for (auto &strategy : strategies_) {
+    strategy->Process(nluContext);
+  }
+}
+
+void PosTagging::Tagging(basic::NluContext &nluContext) {
+  posTagging_.Process(nluContext);
 }
 
 void PosTagging::SetPosCtbFromPos_(

@@ -1,8 +1,7 @@
 #pragma once
 
 #include "../public.h"
-#include "segment.h"
-#include "chunk.h"
+#include "fragment/manager_fragment_set.h"
 
 namespace xforce { namespace nlu { namespace basic {
 
@@ -10,20 +9,12 @@ class NluContext {
  public:
   inline explicit NluContext(const std::wstring &query); 
 
-  inline void SetSegments(const typename Segment::Set &segments);
-  inline void SetChunks(const typename Chunk::Set &chunks);
-
   const std::wstring& GetQuery() const { return query_; }
-  const typename Segment::Set& GetSegments() const { return segments_; }
-  typename Segment::Set& GetSegments() { return segments_; }
-  const typename Chunk::Set& GetChunks() const { return chunks_; }
-  typename Chunk::Set& GetChunks() { return chunks_; }
 
  private:
   std::wstring query_;
-  typename Segment::Set segments_;
-  typename Chunk::Set chunks_;
-};  
+  ManagerFragmentSet managerFragmentSet_;
+};
 
 NluContext::NluContext(const std::wstring &query) :
   query_(query),

@@ -24,7 +24,7 @@ FILE(GLOB_RECURSE BASIC_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -DUNICODE=1")
 
 add_library(basic
-  ${BASIC_FILES})
+  ${BASIC_FILES} src/model/fragment/fragment_executor.h src/model/fragment/fragment_instruction.h src/model/fragment/manager_fragment_set.h src/model/fragment/fragment_category.h src/model/fragment/details/fragment_instruction.cpp src/model/fragment/details/fragment_executor.cpp)
 
 target_link_libraries(basic
   log4cplus
