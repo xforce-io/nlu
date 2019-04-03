@@ -11,6 +11,14 @@ class NluContext {
 
   const std::wstring& GetQuery() const { return query_; }
 
+  inline void SetSegments(const Segment::Set &segments);
+  inline void SetChunks(const Chunk::Set &chunks);
+
+  inline const typename Segment::Set& GetSegments() const;
+  inline typename Segment::Set& GetSegments();
+  inline const typename Chunk::Set& GetChunks() const;
+  inline typename Chunk::Set& GetChunks();
+
  private:
   std::wstring query_;
   ManagerFragmentSet managerFragmentSet_;
@@ -27,6 +35,22 @@ void NluContext::SetSegments(const typename Segment::Set &segments) {
 
 void NluContext::SetChunks(const typename Chunk::Set &chunks) {
   chunks_ = chunks;
+}
+
+const typename Segment::Set& NluContext::GetSegments() const {
+  return managerFragmentSet_.GetSegments();
+}
+
+typename Segment::Set& NluContext::GetSegments() {
+  return managerFragmentSet_.GetSegments();
+}
+
+const typename Chunk::Set& NluContext::GetChunks() const {
+  return managerFragmentSet_.GetChunks();
+}
+
+typename Chunk::Set& NluContext::GetChunks() {
+  return managerFragmentSet_.GetChunks();
 }
 
 }}}
