@@ -25,9 +25,7 @@ class NluContext {
 };
 
 NluContext::NluContext(const std::wstring &query) :
-  query_(query),
-  segments_(query),
-  chunks_(query) {}
+  query_(query) {}
 
 void NluContext::SetSegments(const typename Segment::Set &segments) {
   segments_ = segments;
