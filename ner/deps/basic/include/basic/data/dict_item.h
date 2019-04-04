@@ -24,7 +24,13 @@ DictItem* DictItem::CreateFromJson(const JsonType &jsonType) {
   }
 
   DictItem *dictItem = new DictItem();
-  dictItem->posTag = PosTag::GetPosTag(jsonType["pos"].AsStr());
+  auto posStr = StrHelper::Str2Wstr(jsonType["pos"].AsStr());
+  if (posStr != nullptr) {
+    dictItem->posTag = PosTag::GetPosTag(*posStr);
+  } else {
+    dictItem->posTag = PosTag::kUndef;
+  }
+
   dictItem->shape = jsonType["shape"].AsStr();
   dictItem->pinyin = jsonType["pinyin"].AsStr();
   dictItem->notionOrForm = NotionOrForm::GetNotionOrForm(jsonType["notionOrForm"].AsStr());
