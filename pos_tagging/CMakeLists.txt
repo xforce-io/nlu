@@ -4,12 +4,14 @@ project(pos_tagging)
 
 include_directories(
   /usr/include/
+  /usr/include/python3.6m/
   ${CMAKE_SOURCE_DIR}/deps/public-cpp/include/
   ${CMAKE_SOURCE_DIR}/deps/basic/include/
   ${CMAKE_SOURCE_DIR}/deps/segmentor/include/
 )
 
 link_directories(
+  /usr/lib64/
 )
 
 set(CMAKE_CXX_COMPILER g++)
@@ -37,6 +39,7 @@ target_link_libraries(pos_tagging
   pthread
   rt
   z
+  python3.6m
   )
 
 add_custom_command(TARGET pos_tagging
