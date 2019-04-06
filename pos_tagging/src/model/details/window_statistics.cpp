@@ -15,6 +15,7 @@ WindowStatistics* WindowStatistics::Create(const std::string &filepath) {
     return nullptr;
   }
 
+  std::vector<std::pair<std::wstring, basic::PosTag::Type>> pairs;
   for (auto &line : lines) {
     auto wline = StrHelper::Str2Wstr(line);
     std::vector<std::wstring> strs;
@@ -22,31 +23,35 @@ WindowStatistics* WindowStatistics::Create(const std::string &filepath) {
     for (size_t i=1; i < strs.size(); ++i) {
       std::vector<std::wstring> pair;
       StrHelper::SplitStr(strs[i], L'/', pair);
-      basic::PosTag::GetPosTag(pair[1]);
+      pairs.push_back(std::make_pair(
+              pair[0],
+              basic::PosTag::GetPosTag(pair[1])));
     }
   }
+
+  auto windowStatistics = new WindowStatistics();
+  windowStatistics->Add_(pairs);
+  return windowStatistics;
 }
 
 void WindowStatistics::Add_(
-        const std::wstring &word0,
-        const std::wstring &word1,
-        basic::PosTag::Type type0,
-        basic::PosTag::Type type1) {
-  std::wstring key = word0 + L"-" + word1;
-  StatisticsItem newItem(type0, type1);
-  ActualAdd_(key, newItem);
-}
+        const std::vector<std::pair<std::wstring, basic::PosTag::Type >> &pairs) {
+  for (size_t i=0; i < pairs.size()-1; ++i) {
+    ActualAdd_(
+            pairs[i].first + L"-" + pairs[i+1].first,
+            StatisticsItem(
+                    pairs[i].second,
+                    pairs[i+1].second));
+  }
 
-void WindowStatistics::Add_(
-        const std::wstring &word0,
-        const std::wstring &word1,
-        const std::wstring &word2,
-        basic::PosTag::Type type0,
-        basic::PosTag::Type type1,
-        basic::PosTag::Type type2) {
-  std::wstring key = word0 + L"-" + word1 + L"-" + word2;
-  StatisticsItem newItem(type0, type1, type2);
-  ActualAdd_(key, newItem);
+   for (size_t i=0; i < pairs.size()-2; ++i) {
+    ActualAdd_(
+            pairs[i].first + L"-" + pairs[i+1].first + L"-" + pairs[i+2].first,
+            StatisticsItem(
+                    pairs[i].second,
+                    pairs[i+1].second,
+                    pairs[i+2].second));
+  }
 }
 
 void WindowStatistics::ActualAdd_(
@@ -54,15 +59,15 @@ void WindowStatistics::ActualAdd_(
         const StatisticsItem &newItem) {
   auto iter = statistics_.find(key);
   if (iter != statistics_.end()) {
-    StatisticsItems *statisticsItems = iter->second;
+    auto statisticsItems = iter->second;
     for (auto &statisticsItem : *statisticsItems) {
       if (statisticsItem.SameType(newItem)) {
         ++statisticsItem.count;
       }
     }
   } else {
-    StatisticsItems *statisticsItems = new StatisticsItems();
-    statisticsItems->push_back(StatisticsItem(newItem));
+    auto statisticsItems = new StatisticsItems();
+    statisticsItems->Add(StatisticsItem(newItem));
     statistics_.insert(std::make_pair(key, statisticsItems));
   }
 }
