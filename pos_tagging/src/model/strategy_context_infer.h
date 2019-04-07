@@ -7,6 +7,7 @@ namespace xforce { namespace nlu { namespace pos {
 
 class StrategyContextInfer : public Strategy {
  public:
+  bool Init();
   void Process(basic::NluContext &nluContext);
 };
 
