@@ -29,6 +29,8 @@ class StatisticsItems {
  public:
   inline void Add(const StatisticsItem &statisticsItem);
   inline const StatisticsItem& operator[](size_t i) const;
+  const std::vector<StatisticsItem>& GetItems() const { return statisticsItems_; }
+  std::vector<StatisticsItem>& GetItems() { return statisticsItems_; }
   size_t GetCount() const { return count_; }
   inline size_t NumItems() const;
   const StatisticsItem* GetDominator() const;

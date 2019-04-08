@@ -19,7 +19,7 @@ WindowStatistics* WindowStatistics::Create(const std::string &filepath) {
   for (auto &line : lines) {
     auto wline = StrHelper::Str2Wstr(line);
     std::vector<std::wstring> strs;
-    StrHelper::SplitStr(*wline, L"  ", strs);
+    StrHelper::SplitStr(*wline, std::wstring(L"  "), strs);
     for (size_t i=1; i < strs.size(); ++i) {
       std::vector<std::wstring> pair;
       StrHelper::SplitStr(strs[i], L'/', pair);
@@ -60,7 +60,7 @@ void WindowStatistics::ActualAdd_(
   auto iter = statistics_.find(key);
   if (iter != statistics_.end()) {
     auto statisticsItems = iter->second;
-    for (auto &statisticsItem : *statisticsItems) {
+    for (auto &statisticsItem : statisticsItems->GetItems()) {
       if (statisticsItem.SameType(newItem)) {
         ++statisticsItem.count;
       }

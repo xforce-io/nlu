@@ -9,7 +9,7 @@ bool StrategyContextInfer::Init() {
     return false;
   }
 
-  PyObject *name = PyString_FromString("pytest");
+  PyObject *name = PyBytes_FromString("pytest");
   PyObject *module = PyImport_Import(name);
   if (nullptr == module) {
     return false;
