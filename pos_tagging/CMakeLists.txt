@@ -31,7 +31,7 @@ set(LIB_DEPS
 )
 
 add_library(pos_tagging
-  ${SEG_FILES})
+  ${SEG_FILES} test/src/test_case.cpp)
 
 target_link_libraries(pos_tagging
   ${LIB_DEPS}

@@ -1,10 +1,12 @@
 #include "../pos_tagging.h"
 #include "../model/strategy_uniq.h"
+#include "../model/strategy_window_statistics.h"
 
 namespace xforce { namespace nlu { namespace pos {
 
 PosTagging::PosTagging() {
   strategies_.push_back(new StrategyUniq());
+  strategies_.push_back(new StrategyWindowStatistics());
 }
 
 PosTagging::~PosTagging() {
