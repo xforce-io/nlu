@@ -4,7 +4,7 @@
 #include "../../src/pos_tagging.h"
 #include "../../src/conf/conf.h"
 
-LOGGER_IMPL(xforce::xforce_logger, "pos_tagging")
+LOGGER_IMPL(xforce::xforce_logger, L"pos_tagging")
 
 using namespace xforce;
 using namespace xforce::nlu::basic;

@@ -2,12 +2,14 @@
 
 #include "../public.h"
 #include "fragment/fragment.h"
+#include "fragment/fragment_set.hpp"
 
 namespace xforce { namespace nlu { namespace basic {
 
 class NameEntity : public basic::Fragment {
- private:
-  typedef basic::Fragment Super;
+ public:
+  typedef Fragment Super;
+  typedef FragmentSet<NameEntity> Set;
 
  public:
   enum Category {

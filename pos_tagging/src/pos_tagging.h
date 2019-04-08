@@ -1,9 +1,10 @@
 #pragma once
 
 #include "public.h"
-#include "model/strategy.h"
 
 namespace xforce { namespace nlu { namespace pos {
+
+class Strategy;  
 
 class PosTagging {
  public:
@@ -11,7 +12,7 @@ class PosTagging {
   virtual ~PosTagging();
 
   void Process(basic::NluContext &nluContext);
-
+/*
  public:
   static void Tagging(basic::NluContext &nluContext);
 
@@ -23,7 +24,7 @@ class PosTagging {
  private:
   std::vector<Strategy*> strategies_;
 
-  static PosTagging posTagging_;
+  static PosTagging posTagging_; */
 };
 
 }}}

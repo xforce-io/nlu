@@ -5,7 +5,7 @@
 using namespace xforce::nlu::segmentor;
 
 namespace xforce {
-LOGGER_IMPL(xforce_logger, "segmentor")
+LOGGER_IMPL(xforce_logger, L"segmentor")
 }
 
 int main(int argc, char **argv) {

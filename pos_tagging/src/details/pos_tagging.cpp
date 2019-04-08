@@ -3,7 +3,7 @@
 #include "../model/strategy_window_statistics.h"
 
 namespace xforce { namespace nlu { namespace pos {
-
+/*
 PosTagging::PosTagging() {
   strategies_.push_back(new StrategyUniq());
   strategies_.push_back(new StrategyWindowStatistics());
@@ -61,5 +61,5 @@ void PosTagging::SetPosCtbFromPos_(
     }
   }
 }
-
+*/
 }}}
