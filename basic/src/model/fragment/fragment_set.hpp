@@ -28,6 +28,8 @@ class FragmentSet {
 
   inline size_t Size() const;
 
+  void Dump(JsonType &jsonType);
+
  protected:
   std::wstring *text_;
 
@@ -91,6 +93,14 @@ std::shared_ptr<FragmentType>& FragmentSet<FragmentType>::operator[](size_t i) {
 template <typename FragmentType>
 size_t FragmentSet<FragmentType>::Size() const {
   return fragments_.size();
+}
+
+template <typename FragmentType>
+void FragmentSet<FragmentType>::Dump(JsonType &jsonType) {
+  jsonType["text"] = *StrHelper::Wstr2Str(*text_);
+  for (size_t i=0; i < fragments_.size(); ++i) {
+    fragments_[i]->Dump(jsonType["fragments"][i]);
+  }
 }
 
 }}}

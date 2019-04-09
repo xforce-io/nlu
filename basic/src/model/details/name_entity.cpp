@@ -3,8 +3,7 @@
 namespace xforce { namespace nlu { namespace basic {
 
 void NameEntity::Dump(JsonType &jsonType) {
-  jsonType["offset"] = offset_;
-  jsonType["len"] = len_;
+  Super::Dump(jsonType);
 }
 
 }}}
