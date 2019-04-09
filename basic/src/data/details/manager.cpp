@@ -27,6 +27,7 @@ bool Manager::Init() {
 }
 
 Manager::~Manager() {
+  XFC_DELETE(gkbZk_)
   XFC_DELETE(wordDict_)
 }
 
