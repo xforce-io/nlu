@@ -18,5 +18,6 @@ int main(int argc, char **argv) {
 }
 
 TEST(test_case, all) {
-
+  const xforce::JsonType* conf = xforce::JsonType::CreateConf("conf/pos.conf");
+  ASSERT_TRUE(PosTagging::Init((*conf)["pos"]));
 }

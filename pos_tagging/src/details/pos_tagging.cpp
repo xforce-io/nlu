@@ -3,7 +3,9 @@
 #include "../model/strategy_window_statistics.h"
 
 namespace xforce { namespace nlu { namespace pos {
-/*
+
+PosTagging PosTagging::posTagging_;
+
 PosTagging::PosTagging() {
   strategies_.push_back(new StrategyUniq());
   strategies_.push_back(new StrategyWindowStatistics());
@@ -21,9 +23,20 @@ void PosTagging::Process(basic::NluContext &nluContext) {
   }
 }
 
+bool PosTagging::Init(const xforce::JsonType &confPos) {
+  bool ret = Conf::Get().Init(confSeg);
+  if (!ret) {
+    FATAL("fail_init_conf[segmentor]");
+    return false;
+  }
+  return false;
+}
+
 void PosTagging::Tagging(basic::NluContext &nluContext) {
   posTagging_.Process(nluContext);
 }
+
+void PosTagging::Tini() {}
 
 void PosTagging::SetPosCtbFromPos_(
       const std::wstring &clause,
@@ -61,5 +74,5 @@ void PosTagging::SetPosCtbFromPos_(
     }
   }
 }
-*/
+
 }}}
