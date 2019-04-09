@@ -1,4 +1,5 @@
 #include "../pos_tagging.h"
+#include "../conf/conf.h"
 #include "../model/strategy_uniq.h"
 #include "../model/strategy_window_statistics.h"
 
@@ -24,7 +25,7 @@ void PosTagging::Process(basic::NluContext &nluContext) {
 }
 
 bool PosTagging::Init(const xforce::JsonType &confPos) {
-  bool ret = Conf::Get().Init(confSeg);
+  bool ret = Conf::Get().Init(confPos);
   if (!ret) {
     FATAL("fail_init_conf[segmentor]");
     return false;

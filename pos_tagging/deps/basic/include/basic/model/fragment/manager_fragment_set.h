@@ -8,7 +8,7 @@ namespace xforce { namespace nlu { namespace basic {
 
 class ManagerFragmentSet {
  public:
-  ManagerFragmentSet();
+  ManagerFragmentSet(const std::wstring &query);
 
   inline void SetSegments(const Segment::Set &segments);
   inline void SetChunks(const Chunk::Set &chunks);
