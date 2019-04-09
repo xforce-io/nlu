@@ -12,7 +12,6 @@ using namespace xforce::nlu::segmentor;
 
 int main(int argc, char **argv) {
   setlocale(LC_ALL, "");
-  std::wcout << L"还有什么更好的办法吗";
 
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

@@ -7,9 +7,8 @@ Segment::~Segment() {
 }
 
 void Segment::Dump(JsonType &jsonType) {
+  Super::Dump(jsonType);
   jsonType["pos"] = *(StrHelper::Wstr2Str(PosTag::Str(posTag_)));
-  jsonType["offset"] = offset_;
-  jsonType["len"] = len_;
 }
 
 }}}
