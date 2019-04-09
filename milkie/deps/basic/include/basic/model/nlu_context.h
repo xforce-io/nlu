@@ -7,7 +7,7 @@ namespace xforce { namespace nlu { namespace basic {
 
 class NluContext {
  public:
-  inline explicit NluContext(const std::wstring &query); 
+  explicit NluContext(const std::wstring &query); 
 
   const std::wstring& GetQuery() const { return query_; }
 
@@ -23,9 +23,6 @@ class NluContext {
   std::wstring query_;
   ManagerFragmentSet managerFragmentSet_;
 };
-
-NluContext::NluContext(const std::wstring &query) :
-  query_(query) {}
 
 void NluContext::SetSegments(const typename Segment::Set &segments) {
   managerFragmentSet_.SetSegments(segments);

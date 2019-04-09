@@ -22,7 +22,7 @@ TEST(test_case, all) {
   ASSERT_TRUE(PosTagging::Init((*conf)["pos"]));
 
   std::wstring query = L"这真的不是太好吧";
-  basic::NluContext nluContext(query);
+  NluContext nluContext(query);
   nluContext.GetSegments().Add(Segment(PosTag::kUndef, 0, 1));
   nluContext.GetSegments().Add(Segment(PosTag::kUndef, 1, 2));
   nluContext.GetSegments().Add(Segment(PosTag::kUndef, 3, 1));
