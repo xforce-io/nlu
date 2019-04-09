@@ -24,9 +24,6 @@ class NluContext {
   ManagerFragmentSet managerFragmentSet_;
 };
 
-NluContext::NluContext(const std::wstring &query) :
-  query_(query) {}
-
 void NluContext::SetSegments(const typename Segment::Set &segments) {
   managerFragmentSet_.SetSegments(segments);
 }
