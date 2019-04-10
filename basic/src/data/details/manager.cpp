@@ -15,6 +15,7 @@ bool Manager::Init() {
   bool ret = wordDict_->Init(ss.str());
   XFC_FAIL_HANDLE_FATAL(!ret, "fail_init_word_dict")
 
+  ss.str("");
   ss << Conf::Get().GetDataDir() << "data/gkb_zk";
   gkbZk_ = new GkbZk();
   ret = gkbZk_->Init(ss.str());

@@ -4,10 +4,10 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
-bool Basic::Init(const xforce::JsonType &confPos) {
-  bool ret = Conf::Get().Init(confPos["basic"]);
+bool Basic::Init(const xforce::JsonType &confBasic) {
+  bool ret = Conf::Get().Init(confBasic);
   if (!ret) {
-    FATAL("fail_init_basic_conf")
+    FATAL("fail_init_basic_conf");
     return false;
   }
 

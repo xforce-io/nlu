@@ -27,10 +27,10 @@ void PosTagging::Process(basic::NluContext &nluContext) {
 bool PosTagging::Init(const xforce::JsonType &confPos) {
   bool ret = Conf::Get().Init(confPos);
   if (!ret) {
-    FATAL("fail_init_conf[segmentor]");
+    FATAL("fail_init_conf[pos_tagging]");
     return false;
   }
-  return false;
+  return true;
 }
 
 void PosTagging::Tagging(basic::NluContext &nluContext) {
