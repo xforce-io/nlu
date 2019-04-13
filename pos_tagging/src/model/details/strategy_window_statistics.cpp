@@ -26,6 +26,7 @@ StrategyWindowStatistics::~StrategyWindowStatistics() {
 bool StrategyWindowStatistics::Init() {
   windowStatistics_ = WindowStatistics::Create(Conf::Get().GetLabeledDataPath());
   if (nullptr == windowStatistics_) {
+    FATAL("fail_create_window_statistics");
     return false;
   }
   return true;
@@ -36,27 +37,39 @@ void StrategyWindowStatistics::Process(basic::NluContext &nluContext) {
   auto lenSegments = segments.size();
   for (size_t i=0; i < lenSegments-1; ++i) {
     auto statisticsItems = windowStatistics_->Get(
-            *segments[i]->GetStr(),
-            *segments[i+1]->GetStr()
+            segments[i]->GetStrFromSentence(nluContext.GetQuery()),
+            segments[i+1]->GetStrFromSentence(nluContext.GetQuery())
             );
-    auto dominator = statisticsItems->GetDominator();
-    if (dominator != nullptr) {
-      nluContext.GetSegments()[i]->SetPosTag(dominator->type0);
-      nluContext.GetSegments()[i+1]->SetPosTag(dominator->type1);
+    if (nullptr != statisticsItems) {
+      auto dominator = statisticsItems->GetDominator();
+      if (dominator != nullptr) {
+        nluContext.GetSegments()[i]->SetPosTag(dominator->type0);
+        nluContext.GetSegments()[i]->SetStrategy(Strategy::kStrategyWindowStatistics);
+
+        nluContext.GetSegments()[i+1]->SetPosTag(dominator->type1);
+        nluContext.GetSegments()[i+1]->SetStrategy(Strategy::kStrategyWindowStatistics);
+      }
     }
   }
 
   for (size_t i=0; i < lenSegments-2; ++i) {
     auto statisticsItems = windowStatistics_->Get(
-            *segments[i]->GetStr(),
-            *segments[i+1]->GetStr(),
-            *segments[i+2]->GetStr()
+            segments[i]->GetStrFromSentence(nluContext.GetQuery()),
+            segments[i+1]->GetStrFromSentence(nluContext.GetQuery()),
+            segments[i+2]->GetStrFromSentence(nluContext.GetQuery())
             );
-    auto dominator = statisticsItems->GetDominator();
-    if (dominator != nullptr) {
-      nluContext.GetSegments()[i]->SetPosTag(dominator->type0);
-      nluContext.GetSegments()[i+1]->SetPosTag(dominator->type1);
-      nluContext.GetSegments()[i+2]->SetPosTag(dominator->type2);
+    if (nullptr != statisticsItems) {
+      auto dominator = statisticsItems->GetDominator();
+      if (dominator != nullptr) {
+        nluContext.GetSegments()[i]->SetPosTag(dominator->type0);
+        nluContext.GetSegments()[i]->SetStrategy(Strategy::kStrategyWindowStatistics);
+
+        nluContext.GetSegments()[i+1]->SetPosTag(dominator->type1);
+        nluContext.GetSegments()[i+1]->SetStrategy(Strategy::kStrategyWindowStatistics);
+
+        nluContext.GetSegments()[i+2]->SetPosTag(dominator->type2);
+        nluContext.GetSegments()[i+2]->SetStrategy(Strategy::kStrategyWindowStatistics);
+      }
     }
   }
 }

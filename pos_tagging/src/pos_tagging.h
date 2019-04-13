@@ -11,6 +11,7 @@ class PosTagging {
   PosTagging();
   virtual ~PosTagging();
 
+  bool Init();
   void Process(basic::NluContext &nluContext);
 
  public:

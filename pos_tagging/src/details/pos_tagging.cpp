@@ -18,6 +18,16 @@ PosTagging::~PosTagging() {
   }
 }
 
+bool PosTagging::Init() {
+  for (auto &strategy : strategies_) {
+    if (!strategy->Init()) {
+      FATAL("fail_init_strategy");
+      return false;
+    }
+  }
+  return true;
+}
+
 void PosTagging::Process(basic::NluContext &nluContext) {
   for (auto &strategy : strategies_) {
     strategy->Process(nluContext);
@@ -28,6 +38,12 @@ bool PosTagging::Init(const xforce::JsonType &confPos) {
   bool ret = Conf::Get().Init(confPos);
   if (!ret) {
     FATAL("fail_init_conf[pos_tagging]");
+    return false;
+  }
+
+  ret = posTagging_.Init();
+  if (!ret) {
+    FATAL("fail_init_pos_tagging");
     return false;
   }
   return true;

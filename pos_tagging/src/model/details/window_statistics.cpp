@@ -18,14 +18,24 @@ WindowStatistics* WindowStatistics::Create(const std::string &filepath) {
   std::vector<std::pair<std::wstring, basic::PosTag::Type>> pairs;
   for (auto &line : lines) {
     auto wline = StrHelper::Str2Wstr(line);
+    if (wline == nullptr) {
+      std::cout << line << std::endl;
+      FATAL("fail_str_2_wstr[" << wline << "]");
+      continue;
+    }
+
     std::vector<std::wstring> strs;
     StrHelper::SplitStr(*wline, std::wstring(L"  "), strs);
     for (size_t i=1; i < strs.size(); ++i) {
       std::vector<std::wstring> pair;
       StrHelper::SplitStr(strs[i], L'/', pair);
-      pairs.push_back(std::make_pair(
-              pair[0],
-              basic::PosTag::GetPosTag(pair[1])));
+      if (pair.size() == 2) {
+        pairs.push_back(std::make_pair(
+                pair[0],
+                basic::PosTag::GetPosTag(pair[1])));
+      } else {
+        FATAL("invalid_window_statistics_item[" << strs[i] << "]");
+      }
     }
   }
 

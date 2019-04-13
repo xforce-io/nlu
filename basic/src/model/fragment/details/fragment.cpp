@@ -10,6 +10,7 @@ void Fragment::Dump(JsonType &jsonType) {
   jsonType["offset"] = offset_;
   jsonType["len"] = len_;
   jsonType["conf"] = confidence_.GetScore();
+  jsonType["strategy"] = (size_t)strategy_;
 }
 
 }}}
