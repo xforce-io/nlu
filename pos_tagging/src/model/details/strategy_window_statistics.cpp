@@ -43,11 +43,15 @@ void StrategyWindowStatistics::Process(basic::NluContext &nluContext) {
     if (nullptr != statisticsItems) {
       auto dominator = statisticsItems->GetDominator();
       if (dominator != nullptr) {
-        nluContext.GetSegments()[i]->SetPosTag(dominator->type0);
-        nluContext.GetSegments()[i]->SetStrategy(Strategy::kStrategyWindowStatistics);
+        SetPos(
+                nluContext.GetSegments()[i],
+                dominator->type0,
+                Strategy::kStrategyWindowStatistics);
 
-        nluContext.GetSegments()[i+1]->SetPosTag(dominator->type1);
-        nluContext.GetSegments()[i+1]->SetStrategy(Strategy::kStrategyWindowStatistics);
+        SetPos(
+                nluContext.GetSegments()[i+1],
+                dominator->type1,
+                Strategy::kStrategyWindowStatistics);
       }
     }
   }
@@ -61,14 +65,19 @@ void StrategyWindowStatistics::Process(basic::NluContext &nluContext) {
     if (nullptr != statisticsItems) {
       auto dominator = statisticsItems->GetDominator();
       if (dominator != nullptr) {
-        nluContext.GetSegments()[i]->SetPosTag(dominator->type0);
-        nluContext.GetSegments()[i]->SetStrategy(Strategy::kStrategyWindowStatistics);
+        SetPos(
+                nluContext.GetSegments()[i],
+                dominator->type0,
+                Strategy::kStrategyWindowStatistics);
 
-        nluContext.GetSegments()[i+1]->SetPosTag(dominator->type1);
-        nluContext.GetSegments()[i+1]->SetStrategy(Strategy::kStrategyWindowStatistics);
+        SetPos(nluContext.GetSegments()[i+1],
+                dominator->type1,
+                Strategy::kStrategyWindowStatistics);
 
-        nluContext.GetSegments()[i+2]->SetPosTag(dominator->type2);
-        nluContext.GetSegments()[i+2]->SetStrategy(Strategy::kStrategyWindowStatistics);
+        SetPos(
+                nluContext.GetSegments()[i+2],
+                dominator->type2,
+                Strategy::kStrategyWindowStatistics);
       }
     }
   }

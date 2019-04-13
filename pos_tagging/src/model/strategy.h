@@ -16,6 +16,12 @@ class Strategy {
 
   virtual bool Init() { return true; }
   virtual void Process(basic::NluContext &nluContext) = 0;
+
+ protected:
+  virtual void SetPos(
+          std::shared_ptr<basic::Segment> &segment,
+          basic::PosTag::Type posTag,
+          uint32_t strategy);
 };
 
 }}}
