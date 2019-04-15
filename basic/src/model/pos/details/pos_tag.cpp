@@ -19,6 +19,11 @@ PosTag::Type PosTag::GetPosTag(const std::wstring &pos) {
     case L'r' :  
       return PosTag::kR;
     case L'v' :  
+      if (pos.length() == 2) {
+        if (pos[1] == L'n') {
+          return PosTag::kVn;
+        }
+      }
       return PosTag::kV;
     case L'a' :  
       return PosTag::kA;
@@ -76,6 +81,7 @@ const std::wstring& PosTag::Str(PosTag::Type type) {
   static const std::wstring kQ = L"q";
   static const std::wstring kR = L"r";
   static const std::wstring kV = L"v";
+  static const std::wstring kVn = L"vn";
   static const std::wstring kA = L"a";
   static const std::wstring kZ = L"z";
   static const std::wstring kB = L"b";
@@ -113,6 +119,8 @@ const std::wstring& PosTag::Str(PosTag::Type type) {
       return kR;  
     case PosTag::kV :
       return kV;  
+    case PosTag::kVn :
+      return kVn;  
     case PosTag::kA :
       return kA;  
     case PosTag::kZ :

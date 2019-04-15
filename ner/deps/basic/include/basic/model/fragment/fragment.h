@@ -48,13 +48,15 @@ class Fragment {
 
 Fragment::Fragment() :
   father_(nullptr),
-  str_(nullptr) {}
+  str_(nullptr),
+  strategy_(0) {}
 
 Fragment::Fragment(size_t offset, size_t len) :
   father_(nullptr),
   str_(nullptr),
   offset_(offset),
-  len_(len) {}
+  len_(len),
+  strategy_(0) {}
 
 void Fragment::SetStr(const std::wstring &str) {
   str_ = new std::wstring(str);

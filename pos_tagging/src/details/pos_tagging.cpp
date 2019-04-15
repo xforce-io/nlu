@@ -2,6 +2,7 @@
 #include "../conf/conf.h"
 #include "../model/strategy_uniq.h"
 #include "../model/strategy_window_statistics.h"
+#include "../model/strategy_context_infer.h"
 
 namespace xforce { namespace nlu { namespace pos {
 
@@ -10,6 +11,7 @@ PosTagging PosTagging::posTagging_;
 PosTagging::PosTagging() {
   strategies_.push_back(new StrategyUniq());
   strategies_.push_back(new StrategyWindowStatistics());
+  strategies_.push_back(new StrategyContextInfer());
 }
 
 PosTagging::~PosTagging() {

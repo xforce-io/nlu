@@ -17,6 +17,11 @@ bool Conf::Init(const xforce::JsonType &confJson) {
       "fail_get_labeled_data_path")
   labeledDataPath_ = confJson["labeledDataPath"].AsStr();
   labeledDataPath_ = dataDir_ + "/" + labeledDataPath_;
+
+  XFC_FAIL_HANDLE_FATAL(
+      !confJson["pathContextInfer"].IsStr(),
+      "fail_get_path_context_infer")
+  pathContextInfer_ = confJson["pathContextInfer"].AsStr();
   return true;
 
   ERROR_HANDLE:

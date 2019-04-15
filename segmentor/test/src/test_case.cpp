@@ -12,6 +12,7 @@ using namespace xforce::nlu::segmentor;
 
 int main(int argc, char **argv) {
   setlocale(LC_ALL, "");
+  LOGGER_SYS_INIT(L"../conf/log.conf");
 
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

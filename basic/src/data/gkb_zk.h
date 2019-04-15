@@ -13,7 +13,11 @@ class GkbZk {
 
   inline const std::shared_ptr<std::vector<PosTag::Type>> GetPos(const std::wstring &str) const;
 
-  virtual ~GkbZk();
+  virtual ~GkbZk() {}
+
+ private: 
+  void AddPosTag_(const std::wstring &key, PosTag::Type posTag);
+  void BasicAddPosTag_(const std::wstring &key, PosTag::Type posTag); 
 
  private:
   std::unordered_map<std::wstring, std::shared_ptr<std::vector<PosTag::Type>>> charToPos_;
