@@ -23,18 +23,16 @@ TEST(test_case, all) {
   ASSERT_TRUE(Basic::Init((*conf)["basic"]));
   ASSERT_TRUE(PosTagging::Init((*conf)["pos"]));
 
-  std::wstring query = L"定义现代符号结构表示旧数据结构和函数";
+  std::wstring query = L"已经对保加利亚做了充分的准备";
   NluContext nluContext(query);
   nluContext.GetSegments().Add(Segment(PosTag::kUndef, 0, 2));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 2, 2));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 4, 2));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 6, 2));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 8, 2));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef,10, 1));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef,11, 2));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef,13, 2));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef,15, 1));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef,16, 2));
+  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 2, 1));
+  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 3, 4));
+  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 7, 1));
+  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 8, 1));
+  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 9, 2));
+  nluContext.GetSegments().Add(Segment(PosTag::kUndef,11, 1));
+  nluContext.GetSegments().Add(Segment(PosTag::kUndef,12, 2));
 
   PosTagging::Tagging(nluContext);
 
