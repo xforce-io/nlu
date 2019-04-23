@@ -1,5 +1,5 @@
 #include "../strategy_window_statistics.h"
-#include "../window_statistics.h"
+#include "../window_statistics/window_statistics.h"
 #include "../../conf/conf.h"
 
 namespace xforce { namespace nlu { namespace pos {
@@ -7,7 +7,7 @@ namespace xforce { namespace nlu { namespace pos {
 const int StatisticsItems::kThresholdCnt = 3;
 const double StatisticsItems::kThresholdLeader = 0.95;
 
-const StatisticsItem* StatisticsItems::GetDominator() const {
+const StatisticsUnit* StatisticsItems::GetDominator() const {
   for (auto const &statisticsItem : statisticsItems_) {
     if (count_ >= kThresholdCnt && statisticsItem.count * 1.0 / count_ > kThresholdLeader) {
       return &statisticsItem;

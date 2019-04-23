@@ -12,6 +12,7 @@ class FunctionPostNp : public Function {
           basic::NluContext &nluContext);
 
  private:
+  bool ProcessModifier_();
 };
 
 }}}

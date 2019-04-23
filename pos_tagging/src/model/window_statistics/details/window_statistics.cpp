@@ -48,7 +48,7 @@ void WindowStatistics::Add_(
   for (size_t i=0; i < pairs.size()-1; ++i) {
     ActualAdd_(
             pairs[i].first + L"-" + pairs[i+1].first,
-            StatisticsItem(
+            StatisticsUnit(
                     pairs[i].second,
                     pairs[i+1].second));
   }
@@ -56,7 +56,7 @@ void WindowStatistics::Add_(
    for (size_t i=0; i < pairs.size()-2; ++i) {
     ActualAdd_(
             pairs[i].first + L"-" + pairs[i+1].first + L"-" + pairs[i+2].first,
-            StatisticsItem(
+            StatisticsUnit(
                     pairs[i].second,
                     pairs[i+1].second,
                     pairs[i+2].second));
@@ -65,7 +65,7 @@ void WindowStatistics::Add_(
 
 void WindowStatistics::ActualAdd_(
         const std::wstring &key,
-        const StatisticsItem &newItem) {
+        const StatisticsUnit &newItem) {
   auto iter = statistics_.find(key);
   if (iter != statistics_.end()) {
     iter->second->Add(newItem);

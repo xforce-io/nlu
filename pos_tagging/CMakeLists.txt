@@ -31,7 +31,7 @@ set(LIB_DEPS
 )
 
 add_library(pos_tagging
-  ${SEG_FILES} src/model/details/strategy.cpp)
+  ${SEG_FILES} src/model/details/strategy.cpp src/model/window_statistics/statistics_unit.h src/model/window_statistics/statistics_items.h src/model/window_statistics/details/statistics_items.cpp)
 
 target_link_libraries(pos_tagging
   ${LIB_DEPS}
