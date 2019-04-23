@@ -19,7 +19,6 @@ WindowStatistics* WindowStatistics::Create(const std::string &filepath) {
   for (auto &line : lines) {
     auto wline = StrHelper::Str2Wstr(line);
     if (wline == nullptr) {
-      std::cout << line << std::endl;
       FATAL("fail_str_2_wstr[" << wline << "]");
       continue;
     }
@@ -69,15 +68,10 @@ void WindowStatistics::ActualAdd_(
         const StatisticsItem &newItem) {
   auto iter = statistics_.find(key);
   if (iter != statistics_.end()) {
-    auto statisticsItems = iter->second;
-    for (auto &statisticsItem : statisticsItems->GetItems()) {
-      if (statisticsItem.SameType(newItem)) {
-        ++statisticsItem.count;
-      }
-    }
+    iter->second->Add(newItem);
   } else {
-    auto statisticsItems = new StatisticsItems();
-    statisticsItems->Add(StatisticsItem(newItem));
+    StatisticsItems *statisticsItems = new StatisticsItems();
+    statisticsItems->Add(newItem);
     statistics_.insert(std::make_pair(key, statisticsItems));
   }
 }

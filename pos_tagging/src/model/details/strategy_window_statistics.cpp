@@ -4,11 +4,12 @@
 
 namespace xforce { namespace nlu { namespace pos {
 
+const int StatisticsItems::kThresholdCnt = 3;
 const double StatisticsItems::kThresholdLeader = 0.95;
 
 const StatisticsItem* StatisticsItems::GetDominator() const {
   for (auto const &statisticsItem : statisticsItems_) {
-    if (statisticsItem.count * 1.0 / count_ > kThresholdLeader) {
+    if (count_ >= kThresholdCnt && statisticsItem.count * 1.0 / count_ > kThresholdLeader) {
       return &statisticsItem;
     }
   }
@@ -36,10 +37,9 @@ void StrategyWindowStatistics::Process(basic::NluContext &nluContext) {
   auto &segments = nluContext.GetSegments().GetAll();
   auto lenSegments = segments.size();
   for (size_t i=0; i < lenSegments-1; ++i) {
-    auto statisticsItems = windowStatistics_->Get(
-            segments[i]->GetStrFromSentence(nluContext.GetQuery()),
-            segments[i+1]->GetStrFromSentence(nluContext.GetQuery())
-            );
+    auto seg0 = segments[i]->GetStrFromSentence(nluContext.GetQuery());
+    auto seg1 = segments[i+1]->GetStrFromSentence(nluContext.GetQuery());
+    auto statisticsItems = windowStatistics_->Get(seg0, seg1);
     if (nullptr != statisticsItems) {
       auto dominator = statisticsItems->GetDominator();
       if (dominator != nullptr) {
@@ -57,11 +57,10 @@ void StrategyWindowStatistics::Process(basic::NluContext &nluContext) {
   }
 
   for (size_t i=0; i < lenSegments-2; ++i) {
-    auto statisticsItems = windowStatistics_->Get(
-            segments[i]->GetStrFromSentence(nluContext.GetQuery()),
-            segments[i+1]->GetStrFromSentence(nluContext.GetQuery()),
-            segments[i+2]->GetStrFromSentence(nluContext.GetQuery())
-            );
+    auto seg0 = segments[i]->GetStrFromSentence(nluContext.GetQuery());
+    auto seg1 = segments[i+1]->GetStrFromSentence(nluContext.GetQuery());
+    auto seg2 = segments[i+2]->GetStrFromSentence(nluContext.GetQuery());
+    auto statisticsItems = windowStatistics_->Get(seg0, seg1, seg2);
     if (nullptr != statisticsItems) {
       auto dominator = statisticsItems->GetDominator();
       if (dominator != nullptr) {

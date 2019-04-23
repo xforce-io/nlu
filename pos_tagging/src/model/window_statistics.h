@@ -24,13 +24,15 @@ struct StatisticsItem {
 
 class StatisticsItems {
  private:
+  static const int kThresholdCnt;
   static const double kThresholdLeader;
 
  public:
-  inline void Add(const StatisticsItem &statisticsItem);
+  inline void Add(const StatisticsItem &newItem);
   inline const StatisticsItem& operator[](size_t i) const;
   const std::vector<StatisticsItem>& GetItems() const { return statisticsItems_; }
   std::vector<StatisticsItem>& GetItems() { return statisticsItems_; }
+  size_t Size() const { return statisticsItems_.size(); }
   size_t GetCount() const { return count_; }
   inline size_t NumItems() const;
   const StatisticsItem* GetDominator() const;
@@ -97,9 +99,15 @@ bool StatisticsItem::SameType(const StatisticsItem &other) const {
     type2 == other.type2;
 }
 
-void StatisticsItems::Add(const StatisticsItem &statisticsItem) {
-  statisticsItems_.push_back(statisticsItem);
-  count_ += statisticsItem.count;
+void StatisticsItems::Add(const StatisticsItem &newItem) {
+  count_ += newItem.count;
+  for (auto &statisticsItem : statisticsItems_) {
+    if (statisticsItem.SameType(newItem)) {
+      statisticsItem.count += newItem.count;
+      return;
+    }
+  }
+  statisticsItems_.push_back(newItem);
 }
 
 const StatisticsItem& StatisticsItems::operator[](size_t i) const {

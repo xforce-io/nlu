@@ -23,16 +23,17 @@ TEST(test_case, all) {
   ASSERT_TRUE(Basic::Init((*conf)["basic"]));
   ASSERT_TRUE(PosTagging::Init((*conf)["pos"]));
 
-  std::wstring query = L"已经对保加利亚做了充分的准备";
+  std::wstring query = L"第一局比赛失利原因主要在我们自己";
   NluContext nluContext(query);
   nluContext.GetSegments().Add(Segment(PosTag::kUndef, 0, 2));
   nluContext.GetSegments().Add(Segment(PosTag::kUndef, 2, 1));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 3, 4));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 7, 1));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 8, 1));
+  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 3, 2));
+  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 5, 2));
+  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 7, 2));
   nluContext.GetSegments().Add(Segment(PosTag::kUndef, 9, 2));
   nluContext.GetSegments().Add(Segment(PosTag::kUndef,11, 1));
   nluContext.GetSegments().Add(Segment(PosTag::kUndef,12, 2));
+  nluContext.GetSegments().Add(Segment(PosTag::kUndef,14, 2));
 
   PosTagging::Tagging(nluContext);
 
