@@ -50,8 +50,8 @@ class StatisticsItems0 : public StatisticsItems {
   StatisticsItems::Category GetCategory() const { return kCategory0; }
 
  protected:
-  bool IsValid_(const StatisticsUnit &one);
-  bool Match_(const StatisticsUnit &one, const StatisticsUnit &other);
+  inline bool IsValid_(const StatisticsUnit &one);
+  inline bool Match_(const StatisticsUnit &one, const StatisticsUnit &other);
 };
 
 class StatisticsItems1 : public StatisticsItems {
@@ -59,8 +59,8 @@ class StatisticsItems1 : public StatisticsItems {
   StatisticsItems::Category GetCategory() const { return kCategory1; }
 
  protected:
-  bool IsValid_(const StatisticsUnit &one);
-  bool Match_(const StatisticsUnit &one, const StatisticsUnit &other);
+  inline bool IsValid_(const StatisticsUnit &one);
+  inline bool Match_(const StatisticsUnit &one, const StatisticsUnit &other);
 };
 
 class StatisticsItems2 : public StatisticsItems {
@@ -68,8 +68,8 @@ class StatisticsItems2 : public StatisticsItems {
   StatisticsItems::Category GetCategory() const { return kCategory2; }
 
  protected:
-  bool IsValid_(const StatisticsUnit &one);
-  bool Match_(const StatisticsUnit &one, const StatisticsUnit &other);
+  inline bool IsValid_(const StatisticsUnit &one);
+  inline bool Match_(const StatisticsUnit &one, const StatisticsUnit &other);
 };
 
 class StatisticsItems01 : public StatisticsItems {
@@ -77,8 +77,8 @@ class StatisticsItems01 : public StatisticsItems {
   StatisticsItems::Category GetCategory() const { return kCategory01; }
 
  protected:
-  bool IsValid_(const StatisticsUnit &one);
-  bool Match_(const StatisticsUnit &one, const StatisticsUnit &other);
+  inline bool IsValid_(const StatisticsUnit &one);
+  inline bool Match_(const StatisticsUnit &one, const StatisticsUnit &other);
 };
 
 class StatisticsItems12 : public StatisticsItems {
@@ -86,8 +86,8 @@ class StatisticsItems12 : public StatisticsItems {
   StatisticsItems::Category GetCategory() const { return kCategory12; }
 
  protected:
-  bool IsValid_(const StatisticsUnit &one);
-  bool Match_(const StatisticsUnit &one, const StatisticsUnit &other);
+  inline bool IsValid_(const StatisticsUnit &one);
+  inline bool Match_(const StatisticsUnit &one, const StatisticsUnit &other);
 };
 
 class StatisticsItems02 : public StatisticsItems {
@@ -95,8 +95,8 @@ class StatisticsItems02 : public StatisticsItems {
   StatisticsItems::Category GetCategory() const { return kCategory02; }
 
  protected:
-  bool IsValid_(const StatisticsUnit &one);
-  bool Match_(const StatisticsUnit &one, const StatisticsUnit &other);
+  inline bool IsValid_(const StatisticsUnit &one);
+  inline bool Match_(const StatisticsUnit &one, const StatisticsUnit &other);
 };
 
 class StatisticsItems012 : public StatisticsItems {
@@ -104,8 +104,8 @@ class StatisticsItems012 : public StatisticsItems {
   StatisticsItems::Category GetCategory() const { return kCategory012; }
 
  protected:
-  bool IsValid_(const StatisticsUnit &one);
-  bool Match_(const StatisticsUnit &one, const StatisticsUnit &other);
+  inline bool IsValid_(const StatisticsUnit &one);
+  inline bool Match_(const StatisticsUnit &one, const StatisticsUnit &other);
 };
 
 const StatisticsUnit& StatisticsItems::operator[](size_t i) const {
