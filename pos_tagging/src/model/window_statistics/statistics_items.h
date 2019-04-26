@@ -24,7 +24,7 @@ class StatisticsItems {
 
  public:
   StatisticsItems() {}
-  virtual ~StatisticsItems();
+  virtual ~StatisticsItems() {}
 
   virtual StatisticsItems::Category GetCategory() const = 0;
   void Add(const StatisticsUnit &newItem);
