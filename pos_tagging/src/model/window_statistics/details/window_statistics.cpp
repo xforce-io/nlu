@@ -70,9 +70,9 @@ void WindowStatistics::ActualAdd_(
   if (iter != statistics_.end()) {
     iter->second->Add(newItem);
   } else {
-    StatisticsItems *statisticsItems = new StatisticsItems();
-    statisticsItems->Add(newItem);
-    statistics_.insert(std::make_pair(key, statisticsItems));
+    StatisticsCollection *statisticsCollection = new StatisticsCollection();
+    statisticsCollection->Add(newItem);
+    statistics_.insert(std::make_pair(key, statisticsCollection));
   }
 }
 

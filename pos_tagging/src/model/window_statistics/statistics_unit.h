@@ -7,6 +7,11 @@ namespace xforce { namespace nlu { namespace pos {
 struct StatisticsUnit {
  public:
   inline StatisticsUnit();
+
+  inline StatisticsUnit(
+      basic::PosTag::Type type0,
+      basic::PosTag::Type type1);
+
   inline StatisticsUnit(
       basic::PosTag::Type type0,
       basic::PosTag::Type type1,
@@ -27,6 +32,15 @@ StatisticsUnit::StatisticsUnit() :
         type2(basic::PosTag::kUndef),
         count(0) {}
 
+
+StatisticsUnit::StatisticsUnit(
+        basic::PosTag::Type type0Arg,
+        basic::PosTag::Type type1Arg) :
+        type0(type0Arg),
+        type1(type1Arg),
+        type2(basic::PosTag::kUndef),
+        count(1) {}
+
 StatisticsUnit::StatisticsUnit(
         basic::PosTag::Type type0Arg,
         basic::PosTag::Type type1Arg,
@@ -35,7 +49,6 @@ StatisticsUnit::StatisticsUnit(
         type1(type1Arg),
         type2(type2Arg),
         count(1) {}
-
 
 bool StatisticsUnit::SameType(const StatisticsUnit &other) const {
   return type0 == other.type0 &&
