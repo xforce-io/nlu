@@ -4,15 +4,6 @@
 
 namespace xforce { namespace nlu { namespace pos {
 
-const StatisticsUnit* StatisticsItems::GetDominator() const {
-  for (auto const &statisticsItem : statisticsItems_) {
-    if (count_ >= kThresholdCnt && statisticsItem.count * 1.0 / count_ > kThresholdLeader) {
-      return &statisticsItem;
-    }
-  }
-  return nullptr;
-}
-
 StrategyWindowStatistics::StrategyWindowStatistics() :
   Strategy(),
   windowStatistics_(nullptr) {}
