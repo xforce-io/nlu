@@ -23,6 +23,9 @@ class StatisticsItems {
   static const double kThresholdLeader;
 
  public:
+  StatisticsItems() {}
+  virtual ~StatisticsItems() = 0;
+
   virtual StatisticsItems::Category GetCategory() const = 0;
   void Add(const StatisticsUnit &newItem);
   inline const StatisticsUnit& operator[](size_t i) const;
