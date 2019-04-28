@@ -28,7 +28,6 @@ class StatisticsItems {
 
   virtual StatisticsItems::Category GetCategory() const = 0;
   void Add(const StatisticsUnit &newItem);
-  //inline const StatisticsUnit& operator[](size_t i) const;
   size_t Size() const { return statisticsItems_.size(); }
   size_t GetCount() const { return count_; }
   const StatisticsUnit* GetDominator() const;
@@ -104,10 +103,6 @@ class StatisticsItems012 : public StatisticsItems {
   inline bool IsValid_(const StatisticsUnit &one);
   inline bool Match_(const StatisticsUnit &one, const StatisticsUnit &other);
 };
-
-//const StatisticsUnit& StatisticsItems::operator[](size_t i) const {
-//  return statisticsItems_[i];
-//}
 
 bool StatisticsItems0::IsValid_(const StatisticsUnit &one) {
   return one.type0 != basic::PosTag::kUndef;

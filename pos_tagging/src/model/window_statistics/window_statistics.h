@@ -51,7 +51,11 @@ std::pair<StatisticsItems::Category, const StatisticsUnit*> WindowStatistics::Ge
   std::wstring tmpKey = item0 + L"-" + item1 + L"-" + item2;
   auto iter = statistics_.find(tmpKey);
   if (iter == statistics_.end()) {
-    return std::make_pair(StatisticsItems::kOther, nullptr);
+    tmpKey = item0 + L"-*-" + item2;
+    iter = statistics_.find(tmpKey);
+    if (iter == statistics_.end()) {
+      return std::make_pair(StatisticsItems::kOther, nullptr);
+    }
   }
   return iter->second->GetDominator();
 }

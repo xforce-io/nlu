@@ -53,12 +53,19 @@ void WindowStatistics::Add_(
                     pairs[i+1].second));
   }
 
-   for (size_t i=0; i < pairs.size()-2; ++i) {
+  for (size_t i=0; i < pairs.size()-2; ++i) {
     ActualAdd_(
             pairs[i].first + L"-" + pairs[i+1].first + L"-" + pairs[i+2].first,
             StatisticsUnit(
                     pairs[i].second,
                     pairs[i+1].second,
+                    pairs[i+2].second));
+
+    ActualAdd_(
+            pairs[i].first + L"-*-" + pairs[i+2].first,
+            StatisticsUnit(
+                    pairs[i].second,
+                    basic::PosTag::kUndef,
                     pairs[i+2].second));
   }
 }
