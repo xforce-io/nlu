@@ -28,12 +28,9 @@ class StatisticsItems {
 
   virtual StatisticsItems::Category GetCategory() const = 0;
   void Add(const StatisticsUnit &newItem);
-  inline const StatisticsUnit& operator[](size_t i) const;
-  const std::vector<StatisticsUnit>& GetItems() const { return statisticsItems_; }
-  std::vector<StatisticsUnit>& GetItems() { return statisticsItems_; }
+  //inline const StatisticsUnit& operator[](size_t i) const;
   size_t Size() const { return statisticsItems_.size(); }
   size_t GetCount() const { return count_; }
-  inline size_t NumItems() const;
   const StatisticsUnit* GetDominator() const;
 
  protected:
@@ -41,7 +38,7 @@ class StatisticsItems {
   virtual bool Match_(const StatisticsUnit &one, const StatisticsUnit &other) = 0;
 
  private:
-    std::vector<StatisticsUnit> statisticsItems_;
+    std::list<StatisticsUnit> statisticsItems_;
     size_t count_;
 };
 
@@ -108,13 +105,9 @@ class StatisticsItems012 : public StatisticsItems {
   inline bool Match_(const StatisticsUnit &one, const StatisticsUnit &other);
 };
 
-const StatisticsUnit& StatisticsItems::operator[](size_t i) const {
-  return statisticsItems_[i];
-}
-
-size_t StatisticsItems::NumItems() const {
-  return statisticsItems_.size();
-}
+//const StatisticsUnit& StatisticsItems::operator[](size_t i) const {
+//  return statisticsItems_[i];
+//}
 
 bool StatisticsItems0::IsValid_(const StatisticsUnit &one) {
   return one.type0 != basic::PosTag::kUndef;
