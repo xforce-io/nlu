@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 #include "../../../src/data/surname.h"
 
-LOGGER_IMPL(xforce::xforce_logger, "segmentor")
+LOGGER_IMPL(xforce::xforce_logger, L"segmentor")
 
 using namespace xforce::nlu::segmentor;
 

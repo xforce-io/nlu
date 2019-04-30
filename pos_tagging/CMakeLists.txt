@@ -4,20 +4,22 @@ project(pos_tagging)
 
 include_directories(
   /usr/include/
+  /usr/include/python3.6m/
   ${CMAKE_SOURCE_DIR}/deps/public-cpp/include/
   ${CMAKE_SOURCE_DIR}/deps/basic/include/
   ${CMAKE_SOURCE_DIR}/deps/segmentor/include/
 )
 
 link_directories(
+  /usr/lib64/
 )
 
 set(CMAKE_CXX_COMPILER g++)
 
-set(SEGMENTOR_OUTPUT_PATH pos_tagging/)
-set(SEGMENTOR_LIB_OUTPUT_PATH  ${SEGMENTOR_OUTPUT_PATH}/lib/pos_tagging)
-set(SEGMENTOR_INC_OUTPUT_PATH  ${SEGMENTOR_OUTPUT_PATH}/include/pos_tagging)
-set(SEGMENTOR_SRC_DIR "${CMAKE_SOURCE_DIR}/src/")
+set(POS_TAGGING_OUTPUT_PATH pos_tagging/)
+set(POS_TAGGING_LIB_OUTPUT_PATH  ${POS_TAGGING_OUTPUT_PATH}/lib/pos_tagging)
+set(POS_TAGGING_INC_OUTPUT_PATH  ${POS_TAGGING_OUTPUT_PATH}/include/pos_tagging)
+set(POS_TAGGING_SRC_DIR "${CMAKE_SOURCE_DIR}/src/")
 
 FILE(GLOB_RECURSE SEG_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 
@@ -29,7 +31,7 @@ set(LIB_DEPS
 )
 
 add_library(pos_tagging
-  ${SEG_FILES})
+  ${SEG_FILES} src/model/details/strategy.cpp src/model/window_statistics/statistics_unit.h src/model/window_statistics/statistics_items.h src/model/window_statistics/details/statistics_items.cpp src/model/window_statistics/statistics_collection.h src/model/window_statistics/details/statistics_collection.cpp)
 
 target_link_libraries(pos_tagging
   ${LIB_DEPS}
@@ -37,26 +39,27 @@ target_link_libraries(pos_tagging
   pthread
   rt
   z
+  python3.6m
   )
 
 add_custom_command(TARGET pos_tagging
   PRE_BUILD
 
   #make pos_tagging
-  COMMAND mkdir -p ${SEGMENTOR_LIB_OUTPUT_PATH}
-  COMMAND mkdir -p ${SEGMENTOR_INC_OUTPUT_PATH}
-  COMMAND mkdir -p ${SEGMENTOR_INC_OUTPUT_PATH}/public/
+  COMMAND mkdir -p ${POS_TAGGING_LIB_OUTPUT_PATH}
+  COMMAND mkdir -p ${POS_TAGGING_INC_OUTPUT_PATH}
+  COMMAND mkdir -p ${POS_TAGGING_INC_OUTPUT_PATH}/public/
 
-  COMMAND cp ${SEGMENTOR_SRC_DIR}/pos_tagging.h ${SEGMENTOR_INC_OUTPUT_PATH}/
-  COMMAND cp ${SEGMENTOR_SRC_DIR}/public.h ${SEGMENTOR_INC_OUTPUT_PATH}/
-  COMMAND cp ${SEGMENTOR_SRC_DIR}/public/public.h ${SEGMENTOR_INC_OUTPUT_PATH}/public/
-  COMMAND cp ${SEGMENTOR_SRC_DIR}/public/dep.h ${SEGMENTOR_INC_OUTPUT_PATH}/public/
-  COMMAND git log | head -n 1 > ${SEGMENTOR_OUTPUT_PATH}/version
+  COMMAND cp ${POS_TAGGING_SRC_DIR}/pos_tagging.h ${POS_TAGGING_INC_OUTPUT_PATH}/
+  COMMAND cp ${POS_TAGGING_SRC_DIR}/public.h ${POS_TAGGING_INC_OUTPUT_PATH}/
+  COMMAND cp ${POS_TAGGING_SRC_DIR}/public/public.h ${POS_TAGGING_INC_OUTPUT_PATH}/public/
+  COMMAND cp ${POS_TAGGING_SRC_DIR}/public/dep.h ${POS_TAGGING_INC_OUTPUT_PATH}/public/
+  COMMAND git log | head -n 1 > ${POS_TAGGING_OUTPUT_PATH}/version
 )
 
 add_custom_command(TARGET pos_tagging
   POST_BUILD
 
   #make pos_tagging
-  COMMAND cp libpos_tagging.a ${SEGMENTOR_LIB_OUTPUT_PATH}
+  COMMAND cp libpos_tagging.a ${POS_TAGGING_LIB_OUTPUT_PATH}
 )

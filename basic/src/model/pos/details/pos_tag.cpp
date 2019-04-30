@@ -2,65 +2,70 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
-PosTag::Type PosTag::GetPosTag(const std::string &pos) {
+PosTag::Type PosTag::GetPosTag(const std::wstring &pos) {
   switch (pos[0]) {
-    case 'n' :
+    case L'n' :
       return PosTag::kN;
-    case 't' :  
+    case L't' :  
       return PosTag::kT;
-    case 's' :  
+    case L's' :  
       return PosTag::kS;
-    case 'f' :  
+    case L'f' :  
       return PosTag::kF;
-    case 'm' :  
+    case L'm' :  
       return PosTag::kM;
-    case 'q' :  
+    case L'q' :  
       return PosTag::kQ;
-    case 'r' :  
+    case L'r' :  
       return PosTag::kR;
-    case 'v' :  
+    case L'v' :  
+      if (pos.length() == 2) {
+        if (pos[1] == L'n') {
+          return PosTag::kVn;
+        }
+      }
       return PosTag::kV;
-    case 'a' :  
+    case L'a' :  
       return PosTag::kA;
-    case 'z' :  
+    case L'z' :  
       return PosTag::kZ;
-    case 'b' :  
+    case L'b' :  
       return PosTag::kB;
-    case 'd' :  
+    case L'd' :  
       return PosTag::kD;
-    case 'p' :  
+    case L'p' :  
       return PosTag::kP;
-    case 'c' :  
+    case L'c' :  
       return PosTag::kC;
-    case 'u' :  
+    case L'u' :  
       return PosTag::kU;
-    case 'y' :  
+    case L'y' :  
       return PosTag::kY;
-    case 'o' :  
+    case L'o' :  
       return PosTag::kO;
-    case 'e' :  
+    case L'e' :  
       return PosTag::kE;
-    case 'h' :  
+    case L'h' :  
       return PosTag::kH;
-    case 'k' :  
+    case L'k' :  
       return PosTag::kK;
-    case 'g' : {  
-      if (pos == "Vg") {
+    case L'g' : {  
+      if (pos == L"Vg") {
         return PosTag::kGv;
-      } else if (pos == "Vn") {
+      } else if (pos == L"Vn") {
         return PosTag::kGn;
       }           
       return PosTag::kUndef;
     }
-    case 'x' :  
+    case L'x' : 
       return PosTag::kX;
-    case 'i' :  
+    case L'i' :  
       return PosTag::kI;
-    case 'l' :  
+    case L'l' :  
       return PosTag::kL;
-    case 'j' :  
+    case L'j' :  
       return PosTag::kJ;
-    case 'w' :  
+    case L'w' :  
       return PosTag::kW;
     default :  
       return PosTag::kUndef;
@@ -76,6 +81,7 @@ const std::wstring& PosTag::Str(PosTag::Type type) {
   static const std::wstring kQ = L"q";
   static const std::wstring kR = L"r";
   static const std::wstring kV = L"v";
+  static const std::wstring kVn = L"vn";
   static const std::wstring kA = L"a";
   static const std::wstring kZ = L"z";
   static const std::wstring kB = L"b";
@@ -113,6 +119,8 @@ const std::wstring& PosTag::Str(PosTag::Type type) {
       return kR;  
     case PosTag::kV :
       return kV;  
+    case PosTag::kVn :
+      return kVn;  
     case PosTag::kA :
       return kA;  
     case PosTag::kZ :

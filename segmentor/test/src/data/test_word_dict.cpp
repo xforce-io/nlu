@@ -5,7 +5,7 @@
 #include "../../../src/model/core_dict_item.h"
 #include "../../../src/segmentor.h"
 
-LOGGER_IMPL(xforce::xforce_logger, "segmentor")
+LOGGER_IMPL(xforce::xforce_logger, L"segmentor")
 
 using namespace xforce::nlu::segmentor;
 
@@ -24,7 +24,7 @@ void initNatureDict() {
 }
 
 TEST(test_all, all) {
-  LOGGER_SYS_INIT("../conf/log.conf")
+  LOGGER_SYS_INIT(L"../conf/log.conf")
 
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("conf/segmentor.conf");
   ASSERT_TRUE(Segmentor::Init((*conf)["segmentor"], (*conf)["ner"]));

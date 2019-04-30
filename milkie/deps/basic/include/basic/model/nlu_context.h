@@ -1,41 +1,66 @@
 #pragma once
 
 #include "../public.h"
-#include "segment.h"
-#include "chunk.h"
+#include "fragment/manager_fragment_set.h"
 
 namespace xforce { namespace nlu { namespace basic {
 
 class NluContext {
  public:
-  inline explicit NluContext(const std::wstring &query); 
-
-  inline void SetSegments(const typename Segment::Set &segments);
-  inline void SetChunks(const typename Chunk::Set &chunks);
+  explicit NluContext(const std::wstring &query); 
 
   const std::wstring& GetQuery() const { return query_; }
-  const typename Segment::Set& GetSegments() const { return segments_; }
-  typename Segment::Set& GetSegments() { return segments_; }
-  const typename Chunk::Set& GetChunks() const { return chunks_; }
-  typename Chunk::Set& GetChunks() { return chunks_; }
+
+  inline void SetSegments(const Segment::Set &segments);
+  inline void SetChunkSeps(const ChunkSep::Set &chunkSeps);
+  inline void SetChunks(const Chunk::Set &chunks);
+
+  inline const typename Segment::Set& GetSegments() const;
+  inline typename Segment::Set& GetSegments();
+  inline const typename ChunkSep::Set& GetChunkSeps() const;
+  inline typename ChunkSep::Set& GetChunkSeps();
+  inline const typename Chunk::Set& GetChunks() const;
+  inline typename Chunk::Set& GetChunks();
 
  private:
   std::wstring query_;
-  typename Segment::Set segments_;
-  typename Chunk::Set chunks_;
-};  
-
-NluContext::NluContext(const std::wstring &query) :
-  query_(query),
-  segments_(query),
-  chunks_(query) {}
+  ManagerFragmentSet managerFragmentSet_;
+};
 
 void NluContext::SetSegments(const typename Segment::Set &segments) {
-  segments_ = segments;
+  managerFragmentSet_.SetSegments(segments);
+}
+
+void NluContext::SetChunkSeps(const ChunkSep::Set &chunkSeps) {
+  managerFragmentSet_.SetChunkSeps(chunkSeps);
 }
 
 void NluContext::SetChunks(const typename Chunk::Set &chunks) {
-  chunks_ = chunks;
+  managerFragmentSet_.SetChunks(chunks);
+}
+
+const typename Segment::Set& NluContext::GetSegments() const {
+  return managerFragmentSet_.GetSegments();
+}
+
+typename Segment::Set& NluContext::GetSegments() {
+  return managerFragmentSet_.GetSegments();
+}
+
+const typename ChunkSep::Set& NluContext::GetChunkSeps() const {
+  return managerFragmentSet_.GetChunkSeps();
+}
+
+typename ChunkSep::Set& NluContext::GetChunkSeps() {
+  return managerFragmentSet_.GetChunkSeps();
+}
+
+const typename Chunk::Set& NluContext::GetChunks() const {
+  return managerFragmentSet_.GetChunks();
+}
+
+typename Chunk::Set& NluContext::GetChunks() {
+  return managerFragmentSet_.GetChunks();
 }
 
 }}}

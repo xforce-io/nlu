@@ -24,7 +24,7 @@ FILE(GLOB_RECURSE BASIC_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -DUNICODE=1")
 
 add_library(basic
-  ${BASIC_FILES})
+  ${BASIC_FILES} src/model/fragment/details/manager_fragment_set.cpp src/model/details/nlu_context.cpp src/model/fragment/details/fragment.cpp src/basic.h src/details/basic.cpp src/model/chunk_sep.h)
 
 target_link_libraries(basic
   log4cplus
@@ -47,6 +47,7 @@ add_custom_command(TARGET basic
   COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/model/syntax
   COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/model/fragment
 
+  COMMAND cp ${BASIC_SRC_DIR}/basic.h ${BASIC_INC_OUTPUT_PATH}/
   COMMAND cp ${BASIC_SRC_DIR}/public.h ${BASIC_INC_OUTPUT_PATH}/
   COMMAND cp ${BASIC_SRC_DIR}/public/public.h ${BASIC_INC_OUTPUT_PATH}/public/
   COMMAND cp ${BASIC_SRC_DIR}/public/dep.h ${BASIC_INC_OUTPUT_PATH}/public/
@@ -59,6 +60,7 @@ add_custom_command(TARGET basic
   COMMAND cp ${BASIC_SRC_DIR}/model/name_entity.h ${BASIC_INC_OUTPUT_PATH}/model/
   COMMAND cp ${BASIC_SRC_DIR}/model/confidence.h ${BASIC_INC_OUTPUT_PATH}/model/
   COMMAND cp ${BASIC_SRC_DIR}/model/context.h ${BASIC_INC_OUTPUT_PATH}/model/
+  COMMAND cp ${BASIC_SRC_DIR}/model/chunk_sep.h ${BASIC_INC_OUTPUT_PATH}/model/
   COMMAND cp ${BASIC_SRC_DIR}/model/chunk.h ${BASIC_INC_OUTPUT_PATH}/model/
   COMMAND cp ${BASIC_SRC_DIR}/model/pos/pos_tag.h ${BASIC_INC_OUTPUT_PATH}/model/pos/
   COMMAND cp ${BASIC_SRC_DIR}/model/pos_ctb/pos_ctb_tag.h ${BASIC_INC_OUTPUT_PATH}/model/pos_ctb/
@@ -69,6 +71,7 @@ add_custom_command(TARGET basic
   COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set_multi.hpp ${BASIC_INC_OUTPUT_PATH}/model/fragment/
   COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set_non_multi.hpp ${BASIC_INC_OUTPUT_PATH}/model/fragment/
   COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set_tree.hpp ${BASIC_INC_OUTPUT_PATH}/model/fragment/
+  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/manager_fragment_set.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
   COMMAND git log | head -n 1 > ${BASIC_OUTPUT_PATH}/version
 )
 

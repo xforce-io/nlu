@@ -1,7 +1,6 @@
 FEATURE_EXTRACTOR_BEGIN(chunker)
-    ~{#Chk(xp) #Chk(deg) -> chunk.dnp}
-    ~{#Chk(xp) #Chk(dev) -> chunk.dvp}
-    ~{"的" { {#Chk(vv) -> chunk.np} -> chunk.2.vp} }
-    ~{#Chk(nn) #Chk(np) -> chunk.np}
-    ~{#Chk(vv) #Chk(vp) -> chunk.vp}
+    ~{ "对" && #Pos(pP) -> func.post_np  }
+    ~{ "以" && #Pos(pP) -> func.post_np_vp }
+    ~{ "在" && #Pos(pP) -> func.post_np_or_vp }
+    ~{ { "了" && #Pos(pP) -> func.pre_vp } -> func.post_np }
 FEATURE_EXTRACTOR_END

@@ -22,6 +22,7 @@ class PosTag {
      * 实词/谓词
      */
     kV = 10, //动词
+    kVn = 11, //动词
     kA, //形容词
     kZ, //状态词
 
@@ -70,7 +71,7 @@ class PosTag {
   }; 
 
  public:
-  static PosTag::Type GetPosTag(const std::string &pos);
+  static PosTag::Type GetPosTag(const std::wstring &pos);
   static const std::wstring& Str(PosTag::Type type);
 };
 

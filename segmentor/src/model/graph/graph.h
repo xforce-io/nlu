@@ -13,7 +13,6 @@ class Graph {
   typedef std::unordered_map<int, double> PrioredNegLogPossi;
   typedef std::unordered_set<int> OffsetsProcessed;
   typedef std::queue<int> OffsetsToProcess;
-  typedef std::vector<std::shared_ptr<basic::NameEntity>> NameEntities;
   typedef std::vector<NodesVec*> PosToNumNodes;
   typedef typename std::vector< std::pair<const Node*, ConflictSubgraph*> > ProfileItems;
 
