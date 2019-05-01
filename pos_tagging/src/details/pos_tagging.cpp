@@ -48,6 +48,7 @@ bool PosTagging::Init(const xforce::JsonType &confPos) {
     FATAL("fail_init_pos_tagging");
     return false;
   }
+  std::cout << "succ init pos" << std::endl;
   return true;
 }
 

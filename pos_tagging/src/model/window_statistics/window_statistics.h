@@ -27,7 +27,7 @@ class WindowStatistics {
   static WindowStatistics* Create(const std::string &filepath);
 
  private:
-  std::pair<StatisticsItems::Category, const StatisticsUnit*>
+  inline std::pair<StatisticsItems::Category, const StatisticsUnit*>
           GetDominatorFromFeatures_(const std::vector<FeatureComb3> &featureCombs) const;
 
   void Add_(const std::vector<std::pair<std::wstring, basic::PosTag::Type >> &pairs);
@@ -35,7 +35,7 @@ class WindowStatistics {
 
  private:
   WindowFeaturesExtractor windowFeaturesExtractor_;
-  std::unordered_map<FeatureComb3, StatisticsCollection*> statistics_;
+  std::unordered_map<FeatureComb3, StatisticsCollection*, HashFeatureComb3> statistics_;
 
   mutable std::vector<FeatureComb3> tmpFeatureCombs_;
 };

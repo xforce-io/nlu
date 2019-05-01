@@ -62,7 +62,7 @@ void WindowStatistics::Add_(
     windowFeaturesExtractor_.Enum(pairs[i].first, pairs[i+1].first, pairs[i+2].first, tmpFeatureCombs_);
     for (auto &featureComb : tmpFeatureCombs_) {
       ActualAdd_(
-              FeatureComb3(pairs[i].first, pairs[i+1].first, pairs[i+2].first),
+              featureComb,
               StatisticsUnit(
                       pairs[i].second,
                       pairs[i+1].second,

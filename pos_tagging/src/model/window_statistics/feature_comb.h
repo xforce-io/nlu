@@ -23,6 +23,14 @@ struct FeatureComb3 {
   std::wstring feature2;
 };
 
+struct HashFeatureComb3 {
+ public: 
+  inline size_t operator()(const FeatureComb3 &featureComb3) const;
+
+ private: 
+  static std::hash<std::wstring> hashFunc;
+};
+
 FeatureComb3::FeatureComb3(
         const std::wstring &feature0,
         const std::wstring &feature1) :
@@ -40,6 +48,12 @@ bool FeatureComb3::operator==(const FeatureComb3 &featureComb3) const {
   return feature0 == featureComb3.feature0 &&
       feature1 == featureComb3.feature1 &&
       feature2 == featureComb3.feature2;
+}
+
+size_t HashFeatureComb3::operator()(const FeatureComb3 &featureComb3) const {
+  return hashFunc(featureComb3.feature0) * 37 + 
+    hashFunc(featureComb3.feature1) * 13 + 
+    hashFunc(featureComb3.feature2);
 }
 
 }}}
