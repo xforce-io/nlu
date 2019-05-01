@@ -31,7 +31,7 @@ class WindowStatistics {
           GetDominatorFromFeatures_(const std::vector<FeatureComb3> &featureCombs) const;
 
   void Add_(const std::vector<std::pair<std::wstring, basic::PosTag::Type >> &pairs);
-  void ActualAdd_(const std::wstring &key, const StatisticsUnit &newItem);
+  void ActualAdd_(const FeatureComb3 &key, const StatisticsUnit &newItem);
 
  private:
   WindowFeaturesExtractor windowFeaturesExtractor_;
@@ -43,7 +43,9 @@ class WindowStatistics {
 std::pair<StatisticsItems::Category, const StatisticsUnit*> WindowStatistics::GetDominator(
         const std::wstring &item0,
         const std::wstring &item1) const {
-  return GetDominator(item0, item1, L"");
+  tmpFeatureCombs_.clear();
+  windowFeaturesExtractor_.Enum(item0, item1, tmpFeatureCombs_);
+  return GetDominatorFromFeatures_(tmpFeatureCombs_);
 }
 
 std::pair<StatisticsItems::Category, const StatisticsUnit*> WindowStatistics::GetDominator(
@@ -52,7 +54,7 @@ std::pair<StatisticsItems::Category, const StatisticsUnit*> WindowStatistics::Ge
         const std::wstring &item2) const {
   tmpFeatureCombs_.clear();
   windowFeaturesExtractor_.Enum(item0, item1, item2, tmpFeatureCombs_);
-  GetDominatorFromFeatures_(tmpFeatureCombs_);
+  return GetDominatorFromFeatures_(tmpFeatureCombs_);
 }
 
 std::pair<StatisticsItems::Category, const StatisticsUnit*>

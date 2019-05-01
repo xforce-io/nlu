@@ -18,10 +18,24 @@ class WindowFeatureSelf : public WindowFeature {
 
 class WindowFeatureIsVerb : public WindowFeature{
  public:
+  static const std::wstring kMark;
+
+ public:
   inline bool ExtractFeature(const std::wstring &word, std::wstring &feature);
 };
 
 class WindowFeatureIsNoun : public WindowFeature{
+ public:
+  static const std::wstring kMark;
+
+ public:
+  inline bool ExtractFeature(const std::wstring &word, std::wstring &feature);
+};
+
+class WindowFeatureWildcard : public WindowFeature{
+ public:
+  static const std::wstring kMark;
+
  public:
   inline bool ExtractFeature(const std::wstring &word, std::wstring &feature);
 };

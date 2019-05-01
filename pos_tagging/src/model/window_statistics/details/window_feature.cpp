@@ -2,6 +2,10 @@
 
 namespace xforce { namespace nlu { namespace pos {
 
+const std::wstring WindowFeatureIsVerb::kMark = L"_v_";
+const std::wstring WindowFeatureIsNoun::kMark = L"_n_";
+const std::wstring WindowFeatureWildcard::kMark = L"__";
+
 bool WindowFeatureSelf::ExtractFeature(const std::wstring &word, std::wstring &feature) {
   feature = word;
   return true;
@@ -18,7 +22,7 @@ bool WindowFeatureIsVerb::ExtractFeature(const std::wstring &word, std::wstring 
       return false;
     }
   }
-  feature = L"_v_";
+  feature = kMark;
   return true;
 }
 
@@ -33,7 +37,12 @@ bool WindowFeatureIsNoun::ExtractFeature(const std::wstring &word, std::wstring 
       return false;
     }
   }
-  feature = L"_n_";
+  feature = kMark;
+  return true;
+}
+
+bool WindowFeatureWildcard::ExtractFeature(const std::wstring &word, std::wstring &feature) {
+  feature = kMark;
   return true;
 }
 
@@ -71,7 +80,8 @@ void WindowFeaturesExtractor::Enum(
 
   for (auto &feature0 : features0) {
     for (auto &feature1 : features1) {
-      if (WindowFeature::IsWord(feature0) || WindowFeature::IsWord(feature1)) {
+      if (WindowFeature::IsWord(feature0) ||
+          WindowFeature::IsWord(feature1)) {
         results.push_back(FeatureComb3(feature0, feature1));
       }
     }
@@ -87,7 +97,9 @@ void WindowFeaturesExtractor::Enum(
   std::vector<std::wstring> features0;
   for (auto &windowFeature : windowFeatures_) {
     windowFeature->ExtractFeature(word0, tmpFeature);
-    features0.push_back(tmpFeature);
+    if (tmpFeature != WindowFeatureWildcard::kMark) {
+      features0.push_back(tmpFeature);
+    }
   }
 
   std::vector<std::wstring> features1;
@@ -99,7 +111,9 @@ void WindowFeaturesExtractor::Enum(
   std::vector<std::wstring> features2;
   for (auto &windowFeature : windowFeatures_) {
     windowFeature->ExtractFeature(word2, tmpFeature);
-    features2.push_back(tmpFeature);
+    if (tmpFeature != WindowFeatureWildcard::kMark) {
+      features2.push_back(tmpFeature);
+    }
   }
 
   for (auto &feature0 : features0) {
@@ -108,7 +122,7 @@ void WindowFeaturesExtractor::Enum(
         if (WindowFeature::IsWord(feature0) ||
             WindowFeature::IsWord(feature1) ||
             WindowFeature::IsWord(feature2)) {
-          results.push_back(FeatureComb3(feature0, feature1,feature2));
+          results.push_back(FeatureComb3(feature0, feature1, feature2));
         }
       }
     }

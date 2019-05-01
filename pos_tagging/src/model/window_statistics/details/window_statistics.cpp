@@ -46,32 +46,33 @@ WindowStatistics* WindowStatistics::Create(const std::string &filepath) {
 void WindowStatistics::Add_(
         const std::vector<std::pair<std::wstring, basic::PosTag::Type >> &pairs) {
   for (size_t i=0; i < pairs.size()-1; ++i) {
-    ActualAdd_(
-            pairs[i].first + L"-" + pairs[i+1].first,
-            StatisticsUnit(
-                    pairs[i].second,
-                    pairs[i+1].second));
+    tmpFeatureCombs_.clear();
+    windowFeaturesExtractor_.Enum(pairs[i].first, pairs[i+1].first, tmpFeatureCombs_);
+    for (auto &featureComb : tmpFeatureCombs_) {
+      ActualAdd_(
+              featureComb,
+              StatisticsUnit(
+                      pairs[i].second,
+                      pairs[i+1].second));
+    }
   }
 
   for (size_t i=0; i < pairs.size()-2; ++i) {
-    ActualAdd_(
-            pairs[i].first + L"-" + pairs[i+1].first + L"-" + pairs[i+2].first,
-            StatisticsUnit(
-                    pairs[i].second,
-                    pairs[i+1].second,
-                    pairs[i+2].second));
-
-    ActualAdd_(
-            pairs[i].first + L"-*-" + pairs[i+2].first,
-            StatisticsUnit(
-                    pairs[i].second,
-                    basic::PosTag::kUndef,
-                    pairs[i+2].second));
+    tmpFeatureCombs_.clear();
+    windowFeaturesExtractor_.Enum(pairs[i].first, pairs[i+1].first, pairs[i+2].first, tmpFeatureCombs_);
+    for (auto &featureComb : tmpFeatureCombs_) {
+      ActualAdd_(
+              FeatureComb3(pairs[i].first, pairs[i+1].first, pairs[i+2].first),
+              StatisticsUnit(
+                      pairs[i].second,
+                      pairs[i+1].second,
+                      pairs[i+2].second));
+    }
   }
 }
 
 void WindowStatistics::ActualAdd_(
-        const std::wstring &key,
+        const FeatureComb3 &key,
         const StatisticsUnit &newItem) {
   auto iter = statistics_.find(key);
   if (iter != statistics_.end()) {
