@@ -6,4 +6,7 @@ void NameEntity::Dump(JsonType &jsonType) {
   Super::Dump(jsonType);
 }
 
+NameEntity::~NameEntity() {}
+
+
 }}}
