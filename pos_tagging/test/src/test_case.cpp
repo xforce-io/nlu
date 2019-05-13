@@ -23,13 +23,13 @@ TEST(test_case, all) {
   ASSERT_TRUE(Basic::Init((*conf)["basic"]));
   ASSERT_TRUE(PosTagging::Init((*conf)["pos"]));
 
-  std::wstring query = L"自己的节奏还没有踩上";
+  std::wstring query = L"车可以连续多少天不开";
   NluContext nluContext(query);
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 0, 2));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 2, 1));
+  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 0, 1));
+  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 1, 2));
   nluContext.GetSegments().Add(Segment(PosTag::kUndef, 3, 2));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 5, 1));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 6, 2));
+  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 5, 2));
+  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 7, 1));
   nluContext.GetSegments().Add(Segment(PosTag::kUndef, 8, 1));
   nluContext.GetSegments().Add(Segment(PosTag::kUndef, 9, 1));
 

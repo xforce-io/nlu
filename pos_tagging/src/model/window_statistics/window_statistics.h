@@ -52,6 +52,10 @@ std::pair<StatisticsItems::Category, const StatisticsUnit*> WindowStatistics::Ge
         const std::wstring &item0,
         const std::wstring &item1,
         const std::wstring &item2) const {
+  if (item0 == L"没有" && item2 == L"上") {
+    int a = 0;
+  }
+
   tmpFeatureCombs_.clear();
   windowFeaturesExtractor_.Enum(item0, item1, item2, tmpFeatureCombs_);
   return GetDominatorFromFeatures_(tmpFeatureCombs_);

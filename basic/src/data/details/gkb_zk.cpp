@@ -36,7 +36,7 @@ bool GkbZk::Init(const std::string &filepath) {
 void GkbZk::AddPosTag_(const std::wstring &key, PosTag::Type posTag) {
   BasicAddPosTag_(key, posTag);
   if (posTag == PosTag::kV) {
-    BasicAddPosTag_(key, PosTag::kN);
+    BasicAddPosTag_(key, PosTag::kVn);
   }
 }
 

@@ -24,7 +24,7 @@ TEST(test_all, all) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("conf/segmentor.conf");
   ASSERT_TRUE(Segmentor::Init((*conf)["segmentor"], (*conf)["ner"]));
 
-  std::wstring wStrQuery = L"周杰伦、刘亦菲和王凯的关系很好";
+  std::wstring wStrQuery = L"五峰山特大桥是继南京长江大桥、在建沪通长江大桥之后长江江苏段的第三座公铁两用大桥";
 
   Segment::Set segments(wStrQuery);
   NameEntity::Set nameEntities(wStrQuery);

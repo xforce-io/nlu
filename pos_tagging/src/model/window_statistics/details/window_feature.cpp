@@ -68,14 +68,18 @@ void WindowFeaturesExtractor::Enum(
   std::wstring tmpFeature;
   std::vector<std::wstring> features0;
   for (auto &windowFeature : windowFeatures_) {
-    windowFeature->ExtractFeature(word0, tmpFeature);
-    features0.push_back(tmpFeature);
+    bool ret = windowFeature->ExtractFeature(word0, tmpFeature);
+    if (ret) {
+      features0.push_back(tmpFeature);
+    }
   }
 
   std::vector<std::wstring> features1;
   for (auto &windowFeature : windowFeatures_) {
-    windowFeature->ExtractFeature(word1, tmpFeature);
-    features1.push_back(tmpFeature);
+    bool ret = windowFeature->ExtractFeature(word1, tmpFeature);
+    if (ret) {
+      features1.push_back(tmpFeature);
+    }
   }
 
   for (auto &feature0 : features0) {
@@ -96,22 +100,24 @@ void WindowFeaturesExtractor::Enum(
   std::wstring tmpFeature;
   std::vector<std::wstring> features0;
   for (auto &windowFeature : windowFeatures_) {
-    windowFeature->ExtractFeature(word0, tmpFeature);
-    if (tmpFeature != WindowFeatureWildcard::kMark) {
+    bool ret = windowFeature->ExtractFeature(word0, tmpFeature);
+    if (ret && tmpFeature != WindowFeatureWildcard::kMark) {
       features0.push_back(tmpFeature);
     }
   }
 
   std::vector<std::wstring> features1;
   for (auto &windowFeature : windowFeatures_) {
-    windowFeature->ExtractFeature(word1, tmpFeature);
-    features1.push_back(tmpFeature);
+    bool ret = windowFeature->ExtractFeature(word1, tmpFeature);
+    if (ret) {
+      features1.push_back(tmpFeature);
+    }
   }
 
   std::vector<std::wstring> features2;
   for (auto &windowFeature : windowFeatures_) {
-    windowFeature->ExtractFeature(word2, tmpFeature);
-    if (tmpFeature != WindowFeatureWildcard::kMark) {
+    bool ret = windowFeature->ExtractFeature(word2, tmpFeature);
+    if (ret && tmpFeature != WindowFeatureWildcard::kMark) {
       features2.push_back(tmpFeature);
     }
   }
