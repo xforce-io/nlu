@@ -28,7 +28,7 @@ class NameEntity : public basic::Fragment {
 
   void Dump(JsonType &jsonType);
 
-  virtual ~NameEntity() {}
+  virtual ~NameEntity();
 };
 
 NameEntity::NameEntity(size_t offset, size_t len) :

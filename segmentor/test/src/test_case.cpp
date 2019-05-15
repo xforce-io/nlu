@@ -12,6 +12,8 @@ using namespace xforce::nlu::segmentor;
 
 int main(int argc, char **argv) {
   setlocale(LC_ALL, "");
+  std::wcout << L"我也不知道为什么要这一句" << std::endl;
+
   LOGGER_SYS_INIT(L"../conf/log.conf");
 
   testing::InitGoogleTest(&argc, argv);
@@ -25,7 +27,6 @@ TEST(test_all, all) {
   ASSERT_TRUE(Segmentor::Init((*conf)["segmentor"], (*conf)["ner"]));
 
   std::wstring wStrQuery = L"五峰山特大桥是继南京长江大桥、在建沪通长江大桥之后长江江苏段的第三座公铁两用大桥";
-
   Segment::Set segments(wStrQuery);
   NameEntity::Set nameEntities(wStrQuery);
 

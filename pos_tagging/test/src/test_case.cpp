@@ -23,15 +23,19 @@ TEST(test_case, all) {
   ASSERT_TRUE(Basic::Init((*conf)["basic"]));
   ASSERT_TRUE(PosTagging::Init((*conf)["pos"]));
 
-  std::wstring query = L"车可以连续多少天不开";
+  std::wstring query = L"五峰山特大桥是继南京长江大桥、在建沪通长江大桥之后长江江苏段的第三座公铁两用大桥";
   NluContext nluContext(query);
   nluContext.GetSegments().Add(Segment(PosTag::kUndef, 0, 1));
   nluContext.GetSegments().Add(Segment(PosTag::kUndef, 1, 2));
   nluContext.GetSegments().Add(Segment(PosTag::kUndef, 3, 2));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 5, 2));
+  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 5, 1));
   nluContext.GetSegments().Add(Segment(PosTag::kUndef, 7, 1));
   nluContext.GetSegments().Add(Segment(PosTag::kUndef, 8, 1));
+  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 9, 2));
+  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 9, 2));
+  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 9, 2));
   nluContext.GetSegments().Add(Segment(PosTag::kUndef, 9, 1));
+  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 9, 2));
 
   PosTagging::Tagging(nluContext);
 
