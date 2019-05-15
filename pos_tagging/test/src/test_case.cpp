@@ -7,6 +7,7 @@
 LOGGER_IMPL(xforce::xforce_logger, L"pos_tagging")
 
 using namespace xforce;
+using namespace xforce::nlu;
 using namespace xforce::nlu::basic;
 using namespace xforce::nlu::pos;
 
@@ -23,19 +24,15 @@ TEST(test_case, all) {
   ASSERT_TRUE(Basic::Init((*conf)["basic"]));
   ASSERT_TRUE(PosTagging::Init((*conf)["pos"]));
 
-  std::wstring query = L"五峰山特大桥是继南京长江大桥、在建沪通长江大桥之后长江江苏段的第三座公铁两用大桥";
-  NluContext nluContext(query);
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 0, 1));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 1, 2));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 3, 2));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 5, 1));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 7, 1));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 8, 1));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 9, 2));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 9, 2));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 9, 2));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 9, 1));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 9, 2));
+  std::wstring wStrQuery = L"五峰山特大桥是继南京长江大桥、在建沪通长江大桥之后长江江苏段的第三座公铁两用大桥";
+  Segment::Set segments(wStrQuery);
+  NameEntity::Set nameEntities(wStrQuery);
+
+  segmentor::Graph *graph = new segmentor::Graph(wStrQuery);
+  graph->Process(segments, nameEntities);
+
+  NluContext nluContext(wStrQuery);
+  nluContext.SetSegments(segments);
 
   PosTagging::Tagging(nluContext);
 
