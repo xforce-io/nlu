@@ -3,12 +3,15 @@
 #include "gtest/gtest.h"
 #include "../../src/pos_tagging.h"
 #include "../../src/conf/conf.h"
+#include "basic/model/segment.h"
+#include "basic/model/name_entity.h"
+#include "segmentor/segmentor.h"
 
 LOGGER_IMPL(xforce::xforce_logger, L"pos_tagging")
 
 using namespace xforce;
-using namespace xforce::nlu;
 using namespace xforce::nlu::basic;
+using namespace xforce::nlu::segmentor;
 using namespace xforce::nlu::pos;
 
 int main(int argc, char **argv) {
@@ -22,14 +25,14 @@ int main(int argc, char **argv) {
 TEST(test_case, all) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/pos.conf");
   ASSERT_TRUE(Basic::Init((*conf)["basic"]));
+  ASSERT_TRUE(Segmentor::Init((*conf)["segmentor"], (*conf)["ner"]));
   ASSERT_TRUE(PosTagging::Init((*conf)["pos"]));
 
-  std::wstring wStrQuery = L"五峰山特大桥是继南京长江大桥、在建沪通长江大桥之后长江江苏段的第三座公铁两用大桥";
+  std::wstring wStrQuery = L"单根主缆拉力高达9万吨";
   Segment::Set segments(wStrQuery);
   NameEntity::Set nameEntities(wStrQuery);
 
-  segmentor::Graph *graph = new segmentor::Graph(wStrQuery);
-  graph->Process(segments, nameEntities);
+  Segmentor::Parse(wStrQuery, segments, nameEntities);
 
   NluContext nluContext(wStrQuery);
   nluContext.SetSegments(segments);

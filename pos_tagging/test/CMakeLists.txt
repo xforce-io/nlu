@@ -8,6 +8,7 @@ include_directories(
   /home/freeman/software/include/
   ${CMAKE_SOURCE_DIR}/../deps/public-cpp/include/
   ${CMAKE_SOURCE_DIR}/../deps/basic/include/
+  ${CMAKE_SOURCE_DIR}/../deps/ner/include/
   ${CMAKE_SOURCE_DIR}/../deps/segmentor/include/
 )
 
@@ -23,9 +24,10 @@ set(CMAKE_CXX_COMPILER g++)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -pthread -std=c++11 -DUT_TEST -DUNICODE=1")
 set(LIB_DEPS 
-  ${CMAKE_SOURCE_DIR}/../deps/public-cpp/lib/public-cpp/libpublic-cpp.a
-  ${CMAKE_SOURCE_DIR}/../deps/basic/lib/basic/libbasic.a
   ${CMAKE_SOURCE_DIR}/../deps/segmentor/lib/segmentor/libsegmentor.a
+  ${CMAKE_SOURCE_DIR}/../deps/ner/lib/ner/libner.a
+  ${CMAKE_SOURCE_DIR}/../deps/basic/lib/basic/libbasic.a
+  ${CMAKE_SOURCE_DIR}/../deps/public-cpp/lib/public-cpp/libpublic-cpp.a
 )
 
 link_libraries(
