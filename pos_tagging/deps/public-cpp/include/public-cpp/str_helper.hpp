@@ -34,6 +34,9 @@ class StrHelper {
     inline static bool GetNum(IN  const char* str, OUT T& num);
 
     template <typename T>
+    inline static bool GetNum(IN const wchar_t* str, T& num);
+
+    template <typename T>
 	  inline static std::string GetStr(IN T num );
 
     template <typename StrType>
@@ -105,6 +108,31 @@ bool StrHelper::GetNum(const char* str, T& num) {
         return false;
     }
     num = SCAST<T>(tmp_int);
+    return true;
+}
+
+template <typename T>
+bool StrHelper::GetNum(const wchar_t* str, T& num) {
+    wchar_t* endptr;
+    int64_t tmp_int = wcstol(str, &endptr, 10);
+    if ( '\0' != *endptr
+            || static_cast<T>(tmp_int) < std::numeric_limits<T>::min()
+            || static_cast<T>(tmp_int) > std::numeric_limits<T>::max() ) {
+        return false;
+    }
+    num = static_cast<T>(tmp_int);
+    return true;
+}
+
+template <>
+bool StrHelper::GetNum(const wchar_t* str, double& num) {
+    wchar_t* endptr;
+    num = wcstod(str, &endptr);
+    if ( '\0' != *endptr
+            || num < std::numeric_limits<double>::min()
+            || num > std::numeric_limits<double>::max() ) {
+        return false;
+    }
     return true;
 }
 
