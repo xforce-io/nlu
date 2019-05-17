@@ -31,10 +31,16 @@ class StrHelper {
         std::vector<StrType> &vals);
 
     template <typename T>
-    inline static bool GetNum(IN  const char* str, OUT T& num);
+    inline static bool GetNum(IN const std::string &str, OUT T& num);
 
     template <typename T>
-    inline static bool GetNum(IN const wchar_t* str, T& num);
+    inline static bool GetNum(IN const char *str, OUT T& num);
+
+    template <typename T>
+    inline static bool GetNum(IN const std::wstring &str, OUT T& num);
+
+    template <typename T>
+    inline static bool GetNum(IN const wchar_t *str, T& num);
 
     template <typename T>
 	  inline static std::string GetStr(IN T num );
@@ -99,6 +105,11 @@ void StrHelper::SplitStr(
 }
 
 template <typename T>
+bool StrHelper::GetNum(IN const std::string &str, OUT T& num) {
+  return GetNum(str.c_str(), num);
+}
+
+template <typename T>
 bool StrHelper::GetNum(const char* str, T& num) {
     char* endptr;
     int64_t tmp_int = strtoll(str, &endptr, 10);
@@ -121,6 +132,11 @@ bool StrHelper::GetNum(const char* str, double& num) {
         return false;
     }
     return true;
+}
+
+template <typename T>
+bool StrHelper::GetNum(IN const std::wstring &str, OUT T& num) {
+  return GetNum(str.c_str(), num);
 }
 
 template <typename T>
