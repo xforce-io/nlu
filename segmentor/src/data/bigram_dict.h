@@ -8,6 +8,9 @@ class BigramDict {
  private:
   typedef std::unordered_map<std::wstring, uint32_t> Inner; 
   typedef std::unordered_map<std::wstring, Inner*> Container;
+
+ private:
+  static const std::wstring kMarkNum;
  
  public:
   BigramDict() {}
@@ -18,7 +21,8 @@ class BigramDict {
   virtual ~BigramDict();
 
  private: 
-  void AddToDict(const std::wstring &word0, const std::wstring &word1, uint32_t freq);
+  void AddToDict_(const std::wstring &word0, const std::wstring &word1, uint32_t freq);
+  const std::wstring& WordMapper_(const std::wstring &word) const;
 
  private:
   Container container_;
