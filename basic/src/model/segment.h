@@ -21,10 +21,8 @@ class Segment : public Fragment {
   virtual ~Segment() {}
 
   inline void SetPosTag(PosTag::Type posTag);
-  inline void SetPosCtbTag(PosCtbTag::Type posCtb);
-
-  PosTag::Type GetPosTag() const { return posTag_; }
-  PosCtbTag::Type GetPosCtbTag() const { return posCtbTag_; }
+  inline void AddPosTag(PosTag::Type posTag);
+  const std::vector<PosTag::Type> GetPosTags() const { return posTags_; }
 
   inline std::wstring GetQuery(const std::wstring &sentence) const;
 
@@ -33,36 +31,28 @@ class Segment : public Fragment {
   void Dump(JsonType &jsonType);
 
  private:
-  PosTag::Type posTag_;
-  PosCtbTag::Type posCtbTag_;
+  std::vector<PosTag::Type> posTags_;
 };
 
 Segment::Segment() :
-  Fragment(-1, -1),
-  posTag_(PosTag::kUndef),
-  posCtbTag_(PosCtbTag::kUndef) {}
+  Fragment(-1, -1) {}
 
 Segment::Segment(PosTag::Type posTag, size_t offset, size_t len) :
-  Fragment(offset, len),
-  posTag_(posTag),
-  posCtbTag_(PosCtbTag::kUndef) {}
+  Fragment(offset, len) {}
 
 Segment::Segment(size_t offset, size_t len) :
-  Fragment(offset, len),
-  posTag_(PosTag::kUndef),
-  posCtbTag_(PosCtbTag::kUndef) {}
+  Fragment(offset, len) {}
 
 Segment::Segment(size_t offset) :
-  Fragment(offset, -1),
-  posTag_(PosTag::kUndef),
-  posCtbTag_(PosCtbTag::kUndef) {}
+  Fragment(offset, -1) {}
 
 void Segment::SetPosTag(PosTag::Type posTag) {
-  posTag_ = posTag;
+  posTags_.clear();
+  posTags_.push_back(posTag);
 }
 
-void Segment::SetPosCtbTag(PosCtbTag::Type posCtb) {
-  posCtbTag_ = posCtb;
+void Segment::AddPosTag(PosTag::Type posTag) {
+  posTags_.push_back(posTag);
 }
 
 std::wstring Segment::GetQuery(const std::wstring &sentence) const {
@@ -70,8 +60,7 @@ std::wstring Segment::GetQuery(const std::wstring &sentence) const {
 }
 
 void Segment::operator=(const Segment &segment) {
-  posTag_ = segment.posTag_;
-  posCtbTag_ = segment.posCtbTag_;
+  posTags_ = segment.posTags_;
   offset_ = segment.offset_;
   len_ = segment.len_;
 }
