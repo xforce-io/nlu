@@ -31,7 +31,20 @@ class StrHelper {
         std::vector<StrType> &vals);
 
     template <typename T>
-    inline static bool GetNum(IN  const char* str, OUT T& num);
+    inline static bool GetNum(IN const std::string &str, OUT T& num);
+
+    template <typename T>
+    inline static bool GetNum(IN const char *str, OUT T& num);
+
+    inline static bool GetNum(const char* str, double& num);
+
+    template <typename T>
+    inline static bool GetNum(IN const std::wstring &str, OUT T& num);
+
+    template <typename T>
+    inline static bool GetNum(IN const wchar_t *str, OUT T& num);
+
+    inline static bool GetNum(const wchar_t* str, double& num);
 
     template <typename T>
 	  inline static std::string GetStr(IN T num );
@@ -96,6 +109,11 @@ void StrHelper::SplitStr(
 }
 
 template <typename T>
+bool StrHelper::GetNum(const std::string &str, T& num) {
+  return GetNum(str.c_str(), num);
+}
+
+template <typename T>
 bool StrHelper::GetNum(const char* str, T& num) {
     char* endptr;
     int64_t tmp_int = strtoll(str, &endptr, 10);
@@ -105,6 +123,46 @@ bool StrHelper::GetNum(const char* str, T& num) {
         return false;
     }
     num = SCAST<T>(tmp_int);
+    return true;
+}
+
+bool StrHelper::GetNum(const char* str, double& num) {
+    char* endptr;
+    num = strtod(str, &endptr);
+    if ( '\0' != *endptr
+            || num < std::numeric_limits<double>::min()
+            || num > std::numeric_limits<double>::max() ) {
+        return false;
+    }
+    return true;
+}
+
+template <typename T>
+bool StrHelper::GetNum(const std::wstring &str, T& num) {
+  return GetNum(str.c_str(), num);
+}
+
+template <typename T>
+bool StrHelper::GetNum(const wchar_t* str, T& num) {
+    wchar_t* endptr;
+    int64_t tmp_int = wcstol(str, &endptr, 10);
+    if ( '\0' != *endptr
+            || SCAST<T>(tmp_int) < std::numeric_limits<T>::min()
+            || SCAST<T>(tmp_int) > std::numeric_limits<T>::max() ) {
+        return false;
+    }
+    num = SCAST<T>(tmp_int);
+    return true;
+}
+
+bool StrHelper::GetNum(const wchar_t* str, double& num) {
+    wchar_t* endptr;
+    num = wcstod(str, &endptr);
+    if ( '\0' != *endptr
+            || num < std::numeric_limits<double>::min()
+            || num > std::numeric_limits<double>::max() ) {
+        return false;
+    }
     return true;
 }
 
