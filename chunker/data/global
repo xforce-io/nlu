@@ -1,6 +1,4 @@
 FEATURE_EXTRACTOR_BEGIN(chunker)
-    ~{ "对" && #Pos(pP) -> func.post_np  }
-    ~{ "以" && #Pos(pP) -> func.post_np_vp }
-    ~{ "在" && #Pos(pP) -> func.post_np_or_vp }
-    ~{ { "了" && #Pos(pP) -> func.pre_vp } -> func.post_np }
+    ~{ #Pos(uP) -> chunk.u }
+    ~{ [#Pos((mP-)*(qP-)+), #Pos((mP-)+)] -> chunk.mp }
 FEATURE_EXTRACTOR_END
