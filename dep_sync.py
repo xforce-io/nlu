@@ -41,19 +41,6 @@ def buildMilkie() :
     call("mkdir -p %s && cd %s && cmake ../ && make clean && make -j4 -s" % \
             (kBuildPathMilkie, kBuildPathMilkie))
 
-def buildPosTagging() :
-    call("mkdir -p %s && rm -rf %s/*" % (kDepPathPosTagging, kDepPathPosTagging))
-    call("cp -rf %s/public-cpp %s/public-cpp" % \
-            (kBuildPathPublicCpp, kDepPathPosTagging))
-    call("cp -rf %s/basic %s/basic/" % \
-            (kBuildPathBasic, kDepPathPosTagging))
-    call("cp -rf %s/ner %s/ner/" % \
-            (kBuildPathNer, kDepPathPosTagging))
-    call("cp -rf %s/segmentor %s/segmentor/" % \
-            (kBuildPathSegmentor, kDepPathPosTagging))
-    call("mkdir -p %s && cd %s && cmake ../ && make clean && make -j4 -s" % \
-            (kBuildPathPosTagging, kBuildPathPosTagging))
-
 def buildNer() :
     call("mkdir -p %s && rm -rf %s/*" % (kDepPathNer, kDepPathNer))
     call("cp -rf %s/public-cpp %s/public-cpp" % \
@@ -73,6 +60,19 @@ def buildSegmentor() :
             (kBuildPathNer, kDepPathSegmentor))
     call("mkdir -p %s && cd %s && cmake ../ && make clean && make -j4 -s" % \
             (kBuildPathSegmentor, kBuildPathSegmentor))
+
+def buildPosTagging() :
+    call("mkdir -p %s && rm -rf %s/*" % (kDepPathPosTagging, kDepPathPosTagging))
+    call("cp -rf %s/public-cpp %s/public-cpp" % \
+            (kBuildPathPublicCpp, kDepPathPosTagging))
+    call("cp -rf %s/basic %s/basic/" % \
+            (kBuildPathBasic, kDepPathPosTagging))
+    call("cp -rf %s/ner %s/ner/" % \
+            (kBuildPathNer, kDepPathPosTagging))
+    call("cp -rf %s/segmentor %s/segmentor/" % \
+            (kBuildPathSegmentor, kDepPathPosTagging))
+    call("mkdir -p %s && cd %s && cmake ../ && make clean && make -j4 -s" % \
+            (kBuildPathPosTagging, kBuildPathPosTagging))
 
 def buildChunker() :
     call("mkdir -p %s && rm -rf %s/*" % (kDepPathChunker, kDepPathChunker))

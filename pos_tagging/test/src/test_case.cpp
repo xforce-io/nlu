@@ -3,11 +3,15 @@
 #include "gtest/gtest.h"
 #include "../../src/pos_tagging.h"
 #include "../../src/conf/conf.h"
+#include "basic/model/segment.h"
+#include "basic/model/name_entity.h"
+#include "segmentor/segmentor.h"
 
 LOGGER_IMPL(xforce::xforce_logger, L"pos_tagging")
 
 using namespace xforce;
 using namespace xforce::nlu::basic;
+using namespace xforce::nlu::segmentor;
 using namespace xforce::nlu::pos;
 
 int main(int argc, char **argv) {
@@ -21,19 +25,17 @@ int main(int argc, char **argv) {
 TEST(test_case, all) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/pos.conf");
   ASSERT_TRUE(Basic::Init((*conf)["basic"]));
+  ASSERT_TRUE(Segmentor::Init((*conf)["segmentor"], (*conf)["ner"]));
   ASSERT_TRUE(PosTagging::Init((*conf)["pos"]));
 
-  std::wstring query = L"第一局比赛失利原因主要在我们自己";
-  NluContext nluContext(query);
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 0, 2));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 2, 1));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 3, 2));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 5, 2));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 7, 2));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef, 9, 2));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef,11, 1));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef,12, 2));
-  nluContext.GetSegments().Add(Segment(PosTag::kUndef,14, 2));
+  std::wstring wStrQuery = L"小米再次发布新的组织架构调整和人事任命";
+  Segment::Set segments(wStrQuery);
+  NameEntity::Set nameEntities(wStrQuery);
+
+  Segmentor::Parse(wStrQuery, segments, nameEntities);
+
+  NluContext nluContext(wStrQuery);
+  nluContext.SetSegments(segments);
 
   PosTagging::Tagging(nluContext);
 

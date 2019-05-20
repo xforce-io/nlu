@@ -2,6 +2,8 @@
 
 namespace xforce { namespace nlu { namespace segmentor {
 
+const std::wstring BigramDict::kMarkNum = L"未##数";
+
 bool BigramDict::Init(const std::string &dictpath) {
   FILE *fp = fopen(dictpath.c_str(), "r");
   if (fp == nullptr) {
@@ -46,7 +48,7 @@ bool BigramDict::Init(const std::string &dictpath) {
       auto wstrWord1 = StrHelper::Str2Wstr(results1[1]);
       XFC_ASSERT(wstrWord0 != nullptr);
       XFC_ASSERT(wstrWord1 != nullptr);
-      AddToDict(*wstrWord0, *wstrWord1, num);  
+      AddToDict_(*wstrWord0, *wstrWord1, num);
     }
     line = fgets(buf, sizeof(buf), fp);
   }
@@ -55,19 +57,25 @@ bool BigramDict::Init(const std::string &dictpath) {
 }
 
 uint32_t BigramDict::GetFreq(const std::wstring &word0, const std::wstring &word1) const {
-  auto iter = container_.find(word0);
+  if (word0 == L"达" && word1 == L"9.2") {
+    int a = 0;
+  }
+
+  const std::wstring &key0 = WordMapper_(word0);
+  auto iter = container_.find(key0);
   if (iter == container_.end()) {
     return 0;
   }
 
-  auto iter1 = iter->second->find(word1);
+  const std::wstring &key1 = WordMapper_(word1);
+  auto iter1 = iter->second->find(key1);
   if (iter1 == iter->second->end()) {
     return 0;
   }
   return iter1->second;
 }
 
-void BigramDict::AddToDict(const std::wstring &word0, const std::wstring &word1, uint32_t freq) {
+void BigramDict::AddToDict_(const std::wstring &word0, const std::wstring &word1, uint32_t freq) {
   auto iter = container_.find(word0);
   if (iter == container_.end()) {
     Inner *inner = new Inner;
@@ -83,6 +91,15 @@ void BigramDict::AddToDict(const std::wstring &word0, const std::wstring &word1,
   }
 
   iter->second->insert(std::make_pair(word1, iter1->second + freq));
+}
+
+const std::wstring& BigramDict::WordMapper_(const std::wstring &word) const {
+  double num;
+  bool ret = StrHelper::GetNum(word, num);
+  if (ret) {
+    return kMarkNum;
+  }
+  return word;
 }
 
 BigramDict::~BigramDict() {

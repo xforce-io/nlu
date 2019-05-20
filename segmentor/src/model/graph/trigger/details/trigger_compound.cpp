@@ -50,11 +50,15 @@ void TriggerCompound::Process(
   }
 
   bool isName = true;
-  for (auto iter = namesNodes->GetNodes().begin(); iter != namesNodes->GetNodes().end(); ++iter) {
-    Node *node = *iter;
-    if (ner::PersonName::PossibleName(query, node->GetOffset(), node->GetLen()) < 0) {
-      isName = false;
+  if (namesNodes->GetNodes().size() != 0) {
+    for (auto iter = namesNodes->GetNodes().begin(); iter != namesNodes->GetNodes().end(); ++iter) {
+      Node *node = *iter;
+      if (ner::PersonName::PossibleName(query, node->GetOffset(), node->GetLen()) < 0) {
+        isName = false;
+      }
     }
+  } else {
+    isName = false;
   }
 
   if (isName) {
