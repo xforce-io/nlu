@@ -4,7 +4,9 @@ namespace xforce { namespace nlu { namespace basic {
 
 void Segment::Dump(JsonType &jsonType) {
   Super::Dump(jsonType);
-  jsonType["pos"] = *(StrHelper::Wstr2Str(PosTag::Str(posTag_)));
+  for (auto &posTag : posTags_) {
+    jsonType["pos"].Append(*(StrHelper::Wstr2Str(PosTag::Str(posTag))));
+  }
 }
 
 }}}

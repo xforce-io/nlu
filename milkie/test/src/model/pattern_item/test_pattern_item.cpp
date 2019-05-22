@@ -39,7 +39,7 @@ TEST(testAll, match) {
   context = std::make_shared<Context>(L"12");
   ASSERT_TRUE(!ret.first->MatchPattern(*(context.get())));
 
-  ret = PatternItem::Build(L"#Pos(aP-uP-nP-)");
+  ret = PatternItem::Build(L"#Pos((n|a)P-uP-nP-)");
 
   auto query = L"美味的方便面才好吃";
   context = std::make_shared<Context>(query);
@@ -56,4 +56,20 @@ TEST(testAll, match) {
   context = std::make_shared<Context>(L"2012年12月11号");
   ASSERT_TRUE(ret.first->MatchPattern(*(context.get())));
   ASSERT_TRUE(ret.first->GetContentMatched() == L"2012年12月");
+}
+
+TEST(testAll, multiSegMatch) {
+  auto query = L"美味的方便面才好吃";
+  std::shared_ptr<Context> context = std::make_shared<Context>(query);
+
+  FragmentSet<Segment> segments(query);
+  segments.Add(Segment(PosTag::kA, 0, 2));
+  segments[0]->AddPosTag(PosTag::kN);
+
+  segments.Add(Segment(PosTag::kU, 2, 1));
+  segments.Add(Segment(PosTag::kN, 3, 3));
+  context->GetSentence().GetNluContext()->SetSegments(segments);
+
+  auto ret = PatternItem::Build(L"#Pos((n|a)P-uP-nP-)");
+  ASSERT_TRUE(ret.first->MatchPattern(*(context.get())));
 }

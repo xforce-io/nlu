@@ -23,6 +23,7 @@ class Segment : public Fragment {
   inline void SetPosTag(PosTag::Type posTag);
   inline void AddPosTag(PosTag::Type posTag);
   const std::vector<PosTag::Type> GetPosTags() const { return posTags_; }
+  PosTag::Type GetPosTag() const { return posTags_[0]; }
 
   inline std::wstring GetQuery(const std::wstring &sentence) const;
 
@@ -35,16 +36,18 @@ class Segment : public Fragment {
 };
 
 Segment::Segment() :
-  Fragment(-1, -1) {}
+    Fragment(-1, -1) {}
 
 Segment::Segment(PosTag::Type posTag, size_t offset, size_t len) :
-  Fragment(offset, len) {}
+    Fragment(offset, len) {
+  SetPosTag(posTag);
+}
 
 Segment::Segment(size_t offset, size_t len) :
-  Fragment(offset, len) {}
+    Fragment(offset, len) {}
 
 Segment::Segment(size_t offset) :
-  Fragment(offset, -1) {}
+    Fragment(offset, -1) {}
 
 void Segment::SetPosTag(PosTag::Type posTag) {
   posTags_.clear();
