@@ -12,4 +12,10 @@ void Strategy::SetPos(
   }
 }
 
+void Strategy::AddPos(
+        std::shared_ptr<basic::Segment> &segment,
+        basic::PosTag::Type posTag) {
+  segment->AddPosTag(posTag);
+}
+
 }}}

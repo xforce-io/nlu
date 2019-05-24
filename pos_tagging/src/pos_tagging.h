@@ -20,11 +20,6 @@ class PosTagging {
   static void Tini();
 
  private:
-  void SetPosCtbFromPos_(
-      const std::wstring &clause,
-      basic::FragmentSet<basic::Segment> &segments);
-
- private:
   std::vector<Strategy*> strategies_;
 
   static PosTagging posTagging_;

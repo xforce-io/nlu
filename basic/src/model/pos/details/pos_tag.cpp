@@ -49,15 +49,7 @@ PosTag::Type PosTag::GetPosTag(const std::wstring &pos) {
       return PosTag::kH;
     case L'k' :  
       return PosTag::kK;
-    case L'g' : {  
-      if (pos == L"Vg") {
-        return PosTag::kGv;
-      } else if (pos == L"Vn") {
-        return PosTag::kGn;
-      }           
-      return PosTag::kUndef;
-    }
-    case L'x' : 
+    case L'x' :
       return PosTag::kX;
     case L'i' :  
       return PosTag::kI;
