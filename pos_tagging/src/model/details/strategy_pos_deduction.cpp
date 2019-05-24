@@ -12,15 +12,33 @@ void StrategyPosDeduction::Process(basic::NluContext &nluContext) {
 
 void StrategyPosDeduction::ProcessAdverb_(
         basic::Segment::Set &segments,
-        size_t i) {
-  if (segments.Size() - 1 == i) {
+        size_t idx) {
+  if (segments.Size() - 1 == idx) {
     return;
   }
 
-  auto &cur = segments[i];
-  auto &next = segments[i+1];
+  auto &cur = segments[idx];
   if (cur->SizePosTags() == 1 &&
       cur->GetPosTag() == basic::PosTag::kD) {
+    bool hasPredAfterward = false;
+    for (size_t i = idx+2; i < segments.Size(); ++i) {
+      for (auto &posTag : segments[i]->GetPosTags()) {
+        if (basic::PosTag::IsPred(posTag)) {
+          hasPredAfterward = true;
+          break;
+        }
+      }
+
+      if (hasPredAfterward) {
+        break;
+      }
+    }
+
+    if (!hasPredAfterward) {
+      return;
+    }
+
+    auto &next = segments[idx+1];
 
   } else if (cur->SizePosTags() > 1 &&
       cur->ContainPosTag(basic::PosTag::kD)) {
