@@ -5,6 +5,7 @@
 #include "../model/strategy_context_infer.h"
 #include "../model/strategy_complement.h"
 #include "../model/strategy_pos_deduction.h"
+#include "../model/strategy_only_pred_or_prep.h"
 
 namespace xforce { namespace nlu { namespace pos {
 
@@ -15,6 +16,7 @@ PosTagging::PosTagging() {
   strategies_.push_back(new StrategyWindowStatistics());
   strategies_.push_back(new StrategyComplement());
   strategies_.push_back(new StrategyPosDeduction());
+  strategies_.push_back(new StrategyOnlyPredOrPrep());
 }
 
 PosTagging::~PosTagging() {
