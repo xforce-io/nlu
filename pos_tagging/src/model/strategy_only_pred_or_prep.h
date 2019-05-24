@@ -14,9 +14,9 @@ class StrategyOnlyPredOrPrep : public Strategy {
 };
 
 bool StrategyOnlyPredOrPrep::PosFilter_(basic::PosTag::Type posTag) {
-  return posTag == basic::PosTag::kA ||
-      posTag == basic::PosTag::kV ||
-      posTag == basic::PosTag::kP;
+  return basic::PosTag::kA == posTag ||
+      basic::PosTag::kV == posTag ||
+      basic::PosTag::kP == posTag;
 }
 
 }}}
