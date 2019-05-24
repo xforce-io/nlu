@@ -13,8 +13,19 @@ void StrategyPosDeduction::Process(basic::NluContext &nluContext) {
 void StrategyPosDeduction::ProcessAdverb_(
         basic::Segment::Set &segments,
         size_t i) {
-  auto &segment = segments[i];
-  if (segment->GetPosTags().si)
+  if (segments.Size() - 1 == i) {
+    return;
+  }
+
+  auto &cur = segments[i];
+  auto &next = segments[i+1];
+  if (cur->SizePosTags() == 1 &&
+      cur->GetPosTag() == basic::PosTag::kD) {
+
+  } else if (cur->SizePosTags() > 1 &&
+      cur->ContainPosTag(basic::PosTag::kD)) {
+
+  }
 }
 
 }}}

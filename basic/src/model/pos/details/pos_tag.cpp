@@ -2,8 +2,8 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
-PosTag::Type PosTag::GetPosTag(const std::wstring &pos) {
-  switch (pos[0]) {
+PosTag::Type PosTag::GetPosTag(const std::wstring &posTag) {
+  switch (posTag[0]) {
     case L'n' :
       return PosTag::kN;
     case L't' :  
@@ -19,8 +19,8 @@ PosTag::Type PosTag::GetPosTag(const std::wstring &pos) {
     case L'r' :  
       return PosTag::kR;
     case L'v' :  
-      if (pos.length() == 2) {
-        if (pos[1] == L'n') {
+      if (posTag.length() == 2) {
+        if (posTag[1] == L'n') {
           return PosTag::kVn;
         }
       }
@@ -64,7 +64,7 @@ PosTag::Type PosTag::GetPosTag(const std::wstring &pos) {
   };
 }
 
-const std::wstring& PosTag::Str(PosTag::Type type) {
+const std::wstring& PosTag::Str(PosTag::Type posTag) {
   static const std::wstring kN = L"n";
   static const std::wstring kT = L"t";
   static const std::wstring kS = L"s";
@@ -94,7 +94,7 @@ const std::wstring& PosTag::Str(PosTag::Type type) {
   static const std::wstring kJ = L"j";
   static const std::wstring kW = L"w";
   static const std::wstring kUndef = L"undef";
-  switch (type) {
+  switch (posTag) {
     case PosTag::kN :
       return kN;
     case PosTag::kT :
@@ -137,10 +137,6 @@ const std::wstring& PosTag::Str(PosTag::Type type) {
       return kH;  
     case PosTag::kK :
       return kK;  
-    case PosTag::kGn :
-      return kGn;  
-    case PosTag::kGv :
-      return kGv;  
     case PosTag::kX :
       return kX;  
     case PosTag::kI :

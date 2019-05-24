@@ -50,8 +50,6 @@ class PosTag {
      */
     kH, //前接成分
     kK, //后接成分
-    kGn, //名词性语素
-    kGv, //动词性语素
     kX, //非语素字
     /*
      * 附加类别/大于词的单位
@@ -72,7 +70,8 @@ class PosTag {
 
  public:
   static PosTag::Type GetPosTag(const std::wstring &pos);
-  static const std::wstring& Str(PosTag::Type type);
+  static const std::wstring& Str(PosTag::Type posTag);
+  inline static bool IsPred(PosTag::Type posTag);
 };
 
 class NotionOrForm {
@@ -113,6 +112,12 @@ class SingleOrCompound {
   inline static SingleOrCompound::Type GetSingleOrCompound(
       const std::string &singleOrCompound); 
 };
+
+bool PosTag::IsPred(PosTag::Type posTag) {
+  return PosTag::kV == posTag ||
+    PosTag::kA == posTag ||
+    PosTag::kZ == posTag;
+}
 
 NotionOrForm::Type NotionOrForm::GetNotionOrForm(
       const std::string &notionOrForm) {
