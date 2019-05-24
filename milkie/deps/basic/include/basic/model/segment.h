@@ -22,6 +22,7 @@ class Segment : public Fragment {
 
   inline void SetPosTag(PosTag::Type posTag);
   inline void AddPosTag(PosTag::Type posTag);
+  inline void RemovePosTag(PosTag::Type posTag);
   size_t SizePosTags() const { return posTags_.size(); }
   const std::vector<PosTag::Type> GetPosTags() const { return posTags_; }
   inline PosTag::Type GetPosTag() const;
@@ -58,6 +59,15 @@ void Segment::SetPosTag(PosTag::Type posTag) {
 
 void Segment::AddPosTag(PosTag::Type posTag) {
   posTags_.push_back(posTag);
+}
+
+void Segment::RemovePosTag(PosTag::Type posTag) {
+  for (auto iter = posTags_.begin(); iter != posTags_.end(); ++iter) {
+    if (*iter == posTag) {
+      posTags_.erase(iter);
+      return;
+    }
+  }
 }
 
 PosTag::Type Segment::GetPosTag() const {
