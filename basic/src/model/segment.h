@@ -58,6 +58,11 @@ void Segment::SetPosTag(PosTag::Type posTag) {
 }
 
 void Segment::AddPosTag(PosTag::Type posTag) {
+  for (auto &singlePosTag : posTags_) {
+    if (singlePosTag == posTag) {
+      return;
+    }
+  }
   posTags_.push_back(posTag);
 }
 
