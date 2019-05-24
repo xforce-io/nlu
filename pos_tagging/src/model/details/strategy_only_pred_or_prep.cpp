@@ -22,14 +22,14 @@ void StrategyOnlyPredOrPrep::Process(basic::NluContext &nluContext) {
   }
 
   if (idx>=0) {
-    auto &segment = segments[idx];
-    auto iter = segment->GetPosTags().begin();
-    while (iter != segment->GetPosTags().end()) {
-      auto next = iter+1;
-      if (!PosFilter_(*iter)) {
-        segment->GetPosTags().erase(iter);
-      }
-      iter = next;
+    auto &posTags = segments[idx]->GetPosTags();
+    std::vector<basic::PosTag::Type> posTagsToErase;
+    for (auto &posTag : posTags) {
+      posTagsToErase.push_back(posTag);
+    }
+
+    for (auto &posTag : posTagsToErase) {
+      posTags.erase(posTag);
     }
   }
 }
