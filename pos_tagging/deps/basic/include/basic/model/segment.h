@@ -24,8 +24,8 @@ class Segment : public Fragment {
   inline void AddPosTag(PosTag::Type posTag);
   inline void RemovePosTag(PosTag::Type posTag);
   size_t SizePosTags() const { return posTags_.size(); }
-  const std::vector<PosTag::Type> GetPosTags() const { return posTags_; }
-  std::vector<PosTag::Type> GetPosTags() { return posTags_; }
+  const std::vector<PosTag::Type>& GetPosTags() const { return posTags_; }
+  std::vector<PosTag::Type>& GetPosTags() { return posTags_; }
   inline PosTag::Type GetPosTag() const;
   inline bool ContainPosTag(PosTag::Type posTag);
 
@@ -77,7 +77,7 @@ void Segment::RemovePosTag(PosTag::Type posTag) {
 }
 
 PosTag::Type Segment::GetPosTag() const {
-  return posTags_.size() != 0 ? posTags_[0] : PosTag::kUndef;
+  return posTags_.size() == 1 ? posTags_[0] : PosTag::kUndef;
 }
 
 bool Segment::ContainPosTag(PosTag::Type posTag) {
