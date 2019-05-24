@@ -28,7 +28,7 @@ TEST(test_case, all) {
   ASSERT_TRUE(Segmentor::Init((*conf)["segmentor"], (*conf)["ner"]));
   ASSERT_TRUE(PosTagging::Init((*conf)["pos"]));
 
-  std::wstring wStrQuery = L"小米再次发布新的组织架构调整和人事任命";
+  std::wstring wStrQuery = L"下层为四线高速铁路";
   Segment::Set segments(wStrQuery);
   NameEntity::Set nameEntities(wStrQuery);
 
