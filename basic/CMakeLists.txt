@@ -24,7 +24,7 @@ FILE(GLOB_RECURSE BASIC_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -DUNICODE=1")
 
 add_library(basic
-  ${BASIC_FILES} src/model/fragment/details/manager_fragment_set.cpp src/model/details/nlu_context.cpp src/model/fragment/details/fragment.cpp src/basic.h src/details/basic.cpp src/model/chunk_sep.h)
+  ${BASIC_FILES} src/model/fragment/details/manager_fragment_set.cpp src/model/details/nlu_context.cpp src/model/fragment/details/fragment.cpp src/basic.h src/details/basic.cpp src/model/chunk_sep.h src/data/gkb/table/table.hpp src/data/gkb/entry/entry_global.h src/data/gkb/entry/entry.h src/data/gkb/entry/details/entry_global.cpp src/data/gkb/table/gkb_global.h src/data/gkb/table/details/gkb_global.cpp src/data/gkb/entry/entry_adv.h src/data/gkb/entry/details/entry_adv.cpp src/data/gkb/table/gkb_adv.h src/data/gkb/gkb.h src/data/gkb/details/gkb.cpp)
 
 target_link_libraries(basic
   log4cplus
