@@ -41,7 +41,8 @@ add_custom_command(TARGET basic
   COMMAND mkdir -p ${BASIC_LIB_OUTPUT_PATH}
   COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}
   COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/public
-  COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/data
+  COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/data/gkb/entry
+  COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/data/gkb/table
   COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/model/pos
   COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/model/pos_ctb
   COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/model/syntax
@@ -52,7 +53,13 @@ add_custom_command(TARGET basic
   COMMAND cp ${BASIC_SRC_DIR}/public/public.h ${BASIC_INC_OUTPUT_PATH}/public/
   COMMAND cp ${BASIC_SRC_DIR}/public/dep.h ${BASIC_INC_OUTPUT_PATH}/public/
   COMMAND cp ${BASIC_SRC_DIR}/data/manager.h ${BASIC_INC_OUTPUT_PATH}/data/
-  COMMAND cp ${BASIC_SRC_DIR}/data/gkb_zk.h ${BASIC_INC_OUTPUT_PATH}/data/
+  COMMAND cp ${BASIC_SRC_DIR}/data/gkb/gkb.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/
+  COMMAND cp ${BASIC_SRC_DIR}/data/gkb/table/table.hpp ${BASIC_INC_OUTPUT_PATH}/data/gkb/table/
+  COMMAND cp ${BASIC_SRC_DIR}/data/gkb/table/gkb_global.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/table/
+  COMMAND cp ${BASIC_SRC_DIR}/data/gkb/table/gkb_adv.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/table/
+  COMMAND cp ${BASIC_SRC_DIR}/data/gkb/entry/entry.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/entry/
+  COMMAND cp ${BASIC_SRC_DIR}/data/gkb/entry/entry_adv.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/entry/
+  COMMAND cp ${BASIC_SRC_DIR}/data/gkb/entry/entry_global.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/entry/
   COMMAND cp ${BASIC_SRC_DIR}/data/word_dict.h ${BASIC_INC_OUTPUT_PATH}/data/
   COMMAND cp ${BASIC_SRC_DIR}/data/dict_item.h ${BASIC_INC_OUTPUT_PATH}/data/
   COMMAND cp ${BASIC_SRC_DIR}/model/nlu_context.h ${BASIC_INC_OUTPUT_PATH}/model/

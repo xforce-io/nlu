@@ -40,7 +40,7 @@ bool StrategyContextInfer::Init() {
 }
 
 void StrategyContextInfer::Process(basic::NluContext &nluContext) {
-  //TODO
+  UNUSE(nluContext)
 }
 
 }}}

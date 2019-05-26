@@ -24,13 +24,13 @@ void StrategyOnlyPredOrPrep::Process(basic::NluContext &nluContext) {
 
   if (idx>=0) {
     auto &posTags = segments[idx]->GetPosTags();
-    std::vector<basic::PosTag::Type> posTagsToErase;
-    for (auto &posTag : posTags) {
-      posTagsToErase.push_back(posTag);
-    }
-
-    for (auto &posTag : posTagsToErase) {
-      posTags.erase(posTag);
+    auto iter = posTags.begin();
+    while (iter != posTags.end()) {
+      if (!PosFilter_(*iter)) {
+        iter = posTags.erase(iter);
+      } else {
+        ++iter;
+      }
     }
   }
 }

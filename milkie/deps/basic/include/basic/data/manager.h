@@ -5,17 +5,17 @@
 namespace xforce { namespace nlu { namespace basic {
 
 class WordDict;
-class GkbZk;
+class Gkb;
 
 class Manager {
  public:
   bool Init();
 
   const WordDict& GetWordDict() const { return *wordDict_; }
-  const GkbZk& GetGkbZk() const { return *gkbZk_; }
+  const Gkb& GetGkb() const { return *gkb_; }
 
   inline static void SetWordDict(WordDict &wordDict);
-  inline static void SetGkbZk(GkbZk &gkbZk);
+  inline static void SetGkb(Gkb &gkb);
 
   virtual ~Manager();
 
@@ -24,7 +24,7 @@ class Manager {
 
  private:
   WordDict *wordDict_;
-  GkbZk *gkbZk_;
+  Gkb *gkb_;
 
   static Manager *manager_;
 };
@@ -33,8 +33,8 @@ void Manager::SetWordDict(WordDict &wordDict) {
   manager_->wordDict_ = &wordDict;
 }
 
-void Manager::SetGkbZk(GkbZk &gkbZk) {
-  manager_->gkbZk_ = &gkbZk;
+void Manager::SetGkb(Gkb &gkb) {
+  manager_->gkb_ = &gkb;
 }
 
 }}}

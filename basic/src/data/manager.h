@@ -33,8 +33,8 @@ void Manager::SetWordDict(WordDict &wordDict) {
   manager_->wordDict_ = &wordDict;
 }
 
-void Manager::SetGkbZk(GkbZk &gkbZk) {
-  manager_->gkbZk_ = &gkbZk;
+void Manager::SetGkb(Gkb &gkb) {
+  manager_->gkb_ = &gkb;
 }
 
 }}}

@@ -12,7 +12,7 @@ bool WindowFeatureSelf::ExtractFeature(const std::wstring &word, std::wstring &f
 }
 
 bool WindowFeatureIsVerb::ExtractFeature(const std::wstring &word, std::wstring &feature) {
-  auto poses = basic::Manager::Get().GetGkbZk().GetPos(word);
+  auto poses = basic::Manager::Get().GetGkb().GetGkbGlobal().GetPosTags(word);
   if (poses == nullptr) {
     return false;
   }
@@ -27,7 +27,7 @@ bool WindowFeatureIsVerb::ExtractFeature(const std::wstring &word, std::wstring 
 }
 
 bool WindowFeatureIsNoun::ExtractFeature(const std::wstring &word, std::wstring &feature) {
-  auto poses = basic::Manager::Get().GetGkbZk().GetPos(word);
+  auto poses = basic::Manager::Get().GetGkb().GetGkbGlobal().GetPosTags(word);
   if (poses == nullptr) {
     return false;
   }

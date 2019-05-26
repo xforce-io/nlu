@@ -10,5 +10,6 @@
 
 #include "basic/data/word_dict.h"
 #include "basic/data/dict_item.h"
-#include "basic/data/gkb_zk.h"
+#include "basic/data/gkb/gkb.h"
+#include "basic/data/gkb/table/gkb_global.h"
 #include "basic/data/manager.h"
