@@ -10,7 +10,10 @@ class StrategyPosDeduction : public Strategy {
   void Process(basic::NluContext &nluContext);
 
  private:
-  void ProcessAdverb_(basic::Segment::Set &segments, size_t i);
+  void ProcessAdverb_(
+          basic::NluContext &nluContext,
+          basic::Segment::Set &segments,
+          size_t i);
 };
 
 }}}

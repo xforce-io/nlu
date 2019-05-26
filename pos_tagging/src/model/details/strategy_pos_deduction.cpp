@@ -6,11 +6,12 @@ void StrategyPosDeduction::Process(basic::NluContext &nluContext) {
   auto &clause = nluContext.GetQuery();
   typename basic::Segment::Set &segments = nluContext.GetSegments();
   for (size_t i=0; i < segments.Size(); ++i) {
-    ProcessAdverb_(segments, i);
+    ProcessAdverb_(nluContext, segments, i);
   }
 }
 
 void StrategyPosDeduction::ProcessAdverb_(
+        basic::NluContext &nluContext,
         basic::Segment::Set &segments,
         size_t idx) {
   if (segments.Size() - 1 == idx) {
@@ -22,7 +23,8 @@ void StrategyPosDeduction::ProcessAdverb_(
           cur->GetPosTag() == basic::PosTag::kD) ||
       (cur->SizePosTags() > 1 &&
           cur->ContainPosTag(basic::PosTag::kD))) {
-    if (basic::Manager::Get().GetGkb().GetGkbAdv().beforeSbv(*cur->GetStr()) == 0) {
+    const std::wstring &curQuery = cur->GetQuery(nluContext.GetQuery());
+    if (basic::Manager::Get().GetGkb().GetGkbAdv().beforeSbv(curQuery) == 0) {
       for (size_t i = idx + 2; i < segments.Size(); ++i) {
         for (auto &posTag : segments[i]->GetPosTags()) {
           if (basic::PosTag::IsPred(posTag)) {
