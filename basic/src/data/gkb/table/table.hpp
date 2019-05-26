@@ -54,7 +54,7 @@ bool Table<EntryType>::Init(const std::string &filepath) {
       return false;
     }
     entries_.push_back(entryType);
-    PutIntoInverted_(entryType);
+    PutIntoInverted_(*entryType);
   }
   return true;
 }

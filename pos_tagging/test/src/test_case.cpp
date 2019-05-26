@@ -28,7 +28,7 @@ TEST(test_case, all) {
   ASSERT_TRUE(Segmentor::Init((*conf)["segmentor"], (*conf)["ner"]));
   ASSERT_TRUE(PosTagging::Init((*conf)["pos"]));
 
-  std::wstring wStrQuery = L"下层为四线高速铁路";
+  std::wstring wStrQuery = L"作为连镇铁路跨越长江的关键工程";
   Segment::Set segments(wStrQuery);
   NameEntity::Set nameEntities(wStrQuery);
 
