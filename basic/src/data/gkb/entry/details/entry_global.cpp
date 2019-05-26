@@ -2,10 +2,13 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
-bool EntryGlobal::Parse(const std::vector<std::wstring> &items) {
+int EntryGlobal::Parse(const std::vector<std::wstring> &items) {
   word_ = items[0];
   posTag_ = PosTag::GetPosTag(items[1]);
-  return true;
+  if (PosTag::kUndef == posTag_) {
+    return 1;
+  }
+  return 0;
 }
 
 }}}
