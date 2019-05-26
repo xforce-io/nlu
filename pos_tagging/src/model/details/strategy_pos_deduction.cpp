@@ -22,22 +22,14 @@ void StrategyPosDeduction::ProcessAdverb_(
           cur->GetPosTag() == basic::PosTag::kD) ||
       (cur->SizePosTags() > 1 &&
           cur->ContainPosTag(basic::PosTag::kD))) {
-    bool hasPredAfterward = false;
-    for (size_t i = idx+2; i < segments.Size(); ++i) {
-      for (auto &posTag : segments[i]->GetPosTags()) {
-        if (basic::PosTag::IsPred(posTag)) {
-          hasPredAfterward = true;
-          break;
+    if (basic::Manager::Get().GetGkb().GetGkbAdv().beforeSbv(*cur->GetStr()) == 0) {
+      for (size_t i = idx + 2; i < segments.Size(); ++i) {
+        for (auto &posTag : segments[i]->GetPosTags()) {
+          if (basic::PosTag::IsPred(posTag)) {
+            return;
+          }
         }
       }
-
-      if (hasPredAfterward) {
-        break;
-      }
-    }
-
-    if (hasPredAfterward) {
-      return;
     }
 
     if (cur->SizePosTags() == 1) {
