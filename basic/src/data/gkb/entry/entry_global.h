@@ -8,7 +8,7 @@ namespace xforce { namespace nlu { namespace basic {
 
 class EntryGlobal : public Entry {
  public:
-  bool Parse(const std::vector<std::wstring> &items);
+  int Parse(const std::vector<std::wstring> &items);
 
   PosTag::Type GetPosTag() const { return posTag_; }
 

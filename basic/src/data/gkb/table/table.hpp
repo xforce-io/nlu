@@ -49,7 +49,10 @@ bool Table<EntryType>::Init(const std::string &filepath) {
     }
 
     auto *entryType = new EntryType();
-    if (!entryType->Parse(items)) {
+    int resParse = entryType->Parse(items);
+    if (resParse>0) {
+      continue;
+    } else if (resParse<0) {
       ERROR("fail_parse_items[" << wline << "]");
       return false;
     }
