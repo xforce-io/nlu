@@ -71,8 +71,10 @@ bool PatternItemWordpos::MatchPattern(Context &context) {
     StrHelper::SplitStr(matched, kSep, items);
     contentMatched_ = L"";
     for (size_t i=0; i < items.size(); ++i) {
-      contentMatched_ += (*featureWordposes)[i]->GetQuery(
-          context.GetSentence().GetSentence());
+      if (!items[i].empty()) {
+        contentMatched_ += (*featureWordposes)[i]->GetQuery(
+            context.GetSentence().GetSentence());
+      }
     }
     return true;
   }

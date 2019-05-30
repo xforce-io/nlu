@@ -26,9 +26,17 @@ WindowStatistics* WindowStatistics::Create(const std::string &filepath) {
     std::vector<std::wstring> strs;
     StrHelper::SplitStr(*wline, std::wstring(L"  "), strs);
     for (size_t i=1; i < strs.size(); ++i) {
+      if (strs[i].empty()) {
+        continue;
+      }
+
       std::vector<std::wstring> pair;
       StrHelper::SplitStr(strs[i], L'/', pair);
       if (pair.size() == 2) {
+        if (pair[0].empty()) {
+          break;
+        }
+
         pairs.push_back(std::make_pair(
                 pair[0],
                 basic::PosTag::GetPosTag(pair[1])));

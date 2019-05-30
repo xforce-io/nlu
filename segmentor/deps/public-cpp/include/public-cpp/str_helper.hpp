@@ -255,9 +255,7 @@ void StrHelper::SplitStr(
 
         tmp_str = StrType();
         tmp_str.append(ptr_0, ptr_1-ptr_0);
-        if (!tmp_str.empty()) {
-          vals.push_back(tmp_str);
-        }
+        vals.push_back(tmp_str);
 
         if ('\0' == *ptr_1) break;
         ptr_0 = ++ptr_1;

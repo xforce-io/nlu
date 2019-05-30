@@ -50,6 +50,7 @@ class PosTag {
      */
     kH, //前接成分
     kK, //后接成分
+    kG,
     kX, //非语素字
     /*
      * 附加类别/大于词的单位
@@ -71,7 +72,15 @@ class PosTag {
  public:
   static PosTag::Type GetPosTag(const std::wstring &pos);
   static const std::wstring& Str(PosTag::Type posTag);
-  inline static bool IsPred(PosTag::Type posTag);
+
+  inline static bool IsNominals(PosTag::Type posTag);
+  inline static bool IsPredicate(PosTag::Type posTag);
+  inline static bool IsAdvOrDis(PosTag::Type posTag);
+  inline static bool IsFuncWord(PosTag::Type posTag);
+  inline static bool IsOther(PosTag::Type posTag);
+  inline static bool IsAppendixSubWord(PosTag::Type posTag);
+  inline static bool IsAppendixIdiom(PosTag::Type posTag);
+  inline static bool IsPunctuation(PosTag::Type posTag);
 };
 
 class NotionOrForm {
@@ -113,10 +122,53 @@ class SingleOrCompound {
       const std::string &singleOrCompound); 
 };
 
-bool PosTag::IsPred(PosTag::Type posTag) {
+bool PosTag::IsNominals(PosTag::Type posTag) {
+  return PosTag::kN == posTag ||
+    PosTag::kT == posTag ||
+    PosTag::kS == posTag ||
+    PosTag::kF == posTag ||
+    PosTag::kM == posTag ||
+    PosTag::kQ == posTag;
+}
+
+bool PosTag::IsPredicate(PosTag::Type posTag) {
   return PosTag::kV == posTag ||
     PosTag::kA == posTag ||
     PosTag::kZ == posTag;
+}
+
+bool PosTag::IsAdvOrDis(PosTag::Type posTag) {
+  return PosTag::kD == posTag ||
+    PosTag::kB == posTag;
+}
+
+bool PosTag::IsFuncWord(PosTag::Type posTag) {
+  return PosTag::kP == posTag ||
+    PosTag::kC == posTag ||
+    PosTag::kU == posTag ||
+    PosTag::kY == posTag;
+}
+
+bool PosTag::IsOther(PosTag::Type posTag) {
+  return PosTag::kO == posTag ||
+    PosTag::kE == posTag;
+}
+
+bool PosTag::IsAppendixSubWord(PosTag::Type posTag) {
+  return PosTag::kH == posTag ||
+    PosTag::kK == posTag ||
+    PosTag::kG == posTag ||
+    PosTag::kX == posTag;
+}
+
+bool PosTag::IsAppendixIdiom(PosTag::Type posTag) {
+  return PosTag::kI == posTag ||
+    PosTag::kL == posTag ||
+    PosTag::kJ == posTag;
+}
+
+bool PosTag::IsPunctuation(PosTag::Type posTag) {
+  return PosTag::kW == posTag;
 }
 
 NotionOrForm::Type NotionOrForm::GetNotionOrForm(

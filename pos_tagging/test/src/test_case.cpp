@@ -23,26 +23,30 @@ int main(int argc, char **argv) {
 }
 
 TEST(test_case, all) {
-  const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/pos.conf");
-  ASSERT_TRUE(Basic::Init((*conf)["basic"]));
-  ASSERT_TRUE(Segmentor::Init((*conf)["segmentor"], (*conf)["ner"]));
-  ASSERT_TRUE(PosTagging::Init((*conf)["pos"]));
+  try {
+    const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/pos.conf");
+    ASSERT_TRUE(Basic::Init((*conf)["basic"]));
+    ASSERT_TRUE(Segmentor::Init((*conf)["segmentor"], (*conf)["ner"]));
+    ASSERT_TRUE(PosTagging::Init((*conf)["pos"]));
 
-  std::wstring wStrQuery = L"作为连镇铁路跨越长江的关键工程";
-  Segment::Set segments(wStrQuery);
-  NameEntity::Set nameEntities(wStrQuery);
+    std::wstring wStrQuery = L"单根主缆拉力高达9万吨";
+    Segment::Set segments(wStrQuery);
+    NameEntity::Set nameEntities(wStrQuery);
 
-  Segmentor::Parse(wStrQuery, segments, nameEntities);
+    Segmentor::Parse(wStrQuery, segments, nameEntities);
 
-  NluContext nluContext(wStrQuery);
-  nluContext.SetSegments(segments);
+    NluContext nluContext(wStrQuery);
+    nluContext.SetSegments(segments);
 
-  PosTagging::Tagging(nluContext);
+    PosTagging::Tagging(nluContext);
 
-  xforce::JsonType jsonToDump;
-  nluContext.GetSegments().Dump(jsonToDump);
+    xforce::JsonType jsonToDump;
+    nluContext.GetSegments().Dump(jsonToDump);
 
-  std::stringstream ss;
-  jsonToDump.DumpJson(ss);
-  std::cout << ss.str() << std::endl;
+    std::stringstream ss;
+    jsonToDump.DumpJson(ss);
+    std::cout << ss.str() << std::endl;
+  } catch(char *str) {
+    std::cout << str << std::endl;
+  }
 }

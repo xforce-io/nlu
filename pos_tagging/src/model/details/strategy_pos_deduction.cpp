@@ -27,7 +27,7 @@ void StrategyPosDeduction::ProcessAdverb_(
     if (basic::Manager::Get().GetGkb().GetGkbAdv().beforeSbv(curQuery) == 0) {
       for (size_t i = idx + 2; i < segments.Size(); ++i) {
         for (auto &posTag : segments[i]->GetPosTags()) {
-          if (basic::PosTag::IsPred(posTag)) {
+          if (basic::PosTag::IsPredicate(posTag)) {
             return;
           }
         }

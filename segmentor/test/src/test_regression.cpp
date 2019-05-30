@@ -68,11 +68,11 @@ bool Check(const std::string &query, const std::vector<std::string> &segStrs) {
   Graph *graph = new Graph(*wStrQuery);
   graph->Process(segments, nameEntities);
 
-  if (segments.Size() != segStrs.size() + 1) {
+  if (segments.Size() != segStrs.size()) {
     return false;
   }
 
-  for (size_t i=0; i < segStrs.size(); ++i) {
+  for (size_t i=0; i < segStrs.size()-1; ++i) {
     auto wstr = StrHelper::Str2Wstr(segStrs[i]);
     assert(wstr != nullptr);
     if (wstr->length() + (size_t)segments[i]->GetOffset() != (size_t)segments[i+1]->GetOffset()) {

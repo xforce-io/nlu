@@ -10,7 +10,7 @@ class Entry {
 
   const std::wstring &GetWord() const { return word_; }
 
-  virtual bool Parse(const std::vector<std::wstring> &items) = 0;
+  virtual int Parse(const std::vector<std::wstring> &items) = 0;
 
  protected:
   std::wstring word_;
