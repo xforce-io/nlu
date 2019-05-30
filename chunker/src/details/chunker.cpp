@@ -20,6 +20,11 @@ void Chunker::Parse(
         const basic::FragmentSet<basic::Segment> &segments,
         const basic::FragmentSet<basic::NameEntity> &nameEntities,
         basic::FragmentSet<basic::Chunk> &chunks) {
+  for (size_t i=0; i < segments.Size(); ++i) {
+    for (auto &posTag : segments[i]->GetPosTags()) {
+      basic::PosTag::IsFuncWord(posTag)
+    }
+  }
 }
 
 void Chunker::Tini() {
