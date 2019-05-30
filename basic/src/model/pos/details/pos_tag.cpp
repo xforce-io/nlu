@@ -2,69 +2,69 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
-PosTag::Type PosTag::GetPosTag(const std::wstring &posTag) {
+PosTag::Type::Val PosTag::GetPosTag(const std::wstring &posTag) {
   switch (posTag[0]) {
     case L'n' :
-      return PosTag::kN;
+      return PosTag::Type::kN;
     case L't' :  
-      return PosTag::kT;
+      return PosTag::Type::kT;
     case L's' :  
-      return PosTag::kS;
+      return PosTag::Type::kS;
     case L'f' :  
-      return PosTag::kF;
+      return PosTag::Type::kF;
     case L'm' :  
-      return PosTag::kM;
+      return PosTag::Type::kM;
     case L'q' :  
-      return PosTag::kQ;
+      return PosTag::Type::kQ;
     case L'r' :  
-      return PosTag::kR;
+      return PosTag::Type::kR;
     case L'v' :  
       if (posTag.length() == 2) {
         if (posTag[1] == L'n') {
-          return PosTag::kVn;
+          return PosTag::Type::kVn;
         }
       }
-      return PosTag::kV;
+      return PosTag::Type::kV;
     case L'a' :  
-      return PosTag::kA;
+      return PosTag::Type::kA;
     case L'z' :  
-      return PosTag::kZ;
+      return PosTag::Type::kZ;
     case L'b' :  
-      return PosTag::kB;
+      return PosTag::Type::kB;
     case L'd' :  
-      return PosTag::kD;
+      return PosTag::Type::kD;
     case L'p' :  
-      return PosTag::kP;
+      return PosTag::Type::kP;
     case L'c' :  
-      return PosTag::kC;
+      return PosTag::Type::kC;
     case L'u' :  
-      return PosTag::kU;
+      return PosTag::Type::kU;
     case L'y' :  
-      return PosTag::kY;
+      return PosTag::Type::kY;
     case L'o' :  
-      return PosTag::kO;
+      return PosTag::Type::kO;
     case L'e' :  
-      return PosTag::kE;
+      return PosTag::Type::kE;
     case L'h' :  
-      return PosTag::kH;
+      return PosTag::Type::kH;
     case L'k' :  
-      return PosTag::kK;
+      return PosTag::Type::kK;
     case L'x' :
-      return PosTag::kX;
+      return PosTag::Type::kX;
     case L'i' :  
-      return PosTag::kI;
+      return PosTag::Type::kI;
     case L'l' :  
-      return PosTag::kL;
+      return PosTag::Type::kL;
     case L'j' :  
-      return PosTag::kJ;
+      return PosTag::Type::kJ;
     case L'w' :  
-      return PosTag::kW;
+      return PosTag::Type::kW;
     default :  
-      return PosTag::kUndef;
+      return PosTag::Type::kUndef;
   };
 }
 
-const std::wstring& PosTag::Str(PosTag::Type posTag) {
+const std::wstring& PosTag::Str(PosTag::Type::Val posTag) {
   static const std::wstring kN = L"n";
   static const std::wstring kT = L"t";
   static const std::wstring kS = L"s";
@@ -95,57 +95,57 @@ const std::wstring& PosTag::Str(PosTag::Type posTag) {
   static const std::wstring kW = L"w";
   static const std::wstring kUndef = L"undef";
   switch (posTag) {
-    case PosTag::kN :
+    case PosTag::Type::kN :
       return kN;
-    case PosTag::kT :
+    case PosTag::Type::kT :
       return kT;  
-    case PosTag::kS :
+    case PosTag::Type::kS :
       return kS;  
-    case PosTag::kF :
+    case PosTag::Type::kF :
       return kF;  
-    case PosTag::kM :
+    case PosTag::Type::kM :
       return kM;  
-    case PosTag::kQ :
+    case PosTag::Type::kQ :
       return kQ;  
-    case PosTag::kR :
+    case PosTag::Type::kR :
       return kR;  
-    case PosTag::kV :
+    case PosTag::Type::kV :
       return kV;  
-    case PosTag::kVn :
+    case PosTag::Type::kVn :
       return kVn;  
-    case PosTag::kA :
+    case PosTag::Type::kA :
       return kA;  
-    case PosTag::kZ :
+    case PosTag::Type::kZ :
       return kZ;  
-    case PosTag::kB :
+    case PosTag::Type::kB :
       return kB;  
-    case PosTag::kD :
+    case PosTag::Type::kD :
       return kD;  
-    case PosTag::kP :
+    case PosTag::Type::kP :
       return kP;  
-    case PosTag::kC :
+    case PosTag::Type::kC :
       return kC;  
-    case PosTag::kU :
+    case PosTag::Type::kU :
       return kU;  
-    case PosTag::kY :
+    case PosTag::Type::kY :
       return kY;  
-    case PosTag::kO :
+    case PosTag::Type::kO :
       return kO;  
-    case PosTag::kE :
+    case PosTag::Type::kE :
       return kE;  
-    case PosTag::kH :
+    case PosTag::Type::kH :
       return kH;  
-    case PosTag::kK :
+    case PosTag::Type::kK :
       return kK;  
-    case PosTag::kX :
+    case PosTag::Type::kX :
       return kX;  
-    case PosTag::kI :
+    case PosTag::Type::kI :
       return kI;  
-    case PosTag::kL :
+    case PosTag::Type::kL :
       return kL;  
-    case PosTag::kJ :
+    case PosTag::Type::kJ :
       return kJ;  
-    case PosTag::kW :
+    case PosTag::Type::kW :
       return kW;  
     default :  
       return kUndef;

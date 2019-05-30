@@ -18,7 +18,7 @@ bool WindowFeatureIsVerb::ExtractFeature(const std::wstring &word, std::wstring 
   }
 
   for (auto &pos : *poses) {
-    if (basic::PosTag::kV != pos && basic::PosTag::kVn != pos) {
+    if (basic::PosTag::Type::kV != pos && basic::PosTag::Type::kVn != pos) {
       return false;
     }
   }
@@ -33,7 +33,7 @@ bool WindowFeatureIsNoun::ExtractFeature(const std::wstring &word, std::wstring 
   }
 
   for (auto &pos : *poses) {
-    if (basic::PosTag::kN != pos) {
+    if (basic::PosTag::Type::kN != pos) {
       return false;
     }
   }

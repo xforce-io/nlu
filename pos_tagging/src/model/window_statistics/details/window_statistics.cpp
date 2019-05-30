@@ -15,7 +15,7 @@ WindowStatistics* WindowStatistics::Create(const std::string &filepath) {
     return nullptr;
   }
 
-  std::vector<std::pair<std::wstring, basic::PosTag::Type>> pairs;
+  std::vector<std::pair<std::wstring, basic::PosTag::Type::Val>> pairs;
   for (auto &line : lines) {
     auto wline = StrHelper::Str2Wstr(line);
     if (wline == nullptr) {
@@ -52,7 +52,7 @@ WindowStatistics* WindowStatistics::Create(const std::string &filepath) {
 }
 
 void WindowStatistics::Add_(
-        const std::vector<std::pair<std::wstring, basic::PosTag::Type >> &pairs) {
+        const std::vector<std::pair<std::wstring, basic::PosTag::Type::Val >> &pairs) {
   for (size_t i=0; i < pairs.size()-1; ++i) {
     tmpFeatureCombs_.clear();
     windowFeaturesExtractor_.Enum(pairs[i].first, pairs[i+1].first, tmpFeatureCombs_);

@@ -88,8 +88,8 @@ class PosTag {
   };
 
  public:
-  static PosTag::Type GetPosTag(const std::wstring &pos);
-  static const std::wstring& Str(PosTag::Type posTag);
+  static PosTag::Type::Val GetPosTag(const std::wstring &pos);
+  static const std::wstring& Str(PosTag::Type::Val posTag);
 
   inline static bool IsNominal(PosTag::Type::Val posTag);
   inline static bool IsPredicate(PosTag::Type::Val posTag);

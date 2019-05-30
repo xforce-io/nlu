@@ -20,9 +20,9 @@ void StrategyPosDeduction::ProcessAdverb_(
 
   auto &cur = segments[idx];
   if ((cur->SizePosTags() == 1 &&
-          cur->GetPosTag() == basic::PosTag::kD) ||
+          cur->GetPosTag() == basic::PosTag::Type::kD) ||
       (cur->SizePosTags() > 1 &&
-          cur->ContainPosTag(basic::PosTag::kD))) {
+          cur->ContainPosTag(basic::PosTag::Type::kD))) {
     const std::wstring &curQuery = cur->GetQuery(nluContext.GetQuery());
     if (basic::Manager::Get().GetGkb().GetGkbAdv().beforeSbv(curQuery) == 0) {
       for (size_t i = idx + 2; i < segments.Size(); ++i) {
@@ -38,8 +38,8 @@ void StrategyPosDeduction::ProcessAdverb_(
       auto &next = segments[idx+1];
       if (next->SizePosTags() > 1) {
         for (auto &posTag : next->GetPosTags()) {
-          if (posTag != basic::PosTag::kV &&
-              posTag != basic::PosTag::kA) {
+          if (posTag != basic::PosTag::Type::kV &&
+              posTag != basic::PosTag::Type::kA) {
             next->RemovePosTag(posTag);
           }
         }
@@ -47,9 +47,9 @@ void StrategyPosDeduction::ProcessAdverb_(
     } else {
       auto &next = segments[idx+1];
       if (next->SizePosTags() == 1 &&
-          next->GetPosTag() != basic::PosTag::kV &&
-          next->GetPosTag() != basic::PosTag::kA) {
-        cur->RemovePosTag(basic::PosTag::kD);
+          next->GetPosTag() != basic::PosTag::Type::kV &&
+          next->GetPosTag() != basic::PosTag::Type::kA) {
+        cur->RemovePosTag(basic::PosTag::Type::kD);
       }
     }
   }

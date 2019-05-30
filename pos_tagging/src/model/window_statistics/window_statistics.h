@@ -30,7 +30,7 @@ class WindowStatistics {
   inline std::pair<StatisticsItems::Category, const StatisticsUnit*>
           GetDominatorFromFeatures_(const std::vector<FeatureComb3> &featureCombs) const;
 
-  void Add_(const std::vector<std::pair<std::wstring, basic::PosTag::Type >> &pairs);
+  void Add_(const std::vector<std::pair<std::wstring, basic::PosTag::Type::Val >> &pairs);
   void ActualAdd_(const FeatureComb3 &key, const StatisticsUnit &newItem);
 
  private:

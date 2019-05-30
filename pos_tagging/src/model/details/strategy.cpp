@@ -4,9 +4,9 @@ namespace xforce { namespace nlu { namespace pos {
 
 void Strategy::SetPos(
         std::shared_ptr<basic::Segment> &segment,
-        basic::PosTag::Type posTag,
+        basic::PosTag::Type::Val posTag,
         uint32_t strategy) {
-  if (segment->GetPosTag() == basic::PosTag::kUndef) {
+  if (segment->GetPosTag() == basic::PosTag::Type::kUndef) {
     segment->SetPosTag(posTag);
     segment->SetStrategy(strategy);
   }
@@ -14,7 +14,7 @@ void Strategy::SetPos(
 
 void Strategy::AddPos(
         std::shared_ptr<basic::Segment> &segment,
-        basic::PosTag::Type posTag) {
+        basic::PosTag::Type::Val posTag) {
   segment->AddPosTag(posTag);
 }
 

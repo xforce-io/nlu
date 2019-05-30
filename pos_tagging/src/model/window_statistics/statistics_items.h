@@ -105,7 +105,7 @@ class StatisticsItems012 : public StatisticsItems {
 };
 
 bool StatisticsItems0::IsValid_(const StatisticsUnit &one) {
-  return one.type0 != basic::PosTag::kUndef;
+  return one.type0 != basic::PosTag::Type::kUndef;
 }
 
 bool StatisticsItems0::Match_(const StatisticsUnit &one, const StatisticsUnit &other) {
@@ -113,7 +113,7 @@ bool StatisticsItems0::Match_(const StatisticsUnit &one, const StatisticsUnit &o
 }
 
 bool StatisticsItems1::IsValid_(const StatisticsUnit &one) {
-  return one.type1 != basic::PosTag::kUndef;
+  return one.type1 != basic::PosTag::Type::kUndef;
 }
 
 bool StatisticsItems1::Match_(const StatisticsUnit &one, const StatisticsUnit &other) {
@@ -121,7 +121,7 @@ bool StatisticsItems1::Match_(const StatisticsUnit &one, const StatisticsUnit &o
 }
 
 bool StatisticsItems2::IsValid_(const StatisticsUnit &one) {
-  return one.type2 != basic::PosTag::kUndef;
+  return one.type2 != basic::PosTag::Type::kUndef;
 }
 
 bool StatisticsItems2::Match_(const StatisticsUnit &one, const StatisticsUnit &other) {
@@ -129,8 +129,8 @@ bool StatisticsItems2::Match_(const StatisticsUnit &one, const StatisticsUnit &o
 }
 
 bool StatisticsItems01::IsValid_(const StatisticsUnit &one) {
-  return one.type0 != basic::PosTag::kUndef &&
-      one.type1 != basic::PosTag::kUndef;
+  return one.type0 != basic::PosTag::Type::kUndef &&
+      one.type1 != basic::PosTag::Type::kUndef;
 }
 
 bool StatisticsItems01::Match_(const StatisticsUnit &one, const StatisticsUnit &other) {
@@ -138,8 +138,8 @@ bool StatisticsItems01::Match_(const StatisticsUnit &one, const StatisticsUnit &
 }
 
 bool StatisticsItems12::IsValid_(const StatisticsUnit &one) {
-  return one.type1 != basic::PosTag::kUndef &&
-      one.type2 != basic::PosTag::kUndef;
+  return one.type1 != basic::PosTag::Type::kUndef &&
+      one.type2 != basic::PosTag::Type::kUndef;
 }
 
 bool StatisticsItems12::Match_(const StatisticsUnit &one, const StatisticsUnit &other) {
@@ -147,8 +147,8 @@ bool StatisticsItems12::Match_(const StatisticsUnit &one, const StatisticsUnit &
 }
 
 bool StatisticsItems02::IsValid_(const StatisticsUnit &one) {
-  return one.type0 != basic::PosTag::kUndef &&
-      one.type2 != basic::PosTag::kUndef;
+  return one.type0 != basic::PosTag::Type::kUndef &&
+      one.type2 != basic::PosTag::Type::kUndef;
 }
 
 bool StatisticsItems02::Match_(const StatisticsUnit &one, const StatisticsUnit &other) {
@@ -156,9 +156,9 @@ bool StatisticsItems02::Match_(const StatisticsUnit &one, const StatisticsUnit &
 }
 
 bool StatisticsItems012::IsValid_(const StatisticsUnit &one) {
-  return one.type0 != basic::PosTag::kUndef &&
-      one.type1 != basic::PosTag::kUndef &&
-      one.type2 != basic::PosTag::kUndef;
+  return one.type0 != basic::PosTag::Type::kUndef &&
+      one.type1 != basic::PosTag::Type::kUndef &&
+      one.type2 != basic::PosTag::Type::kUndef;
 }
 
 bool StatisticsItems012::Match_(const StatisticsUnit &one, const StatisticsUnit &other) {

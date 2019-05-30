@@ -15,19 +15,19 @@ class Segment : public Fragment {
 
  public:
   inline Segment();
-  inline Segment(PosTag::Type posTag, size_t offset, size_t len);
+  inline Segment(PosTag::Type::Val posTag, size_t offset, size_t len);
   inline Segment(size_t offset, size_t len);
   inline Segment(size_t offset);
   virtual ~Segment() {}
 
-  inline void SetPosTag(PosTag::Type posTag);
-  inline void AddPosTag(PosTag::Type posTag);
-  inline void RemovePosTag(PosTag::Type posTag);
+  inline void SetPosTag(PosTag::Type::Val posTag);
+  inline void AddPosTag(PosTag::Type::Val posTag);
+  inline void RemovePosTag(PosTag::Type::Val posTag);
   size_t SizePosTags() const { return posTags_.size(); }
-  const std::vector<PosTag::Type>& GetPosTags() const { return posTags_; }
-  std::vector<PosTag::Type>& GetPosTags() { return posTags_; }
-  inline PosTag::Type GetPosTag() const;
-  inline bool ContainPosTag(PosTag::Type posTag);
+  const std::vector<PosTag::Type::Val>& GetPosTags() const { return posTags_; }
+  std::vector<PosTag::Type::Val>& GetPosTags() { return posTags_; }
+  inline PosTag::Type::Val GetPosTag() const;
+  inline bool ContainPosTag(PosTag::Type::Val posTag);
 
   inline std::wstring GetQuery(const std::wstring &sentence) const;
 
@@ -36,13 +36,13 @@ class Segment : public Fragment {
   void Dump(JsonType &jsonType);
 
  private:
-  std::vector<PosTag::Type> posTags_;
+  std::vector<PosTag::Type::Val> posTags_;
 };
 
 Segment::Segment() :
     Fragment(-1, -1) {}
 
-Segment::Segment(PosTag::Type posTag, size_t offset, size_t len) :
+Segment::Segment(PosTag::Type::Val posTag, size_t offset, size_t len) :
     Fragment(offset, len) {
   SetPosTag(posTag);
 }
@@ -53,12 +53,12 @@ Segment::Segment(size_t offset, size_t len) :
 Segment::Segment(size_t offset) :
     Fragment(offset, -1) {}
 
-void Segment::SetPosTag(PosTag::Type posTag) {
+void Segment::SetPosTag(PosTag::Type::Val posTag) {
   posTags_.clear();
   posTags_.push_back(posTag);
 }
 
-void Segment::AddPosTag(PosTag::Type posTag) {
+void Segment::AddPosTag(PosTag::Type::Val posTag) {
   for (auto &singlePosTag : posTags_) {
     if (singlePosTag == posTag) {
       return;
@@ -67,7 +67,7 @@ void Segment::AddPosTag(PosTag::Type posTag) {
   posTags_.push_back(posTag);
 }
 
-void Segment::RemovePosTag(PosTag::Type posTag) {
+void Segment::RemovePosTag(PosTag::Type::Val posTag) {
   for (auto iter = posTags_.begin(); iter != posTags_.end(); ++iter) {
     if (*iter == posTag) {
       posTags_.erase(iter);
@@ -76,11 +76,11 @@ void Segment::RemovePosTag(PosTag::Type posTag) {
   }
 }
 
-PosTag::Type Segment::GetPosTag() const {
-  return posTags_.size() == 1 ? posTags_[0] : PosTag::kUndef;
+PosTag::Type::Val Segment::GetPosTag() const {
+  return posTags_.size() == 1 ? posTags_[0] : PosTag::Type::kUndef;
 }
 
-bool Segment::ContainPosTag(PosTag::Type posTag) {
+bool Segment::ContainPosTag(PosTag::Type::Val posTag) {
   for (auto &singlePosTag : posTags_) {
     if (singlePosTag == posTag) {
       return true;

@@ -10,10 +10,10 @@ class EntryGlobal : public Entry {
  public:
   int Parse(const std::vector<std::wstring> &items);
 
-  PosTag::Type GetPosTag() const { return posTag_; }
+  PosTag::Type::Val GetPosTag() const { return posTag_; }
 
  private:
-  PosTag::Type posTag_; 
+  PosTag::Type::Val posTag_; 
   std::wstring tongxing_;
   std::wstring pinyin_;
   std::wstring xushi_;

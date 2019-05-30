@@ -21,7 +21,7 @@ class Node {
   inline void SetBestPrev(Node &prev);
   inline void SetBestScore(double score);
   inline void SetNameEntity(std::shared_ptr<basic::NameEntity> ner);
-  inline void SetPosTag(basic::PosTag::Type posTag);
+  inline void SetPosTag(basic::PosTag::Type::Val posTag);
 
   ssize_t GetOffset() const { return offset_; }
   size_t GetLen() const { return len_; }
@@ -36,7 +36,7 @@ class Node {
   inline bool IsEnd() const;
   inline bool IsSpecial() const;
   inline int GetShapeCode() const;
-  inline basic::PosTag::Type GetPosTag() const { return posTag_; }
+  inline basic::PosTag::Type::Val GetPosTag() const { return posTag_; }
 
   std::string Str() const;
 
@@ -53,7 +53,7 @@ class Node {
   Node *bestPrev_;
   double bestScore_;
 
-  basic::PosTag::Type posTag_;
+  basic::PosTag::Type::Val posTag_;
 
   std::shared_ptr<basic::NameEntity> nameEntity_;
 };  
@@ -86,7 +86,7 @@ void Node::SetNameEntity(std::shared_ptr<basic::NameEntity> nameEntity) {
   nameEntity_ = nameEntity;
 }
 
-void Node::SetPosTag(basic::PosTag::Type posTag) {
+void Node::SetPosTag(basic::PosTag::Type::Val posTag) {
   posTag_ = posTag;
 }
 

@@ -10,13 +10,13 @@ class StrategyOnlyPredOrPrep : public Strategy {
   void Process(basic::NluContext &nluContext);
 
  private:
-  inline bool PosFilter_(basic::PosTag::Type posTag);
+  inline bool PosFilter_(basic::PosTag::Type::Val posTag);
 };
 
-bool StrategyOnlyPredOrPrep::PosFilter_(basic::PosTag::Type posTag) {
-  return basic::PosTag::kA == posTag ||
-      basic::PosTag::kV == posTag ||
-      basic::PosTag::kP == posTag;
+bool StrategyOnlyPredOrPrep::PosFilter_(basic::PosTag::Type::Val posTag) {
+  return basic::PosTag::Type::kA == posTag ||
+      basic::PosTag::Type::kV == posTag ||
+      basic::PosTag::Type::kP == posTag;
 }
 
 }}}
