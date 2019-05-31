@@ -27,6 +27,7 @@ class Segment : public Fragment {
   const std::vector<PosTag::Type::Val>& GetPosTags() const { return posTags_; }
   std::vector<PosTag::Type::Val>& GetPosTags() { return posTags_; }
   inline PosTag::Type::Val GetPosTag() const;
+  inline PosTag::Class::Val GetClassOfPosTags() const;
   inline bool ContainPosTag(PosTag::Type::Val posTag);
 
   inline std::wstring GetQuery(const std::wstring &sentence) const;
@@ -78,6 +79,20 @@ void Segment::RemovePosTag(PosTag::Type::Val posTag) {
 
 PosTag::Type::Val Segment::GetPosTag() const {
   return posTags_.size() == 1 ? posTags_[0] : PosTag::Type::kUndef;
+}
+
+PosTag::Class::Val Segment::GetClassOfPosTags() const {
+  PosTag::Class::Val result = PosTag::Class::kUndef;
+  for (auto &posTag : posTags_) {
+    auto curPosTag = PosTag::GetClass(posTag);
+    if (PosTag::Class::kUndef == curPosTag ||
+        (PosTag::Class::kUndef != result &&
+        curPosTag != result)) {
+      return PosTag::Class::kUndef;
+    }
+    result = curPosTag;
+  }
+  return result;
 }
 
 bool Segment::ContainPosTag(PosTag::Type::Val posTag) {
