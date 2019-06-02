@@ -7,4 +7,11 @@ ManagerFragmentSet::ManagerFragmentSet(const std::wstring &query) :
     chunkSeps_(query),
     chunks_(query) {}
 
+void ManagerFragmentSet::Dump(JsonType &jsonType) {
+  segments_.Dump(jsonType["seg"]);
+  chunkSeps_.Dump(jsonType["chunkSep"]);
+  chunks_.Dump(jsonType["chunk"]);
+}
+
+
 }}}

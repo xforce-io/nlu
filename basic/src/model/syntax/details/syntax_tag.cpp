@@ -31,7 +31,7 @@ SyntaxTag::Type SyntaxTag::GetSyntaxTag(const std::wstring &syntaxTag) {
     return SyntaxTag::kPp;
   } else if (L"prn" == syntaxTag) {
     return SyntaxTag::kPrn;
-  } else if (L"Qp" == syntaxTag) {
+  } else if (L"qp" == syntaxTag) {
     return SyntaxTag::kQp;
   } else if (L"ucp" == syntaxTag) {
     return SyntaxTag::kUcp;
