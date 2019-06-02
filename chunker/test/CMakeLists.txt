@@ -8,6 +8,9 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/../deps/public-cpp/include/
   ${CMAKE_SOURCE_DIR}/../deps/basic/include/
   ${CMAKE_SOURCE_DIR}/../deps/milkie/include/
+  ${CMAKE_SOURCE_DIR}/../deps/ner/include/
+  ${CMAKE_SOURCE_DIR}/../deps/segmentor/include/
+  ${CMAKE_SOURCE_DIR}/../deps/pos_tagging/include/
   ../3rd/lua-5.3.5/include
 )
 
@@ -24,6 +27,9 @@ set(CMAKE_CXX_COMPILER g++)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -Wno-sign-compare -ansi -pthread -std=c++11 -DUT_TEST -DUNICODE=1")
 set(LIB_DEPS 
+  ${CMAKE_SOURCE_DIR}/../deps/pos_tagging/lib/pos_tagging/libpos_tagging.a
+  ${CMAKE_SOURCE_DIR}/../deps/segmentor/lib/segmentor/libsegmentor.a
+  ${CMAKE_SOURCE_DIR}/../deps/ner/lib/ner/libner.a
   ${CMAKE_SOURCE_DIR}/../deps/milkie/lib/milkie/libmilkie.a
   ${CMAKE_SOURCE_DIR}/../deps/basic/lib/basic/libbasic.a
   ${CMAKE_SOURCE_DIR}/../deps/public-cpp/lib/public-cpp/libpublic-cpp.a
