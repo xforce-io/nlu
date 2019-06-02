@@ -9,8 +9,8 @@ namespace xforce { namespace nlu { namespace basic {
 
 class ChunkSep : public Fragment {
  public:
-    typedef Fragment Super;
-    typedef FragmentSet<ChunkSep> Set;
+  typedef Fragment Super;
+  typedef FragmentSet<ChunkSep> Set;
 
  public:
   inline ChunkSep();

@@ -23,6 +23,8 @@ class Chunk : public Fragment {
   const std::wstring* GetStr() const { return str_; }
   SyntaxTag::Type GetSyntaxTag() const { return syntaxTag_; }
 
+  void Dump(JsonType &jsonType);
+
  private:
   std::wstring *str_;
   SyntaxTag::Type syntaxTag_;

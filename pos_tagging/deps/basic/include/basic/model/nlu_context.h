@@ -22,6 +22,8 @@ class NluContext {
   inline const typename Chunk::Set& GetChunks() const;
   inline typename Chunk::Set& GetChunks();
 
+  void Dump(JsonType &jsonType);
+
  private:
   std::wstring query_;
   ManagerFragmentSet managerFragmentSet_;

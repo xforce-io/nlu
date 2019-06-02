@@ -22,6 +22,8 @@ class ManagerFragmentSet {
   const typename Chunk::Set& GetChunks() const { return chunks_; }
   typename Chunk::Set& GetChunks() { return chunks_; }
 
+  void Dump(JsonType &jsonType);
+
  private:
   typename Segment::Set segments_;
   typename ChunkSep::Set chunkSeps_;
