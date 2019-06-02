@@ -7,7 +7,7 @@ NluContext::NluContext(const std::wstring &query) :
     managerFragmentSet_(query) {}
 
 void NluContext::Dump(JsonType &jsonType) {
-  jsonType["query"] = query_;
+  jsonType["query"] = *(StrHelper::Wstr2Str(query_));
   managerFragmentSet_.Dump(jsonType["fragments"]);
 }
 
