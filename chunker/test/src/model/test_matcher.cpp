@@ -22,4 +22,10 @@ TEST(testAll, all) {
 
   Matcher matcher;
   assert(matcher.Init());
+
+  std::wstring wStrQuery = L"谈到第一局的失利";
+  NluContext nluContext(wStrQuery);
+  Segmentor::Parse(wStrQuery, nluContext.GetSegments(), nluContext.GetN)
+
+  matcher.Match(nluContext);
 }
