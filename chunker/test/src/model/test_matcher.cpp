@@ -25,7 +25,7 @@ TEST(testAll, all) {
 
   std::wstring wStrQuery = L"谈到第一局的失利";
   NluContext nluContext(wStrQuery);
-  Segmentor::Parse(wStrQuery, nluContext.GetSegments(), nluContext.GetN)
+  Segmentor::Parse(wStrQuery, nluContext.GetSegments(), nluContext.GetNameEntities());
 
   matcher.Match(nluContext);
 }
