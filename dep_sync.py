@@ -82,6 +82,12 @@ def buildChunker() :
             (kBuildPathBasic, kDepPathChunker))
     call("cp -rf %s/milkie %s/milkie/" % \
             (kBuildPathMilkie, kDepPathChunker))
+    call("cp -rf %s/ner %s/ner/" % \
+            (kBuildPathNer, kDepPathChunker))
+    call("cp -rf %s/segmentor %s/segmentor/" % \
+            (kBuildPathSegmentor, kDepPathChunker))
+    call("cp -rf %s/pos_tagging %s/pos_tagging/" % \
+            (kBuildPathPosTagging, kDepPathChunker))
     call("mkdir -p %s && cd %s && cmake ../ && make clean && make -j4 -s" % \
             (kBuildPathChunker, kBuildPathChunker))
 

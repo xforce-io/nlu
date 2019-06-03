@@ -11,10 +11,13 @@ class NluContext {
 
   const std::wstring& GetQuery() const { return query_; }
 
+  inline void SetNameEntities(const NameEntity::Set &nameEntities);
   inline void SetSegments(const Segment::Set &segments);
   inline void SetChunkSeps(const ChunkSep::Set &chunkSeps);
   inline void SetChunks(const Chunk::Set &chunks);
 
+  inline const typename NameEntity::Set& GetNameEntities() const;
+  inline typename NameEntity::Set& GetNameEntities();
   inline const typename Segment::Set& GetSegments() const;
   inline typename Segment::Set& GetSegments();
   inline const typename ChunkSep::Set& GetChunkSeps() const;
@@ -29,6 +32,10 @@ class NluContext {
   ManagerFragmentSet managerFragmentSet_;
 };
 
+void NluContext::SetNameEntities(const NameEntity::Set &nameEntities) {
+  managerFragmentSet_.SetNameEntities(nameEntities);
+}
+
 void NluContext::SetSegments(const typename Segment::Set &segments) {
   managerFragmentSet_.SetSegments(segments);
 }
@@ -39,6 +46,14 @@ void NluContext::SetChunkSeps(const ChunkSep::Set &chunkSeps) {
 
 void NluContext::SetChunks(const typename Chunk::Set &chunks) {
   managerFragmentSet_.SetChunks(chunks);
+}
+
+const typename NameEntity::Set& NluContext::GetNameEntities() const {
+  return managerFragmentSet_.GetNameEntities();
+}
+
+typename NameEntity::Set& NluContext::GetNameEntities() {
+  return managerFragmentSet_.GetNameEntities();
 }
 
 const typename Segment::Set& NluContext::GetSegments() const {
