@@ -19,8 +19,8 @@ StatisticsCollection::~StatisticsCollection() {
 }
 
 void StatisticsCollection::Add(const StatisticsUnit &newItem) {
-  for (auto *statisticsItems : container_) {
-    statisticsItems->Add(newItem);
+  for (size_t i=0; i < container_.size(); ++i) {
+    container_[i]->Add(newItem);
   }
 }
 
