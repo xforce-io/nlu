@@ -10,7 +10,7 @@ namespace xforce { namespace nlu { namespace pos {
 
 class WindowStatistics {
  public:
-  WindowStatistics() {}
+  WindowStatistics();
   virtual ~WindowStatistics();
 
  public:

@@ -2,6 +2,9 @@
 
 namespace xforce { namespace nlu { namespace pos {
 
+WindowStatistics::WindowStatistics() :
+  statistics_(1024*1024*10) {}
+
 WindowStatistics::~WindowStatistics() {
   for (auto iter = statistics_.begin(); iter != statistics_.end(); ++iter) {
     delete iter->second;
