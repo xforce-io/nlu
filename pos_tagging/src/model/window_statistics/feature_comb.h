@@ -5,6 +5,9 @@
 namespace xforce { namespace nlu { namespace pos {
 
 struct FeatureComb3 {
+ private:
+  static const char kSep = '~';
+
  public:
   inline FeatureComb3(
           const std::wstring &feature0,
@@ -16,6 +19,8 @@ struct FeatureComb3 {
           const std::wstring &feature2);
 
   inline bool operator==(const FeatureComb3 &featureComb3) const;
+
+  void Dump(std::stringstream &ss) const;
 
  public:
   std::wstring feature0;

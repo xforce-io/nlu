@@ -19,9 +19,9 @@ bool StrategyWindowStatistics::Init() {
     return false;
   }
 
-  NOTICE("before_shrink[" << windowStatistics_->Size() << "]");
+  NOTICE("window_statistics_before_shrink[" << windowStatistics_->Size() << "]");
   windowStatistics_->Shrink();
-  NOTICE("after_shrink[" << windowStatistics_->Size() << "]");
+  NOTICE("window_statistics_after_shrink[" << windowStatistics_->Size() << "]");
   return true;
 }
 

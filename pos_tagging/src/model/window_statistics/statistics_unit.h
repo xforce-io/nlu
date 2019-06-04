@@ -19,6 +19,8 @@ struct StatisticsUnit {
 
   inline bool SameType(const StatisticsUnit &statisticsItem) const;
 
+  void Dump(std::stringstream &ss) const;
+
  public:
   basic::PosTag::Type::Val type0;
   basic::PosTag::Type::Val type1;

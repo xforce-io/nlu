@@ -67,6 +67,15 @@ void WindowStatistics::Shrink() {
   }
 }
 
+void WindowStatistics::Dump(std::stringstream &ss) const {
+  for (auto &pair : statistics_) {
+    pair.first.Dump(ss);
+    ss << '-';
+    pair.second->Dump(ss);
+    ss << '|';
+  }
+}
+
 void WindowStatistics::Add_(
         const std::vector<std::pair<std::wstring, basic::PosTag::Type::Val >> &pairs) {
   for (size_t i=0; i < pairs.size()-1; ++i) {

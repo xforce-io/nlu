@@ -31,4 +31,11 @@ const StatisticsUnit* StatisticsItems::GetDominator() const {
   return nullptr;
 }
 
+void StatisticsItems::Dump(std::stringstream &ss) const {
+  for (auto &statisticsUnit : statisticsItems_) {
+    statisticsUnit.Dump(ss);
+    ss << kSep;
+  }
+}
+
 }}}

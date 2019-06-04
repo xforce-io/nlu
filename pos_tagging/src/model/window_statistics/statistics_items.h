@@ -19,6 +19,7 @@ class StatisticsItems {
   };
 
  private:
+  static const char kSep = ':';
   static const int kThresholdCnt;
   static const double kThresholdLeader;
 
@@ -31,6 +32,7 @@ class StatisticsItems {
   size_t Size() const { return statisticsItems_.size(); }
   size_t GetCount() const { return count_; }
   const StatisticsUnit* GetDominator() const;
+  void Dump(std::stringstream &ss) const;
 
  protected:
   virtual bool IsValid_(const StatisticsUnit &one) = 0;

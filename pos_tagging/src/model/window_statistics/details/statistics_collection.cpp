@@ -36,4 +36,11 @@ void StatisticsCollection::Shrink() {
   }
 }
 
+void StatisticsCollection::Dump(std::stringstream &ss) const {
+  for (auto *statisticsItems : container_) {
+    statisticsItems->Dump(ss);
+    ss << kSep;
+  }
+}
+
 }}}

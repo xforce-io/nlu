@@ -6,6 +6,9 @@
 namespace xforce { namespace nlu { namespace pos {
 
 class StatisticsCollection {
+ private:
+  static const char kSep = ';';
+
  public:
   StatisticsCollection();
   virtual ~StatisticsCollection();
@@ -14,6 +17,7 @@ class StatisticsCollection {
   inline std::pair<StatisticsItems::Category, const StatisticsUnit*> GetDominator() const;
   void Shrink();
   size_t Size() const { return container_.size(); }
+  void Dump(std::stringstream &ss) const;
 
  private:
   std::vector<StatisticsItems*> container_;
