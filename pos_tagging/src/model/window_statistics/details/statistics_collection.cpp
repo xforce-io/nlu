@@ -24,5 +24,16 @@ void StatisticsCollection::Add(const StatisticsUnit &newItem) {
   }
 }
 
+void StatisticsCollection::Shrink() {
+  auto iter = container_.begin();
+  while (iter != container_.end()) {
+    if ((*iter)->GetDominator() == nullptr) {
+      delete *iter;
+      iter = container_.erase(iter);
+    } else {
+      ++iter;
+    }
+  }
+}
 
 }}}

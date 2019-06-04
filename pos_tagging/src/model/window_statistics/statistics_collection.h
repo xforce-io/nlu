@@ -12,6 +12,8 @@ class StatisticsCollection {
 
   void Add(const StatisticsUnit &newItem);
   inline std::pair<StatisticsItems::Category, const StatisticsUnit*> GetDominator() const;
+  void Shrink();
+  size_t Size() const { return container_.size(); }
 
  private:
   std::vector<StatisticsItems*> container_;

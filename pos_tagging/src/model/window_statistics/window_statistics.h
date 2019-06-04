@@ -23,6 +23,9 @@ class WindowStatistics {
           const std::wstring &item1,
           const std::wstring &item2) const;
 
+  void Shrink();
+  size_t Size() const { return statistics_.size(); }
+
  public:
   static WindowStatistics* Create(const std::string &filepath);
 

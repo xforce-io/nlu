@@ -18,6 +18,10 @@ bool StrategyWindowStatistics::Init() {
     FATAL("fail_create_window_statistics");
     return false;
   }
+
+  NOTICE("before_shrink[" << windowStatistics_->Size() << "]");
+  windowStatistics_->Shrink();
+  NOTICE("after_shrink[" << windowStatistics_->Size() << "]");
   return true;
 }
 

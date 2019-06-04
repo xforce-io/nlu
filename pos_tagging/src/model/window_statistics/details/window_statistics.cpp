@@ -54,6 +54,19 @@ WindowStatistics* WindowStatistics::Create(const std::string &filepath) {
   return windowStatistics;
 }
 
+void WindowStatistics::Shrink() {
+  auto iter = statistics_.begin();
+  while (iter != statistics_.end()) {
+    iter->second->Shrink();
+    if (iter->second->Size() == 0) {
+      delete iter->second;
+      iter = statistics_.erase(iter);
+    } else {
+      ++iter;
+    }
+  }
+}
+
 void WindowStatistics::Add_(
         const std::vector<std::pair<std::wstring, basic::PosTag::Type::Val >> &pairs) {
   for (size_t i=0; i < pairs.size()-1; ++i) {
