@@ -37,7 +37,10 @@ PosTag::Type::Val PosTag::GetPosTag(const std::wstring &posTag) {
       return PosTag::Type::kP;
     case L'c' :  
       return PosTag::Type::kC;
-    case L'u' :  
+    case L'u' :
+      if (L"undef" == posTag) {
+        return PosTag::Type::kUndef;
+      }
       return PosTag::Type::kU;
     case L'y' :  
       return PosTag::Type::kY;
