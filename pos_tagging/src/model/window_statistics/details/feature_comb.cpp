@@ -8,7 +8,7 @@ int FeatureComb3::Load(const std::string &str) {
   std::vector<std::string> items;
   StrHelper::SplitStr(str, kSep, items);
   if (items.size() != 3) {
-    FATAL("fail_load_feature_comb3[" << str << "]");
+    FATAL("fail_load_feature_comb3[" << *StrHelper::Str2Wstr(str) << "]");
     return -1;
   }
 

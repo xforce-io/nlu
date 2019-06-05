@@ -6,7 +6,7 @@ int StatisticsUnit::Load(const std::string &str) {
   std::vector<std::string> items;
   StrHelper::SplitStr(str, kSep, items);
   if (items.size() != 4) {
-    FATAL("invalid_statistics_unit_load_str[" << str << "]");
+    FATAL("invalid_statistics_unit_load_str[" << *StrHelper::Str2Wstr(str) << "]");
     return -1;
   }
 
@@ -16,7 +16,9 @@ int StatisticsUnit::Load(const std::string &str) {
 
   bool ret = StrHelper::GetNum(items[3], count);
   if (!ret) {
-    FATAL("invalid_statistics_unit_load_str_invalid_count[" << items[3] << "]");
+    FATAL("invalid_statistics_unit_load_str_invalid_count[" 
+        << *StrHelper::Str2Wstr(items[3]) 
+        << "]");
     return -2;
   }
   return 0;

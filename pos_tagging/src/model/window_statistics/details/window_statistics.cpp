@@ -69,11 +69,10 @@ void WindowStatistics::Shrink() {
 
 int WindowStatistics::Load(const std::string &str) {
   ssize_t curPos = 0;
-  while (curPos != str.length() - 1) {
+  while (curPos != ssize_t(str.length() - 1)) {
     ssize_t nextPos = str.find('|', curPos);
     if (nextPos<0) {
-      FATAL("invalid_window_statistics_load_str_pos[" << curPos << "]")
-      return -1;
+      break;
     }
 
     std::string tmpStr = str.substr(curPos, nextPos-curPos);

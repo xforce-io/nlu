@@ -40,6 +40,10 @@ int StatisticsCollection::Load(const std::string &str) {
   std::vector<std::string> items;
   StrHelper::SplitStr(str, kSep, items);
   for (auto &str : items) {
+    if (str.empty()) {
+      break;
+    }
+
     StatisticsItems *statisticsItems = StatisticsItems::Load(str);
     if (nullptr!=statisticsItems) {
       container_.push_back(statisticsItems);

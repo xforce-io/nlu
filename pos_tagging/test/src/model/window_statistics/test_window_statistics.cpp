@@ -21,5 +21,25 @@ int main(int argc, char **argv) {
 }
 
 TEST(test_case, all) {
-}
+  const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/pos.conf");
+  ASSERT_TRUE(Basic::Init((*conf)["basic"]));
+  ASSERT_TRUE(Segmentor::Init((*conf)["segmentor"], (*conf)["ner"]));
+
+  WindowStatistics *windowStatistics = WindowStatistics::Create("../../data/labeled_data.sample");
+  ASSERT_TRUE(windowStatistics != nullptr);
+
+  std::stringstream ss;
+  windowStatistics->Dump(ss);
+
+  std::cout << ss.str() << std::endl;
+
+  WindowStatistics *windowStatistics1 = new WindowStatistics();
+  int ret = windowStatistics1->Load(ss.str());
+  ASSERT_TRUE(0==ret);
+
+  std::stringstream ss1;
+  windowStatistics1->Dump(ss1);
+  std::cout << ss.str().length() << std::endl;
+  std::cout << ss1.str().length() << std::endl;
+  ASSERT_TRUE(ss.str() == ss1.str());
 }

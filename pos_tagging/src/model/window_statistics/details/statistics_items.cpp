@@ -38,7 +38,18 @@ StatisticsItems* StatisticsItems::Load(const std::string &str) {
   size_t category;
   bool ret = StrHelper::GetNum(items[0], category);
   if (!ret) {
-    FATAL("fail_get_statistics_items_category[" << items[0] << "]");
+    FATAL("fail_get_statistics_items_category[" 
+        << *StrHelper::Str2Wstr(items[0])
+        << "]");
+    return nullptr;
+  }
+
+  size_t count;
+  ret = StrHelper::GetNum(items[1], count);
+  if (!ret) {
+    FATAL("fail_get_statistics_items_count[" 
+        << *StrHelper::Str2Wstr(items[1])
+        << "]");
     return nullptr;
   }
 
@@ -69,7 +80,9 @@ StatisticsItems* StatisticsItems::Load(const std::string &str) {
       return nullptr;
   }
 
-  for (size_t i=1; i < items.size(); ++i) {
+  statisticsItems->count_ = count;
+
+  for (size_t i=2; i < items.size(); ++i) {
     StatisticsUnit statisticsUnit;
     int ret1 = statisticsUnit.Load(items[i]);
     if (0==ret1) {
@@ -82,7 +95,7 @@ StatisticsItems* StatisticsItems::Load(const std::string &str) {
 }
 
 void StatisticsItems::Dump(std::stringstream &ss) const {
-  ss << GetCategory();
+  ss << GetCategory() << kSep << count_;
   for (auto &statisticsUnit : statisticsItems_) {
     ss << kSep;
     statisticsUnit.Dump(ss);
