@@ -26,6 +26,7 @@ class WindowStatistics {
   void Shrink();
   size_t Size() const { return statistics_.size(); }
 
+  int Load(const std::string &str);
   void Dump(std::stringstream &ss) const;
 
  public:

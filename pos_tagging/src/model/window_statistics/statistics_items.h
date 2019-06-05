@@ -32,6 +32,8 @@ class StatisticsItems {
   size_t Size() const { return statisticsItems_.size(); }
   size_t GetCount() const { return count_; }
   const StatisticsUnit* GetDominator() const;
+
+  static StatisticsItems* Load(const std::string &str);
   void Dump(std::stringstream &ss) const;
 
  protected:

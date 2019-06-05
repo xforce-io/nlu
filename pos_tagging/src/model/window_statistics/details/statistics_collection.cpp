@@ -36,6 +36,20 @@ void StatisticsCollection::Shrink() {
   }
 }
 
+int StatisticsCollection::Load(const std::string &str) {
+  std::vector<std::string> items;
+  StrHelper::SplitStr(str, kSep, items);
+  for (auto &str : items) {
+    StatisticsItems *statisticsItems = StatisticsItems::Load(str);
+    if (nullptr!=statisticsItems) {
+      container_.push_back(statisticsItems);
+    } else {
+      return -1;
+    }
+  }
+  return 0;
+}
+
 void StatisticsCollection::Dump(std::stringstream &ss) const {
   for (auto *statisticsItems : container_) {
     statisticsItems->Dump(ss);

@@ -5,6 +5,9 @@
 namespace xforce { namespace nlu { namespace pos {
 
 struct StatisticsUnit {
+ private:
+  static const char kSep = ',';
+
  public:
   inline StatisticsUnit();
 
@@ -19,6 +22,7 @@ struct StatisticsUnit {
 
   inline bool SameType(const StatisticsUnit &statisticsItem) const;
 
+  int Load(const std::string &str);
   void Dump(std::stringstream &ss) const;
 
  public:

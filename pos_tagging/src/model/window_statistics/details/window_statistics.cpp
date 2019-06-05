@@ -67,6 +67,38 @@ void WindowStatistics::Shrink() {
   }
 }
 
+int WindowStatistics::Load(const std::string &str) {
+  ssize_t curPos = 0;
+  while (curPos != str.length() - 1) {
+    ssize_t nextPos = str.find('|', curPos);
+    if (nextPos<0) {
+      FATAL("invalid_window_statistics_load_str_pos[" << curPos << "]")
+      return -1;
+    }
+
+    std::string tmpStr = str.substr(curPos, nextPos-curPos);
+
+    std::vector<std::string> items;
+    StrHelper::SplitStr(tmpStr, '-', items);
+
+    FeatureComb3 featureComb3;
+    int ret = featureComb3.Load(items[0]);
+    if (ret != 0) {
+      return -2;
+    }
+
+    auto *statisticsCollection = new StatisticsCollection();
+    ret = statisticsCollection->Load(items[1]);
+    if (ret != 0) {
+      return -3;
+    }
+
+    statistics_.insert(std::make_pair(featureComb3, statisticsCollection));
+    curPos = nextPos+1;
+  }
+  return 0;
+}
+
 void WindowStatistics::Dump(std::stringstream &ss) const {
   for (auto &pair : statistics_) {
     pair.first.Dump(ss);

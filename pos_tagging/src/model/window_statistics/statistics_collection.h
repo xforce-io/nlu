@@ -17,6 +17,8 @@ class StatisticsCollection {
   inline std::pair<StatisticsItems::Category, const StatisticsUnit*> GetDominator() const;
   void Shrink();
   size_t Size() const { return container_.size(); }
+
+  int Load(const std::string &str);
   void Dump(std::stringstream &ss) const;
 
  private:

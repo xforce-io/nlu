@@ -9,6 +9,7 @@ struct FeatureComb3 {
   static const char kSep = '~';
 
  public:
+  inline FeatureComb3() {}
   inline FeatureComb3(
           const std::wstring &feature0,
           const std::wstring &feature1);
@@ -20,6 +21,7 @@ struct FeatureComb3 {
 
   inline bool operator==(const FeatureComb3 &featureComb3) const;
 
+  int Load(const std::string &str);
   void Dump(std::stringstream &ss) const;
 
  public:
