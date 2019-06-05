@@ -36,6 +36,27 @@ void StatisticsCollection::Shrink() {
   }
 }
 
+bool StatisticsCollection::operator==(const StatisticsCollection &other) const {
+  if (container_.size() != other.container_.size()) {
+    return false;
+  }
+
+  for (auto *statisticsItem : container_) {
+    bool ret = false;
+    for (auto *statisticsItem1 : other.container_) {
+      if (*statisticsItem == *statisticsItem1) {
+        ret = true;
+        break;
+      }
+    }
+
+    if (!ret) {
+      return false;
+    }
+  }
+  return true;
+}
+
 int StatisticsCollection::Load(const std::string &str) {
   std::vector<std::string> items;
   StrHelper::SplitStr(str, kSep, items);
