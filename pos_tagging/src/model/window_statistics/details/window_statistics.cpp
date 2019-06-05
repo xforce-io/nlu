@@ -67,6 +67,21 @@ void WindowStatistics::Shrink() {
   }
 }
 
+bool WindowStatistics::operator==(const WindowStatistics &other) const {
+  if (statistics_.size() != other.statistics_.size()) {
+    return false;
+  }
+
+  for (auto &pair : statistics_) {
+    auto iter = other.statistics_.find(pair.first);
+    if (iter == other.statistics_.end() ||
+        !(*iter->second == *pair.second)) {
+      return false;
+    }
+  }
+  return true;
+}
+
 int WindowStatistics::Load(const std::string &str) {
   ssize_t curPos = 0;
   while (curPos != ssize_t(str.length() - 1)) {

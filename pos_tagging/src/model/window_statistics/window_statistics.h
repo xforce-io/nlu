@@ -25,6 +25,7 @@ class WindowStatistics {
 
   void Shrink();
   size_t Size() const { return statistics_.size(); }
+  bool operator==(const WindowStatistics &other) const;
 
   int Load(const std::string &str);
   void Dump(std::stringstream &ss) const;

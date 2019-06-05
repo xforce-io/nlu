@@ -17,6 +17,7 @@ class StatisticsCollection {
   inline std::pair<StatisticsItems::Category, const StatisticsUnit*> GetDominator() const;
   void Shrink();
   size_t Size() const { return container_.size(); }
+  bool operator==(const StatisticsCollection &other) const;
 
   int Load(const std::string &str);
   void Dump(std::stringstream &ss) const;
@@ -34,5 +35,6 @@ std::pair<StatisticsItems::Category, const StatisticsUnit*> StatisticsCollection
   }
   return std::make_pair(StatisticsItems::kOther, nullptr);
 }
+
 
 }}}

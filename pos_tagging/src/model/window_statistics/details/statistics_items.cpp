@@ -31,6 +31,29 @@ const StatisticsUnit* StatisticsItems::GetDominator() const {
   return nullptr;
 }
 
+bool StatisticsItems::operator==(const StatisticsItems &other) const {
+  if (GetCategory() != other.GetCategory() ||
+      count_ != other.count_ ||
+      statisticsItems_.size() != other.statisticsItems_.size()) {
+    return false;
+  }
+
+  for (auto &unit : statisticsItems_) {
+    bool ret = false;
+    for (auto &otherUnit : other.statisticsItems_) {
+      if (unit == otherUnit) {
+        ret = true;
+        break;
+      }
+    }
+
+    if (!ret) {
+      return false;
+    }
+  }
+  return true;
+}
+
 StatisticsItems* StatisticsItems::Load(const std::string &str) {
   std::vector<std::string> items;
   StrHelper::SplitStr(str, kSep, items);
