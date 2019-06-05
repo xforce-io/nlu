@@ -9,6 +9,9 @@
 namespace xforce { namespace nlu { namespace pos {
 
 class WindowStatistics {
+ private:
+  static const std::string kFilepathCache;
+
  public:
   WindowStatistics();
   virtual ~WindowStatistics();
@@ -26,9 +29,12 @@ class WindowStatistics {
   void Shrink();
   size_t Size() const { return statistics_.size(); }
   bool operator==(const WindowStatistics &other) const;
+  void Clear();
 
   int Load(const std::string &str);
+  int LoadFromFile(const std::string &filepath);
   void Dump(std::stringstream &ss) const;
+  int DumpToFile(const std::string &filepath);
 
  public:
   static WindowStatistics* Create(const std::string &filepath);
