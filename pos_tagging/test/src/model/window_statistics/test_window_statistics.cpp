@@ -39,7 +39,8 @@ TEST(test_case, all) {
 
   std::stringstream ss1;
   windowStatistics1->Dump(ss1);
-  std::cout << ss.str().length() << std::endl;
-  std::cout << ss1.str().length() << std::endl;
+
+  std::cout << ss1.str() << std::endl;
+
   ASSERT_TRUE(ss.str() == ss1.str());
 }
