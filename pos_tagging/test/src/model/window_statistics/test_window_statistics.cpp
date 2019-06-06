@@ -28,12 +28,18 @@ TEST(test_case, all) {
   WindowStatistics *windowStatistics = WindowStatistics::Create("../data/labeled_data");
   ASSERT_TRUE(windowStatistics != nullptr);
 
+  auto result = windowStatistics->GetDominator(L"发展", L"的", L"机遇");
+  ASSERT_TRUE(result.second != nullptr);
+
   std::stringstream ss;
   windowStatistics->Dump(ss);
 
   WindowStatistics *windowStatistics1 = new WindowStatistics();
   int ret = windowStatistics1->Load(ss.str());
   ASSERT_TRUE(0==ret);
+
+  result = windowStatistics1->GetDominator(L"发展", L"的", L"机遇");
+  ASSERT_TRUE(result.second != nullptr);
 
   std::stringstream ss1;
   windowStatistics1->Dump(ss1);

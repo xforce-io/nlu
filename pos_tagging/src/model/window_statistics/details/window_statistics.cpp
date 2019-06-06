@@ -100,8 +100,7 @@ void WindowStatistics::Clear() {
   for (auto iter = statistics_.begin(); iter != statistics_.end(); ++iter) {
     delete iter->second;
   }
-  statistics_.clear()
-  ;
+  statistics_.clear();
 }
 
 int WindowStatistics::Load(const std::string &str) {
@@ -143,9 +142,10 @@ int WindowStatistics::LoadFromFile(const std::string &filepath) {
 
   std::string str;
   char buf[4096];
-  ssize_t n = fread(buf, sizeof(buf), 1, fp);
-  if (n>0) {
-    str.append(buf);
+  ssize_t n = fread(buf, 1, sizeof(buf), fp);
+  while (n>0) {
+    str.append(buf, n);
+    n = fread(buf, 1, sizeof(buf), fp);
   }
   return Load(str);
 }

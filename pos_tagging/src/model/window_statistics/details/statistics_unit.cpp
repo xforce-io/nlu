@@ -3,6 +3,10 @@
 namespace xforce { namespace nlu { namespace pos {
 
 int StatisticsUnit::Load(const std::string &str) {
+  if (str[0] == '3' && str[1] == '2') {
+    int a = 0;
+  }
+
   std::vector<std::string> items;
   StrHelper::SplitStr(str, kSep, items);
   if (items.size() != 4) {
@@ -12,21 +16,21 @@ int StatisticsUnit::Load(const std::string &str) {
 
   size_t tmpType0, tmpType1, tmpType2;
 
-  bool ret = StrHelper::GetNum(*StrHelper::Str2Wstr(items[0]), tmpType0);
+  bool ret = StrHelper::GetNum(items[0], tmpType0);
   if (!ret) {
-    FATAL("invalid_statistics_unit_load_unit[" << *StrHelper::Str2Wstr(items[0]) << "]");
+    FATAL("invalid_statistics_unit_load_str0[" << *StrHelper::Str2Wstr(str) << "]");
     return -2;
   }
 
-  ret = StrHelper::GetNum(*StrHelper::Str2Wstr(items[1]), tmpType1);
+  ret = StrHelper::GetNum(items[1], tmpType1);
   if (!ret) {
-    FATAL("invalid_statistics_unit_load_unit[" << *StrHelper::Str2Wstr(items[1]) << "]");
+    FATAL("invalid_statistics_unit_load_str1[" << *StrHelper::Str2Wstr(str) << "]");
     return -3;
   }
 
-  ret = StrHelper::GetNum(*StrHelper::Str2Wstr(items[2]), tmpType2);
+  ret = StrHelper::GetNum(items[2], tmpType2);
   if (!ret) {
-    FATAL("invalid_statistics_unit_load_unit[" << *StrHelper::Str2Wstr(items[2]) << "]");
+    FATAL("invalid_statistics_unit_load_str2[" << *StrHelper::Str2Wstr(str) << "]");
     return -4;
   }
 
