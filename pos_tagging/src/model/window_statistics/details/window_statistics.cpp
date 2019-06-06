@@ -60,6 +60,7 @@ WindowStatistics* WindowStatistics::Create(const std::string &filepath) {
   }
 
   windowStatistics->Add_(pairs);
+  windowStatistics->Shrink();
   ret = windowStatistics->DumpToFile(kFilepathCache);
   if (ret!=0) {
     return nullptr;
