@@ -25,15 +25,8 @@ void StatisticsCollection::Add(const StatisticsUnit &newItem) {
 }
 
 void StatisticsCollection::Shrink() {
-  auto iter = container_.begin();
-  while (iter != container_.end()) {
-    if ((*iter)->GetDominator() == nullptr) {
-      delete *iter;
-      iter = container_.erase(iter);
-    } else {
-      ++iter;
-    }
-  }
+  ShrinkCommon_();
+  ShrinkNoDominator_();
 }
 
 bool StatisticsCollection::operator==(const StatisticsCollection &other) const {
@@ -81,6 +74,47 @@ void StatisticsCollection::Dump(std::stringstream &ss) const {
   for (auto *statisticsItems : container_) {
     statisticsItems->Dump(ss);
     ss << kSep;
+  }
+}
+
+void StatisticsCollection::ShrinkCommon_() {
+  size_t countAll = 0;
+  for (auto *statisticsItems : container_) {
+    if (statisticsItems->GetCategory() == StatisticsItems::kCategory012) {
+      countAll = statisticsItems->GetCount();
+      break;
+    }
+  }
+
+  if (0 == countAll) {
+    return;
+  }
+
+  for (auto *statisticsItems : container_) {
+    if (statisticsItems->GetCount() != countAll) {
+      return;
+    }
+  }
+
+  auto iter = container_.begin();
+  while (iter != container_.end()) {
+    if ((*iter)->GetCategory() != StatisticsItems::kCategory012) {
+      iter = container_.erase(iter);
+    } else {
+      ++iter;
+    }
+  }
+}
+
+void StatisticsCollection::ShrinkNoDominator_() {
+  auto iter = container_.begin();
+  while (iter != container_.end()) {
+    if ((*iter)->GetDominator() == nullptr) {
+      delete *iter;
+      iter = container_.erase(iter);
+    } else {
+      ++iter;
+    }
   }
 }
 

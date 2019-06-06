@@ -23,6 +23,10 @@ class StatisticsCollection {
   void Dump(std::stringstream &ss) const;
 
  private:
+  void ShrinkCommon_();
+  void ShrinkNoDominator_();
+
+ private:
   std::vector<StatisticsItems*> container_;
 };
 
