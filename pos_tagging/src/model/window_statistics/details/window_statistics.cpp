@@ -161,7 +161,7 @@ void WindowStatistics::Dump(std::stringstream &ss) const {
 int WindowStatistics::DumpToFile(const std::string &filepath) {
   std::ofstream outFile(filepath);
   if (!outFile) {
-    FATAL("fail_open_dump_file[" << filepath << "]");
+    FATAL("fail_open_dump_file[" << *StrHelper::Str2Wstr(filepath) << "]");
     return -1;
   }
 

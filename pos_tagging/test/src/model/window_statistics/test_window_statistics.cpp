@@ -25,13 +25,11 @@ TEST(test_case, all) {
   ASSERT_TRUE(Basic::Init((*conf)["basic"]));
   ASSERT_TRUE(Segmentor::Init((*conf)["segmentor"], (*conf)["ner"]));
 
-  WindowStatistics *windowStatistics = WindowStatistics::Create("../../data/labeled_data.sample");
+  WindowStatistics *windowStatistics = WindowStatistics::Create("../data/labeled_data");
   ASSERT_TRUE(windowStatistics != nullptr);
 
   std::stringstream ss;
   windowStatistics->Dump(ss);
-
-  std::cout << ss.str() << std::endl;
 
   WindowStatistics *windowStatistics1 = new WindowStatistics();
   int ret = windowStatistics1->Load(ss.str());
@@ -40,7 +38,5 @@ TEST(test_case, all) {
   std::stringstream ss1;
   windowStatistics1->Dump(ss1);
 
-  std::cout << ss1.str() << std::endl;
-
-  ASSERT_TRUE(ss.str() == ss1.str());
+  ASSERT_TRUE(*windowStatistics == *windowStatistics1);
 }
