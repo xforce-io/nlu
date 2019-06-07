@@ -30,6 +30,7 @@ TEST(testAll, all) {
   ASSERT_TRUE(Basic::Init((*conf)["basic"]));
   ASSERT_TRUE(Segmentor::Init((*conf)["segmentor"], (*conf)["ner"]));
   ASSERT_TRUE(PosTagging::Init((*conf)["pos"]));
+  ASSERT_TRUE(Chunker::Init((*conf)["chunker"]));
 
   Matcher matcher;
   assert(matcher.Init());
