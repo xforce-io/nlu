@@ -1,11 +1,17 @@
 #include "../chunker.h"
 #include "../model/matcher.h"
+#include "../conf/conf.h"
 
 namespace xforce { namespace nlu { namespace chunker {
 
-Matcher *Chunker::matcher_ = new Matcher();
+Chunker::Chunker() :
+  matcher_(new Matcher()) {}
 
-bool Chunker::Init(const xforce::JsonType &confJson) {
+Chunker::~Chunker() {
+  XFC_DELETE(matcher_)
+}
+
+bool Chunker::Init() {
   auto ret = matcher_->Init();
   if (!ret) {
     FATAL("fail_init_milkie");
@@ -14,12 +20,28 @@ bool Chunker::Init(const xforce::JsonType &confJson) {
   return true;
 }
 
-void Chunker::Parse(basic::NluContext &nluContext) {
+void Chunker::Process(basic::NluContext &nluContext) {
   matcher_->Match(nluContext);
 }
 
-void Chunker::Tini() {
-  XFC_DELETE(matcher_)
+bool Chunker::Init(const xforce::JsonType &confJson) {
+  bool ret = Conf::Get().Init(confJson);
+  if (!ret) {
+    FATAL("fail_init_conf[chunker]");
+    return false;
+  }
+
+  ret = chunker_.Init();
+  if (!ret) {
+    FATAL("fail_init_chunker");
+    return false;
+  }
+  std::cout << "succ init pos" << std::endl;
+  return true;
+}
+
+void Chunker::Parse(basic::NluContext &nluContext) {
+  return chunker_.Process(nluContext);
 }
 
 }}}
