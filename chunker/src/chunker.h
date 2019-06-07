@@ -8,18 +8,13 @@ class Matcher;
 
 class Chunker {
  public: 
-  Chunker(); 
+  static bool Init(const xforce::JsonType &confJson);
+  static void Parse(basic::NluContext &nluContext);
 
-  bool Init(const xforce::JsonType &confJson);
-  void Parse(basic::NluContext &nluContext);
-
-  void Tini();
+  static void Tini();
 
  private:
-
-
- private:
-  Matcher *matcher_;
+  static Matcher *matcher_;
 };
 
 }}}

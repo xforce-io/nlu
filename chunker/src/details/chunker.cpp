@@ -3,8 +3,7 @@
 
 namespace xforce { namespace nlu { namespace chunker {
 
-Chunker::Chunker() :
-  matcher_(new Matcher()) {}
+Matcher *Chunker::matcher_ = new Matcher();
 
 bool Chunker::Init(const xforce::JsonType &confJson) {
   auto ret = matcher_->Init();
