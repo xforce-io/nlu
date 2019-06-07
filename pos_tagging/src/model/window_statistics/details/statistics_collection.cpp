@@ -51,6 +51,8 @@ bool StatisticsCollection::operator==(const StatisticsCollection &other) const {
 }
 
 int StatisticsCollection::Load(const std::string &str) {
+  container_.clear();
+
   std::vector<std::string> items;
   StrHelper::SplitStr(str, kSep, items);
   for (auto &str : items) {
