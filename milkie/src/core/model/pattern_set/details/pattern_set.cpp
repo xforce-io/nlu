@@ -6,12 +6,12 @@
 
 namespace xforce { namespace nlu { namespace milkie {
 
-PatternSet::PatternSet(const StructPatternSet &structPatternSet) :
+PatternSet::PatternSet(std::shared_ptr<StructPatternSet> structPatternSet) :
     father_(nullptr),
-    structPatternSet_(&structPatternSet),
+    structPatternSet_(structPatternSet),
     maxLengthPatternStrs_(0),
-    patternExprs_(structPatternSet.GetPatternExprs()) {
-  patternStrsTrie_ = BuildPatternStrsTrie_(structPatternSet.GetPatternStrs());
+    patternExprs_(structPatternSet->GetPatternExprs()) {
+  patternStrsTrie_ = BuildPatternStrsTrie_(structPatternSet->GetPatternStrs());
 }
 
 PatternSet::~PatternSet() {
