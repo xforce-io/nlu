@@ -23,6 +23,8 @@ class Segment : public Fragment {
   inline void SetPosTag(PosTag::Type::Val posTag);
   inline void AddPosTag(PosTag::Type::Val posTag);
   inline void RemovePosTag(PosTag::Type::Val posTag);
+
+  const std::string& GetCategory() const;
   size_t SizePosTags() const { return posTags_.size(); }
   const std::vector<PosTag::Type::Val>& GetPosTags() const { return posTags_; }
   std::vector<PosTag::Type::Val>& GetPosTags() { return posTags_; }

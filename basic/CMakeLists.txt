@@ -24,7 +24,7 @@ FILE(GLOB_RECURSE BASIC_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -DUNICODE=1")
 
 add_library(basic
-  ${BASIC_FILES})
+  ${BASIC_FILES} src/model/details/chunk_sep.cpp)
 
 target_link_libraries(basic
   log4cplus
