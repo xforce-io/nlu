@@ -93,10 +93,10 @@ TEST(testBugfix, test) {
   auto query = L"这很奇怪啊";
   auto context = std::make_shared<Context>(query);
   FragmentSet<Segment> segments(query);
-  segments.Add(Segment(PosTag::kUndef, 0, 1));
-  segments.Add(Segment(PosTag::kUndef, 1, 1));
-  segments.Add(Segment(PosTag::kUndef, 2, 2));
-  segments.Add(Segment(PosTag::kUndef, 4, 1));
+  segments.Add(Segment(PosTag::Type::kUndef, 0, 1));
+  segments.Add(Segment(PosTag::Type::kUndef, 1, 1));
+  segments.Add(Segment(PosTag::Type::kUndef, 2, 2));
+  segments.Add(Segment(PosTag::Type::kUndef, 4, 1));
   context->GetSentence().GetNluContext()->SetSegments(segments);
  
   auto err = testFeatureExtractor->MatchPattern(*context);

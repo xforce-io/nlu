@@ -3,7 +3,6 @@
 namespace xforce { namespace nlu { namespace pos {
 
 void StrategyPosDeduction::Process(basic::NluContext &nluContext) {
-  auto &clause = nluContext.GetQuery();
   typename basic::Segment::Set &segments = nluContext.GetSegments();
   for (size_t i=0; i < segments.Size(); ++i) {
     ProcessAdverb_(nluContext, segments, i);

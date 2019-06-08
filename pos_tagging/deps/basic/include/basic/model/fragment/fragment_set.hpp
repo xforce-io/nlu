@@ -99,7 +99,7 @@ template <typename FragmentType>
 void FragmentSet<FragmentType>::Dump(JsonType &jsonType) {
   jsonType["text"] = *StrHelper::Wstr2Str(*text_);
   for (size_t i=0; i < fragments_.size(); ++i) {
-    fragments_[i]->Dump(jsonType["fragments"][i]);
+    fragments_[i]->Dump(jsonType[fragments_[i]->GetCategory().c_str()][i]);
   }
 }
 

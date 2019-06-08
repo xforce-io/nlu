@@ -4,6 +4,8 @@
 
 namespace xforce { namespace nlu { namespace chunker {
 
+Chunker Chunker::chunker_;
+
 Chunker::Chunker() :
   matcher_(new Matcher()) {}
 
@@ -36,7 +38,7 @@ bool Chunker::Init(const xforce::JsonType &confJson) {
     FATAL("fail_init_chunker");
     return false;
   }
-  std::cout << "succ init pos" << std::endl;
+  std::cout << "succ init chunker" << std::endl;
   return true;
 }
 

@@ -11,7 +11,7 @@ class PersonName : public basic::NameEntity {
  public: 
   explicit PersonName(const std::wstring &name, size_t offset); 
 
-  virtual int GetCategory() const { return basic::NameEntity::kCategoryName; }
+  virtual int GetNECategory() const { return basic::NameEntity::kCategoryName; }
   const std::wstring& GetName() const { return name_; }
 
   inline static int PossibleName(const std::wstring &wstr, int offset, int len);

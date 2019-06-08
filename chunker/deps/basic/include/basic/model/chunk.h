@@ -20,6 +20,7 @@ class Chunk : public Fragment {
   inline void SetStr(const std::wstring &str);
   inline void SetSyntaxTag(SyntaxTag::Type syntaxTag);
 
+  const std::string& GetCategory() const;
   const std::wstring* GetStr() const { return str_; }
   SyntaxTag::Type GetSyntaxTag() const { return syntaxTag_; }
 

@@ -17,6 +17,7 @@ class ChunkSep : public Fragment {
   inline ChunkSep(size_t offset);
   virtual ~ChunkSep() {}
 
+  const std::string& GetCategory() const;
 };
 
 ChunkSep::ChunkSep() :

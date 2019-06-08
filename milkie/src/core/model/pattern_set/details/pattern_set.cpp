@@ -100,10 +100,10 @@ std::pair<std::shared_ptr<PatternSet>, ssize_t> PatternSet::Build(
   if (nullptr == structPatternSet.get()) {
     return std::make_pair(nullptr, -1);
   }
-  return std::make_pair(Build(*structPatternSet), structPatternSet->GetStatement().length());
+  return std::make_pair(Build(structPatternSet), structPatternSet->GetStatement().length());
 }
 
-std::shared_ptr<PatternSet> PatternSet::Build(const StructPatternSet &structPatternSet) {
+std::shared_ptr<PatternSet> PatternSet::Build(std::shared_ptr<StructPatternSet> structPatternSet) {
   return std::make_shared<PatternSet>(structPatternSet);
 }
 

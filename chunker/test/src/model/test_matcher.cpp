@@ -2,6 +2,7 @@
 
 #include "gtest/gtest.h"
 
+#include "../../../src/chunker.h"
 #include "../../../src/model/matcher.h"
 #include "basic/model/segment.h"
 #include "basic/model/name_entity.h"
@@ -32,16 +33,16 @@ TEST(testAll, all) {
   ASSERT_TRUE(PosTagging::Init((*conf)["pos"]));
   ASSERT_TRUE(Chunker::Init((*conf)["chunker"]));
 
-  Matcher matcher;
-  assert(matcher.Init());
-
   std::wstring wStrQuery = L"谈到第一局的失利";
   NluContext nluContext(wStrQuery);
   Segmentor::Parse(wStrQuery, nluContext.GetSegments(), nluContext.GetNameEntities());
   PosTagging::Tagging(nluContext);
-  matcher.Match(nluContext);
+  Chunker::Parse(nluContext);
 
   xforce::JsonType jsonToDump;
+  nluContext.GetSegments().Dump(jsonToDump);
+  nluContext.GetChunkSeps().Dump(jsonToDump);
+
   std::stringstream ss;
   jsonToDump.DumpJson(ss);
   std::cout << ss.str() << std::endl;

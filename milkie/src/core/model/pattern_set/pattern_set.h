@@ -33,7 +33,7 @@ class PatternSet {
           const std::wstring &blockKey,
           const std::wstring &statement);
   static std::shared_ptr<PatternSet> Build(
-          const StructPatternSet &structPatternSet);
+          std::shared_ptr<StructPatternSet> structPatternSet);
 
  private:
   inline aho_corasick::wtrie* BuildPatternStrsTrie_(

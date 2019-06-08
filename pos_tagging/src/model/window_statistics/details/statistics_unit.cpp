@@ -3,10 +3,6 @@
 namespace xforce { namespace nlu { namespace pos {
 
 int StatisticsUnit::Load(const std::string &str) {
-  if (str[0] == '3' && str[1] == '2') {
-    int a = 0;
-  }
-
   std::vector<std::string> items;
   StrHelper::SplitStr(str, kSep, items);
   if (items.size() != 4) {

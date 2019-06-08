@@ -45,9 +45,9 @@ TEST(testAll, match) {
   context = std::make_shared<Context>(query);
 
   FragmentSet<Segment> segments(query);
-  segments.Add(Segment(PosTag::kA, 0, 2));
-  segments.Add(Segment(PosTag::kU, 2, 1));
-  segments.Add(Segment(PosTag::kN, 3, 3));
+  segments.Add(Segment(PosTag::Type::kA, 0, 2));
+  segments.Add(Segment(PosTag::Type::kU, 2, 1));
+  segments.Add(Segment(PosTag::Type::kN, 3, 3));
   context->GetSentence().GetNluContext()->SetSegments(segments);
   ASSERT_TRUE(ret.first->MatchPattern(*(context.get())));
 
@@ -63,11 +63,11 @@ TEST(testAll, multiSegMatch) {
   std::shared_ptr<Context> context = std::make_shared<Context>(query);
 
   FragmentSet<Segment> segments(query);
-  segments.Add(Segment(PosTag::kA, 0, 2));
-  segments[0]->AddPosTag(PosTag::kN);
+  segments.Add(Segment(PosTag::Type::kA, 0, 2));
+  segments[0]->AddPosTag(PosTag::Type::kN);
 
-  segments.Add(Segment(PosTag::kU, 2, 1));
-  segments.Add(Segment(PosTag::kN, 3, 3));
+  segments.Add(Segment(PosTag::Type::kU, 2, 1));
+  segments.Add(Segment(PosTag::Type::kN, 3, 3));
   context->GetSentence().GetNluContext()->SetSegments(segments);
 
   auto ret = PatternItem::Build(L"#Pos((n|a)P-uP-nP-)");

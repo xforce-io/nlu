@@ -43,6 +43,7 @@ bool WindowFeatureIsNoun::ExtractFeature(const std::wstring &word, std::wstring 
 
 bool WindowFeatureWildcard::ExtractFeature(const std::wstring &word, std::wstring &feature) {
   feature = kMark;
+  UNUSE(word)
   return true;
 }
 

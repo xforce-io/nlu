@@ -22,6 +22,7 @@ class Fragment {
   inline void SetConfidence(const Confidence &confidence);
   inline void SetStrategy(uint32_t strategy);
 
+  virtual const std::string& GetCategory() const = 0;
   const Fragment* GetFather() const { return father_; }
   const std::wstring* GetStr() const { return str_; }
   inline const std::wstring GetStrFromSentence(const std::wstring &sentence);
