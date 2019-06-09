@@ -8,6 +8,7 @@ kBuildPathNer = "ner/build/"
 kBuildPathSegmentor = "segmentor/build/"
 kBuildPathPosTagging = "pos_tagging/build/"
 kBuildPathChunker = "chunker/build/"
+kBuildPathSyntax = "syntax/build/"
 kBuildPathCharles = "charles/build/"
 
 kDepPathBasic = "basic/deps/"
@@ -16,6 +17,7 @@ kDepPathNer = "ner/deps/"
 kDepPathSegmentor = "segmentor/deps/"
 kDepPathPosTagging = "pos_tagging/deps/"
 kDepPathChunker = "chunker/deps/"
+kDepPathSyntax= "syntax/deps/"
 kDepPathCharles = "charles/deps/"
 
 def call(cmd) :
@@ -91,6 +93,23 @@ def buildChunker() :
     call("mkdir -p %s && cd %s && cmake ../ && make clean && make -j4 -s" % \
             (kBuildPathChunker, kBuildPathChunker))
 
+def buildSyntax() :
+    call("mkdir -p %s && rm -rf %s/*" % (kDepPathSyntax, kDepPathSyntax))
+    call("cp -rf %s/public-cpp %s/public-cpp" % \
+            (kBuildPathPublicCpp, kDepPathSyntax))
+    call("cp -rf %s/basic %s/basic/" % \
+            (kBuildPathBasic, kDepPathSyntax))
+    call("cp -rf %s/milkie %s/milkie/" % \
+            (kBuildPathMilkie, kDepPathSyntax))
+    call("cp -rf %s/ner %s/ner/" % \
+            (kBuildPathNer, kDepPathSyntax))
+    call("cp -rf %s/segmentor %s/segmentor/" % \
+            (kBuildPathSegmentor, kDepPathSyntax))
+    call("cp -rf %s/pos_tagging %s/pos_tagging/" % \
+            (kBuildPathPosTagging, kDepPathSyntax))
+    call("mkdir -p %s && cd %s && cmake ../ && make clean && make -j4 -s" % \
+            (kBuildPathSyntax, kBuildPathSyntax))
+
 def buildCharles() :
     call("mkdir -p %s && rm -rf %s/*" % (kDepPathCharles, kDepPathCharles))
     call("cp -rf %s/public-cpp %s/public-cpp/" % \
@@ -137,6 +156,10 @@ if __name__ == "__main__" :
 
     buildChunker()
     if sys.argv[1] == "chk" :
+        sys.exit(0)
+
+    buildSyntax()
+    if sys.argv[1] == "syn" :
         sys.exit(0)
 
     buildCharles()
