@@ -2,7 +2,7 @@
 
 #include "../public.h"
 
-namespace xforce { namespace nlu { namespace chunker {
+namespace xforce { namespace nlu { namespace syntax {
 
 class Conf {
  public: 

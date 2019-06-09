@@ -1,6 +1,6 @@
 #include "../conf.h"
 
-namespace xforce { namespace nlu { namespace chunker {
+namespace xforce { namespace nlu { namespace syntax {
 
 Conf *Conf::conf_ = new Conf();
 

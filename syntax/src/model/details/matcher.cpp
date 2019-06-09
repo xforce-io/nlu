@@ -1,7 +1,7 @@
 #include "../matcher.h"
 #include "../../conf/conf.h"
 
-namespace xforce { namespace nlu { namespace chunker {
+namespace xforce { namespace nlu { namespace syntax {
 
 const std::wstring Matcher::kChunkStoragePrefix = L"chunkSep";
 const std::wstring Matcher::kSyntacticStoragePrefix = L"syntactic";
