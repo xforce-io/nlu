@@ -11,6 +11,15 @@ class Fragment {
   typedef std::list<std::shared_ptr<Fragment>> List;
 
  public:
+  struct Compare {
+      bool operator() (
+              const std::shared_ptr<Fragment> &lhs,
+              const std::shared_ptr<Fragment> &rhs) const {
+        return lhs->GetOffset() < rhs->GetOffset();
+      }
+  };
+
+ public:
   inline Fragment();
   inline Fragment(size_t offset, size_t len);
   virtual ~Fragment();
