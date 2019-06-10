@@ -16,6 +16,7 @@ class ManagerFragmentSet {
   inline void SetSegments(const Segment::Set &segments);
   inline void SetChunkSeps(const ChunkSep::Set &chunkSeps);
   inline void SetChunks(const Chunk::Set &chunks);
+  ManagerFragmentSet* Build(size_t from, size_t to);
 
   const typename NameEntity::Set& GetNameEntities() const { return nameEntities_; }
   typename NameEntity::Set& GetNameEntities() { return nameEntities_; }
@@ -29,6 +30,7 @@ class ManagerFragmentSet {
   void Dump(JsonType &jsonType);
 
  private:
+  const std::wstring query_;
   typename NameEntity::Set nameEntities_;
   typename Segment::Set segments_;
   typename ChunkSep::Set chunkSeps_;
