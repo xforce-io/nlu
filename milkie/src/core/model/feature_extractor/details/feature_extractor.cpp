@@ -15,9 +15,9 @@ FeatureExtractor::FeatureExtractor(
   instructions_ = structFeatureExtractor->GetInstructions();
 }
 
-Errno::Code FeatureExtractor::MatchPattern(Context &context) const {
+Errno::Code FeatureExtractor::MatchPattern(Context &context, size_t offset) const {
   for (auto &instruction : instructions_) {
-    context.Reset();
+    context.Reset(offset);
     switch (instruction->GetCategoryInstruction()) {
       case CategoryInstruction::kPatternExpr : {
         if (

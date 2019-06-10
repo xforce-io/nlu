@@ -17,6 +17,7 @@ class Context {
   virtual ~Context();
 
   inline void Reset();
+  inline void Reset(size_t offset);
   inline void Reset(const std::wstring &otherSentence);
   const Sentence& GetSentence() const { return *sentence_; }
   Sentence& GetSentence() { return *sentence_; }
@@ -78,7 +79,11 @@ Context::Context(const std::wstring &sentenceStr) :
   Context(std::make_shared<basic::NluContext>(sentenceStr)) {}
 
 void Context::Reset() {
-  curPos_ = 0;  
+  Reset(0);
+}
+
+void Context::Reset(size_t offset) {
+  curPos_ = offset;
   while (!stack_.empty()) {
     stack_.pop();
   }
