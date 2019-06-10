@@ -10,6 +10,7 @@ include_directories(
 )
 
 link_directories(
+  /usr/lib64/
 )
 
 set(CMAKE_CXX_COMPILER g++)

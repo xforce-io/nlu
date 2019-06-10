@@ -25,6 +25,7 @@ bool Matcher::Init() {
 }
 
 void Matcher::Match(basic::NluContext &nluContext) {
+  nluContext.GetChunkSeps()
 }
 
 Matcher::~Matcher() {

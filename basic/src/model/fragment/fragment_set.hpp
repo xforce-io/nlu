@@ -33,7 +33,7 @@ class FragmentSet {
  protected:
   std::wstring *text_;
 
-  std::vector<std::shared_ptr<FragmentType>> fragments_;
+  std::set<std::shared_ptr<FragmentType>, typename FragmentType::Compare> fragments_;
 };
 
 template <typename FragmentType>
