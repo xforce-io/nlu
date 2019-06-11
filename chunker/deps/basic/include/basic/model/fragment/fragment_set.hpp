@@ -9,6 +9,12 @@ template <typename FragmentType>
 class FragmentSet {
  private:
   typedef FragmentSet<FragmentType> Self;
+  typedef std::set<
+      std::shared_ptr<FragmentType>, 
+      typename FragmentType::Compare> Container;
+
+ public:
+  typedef typename Container::iterator Iter;
 
  public:
   explicit FragmentSet(const std::wstring &text);
@@ -21,11 +27,7 @@ class FragmentSet {
 
   Self& operator=(const FragmentSet<FragmentType> &other);
 
-  inline const std::vector<std::shared_ptr<FragmentType>> GetAll() const;
-
-  inline const std::shared_ptr<FragmentType>& operator[](size_t i) const;
-  inline std::shared_ptr<FragmentType>& operator[](size_t i);
-
+  inline const Container GetAll() const;
   inline size_t Size() const;
 
   void Dump(JsonType &jsonType);
@@ -33,7 +35,7 @@ class FragmentSet {
  protected:
   std::wstring *text_;
 
-  std::vector<std::shared_ptr<FragmentType>> fragments_;
+  Container fragments_;
 };
 
 template <typename FragmentType>
@@ -54,7 +56,7 @@ void FragmentSet<FragmentType>::Reset(const std::wstring &text) {
 
 template <typename FragmentType>
 void FragmentSet<FragmentType>::Add(std::shared_ptr<FragmentType> fragment) {
-  fragments_.push_back(fragment);
+  fragments_.insert(fragment);
 }
 
 template <typename FragmentType>
@@ -70,24 +72,14 @@ FragmentSet<FragmentType>& FragmentSet<FragmentType>::operator=(const FragmentSe
   text_ = new std::wstring(*(other.text_));
   fragments_.clear();
   for (auto &fragment : other.fragments_) {
-    fragments_.push_back(fragment);
+    fragments_.insert(fragment);
   }
   return *this;
 }
 
 template <typename FragmentType>
-const std::vector<std::shared_ptr<FragmentType>> FragmentSet<FragmentType>::GetAll() const {
+const typename FragmentSet<FragmentType>::Container FragmentSet<FragmentType>::GetAll() const {
   return fragments_;
-}
-
-template <typename FragmentType>
-const std::shared_ptr<FragmentType>& FragmentSet<FragmentType>::operator[](size_t i) const {
-  return fragments_[i];
-}
-
-template <typename FragmentType>
-std::shared_ptr<FragmentType>& FragmentSet<FragmentType>::operator[](size_t i) {
-  return fragments_[i];
 }
 
 template <typename FragmentType>
@@ -98,8 +90,10 @@ size_t FragmentSet<FragmentType>::Size() const {
 template <typename FragmentType>
 void FragmentSet<FragmentType>::Dump(JsonType &jsonType) {
   jsonType["text"] = *StrHelper::Wstr2Str(*text_);
-  for (size_t i=0; i < fragments_.size(); ++i) {
-    fragments_[i]->Dump(jsonType[fragments_[i]->GetCategory().c_str()][i]);
+  size_t i=0;
+  for (auto &fragment : fragments_) {
+    fragment->Dump(jsonType[fragment->GetCategory().c_str()][i]);
+    ++i;
   }
 }
 

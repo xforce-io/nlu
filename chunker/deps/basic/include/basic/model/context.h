@@ -2,11 +2,10 @@
 
 #include "../public.h"
 #include "fragment/fragment_set.hpp"
+#include "segment.h"
+#include "name_entity.h"
 
 namespace xforce { namespace nlu { namespace basic {
-
-class Segment;
-class NameEntity;
 
 class Context {
  public:
