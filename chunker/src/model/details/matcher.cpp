@@ -30,39 +30,47 @@ void Matcher::Match(basic::NluContext &nluContext) {
 }
 
 void Matcher::ParseCommon_(basic::NluContext &nluContext) {
-  auto &segments = nluContext.GetSegments();
+  auto &segments = nluContext.GetSegments().GetAll();
   auto &chunkSeps = nluContext.GetChunkSeps();
-  for (size_t i=0; i < segments.Size(); ++i) {
-    auto curClassOfPosTags = segments[i]->GetClassOfPosTags();
+  auto cur = segments.begin();
+  while (cur != segments.end()) {
+    auto next = cur;
+    ++next;
+
+    auto &segment = *cur;
+    auto curClassOfPosTags = segment->GetClassOfPosTags();
     if (basic::PosTag::Class::kUndef == curClassOfPosTags) {
+      cur = next;
       continue;
     }
 
     if (basic::PosTag::Class::kFuncWord == curClassOfPosTags ||
         basic::PosTag::Class::kMood == curClassOfPosTags ||
         basic::PosTag::Class::kPunctuation == curClassOfPosTags) {
-      chunkSeps.Add(std::make_shared<basic::ChunkSep>(i));
-      if (i != segments.Size() - 1) {
-        chunkSeps.Add(std::make_shared<basic::ChunkSep>(i+1));
+      chunkSeps.Add(std::make_shared<basic::ChunkSep>(segment->GetOffset()));
+      if (next != segments.end()) {
+        chunkSeps.Add(std::make_shared<basic::ChunkSep>((*next)->GetOffset()));
       }
     }
 
-    if (i != segments.Size() - 1) {
-      auto nextClassOfPosTags = segments[i+1]->GetClassOfPosTags();
+    if (next != segments.end()) {
+      auto nextClassOfPosTags = (*next)->GetClassOfPosTags();
       if (basic::PosTag::Class::kUndef == nextClassOfPosTags) {
+        cur = next;
         continue;
       }
 
       if (basic::PosTag::Class::kNominal == curClassOfPosTags &&
           (basic::PosTag::Class::kPredicate == nextClassOfPosTags||
            basic::PosTag::Class::kAdvOrDis == nextClassOfPosTags)) {
-        chunkSeps.Add(std::make_shared<basic::ChunkSep>(i+1));
+        chunkSeps.Add(std::make_shared<basic::ChunkSep>((*next)->GetOffset()));
       } else if ((basic::PosTag::Class::kPredicate == curClassOfPosTags ||
                   basic::PosTag::Class::kAdvOrDis == curClassOfPosTags) &&
                  basic::PosTag::Class::kNominal == nextClassOfPosTags) {
-        chunkSeps.Add(std::make_shared<basic::ChunkSep>(i+1));
+        chunkSeps.Add(std::make_shared<basic::ChunkSep>((*next)->GetOffset()));
       }
     }
+    cur = next;
   }
 }
 
