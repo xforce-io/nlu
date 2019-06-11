@@ -58,7 +58,9 @@ void FragmentSet<FragmentType>::Reset(const std::wstring &text) {
 
 template <typename FragmentType>
 void FragmentSet<FragmentType>::Add(std::shared_ptr<FragmentType> fragment) {
-  fragments_.insert(fragment);
+  if (fragment->GetOffset() < text_->length()) {
+    fragments_.insert(fragment);
+  }
 }
 
 template <typename FragmentType>
