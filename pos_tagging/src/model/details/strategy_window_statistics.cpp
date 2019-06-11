@@ -28,9 +28,8 @@ bool StrategyWindowStatistics::Init() {
 void StrategyWindowStatistics::Process(basic::NluContext &nluContext) {
   auto &segments = nluContext.GetSegments().GetAll();
 
-  basic::Segment::Set::Iter segIter0 = segments.begin();
-  basic::Segment::Set::Iter segIter1 = segments.end();
-  basic::Segment::Set::Iter segIter2 = segments.end();
+  auto segIter0 = segments.begin();
+  auto segIter1 = segments.end();
   if (segIter0 != segments.end()) {
     segIter1 = segIter0;
     ++segIter1;
@@ -45,21 +44,21 @@ void StrategyWindowStatistics::Process(basic::NluContext &nluContext) {
       continue;
     } if (dominator.first == StatisticsItems::kCategory0) {
       SetPos(
-              *segIter0,
+              **segIter0,
               dominator.second->type0,
               Strategy::kStrategyWindowStatistics);
     } else if (dominator.first == StatisticsItems::kCategory1) {
       SetPos(
-              *segIter1,
+              **segIter1,
               dominator.second->type1,
               Strategy::kStrategyWindowStatistics);
     } else if (dominator.first == StatisticsItems::kCategory01) {
       SetPos(
-              *segIter0,
+              **segIter0,
               dominator.second->type0,
               Strategy::kStrategyWindowStatistics);
       SetPos(
-              *segIter1,
+              **segIter1,
               dominator.second->type1,
               Strategy::kStrategyWindowStatistics);
     }
@@ -70,7 +69,7 @@ void StrategyWindowStatistics::Process(basic::NluContext &nluContext) {
 
   segIter0 = segments.begin();
   segIter1 = segments.end();
-  segIter2 = segments.end();
+  auto segIter2 = segments.end();
   if (segIter0 != segments.end()) {
     segIter1 = segIter0;
     ++segIter1;
@@ -90,57 +89,57 @@ void StrategyWindowStatistics::Process(basic::NluContext &nluContext) {
       continue;
     } if (dominator.first == StatisticsItems::kCategory0) {
       SetPos(
-              *segIter0,
+              **segIter0,
               dominator.second->type0,
               Strategy::kStrategyWindowStatistics);
     } else if (dominator.first == StatisticsItems::kCategory1) {
       SetPos(
-              *segIter1,
+              **segIter1,
               dominator.second->type1,
               Strategy::kStrategyWindowStatistics);
     } else if (dominator.first == StatisticsItems::kCategory2) {
       SetPos(
-              *segIter2,
+              **segIter2,
               dominator.second->type2,
               Strategy::kStrategyWindowStatistics);
     } else if (dominator.first == StatisticsItems::kCategory01) {
       SetPos(
-              *segIter0,
+              **segIter0,
               dominator.second->type0,
               Strategy::kStrategyWindowStatistics);
       SetPos(
-              *segIter1,
+              **segIter1,
               dominator.second->type1,
               Strategy::kStrategyWindowStatistics);
     } else if (dominator.first == StatisticsItems::kCategory12) {
       SetPos(
-              *segIter1,
+              **segIter1,
               dominator.second->type1,
               Strategy::kStrategyWindowStatistics);
       SetPos(
-              *segIter2,
+              **segIter2,
               dominator.second->type2,
               Strategy::kStrategyWindowStatistics);
     } else if (dominator.first == StatisticsItems::kCategory02) {
       SetPos(
-              *segIter0,
+              **segIter0,
               dominator.second->type0,
               Strategy::kStrategyWindowStatistics);
       SetPos(
-              *segIter2,
+              **segIter2,
               dominator.second->type2,
               Strategy::kStrategyWindowStatistics);
     } else if (dominator.first == StatisticsItems::kCategory012) {
       SetPos(
-              *segIter0,
+              **segIter0,
               dominator.second->type0,
               Strategy::kStrategyWindowStatistics);
       SetPos(
-              *segIter1,
+              **segIter1,
               dominator.second->type1,
               Strategy::kStrategyWindowStatistics);
       SetPos(
-              *segIter2,
+              **segIter2,
               dominator.second->type2,
               Strategy::kStrategyWindowStatistics);
     }

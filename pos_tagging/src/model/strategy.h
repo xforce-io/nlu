@@ -20,12 +20,12 @@ class Strategy {
 
  protected:
   virtual void SetPos(
-          std::shared_ptr<basic::Segment> &segment,
+          basic::Segment &segment,
           basic::PosTag::Type::Val posTag,
           uint32_t strategy);
 
   virtual void AddPos(
-          std::shared_ptr<basic::Segment> &segment,
+          basic::Segment &segment,
           basic::PosTag::Type::Val posTag);
 };
 
