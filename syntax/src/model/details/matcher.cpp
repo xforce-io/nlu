@@ -25,7 +25,23 @@ bool Matcher::Init() {
 }
 
 void Matcher::Match(basic::NluContext &nluContext) {
-  nluContext.GetChunkSeps()
+  auto cur = nluContext.GetChunkSeps().Begin();
+  while (cur != nluContext.GetChunkSeps().End()) {
+    auto next = cur;
+    ++next;
+
+    if (next != nluContext.GetChunkSeps().End()) {
+      auto fragment = basic::NluContext::Build(
+              (*cur)->GetOffset(),
+              (*next)->GetOffset());
+    } else {
+      auto fragment = basic::NluContext::Build(
+              (*cur)->GetOffset(),
+              nluContext.GetQuery().length());
+    }
+
+
+  }
 }
 
 Matcher::~Matcher() {

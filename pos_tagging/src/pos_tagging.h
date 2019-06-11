@@ -16,7 +16,7 @@ class PosTagging {
 
  public:
   static bool Init(const xforce::JsonType &confPos);
-  static void Tagging(basic::NluContext &nluContext);
+  static void Tagging(std::shared_ptr<basic::NluContext> nluContext);
   static void Tini();
 
  private:

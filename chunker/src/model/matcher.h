@@ -13,13 +13,13 @@ class Matcher {
   Matcher();
 
   bool Init();
-  void Match(basic::NluContext &nluContext);
+  void Match(std::shared_ptr<basic::NluContext> nluContext);
 
   virtual ~Matcher();
 
  private:
   void ParseCommon_(basic::NluContext &nluContext);
-  void ParseAccordingToRule_(basic::NluContext &nluContext);
+  void ParseAccordingToRule_(std::shared_ptr<basic::NluContext> nluContext);
 
  private:
   milkie::Milkie *milkie_;

@@ -17,6 +17,8 @@ class NluContext {
   inline void SetChunkSeps(const ChunkSep::Set &chunkSeps);
   inline void SetChunks(const Chunk::Set &chunks);
 
+  std::shared_ptr<NluContext> Build(size_t from, size_t to);
+
   inline const typename NameEntity::Set& GetNameEntities() const;
   inline typename NameEntity::Set& GetNameEntities();
   inline const typename Segment::Set& GetSegments() const;
@@ -28,11 +30,6 @@ class NluContext {
 
   void Dump(JsonType &jsonType);
 
- public:
-  std::shared_ptr<NluContext> Build(
-          const NluContext &nluContext,
-          size_t from,
-          size_t to);
 
  private:
   std::wstring query_;

@@ -24,8 +24,10 @@ bool Matcher::Init() {
   return true;
 }
 
-void Matcher::Match(basic::NluContext &nluContext) {
-  ParseCommon_(nluContext);
+void Matcher::Match(std::shared_ptr<basic::NluContext> nluContext) {
+  nluContext->GetChunkSeps().Add(std::make_shared<basic::ChunkSep>(0));
+
+  ParseCommon_(*nluContext);
   ParseAccordingToRule_(nluContext);
 }
 
@@ -74,8 +76,8 @@ void Matcher::ParseCommon_(basic::NluContext &nluContext) {
   }
 }
 
-void Matcher::ParseAccordingToRule_(basic::NluContext &nluContext) {
-  auto context = std::make_shared<milkie::Context>(nluContext.GetQuery());
+void Matcher::ParseAccordingToRule_(std::shared_ptr<basic::NluContext> nluContext) {
+  auto context = std::make_shared<milkie::Context>(nluContext);
   auto errCode = featureExtractor_->MatchPattern(*context);
   if (milkie::Errno::kOk != errCode) {
     return;
@@ -93,11 +95,11 @@ void Matcher::ParseAccordingToRule_(basic::NluContext &nluContext) {
 
     auto storageItems = storage.second->Get();
     if (vals[0] == kChunkStoragePrefix) {
-      for (auto &segment : nluContext.GetSegments().GetAll()) {
+      for (auto &segment : nluContext->GetSegments().GetAll()) {
         for (auto &storageItem : storageItems) {
           if (segment->GetOffset() == storageItem.GetOffset() ||
               segment->GetOffset() == storageItem.GetOffset() + storageItem.GetLen()) {
-            nluContext.GetChunkSeps().Add(basic::ChunkSep(segment->GetOffset()));
+            nluContext->GetChunkSeps().Add(basic::ChunkSep(segment->GetOffset()));
           }
         }
       }
@@ -119,7 +121,7 @@ void Matcher::ParseAccordingToRule_(basic::NluContext &nluContext) {
                 syntaxTag,
                 storageItem.GetOffset(),
                 storageItem.GetContent().length() + storageItem.GetOffset());
-        nluContext.GetChunks().Add(chunk);
+        nluContext->GetChunks().Add(chunk);
       }
     } else {
       FATAL("invalid_chunk_parse_prefix[" << vals[0] << "]");

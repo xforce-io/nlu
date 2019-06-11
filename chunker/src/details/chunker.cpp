@@ -22,7 +22,7 @@ bool Chunker::Init() {
   return true;
 }
 
-void Chunker::Process(basic::NluContext &nluContext) {
+void Chunker::Process(std::shared_ptr<basic::NluContext> nluContext) {
   matcher_->Match(nluContext);
 }
 
@@ -42,7 +42,7 @@ bool Chunker::Init(const xforce::JsonType &confJson) {
   return true;
 }
 
-void Chunker::Parse(basic::NluContext &nluContext) {
+void Chunker::Parse(std::shared_ptr<basic::NluContext> nluContext) {
   return chunker_.Process(nluContext);
 }
 

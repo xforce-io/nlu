@@ -57,8 +57,8 @@ bool PosTagging::Init(const xforce::JsonType &confPos) {
   return true;
 }
 
-void PosTagging::Tagging(basic::NluContext &nluContext) {
-  posTagging_.Process(nluContext);
+void PosTagging::Tagging(std::shared_ptr<basic::NluContext> nluContext) {
+  posTagging_.Process(*nluContext);
 }
 
 void PosTagging::Tini() {}

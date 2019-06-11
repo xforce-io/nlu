@@ -12,11 +12,11 @@ class Chunker {
   virtual ~Chunker();
 
   bool Init();
-  void Process(basic::NluContext &nluContext);
+  void Process(std::shared_ptr<basic::NluContext> nluContext);
 
  public: 
   static bool Init(const xforce::JsonType &confJson);
-  static void Parse(basic::NluContext &nluContext);
+  static void Parse(std::shared_ptr<basic::NluContext> nluContext);
   static void Tini() {}
 
  private:

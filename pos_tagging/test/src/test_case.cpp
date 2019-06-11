@@ -35,13 +35,13 @@ TEST(test_case, all) {
 
     Segmentor::Parse(wStrQuery, segments, nameEntities);
 
-    NluContext nluContext(wStrQuery);
-    nluContext.SetSegments(segments);
+    auto nluContext = std::make_shared<basic::NluContext>(wStrQuery);
+    nluContext->SetSegments(segments);
 
     PosTagging::Tagging(nluContext);
 
     xforce::JsonType jsonToDump;
-    nluContext.GetSegments().Dump(jsonToDump);
+    nluContext->GetSegments().Dump(jsonToDump);
 
     std::stringstream ss;
     jsonToDump.DumpJson(ss);

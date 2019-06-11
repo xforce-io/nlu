@@ -34,14 +34,14 @@ TEST(testAll, all) {
   ASSERT_TRUE(Chunker::Init((*conf)["chunker"]));
 
   std::wstring wStrQuery = L"谈到第一局的失利";
-  NluContext nluContext(wStrQuery);
-  Segmentor::Parse(wStrQuery, nluContext.GetSegments(), nluContext.GetNameEntities());
+  auto nluContext = std::make_shared<NluContext>(wStrQuery);
+  Segmentor::Parse(wStrQuery, nluContext->GetSegments(), nluContext->GetNameEntities());
   PosTagging::Tagging(nluContext);
   Chunker::Parse(nluContext);
 
   xforce::JsonType jsonToDump;
-  nluContext.GetSegments().Dump(jsonToDump);
-  nluContext.GetChunkSeps().Dump(jsonToDump);
+  nluContext->GetSegments().Dump(jsonToDump);
+  nluContext->GetChunkSeps().Dump(jsonToDump);
 
   std::stringstream ss;
   jsonToDump.DumpJson(ss);
