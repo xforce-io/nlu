@@ -5,7 +5,7 @@ namespace xforce { namespace nlu { namespace pos {
 void StrategyComplement::Process(basic::NluContext &nluContext) {
   auto &clause = nluContext.GetQuery();
   typename basic::Segment::Set &segments = nluContext.GetSegments();
-  for (auto segment : segments.GetAll())
+  for (auto segment : segments.GetAll()) {
     if (segment->GetPosTags().empty()) {
       auto segmentStr = segment->GetStrFromSentence(clause);
       auto poses = basic::Manager::Get().GetGkb().GetGkbGlobal().GetPosTags(segmentStr);
