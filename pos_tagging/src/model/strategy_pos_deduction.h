@@ -13,7 +13,7 @@ class StrategyPosDeduction : public Strategy {
   void ProcessAdverb_(
           basic::NluContext &nluContext,
           basic::Segment::Set &segments,
-          size_t i);
+          basic::Segment::Set::Iter curIter);
 };
 
 }}}
