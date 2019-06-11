@@ -14,6 +14,9 @@ class FragmentSet {
       typename FragmentType::Compare> Container;
 
  public:
+  typedef typename Container::iterator Iter;
+
+ public:
   explicit FragmentSet(const std::wstring &text);
   virtual ~FragmentSet();
 
@@ -25,10 +28,6 @@ class FragmentSet {
   Self& operator=(const FragmentSet<FragmentType> &other);
 
   inline const Container GetAll() const;
-
-  inline const std::shared_ptr<FragmentType>& operator[](size_t i) const;
-  inline std::shared_ptr<FragmentType>& operator[](size_t i);
-
   inline size_t Size() const;
 
   void Dump(JsonType &jsonType);
@@ -81,16 +80,6 @@ FragmentSet<FragmentType>& FragmentSet<FragmentType>::operator=(const FragmentSe
 template <typename FragmentType>
 const typename FragmentSet<FragmentType>::Container FragmentSet<FragmentType>::GetAll() const {
   return fragments_;
-}
-
-template <typename FragmentType>
-const std::shared_ptr<FragmentType>& FragmentSet<FragmentType>::operator[](size_t i) const {
-  return fragments_[i];
-}
-
-template <typename FragmentType>
-std::shared_ptr<FragmentType>& FragmentSet<FragmentType>::operator[](size_t i) {
-  return fragments_[i];
 }
 
 template <typename FragmentType>

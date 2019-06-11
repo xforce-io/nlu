@@ -10,7 +10,7 @@ void StrategyUniq::Process(basic::NluContext &nluContext) {
     auto segmentStr = segment->GetStrFromSentence(clause);
     auto poses = basic::Manager::Get().GetGkb().GetGkbGlobal().GetPosTags(segmentStr);
     if (poses != nullptr && poses->size() == 1) {
-      SetPos(segment, (*poses)[0], kStrategyUniq);
+      SetPos(*segment, (*poses)[0], kStrategyUniq);
     }
   }
 }
