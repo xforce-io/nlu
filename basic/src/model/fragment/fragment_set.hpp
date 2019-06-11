@@ -14,6 +14,9 @@ class FragmentSet {
       typename FragmentType::Compare> Container;
 
  public:
+  typedef typename Container::iterator Iter;
+
+ public:
   explicit FragmentSet(const std::wstring &text);
   virtual ~FragmentSet();
 
