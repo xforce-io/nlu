@@ -3,27 +3,26 @@
 namespace xforce { namespace nlu { namespace pos {
 
 void StrategyOnlyPredOrPrep::Process(basic::NluContext &nluContext) {
-  int idx = -1;
-  basic::Segment::Set &segments = nluContext.GetSegments();
-  for (size_t i=0; i < segments.Size(); ++i) {
-    auto &segment = segments[i];
-    if (PosFilter_(segment->GetPosTag())) {
+  auto segments = nluContext.GetSegments().GetAll();
+  auto theIter = segments.end();
+  for (auto segIter = segments.begin(); segIter != segments.end(); ++segIter) {
+    if (PosFilter_((*segIter)->GetPosTag())) {
       return;
-    } else if (segment->SizePosTags() > 1) {
-      for (auto &posTag : segment->GetPosTags()) {
+    } else if ((*segIter)->SizePosTags() > 1) {
+      for (auto &posTag : (*segIter)->GetPosTags()) {
         if (PosFilter_(posTag)) {
-          if (idx>=0) {
+          if (theIter != segments.end()) {
             return;
           }
-          idx = i;
+          theIter = segIter;
           break;
         }
       }
     }
   }
 
-  if (idx>=0) {
-    auto &posTags = segments[idx]->GetPosTags();
+  if (theIter != segments.end()) {
+    auto &posTags = (*theIter)->GetPosTags();
     auto iter = posTags.begin();
     while (iter != posTags.end()) {
       if (!PosFilter_(*iter)) {
