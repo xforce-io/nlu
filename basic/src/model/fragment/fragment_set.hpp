@@ -28,6 +28,8 @@ class FragmentSet {
   Self& operator=(const FragmentSet<FragmentType> &other);
 
   inline const Container GetAll() const;
+  inline typename Container::iterator Begin();
+  inline typename Container::iterator End();
   inline size_t Size() const;
 
   void Dump(JsonType &jsonType);
@@ -80,6 +82,18 @@ FragmentSet<FragmentType>& FragmentSet<FragmentType>::operator=(const FragmentSe
 template <typename FragmentType>
 const typename FragmentSet<FragmentType>::Container FragmentSet<FragmentType>::GetAll() const {
   return fragments_;
+}
+
+template <typename FragmentType>
+typename FragmentSet<FragmentType>::Container::iterator
+FragmentSet<FragmentType>::Begin() {
+  return fragments_.begin();
+}
+
+template <typename FragmentType>
+typename FragmentSet<FragmentType>::Container::iterator
+FragmentSet<FragmentType>::End() {
+  return fragments_.end();
 }
 
 template <typename FragmentType>

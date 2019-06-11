@@ -4,7 +4,7 @@ namespace xforce { namespace nlu { namespace pos {
 
 void StrategyPosDeduction::Process(basic::NluContext &nluContext) {
   typename basic::Segment::Set &segments = nluContext.GetSegments();
-  for (auto iter = segments.GetAll().begin(); iter != segments.GetAll().end(); ++iter) {
+  for (auto iter = segments.Begin(); iter != segments.End(); ++iter) {
     ProcessAdverb_(nluContext, segments, iter);
   }
 }
@@ -13,13 +13,13 @@ void StrategyPosDeduction::ProcessAdverb_(
         basic::NluContext &nluContext,
         basic::Segment::Set &segments,
         basic::Segment::Set::Iter curIter) {
-  if (curIter == segments.GetAll().end()) {
+  if (curIter == segments.End()) {
     return;
   }
 
   auto nextIter = curIter;
   ++nextIter;
-  if (nextIter == segments.GetAll().end()) {
+  if (nextIter == segments.End()) {
     return;
   }
 
