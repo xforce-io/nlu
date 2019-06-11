@@ -41,8 +41,10 @@ void StrategyWindowStatistics::Process(basic::NluContext &nluContext) {
 
     auto dominator = windowStatistics_->GetDominator(seg0, seg1);
     if (dominator.first == StatisticsItems::kOther) {
+      ++segIter0;
+      ++segIter1;
       continue;
-    } if (dominator.first == StatisticsItems::kCategory0) {
+    } else if (dominator.first == StatisticsItems::kCategory0) {
       SetPos(
               **segIter0,
               dominator.second->type0,
@@ -86,8 +88,11 @@ void StrategyWindowStatistics::Process(basic::NluContext &nluContext) {
 
     auto dominator = windowStatistics_->GetDominator(seg0, seg1,seg2);
     if (dominator.first == StatisticsItems::kOther) {
+      ++segIter0;
+      ++segIter1;
+      ++segIter2;
       continue;
-    } if (dominator.first == StatisticsItems::kCategory0) {
+    } else if (dominator.first == StatisticsItems::kCategory0) {
       SetPos(
               **segIter0,
               dominator.second->type0,
