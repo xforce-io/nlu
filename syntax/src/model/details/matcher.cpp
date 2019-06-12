@@ -3,7 +3,6 @@
 
 namespace xforce { namespace nlu { namespace syntax {
 
-const std::wstring Matcher::kChunkStoragePrefix = L"chunkSep";
 const std::wstring Matcher::kSyntacticStoragePrefix = L"syntactic";
 
 Matcher::Matcher() :
@@ -30,17 +29,58 @@ void Matcher::Match(basic::NluContext &nluContext) {
     auto next = cur;
     ++next;
 
+    std::shared_ptr<basic::NluContext> fragment;
     if (next != nluContext.GetChunkSeps().End()) {
-      auto fragment = basic::NluContext::Build(
+      fragment = nluContext.Build(
               (*cur)->GetOffset(),
               (*next)->GetOffset());
     } else {
-      auto fragment = basic::NluContext::Build(
+      fragment = nluContext.Build(
               (*cur)->GetOffset(),
               nluContext.GetQuery().length());
     }
 
+    auto context = std::make_shared<milkie::Context>(fragment);
+    auto errCode = featureExtractor_->MatchPattern(*context);
+    if (milkie::Errno::kOk != errCode) {
+      continue;
+    }
 
+    std::unordered_map<std::wstring, std::shared_ptr<milkie::StorageVal>> storages;
+    context->GetStorages(storages);
+    for (auto &storage : storages) {
+      const std::wstring &key = storage.first;
+      std::vector<std::wstring> vals;
+      StrHelper::SplitStr(key, L'.', vals);
+      if (vals.size() != 2) {
+        continue;
+      }
+
+      auto storageItems = storage.second->Get();
+      if (vals[0] == kSyntacticStoragePrefix) {
+        if (vals.size() != 2) {
+          ERROR("invalid_storage_key[" << key << "]");
+          continue;
+        }
+
+        auto syntaxTag = basic::SyntaxTag::GetSyntaxTag(vals[1]);
+        if (basic::SyntaxTag::kUndef == syntaxTag) {
+          ERROR("unknown_syntax_tag[" << syntaxTag << "]");
+          continue;
+        }
+
+        auto storageItems = storage.second->Get();
+        for (auto &storageItem : storageItems) {
+          basic::Chunk chunk(
+                  syntaxTag,
+                  storageItem.GetOffset(),
+                  storageItem.GetContent().length() + storageItem.GetOffset());
+          nluContext.GetChunks().Add(chunk);
+        }
+      } else {
+        FATAL("invalid_chunk_parse_prefix[" << vals[0] << "]");
+      }
+    }
   }
 }
 

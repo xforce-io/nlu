@@ -6,7 +6,6 @@ namespace xforce { namespace nlu { namespace syntax {
 
 class Matcher {
  private:
-  static const std::wstring kChunkStoragePrefix;
   static const std::wstring kSyntacticStoragePrefix;
 
  public:
