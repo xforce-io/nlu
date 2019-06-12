@@ -41,14 +41,20 @@ TEST(testAll, all) {
   Segmentor::Parse(wStrQuery, nluContext->GetSegments(), nluContext->GetNameEntities());
   PosTagging::Tagging(nluContext);
   Chunker::Parse(nluContext);
-  Syntax::Parse(nluContext);
 
   xforce::JsonType jsonToDump;
   nluContext->GetSegments().Dump(jsonToDump);
   nluContext->GetChunkSeps().Dump(jsonToDump);
-  nluContext->GetChunks().Dump(jsonToDump);
 
   std::stringstream ss;
+  jsonToDump.DumpJson(ss);
+  std::cout << ss.str() << std::endl;
+
+  Syntax::Parse(nluContext);
+
+  nluContext->GetChunks().Dump(jsonToDump);
+
+  ss.str("");
   jsonToDump.DumpJson(ss);
   std::cout << ss.str() << std::endl;
 }
