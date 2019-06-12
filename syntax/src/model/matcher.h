@@ -17,8 +17,6 @@ class Matcher {
   virtual ~Matcher();
 
  private:
-
- private:
   milkie::Milkie *milkie_;
   std::shared_ptr<milkie::FeatureExtractor> featureExtractor_;
 };
