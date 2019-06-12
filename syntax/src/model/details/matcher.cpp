@@ -40,9 +40,15 @@ void Matcher::Match(basic::NluContext &nluContext) {
               nluContext.GetQuery().length());
     }
 
+    if (fragment == nullptr) {
+      cur = next;
+      continue;
+    }
+
     auto context = std::make_shared<milkie::Context>(fragment);
     auto errCode = featureExtractor_->MatchPattern(*context);
     if (milkie::Errno::kOk != errCode) {
+      cur = next;
       continue;
     }
 
@@ -81,6 +87,7 @@ void Matcher::Match(basic::NluContext &nluContext) {
         FATAL("invalid_chunk_parse_prefix[" << vals[0] << "]");
       }
     }
+    cur = next;
   }
 }
 

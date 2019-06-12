@@ -1,7 +1,0 @@
-FEATURE_EXTRACTOR_BEGIN(chunker)
-    ~{ [#Pos((mP-)*(qP-)+), #Pos((mP-)+)] -> syntactic.qp}
-FEATURE_EXTRACTOR_END
-
-FEATURE_EXTRACTOR_BEGIN(syntax)
-    { #Pos(nP-) -> syntactic.np }
-FEATURE_EXTRACTOR_END
