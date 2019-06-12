@@ -107,6 +107,8 @@ def buildSyntax() :
             (kBuildPathSegmentor, kDepPathSyntax))
     call("cp -rf %s/pos_tagging %s/pos_tagging/" % \
             (kBuildPathPosTagging, kDepPathSyntax))
+    call("cp -rf %s/chunker %s/chunker/" % \
+            (kBuildPathChunker, kDepPathSyntax))
     call("mkdir -p %s && cd %s && cmake ../ && make clean && make -j4 -s" % \
             (kBuildPathSyntax, kBuildPathSyntax))
 

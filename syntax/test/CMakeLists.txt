@@ -11,7 +11,7 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/../deps/ner/include/
   ${CMAKE_SOURCE_DIR}/../deps/segmentor/include/
   ${CMAKE_SOURCE_DIR}/../deps/pos_tagging/include/
-  ${CMAKE_SOURCE_DIR}/../deps/chunk/include/
+  ${CMAKE_SOURCE_DIR}/../deps/chunker/include/
   ../3rd/lua-5.3.5/include
 )
 

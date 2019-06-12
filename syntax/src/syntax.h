@@ -16,7 +16,7 @@ class Syntax {
 
  public: 
   static bool Init(const xforce::JsonType &confJson);
-  static void Parse(basic::NluContext &nluContext);
+  static void Parse(std::shared_ptr<basic::NluContext> nluContext);
   static void Tini() {}
 
  private:

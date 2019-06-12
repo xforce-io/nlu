@@ -4,6 +4,8 @@
 
 namespace xforce { namespace nlu { namespace syntax {
 
+Syntax Syntax::syntax_;  
+
 Syntax::Syntax() :
   matcher_(new Matcher()) {}
 
@@ -40,8 +42,8 @@ bool Syntax::Init(const xforce::JsonType &confJson) {
   return true;
 }
 
-void Syntax::Parse(basic::NluContext &nluContext) {
-  return syntax_.Process(nluContext);
+void Syntax::Parse(std::shared_ptr<basic::NluContext> nluContext) {
+  return syntax_.Process(*nluContext);
 }
 
 }}}

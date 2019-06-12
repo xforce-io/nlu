@@ -2,21 +2,23 @@
 
 #include "gtest/gtest.h"
 
-#include "../../../src/chunker.h"
+#include "../../../src/syntax.h"
 #include "../../../src/model/matcher.h"
 #include "basic/model/segment.h"
 #include "basic/model/name_entity.h"
 #include "basic/basic.h"
 #include "segmentor/segmentor.h"
 #include "pos_tagging/pos_tagging.h"
+#include "chunker/chunker.h"
 
-LOGGER_IMPL(xforce::xforce_logger, L"chunker")
+LOGGER_IMPL(xforce::xforce_logger, L"syntax")
 
 using namespace xforce;
 using namespace xforce::nlu::basic;
 using namespace xforce::nlu::segmentor;
 using namespace xforce::nlu::pos;
 using namespace xforce::nlu::chunker;
+using namespace xforce::nlu::syntax;
 
 int main(int argc, char **argv) {
   setlocale(LC_ALL, "");
@@ -32,16 +34,19 @@ TEST(testAll, all) {
   ASSERT_TRUE(Segmentor::Init((*conf)["segmentor"], (*conf)["ner"]));
   ASSERT_TRUE(PosTagging::Init((*conf)["pos"]));
   ASSERT_TRUE(Chunker::Init((*conf)["chunker"]));
+  ASSERT_TRUE(Syntax::Init((*conf)["syntax"]));
 
   std::wstring wStrQuery = L"谈到第一局的失利";
   auto nluContext = std::make_shared<NluContext>(wStrQuery);
   Segmentor::Parse(wStrQuery, nluContext->GetSegments(), nluContext->GetNameEntities());
   PosTagging::Tagging(nluContext);
   Chunker::Parse(nluContext);
+  Syntax::Parse(nluContext);
 
   xforce::JsonType jsonToDump;
   nluContext->GetSegments().Dump(jsonToDump);
   nluContext->GetChunkSeps().Dump(jsonToDump);
+  nluContext->GetChunks().Dump(jsonToDump);
 
   std::stringstream ss;
   jsonToDump.DumpJson(ss);
