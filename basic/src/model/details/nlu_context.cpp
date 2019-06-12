@@ -18,7 +18,7 @@ std::shared_ptr<NluContext> NluContext::Build(
   }
 
   std::shared_ptr<NluContext> result = std::make_shared<NluContext>(
-          GetQuery().substr(from, to));
+          GetQuery().substr(from, to-from));
   XFC_DELETE(result->managerFragmentSet_)
   result->managerFragmentSet_ = managerFragmentSet_->Build(from, to);
   return result;
