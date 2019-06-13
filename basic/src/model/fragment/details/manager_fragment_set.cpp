@@ -19,7 +19,7 @@ void ManagerFragmentSet::Dump(JsonType &jsonType) {
 ManagerFragmentSet* ManagerFragmentSet::Build(
         size_t from,
         size_t to) {
-  if (from >= to || from >= query_.length() || to >= query_.length()) {
+  if (from >= to || from >= query_.length() || to > query_.length()) {
     return nullptr;
   }
 
