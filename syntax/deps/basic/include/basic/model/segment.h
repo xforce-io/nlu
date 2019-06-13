@@ -111,9 +111,8 @@ std::wstring Segment::GetQuery(const std::wstring &sentence) const {
 }
 
 void Segment::operator=(const Segment &segment) {
+  Super::operator=(segment);
   posTags_ = segment.posTags_;
-  offset_ = segment.offset_;
-  len_ = segment.len_;
 }
 
 }}}

@@ -22,14 +22,18 @@ class NameEntity : public basic::Fragment {
   };
 
  public: 
+  inline NameEntity();
   inline NameEntity(size_t offset, size_t len);
   virtual ~NameEntity();
 
-  virtual int GetNECategory() const = 0;
+  int GetNECategory() const { return kCategoryOther; }
   const std::string& GetCategory() const;
 
   void Dump(JsonType &jsonType);
 };
+
+NameEntity::NameEntity() :
+    Fragment(-1, -1) {}
 
 NameEntity::NameEntity(size_t offset, size_t len) :
   Super(offset, len) {}
