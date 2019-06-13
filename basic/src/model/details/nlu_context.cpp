@@ -13,7 +13,7 @@ NluContext::~NluContext() {
 std::shared_ptr<NluContext> NluContext::Build(
         size_t from,
         size_t to) {
-  if (from >= to || to >= GetQuery().length()) {
+  if (from >= to || to > GetQuery().length()) {
     return nullptr;
   }
 
