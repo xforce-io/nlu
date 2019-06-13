@@ -43,6 +43,7 @@ class Fragment {
   inline uint32_t GetStrategy() const { return strategy_; }
 
   inline bool Intersect(const Fragment &fragment) const;
+  inline void operator=(const Fragment &other);
 
   virtual void Dump(JsonType &jsonType);
 
@@ -104,6 +105,17 @@ bool Fragment::Intersect(const Fragment &fragment) const {
   return father_ == fragment.GetFather() &&
       fragment.GetEnd() > GetBegin() &&
       fragment.GetBegin() < GetEnd();
+}
+
+void Fragment::operator=(const Fragment &other) {
+  father_ = other.father_;
+  if (nullptr != other.str_) {
+    str_ = new std::wstring(*(other.str_));
+  }
+  offset_ = other.offset_;
+  len_= other.len_;
+  confidence_ = other.confidence_;
+  strategy_ = other.strategy_;
 }
 
 }}}
