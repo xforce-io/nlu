@@ -26,32 +26,32 @@ ManagerFragmentSet* ManagerFragmentSet::Build(
   ManagerFragmentSet *result = new ManagerFragmentSet(query_.substr(from, to-from));
   for (auto nameEntity : nameEntities_.GetAll()) {
     if (nameEntity->GetBegin() >= from && nameEntity->GetEnd() <= to) {
-      auto newNameEntity = *nameEntity;
-      newNameEntity.SetOffset(nameEntity->GetOffset() - from);
+      auto newNameEntity = std::make_shared<basic::NameEntity>(*nameEntity);
+      newNameEntity->SetOffset(nameEntity->GetOffset() - from);
       result->nameEntities_.Add(newNameEntity);
     }
   }
 
   for (auto segment : segments_.GetAll()) {
     if (segment->GetBegin() >= from && segment->GetEnd() <= to) {
-      auto newSeg = *segment;
-      newSeg.SetOffset(segment->GetOffset() - from);
+      auto newSeg = std::make_shared<basic::Segment>(*segment);
+      newSeg->SetOffset(segment->GetOffset() - from);
       result->segments_.Add(newSeg);
     }
   }
 
   for (auto chunkSep : chunkSeps_.GetAll()) {
     if (chunkSep->GetBegin() >= from && chunkSep->GetEnd() <= to) {
-      auto newChunkSep = *chunkSep;
-      newChunkSep.SetOffset(chunkSep->GetOffset() - from);
+      auto newChunkSep = std::make_shared<basic::ChunkSep>(*chunkSep);
+      newChunkSep->SetOffset(chunkSep->GetOffset() - from);
       result->chunkSeps_.Add(newChunkSep);
     }
   }
 
   for (auto chunk : chunks_.GetAll()) {
     if (chunk->GetBegin() >= from && chunk->GetEnd() <= to) {
-      auto newChunk = *chunk;
-      newChunk.SetOffset(chunk->GetOffset() - from);
+      auto newChunk = std::make_shared<basic::Chunk>(*chunk);
+      newChunk->SetOffset(chunk->GetOffset() - from);
       result->chunks_.Add(newChunk);
     }
   }

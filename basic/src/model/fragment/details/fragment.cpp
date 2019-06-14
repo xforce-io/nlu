@@ -3,7 +3,9 @@
 namespace xforce { namespace nlu { namespace basic {
 
 Fragment::~Fragment() {
-  XFC_DELETE(str_)
+  if (nullptr != str_) {
+    XFC_DELETE(str_)
+  }
 }
 
 void Fragment::Dump(JsonType &jsonType) {
