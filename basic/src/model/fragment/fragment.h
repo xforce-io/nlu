@@ -44,7 +44,6 @@ class Fragment {
   inline uint32_t GetStrategy() const { return strategy_; }
 
   inline bool Intersect(const Fragment &fragment) const;
-  inline void operator=(const Fragment &other);
 
   virtual void Dump(JsonType &jsonType);
 
