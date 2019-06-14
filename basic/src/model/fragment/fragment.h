@@ -22,6 +22,7 @@ class Fragment {
  public:
   inline Fragment();
   inline Fragment(size_t offset, size_t len);
+  inline Fragment(const Fragment &other);
   virtual ~Fragment();
 
   inline void SetStr(const std::wstring &str);
@@ -69,6 +70,17 @@ Fragment::Fragment(size_t offset, size_t len) :
   len_(len),
   strategy_(0) {}
 
+Fragment::Fragment(const Fragment &other) {
+  father_ = other.father_;
+  if (nullptr != other.str_) {
+    str_ = new std::wstring(*(other.str_));
+  }
+  offset_ = other.offset_;
+  len_= other.len_;
+  confidence_ = other.confidence_;
+  strategy_ = other.strategy_;
+}
+
 void Fragment::SetStr(const std::wstring &str) {
   str_ = new std::wstring(str);
 }
@@ -105,17 +117,6 @@ bool Fragment::Intersect(const Fragment &fragment) const {
   return father_ == fragment.GetFather() &&
       fragment.GetEnd() > GetBegin() &&
       fragment.GetBegin() < GetEnd();
-}
-
-void Fragment::operator=(const Fragment &other) {
-  father_ = other.father_;
-  if (nullptr != other.str_) {
-    str_ = new std::wstring(*(other.str_));
-  }
-  offset_ = other.offset_;
-  len_= other.len_;
-  confidence_ = other.confidence_;
-  strategy_ = other.strategy_;
 }
 
 }}}
