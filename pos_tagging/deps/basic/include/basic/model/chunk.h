@@ -15,14 +15,13 @@ class Chunk : public Fragment {
  public:
   inline Chunk();
   inline Chunk(SyntaxTag::Type syntaxTag, size_t offset, size_t len);
+  inline Chunk(const Chunk &other);
   virtual ~Chunk();
 
   inline void SetSyntaxTag(SyntaxTag::Type syntaxTag);
 
   const std::string& GetCategory() const;
   SyntaxTag::Type GetSyntaxTag() const { return syntaxTag_; }
-
-  inline void operator=(const Chunk &other);
 
   void Dump(JsonType &jsonType);
 
@@ -38,13 +37,13 @@ Chunk::Chunk(SyntaxTag::Type syntaxTag, size_t offset, size_t len) :
   Fragment(offset, len),
   syntaxTag_(syntaxTag) {}
 
-void Chunk::SetSyntaxTag(SyntaxTag::Type syntaxTag) {
-  syntaxTag_ = syntaxTag;
+Chunk::Chunk(const Chunk &other) :
+    Super(other) {
+  syntaxTag_ = other.syntaxTag_;
 }
 
-void Chunk::operator=(const Chunk &other) {
-  Super::operator=(other);
-  syntaxTag_ = other.syntaxTag_;
+void Chunk::SetSyntaxTag(SyntaxTag::Type syntaxTag) {
+  syntaxTag_ = syntaxTag;
 }
 
 }}}

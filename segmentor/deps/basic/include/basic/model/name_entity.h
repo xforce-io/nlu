@@ -24,6 +24,7 @@ class NameEntity : public basic::Fragment {
  public: 
   inline NameEntity();
   inline NameEntity(size_t offset, size_t len);
+  inline NameEntity(const NameEntity &other);
   virtual ~NameEntity();
 
   int GetNECategory() const { return kCategoryOther; }
@@ -37,5 +38,8 @@ NameEntity::NameEntity() :
 
 NameEntity::NameEntity(size_t offset, size_t len) :
   Super(offset, len) {}
+
+NameEntity::NameEntity(const NameEntity &other) :
+    Super(other) {}
 
 }}}

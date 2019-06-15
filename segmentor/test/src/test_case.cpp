@@ -33,8 +33,8 @@ TEST(test_all, all) {
   Graph *graph = new Graph(wStrQuery);
   graph->Process(segments, nameEntities);
 
-  for (size_t i=0; i < segments.Size(); ++i) {
-    std::wcout << wStrQuery.substr(segments[i]->GetOffset(), segments[i]->GetLen()) << std::endl;
+  for (auto &segment : segments.GetAll()) {
+    std::wcout << wStrQuery.substr(segment->GetOffset(), segment->GetLen()) << std::endl;
   }
 
   XFC_DELETE(graph)

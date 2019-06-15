@@ -18,6 +18,7 @@ class Segment : public Fragment {
   inline Segment(PosTag::Type::Val posTag, size_t offset, size_t len);
   inline Segment(size_t offset, size_t len);
   inline Segment(size_t offset);
+  inline Segment(const Segment &other);
   virtual ~Segment() {}
 
   inline void SetPosTag(PosTag::Type::Val posTag);
@@ -33,8 +34,6 @@ class Segment : public Fragment {
   inline bool ContainPosTag(PosTag::Type::Val posTag);
 
   inline std::wstring GetQuery(const std::wstring &sentence) const;
-
-  inline void operator=(const Segment &segment);
 
   void Dump(JsonType &jsonType);
 
@@ -55,6 +54,11 @@ Segment::Segment(size_t offset, size_t len) :
 
 Segment::Segment(size_t offset) :
     Fragment(offset, -1) {}
+
+Segment::Segment(const Segment &other) :
+    Super(other) {
+  posTags_ = other.posTags_;
+}
 
 void Segment::SetPosTag(PosTag::Type::Val posTag) {
   posTags_.clear();
@@ -108,11 +112,6 @@ bool Segment::ContainPosTag(PosTag::Type::Val posTag) {
 
 std::wstring Segment::GetQuery(const std::wstring &sentence) const {
   return sentence.substr(offset_, len_);
-}
-
-void Segment::operator=(const Segment &segment) {
-  Super::operator=(segment);
-  posTags_ = segment.posTags_;
 }
 
 }}}

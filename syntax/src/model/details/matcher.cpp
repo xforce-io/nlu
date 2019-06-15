@@ -3,7 +3,7 @@
 
 namespace xforce { namespace nlu { namespace syntax {
 
-const std::wstring Matcher::kSyntacticStoragePrefix = L"syntactic";
+const std::wstring Matcher::kSyntacticStoragePrefix = L"/syntactic";
 
 Matcher::Matcher() :
     milkie_(new milkie::Milkie()) {}
