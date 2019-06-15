@@ -23,6 +23,7 @@ class Fragment {
   inline Fragment();
   inline Fragment(size_t offset, size_t len);
   inline Fragment(const Fragment &other);
+  virtual const Fragment& operator=(const Fragment &other) = 0;
   virtual ~Fragment();
 
   inline void SetStr(const std::wstring &str);
