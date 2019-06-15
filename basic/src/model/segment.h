@@ -56,8 +56,9 @@ Segment::Segment(size_t offset, size_t len) :
 Segment::Segment(size_t offset) :
     Fragment(offset, -1) {}
 
-Segment::Segment(const Segment &other) {
-  *this = other;
+Segment::Segment(const Segment &other) :
+    Super(other) {
+  posTags_ = other.posTags_;
 }
 
 void Segment::SetPosTag(PosTag::Type::Val posTag) {
