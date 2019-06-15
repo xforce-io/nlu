@@ -43,7 +43,7 @@ class Segment : public Fragment {
 };
 
 Segment::Segment() :
-    Fragment(-1, -1) {}
+    Fragment(0, 0) {}
 
 Segment::Segment(PosTag::Type::Val posTag, size_t offset, size_t len) :
     Fragment(offset, len) {
@@ -54,7 +54,7 @@ Segment::Segment(size_t offset, size_t len) :
     Fragment(offset, len) {}
 
 Segment::Segment(size_t offset) :
-    Fragment(offset, -1) {}
+    Fragment(offset, 0) {}
 
 Segment::Segment(const Segment &other) :
     Super(other) {

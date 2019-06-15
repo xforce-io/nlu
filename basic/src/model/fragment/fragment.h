@@ -61,6 +61,8 @@ class Fragment {
 Fragment::Fragment() :
   father_(nullptr),
   str_(nullptr),
+  offset_(0),
+  len_(0),
   strategy_(0) {}
 
 Fragment::Fragment(size_t offset, size_t len) :
@@ -74,6 +76,8 @@ Fragment::Fragment(const Fragment &other) {
   father_ = other.father_;
   if (nullptr != other.str_) {
     str_ = new std::wstring(*(other.str_));
+  } else {
+    str_ = nullptr;
   }
 
   offset_ = other.offset_;
