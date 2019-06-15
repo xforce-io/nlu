@@ -85,6 +85,10 @@ void Segment::RemovePosTag(PosTag::Type::Val posTag) {
 }
 
 Segment& Segment::operator=(const Segment &other) {
+  if (this == &other) {
+    return *this;
+  }
+
   Super::operator=(other);
   posTags_ = other.posTags_;
   return *this;

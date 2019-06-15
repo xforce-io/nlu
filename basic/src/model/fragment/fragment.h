@@ -73,8 +73,7 @@ Fragment::Fragment(size_t offset, size_t len) :
 Fragment::Fragment(const Fragment &other) {
   father_ = other.father_;
   if (nullptr != other.str_) {
-    str_ = new std::wstring();
-    *str_ = *(other.str_);
+    str_ = new std::wstring(*(other.str_));
   }
 
   offset_ = other.offset_;
@@ -84,10 +83,16 @@ Fragment::Fragment(const Fragment &other) {
 }
 
 void Fragment::SetStr(const std::wstring &str) {
+  if (nullptr != str_) {
+    XFC_DELETE(str_)
+  }
   str_ = new std::wstring(str);
 }
 
 void Fragment::SetStrFromSentence(const std::wstring &sentence) {
+  if (nullptr != str_) {
+    XFC_DELETE(str_)
+  }
   str_ = new std::wstring(sentence.substr(offset_, len_));
 }
 
@@ -108,14 +113,17 @@ void Fragment::SetStrategy(uint32_t strategy) {
 }
 
 Fragment& Fragment::operator=(const Fragment &other) {
+  if (this == &other) {
+    return *this;
+  }
+
   father_ = other.father_;
   if (nullptr != str_) {
     XFC_DELETE(str_)
   }
 
   if (nullptr != other.str_) {
-    str_ = new std::wstring();
-    *str_ = *(other.str_);
+    str_ = new std::wstring(*(other.str_));
   }
 
   offset_ = other.offset_;
