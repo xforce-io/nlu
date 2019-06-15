@@ -24,6 +24,7 @@ class Segment : public Fragment {
   inline void SetPosTag(PosTag::Type::Val posTag);
   inline void AddPosTag(PosTag::Type::Val posTag);
   inline void RemovePosTag(PosTag::Type::Val posTag);
+  Segment& operator=(const Segment &other);
 
   const std::string& GetCategory() const;
   size_t SizePosTags() const { return posTags_.size(); }
@@ -55,9 +56,8 @@ Segment::Segment(size_t offset, size_t len) :
 Segment::Segment(size_t offset) :
     Fragment(offset, -1) {}
 
-Segment::Segment(const Segment &other) :
-    Super(other) {
-  posTags_ = other.posTags_;
+Segment::Segment(const Segment &other) {
+  *this = other;
 }
 
 void Segment::SetPosTag(PosTag::Type::Val posTag) {
@@ -81,6 +81,12 @@ void Segment::RemovePosTag(PosTag::Type::Val posTag) {
       return;
     }
   }
+}
+
+Segment& Segment::operator=(const Segment &other) {
+  Super::operator=(other);
+  posTags_ = other.posTags_;
+  return *this;
 }
 
 PosTag::Type::Val Segment::GetPosTag() const {
