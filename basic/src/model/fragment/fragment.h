@@ -73,7 +73,8 @@ Fragment::Fragment(size_t offset, size_t len) :
 Fragment::Fragment(const Fragment &other) {
   father_ = other.father_;
   if (nullptr != other.str_) {
-    str_ = new std::wstring(*(other.str_));
+    str_ = new std::wstring();
+    *str_ = *(other.str_);
   }
 
   offset_ = other.offset_;
@@ -113,7 +114,8 @@ Fragment& Fragment::operator=(const Fragment &other) {
   }
 
   if (nullptr != other.str_) {
-    str_ = new std::wstring(*(other.str_));
+    str_ = new std::wstring();
+    *str_ = *(other.str_);
   }
 
   offset_ = other.offset_;
