@@ -71,7 +71,15 @@ Fragment::Fragment(size_t offset, size_t len) :
   strategy_(0) {}
 
 Fragment::Fragment(const Fragment &other) {
-  *this = other;
+  father_ = other.father_;
+  if (nullptr != other.str_) {
+    str_ = new std::wstring(*(other.str_));
+  }
+
+  offset_ = other.offset_;
+  len_= other.len_;
+  confidence_ = other.confidence_;
+  strategy_ = other.strategy_;
 }
 
 void Fragment::SetStr(const std::wstring &str) {
