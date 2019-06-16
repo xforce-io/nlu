@@ -42,8 +42,8 @@ class StatisticsItems {
   virtual bool Match_(const StatisticsUnit &one, const StatisticsUnit &other) = 0;
 
  private:
-    std::list<StatisticsUnit> statisticsItems_;
-    size_t count_;
+  std::list<StatisticsUnit> statisticsItems_;
+  size_t count_;
 };
 
 class StatisticsItems0 : public StatisticsItems {

@@ -26,8 +26,8 @@ void StatisticsCollection::Add(const StatisticsUnit &newItem) {
 
 void StatisticsCollection::Shrink() {
   ShrinkCoverage012_();
-  ShrinkCoverage01_();
   ShrinkNoDominator_();
+  ShrinkCoverage01_();
 }
 
 bool StatisticsCollection::operator==(const StatisticsCollection &other) const {
@@ -112,6 +112,10 @@ void StatisticsCollection::ShrinkCoverage012_() {
 void StatisticsCollection::ShrinkCoverage01_() {
   size_t countAll = 0;
   for (auto *statisticsItems : container_) {
+    if (statisticsItems->Size() == 0) {
+      continue;
+    }
+
     if (statisticsItems->GetCategory() != StatisticsItems::kCategory0 &&
         statisticsItems->GetCategory() != StatisticsItems::kCategory1 &&
         statisticsItems->GetCategory() != StatisticsItems::kCategory01) {
@@ -127,6 +131,10 @@ void StatisticsCollection::ShrinkCoverage01_() {
   }
 
   for (auto *statisticsItems : container_) {
+    if (statisticsItems->Size() == 0) {
+      continue;
+    }
+
     if (statisticsItems->GetCount() != countAll ||
         statisticsItems->Size() != 1) {
       return;

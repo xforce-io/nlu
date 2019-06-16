@@ -152,7 +152,6 @@ int WindowStatistics::LoadFromFile(const std::string &filepath) {
 
 void WindowStatistics::Dump(std::stringstream &ss) const {
   for (auto &pair : statistics_) {
-    pair.first.feature0
     pair.first.Dump(ss);
     ss << '-';
     pair.second->Dump(ss);
