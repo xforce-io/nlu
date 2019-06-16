@@ -25,7 +25,8 @@ void StatisticsCollection::Add(const StatisticsUnit &newItem) {
 }
 
 void StatisticsCollection::Shrink() {
-  ShrinkCommon_();
+  ShrinkCoverage012_();
+  ShrinkCoverage01_();
   ShrinkNoDominator_();
 }
 
@@ -77,7 +78,7 @@ void StatisticsCollection::Dump(std::stringstream &ss) const {
   }
 }
 
-void StatisticsCollection::ShrinkCommon_() {
+void StatisticsCollection::ShrinkCoverage012_() {
   size_t countAll = 0;
   for (auto *statisticsItems : container_) {
     if (statisticsItems->GetCategory() == StatisticsItems::kCategory012 &&
@@ -101,6 +102,40 @@ void StatisticsCollection::ShrinkCommon_() {
   auto iter = container_.begin();
   while (iter != container_.end()) {
     if ((*iter)->GetCategory() != StatisticsItems::kCategory012) {
+      iter = container_.erase(iter);
+    } else {
+      ++iter;
+    }
+  }
+}
+
+void StatisticsCollection::ShrinkCoverage01_() {
+  size_t countAll = 0;
+  for (auto *statisticsItems : container_) {
+    if (statisticsItems->GetCategory() != StatisticsItems::kCategory0 &&
+        statisticsItems->GetCategory() != StatisticsItems::kCategory1 &&
+        statisticsItems->GetCategory() != StatisticsItems::kCategory01) {
+      return;
+    } else if (statisticsItems->GetCategory() == StatisticsItems::kCategory01 &&
+        statisticsItems->Size() == 1) {
+      countAll = statisticsItems->GetCount();
+    }
+  }
+
+  if (0 == countAll) {
+    return;
+  }
+
+  for (auto *statisticsItems : container_) {
+    if (statisticsItems->GetCount() != countAll ||
+        statisticsItems->Size() != 1) {
+      return;
+    }
+  }
+
+  auto iter = container_.begin();
+  while (iter != container_.end()) {
+    if ((*iter)->GetCategory() != StatisticsItems::kCategory01) {
       iter = container_.erase(iter);
     } else {
       ++iter;

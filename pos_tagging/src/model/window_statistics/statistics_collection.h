@@ -23,7 +23,8 @@ class StatisticsCollection {
   void Dump(std::stringstream &ss) const;
 
  private:
-  void ShrinkCommon_();
+  void ShrinkCoverage012_();
+  void ShrinkCoverage01_();
   void ShrinkNoDominator_();
 
  private:
