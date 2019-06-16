@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
-
+/*
 TEST(test_case, all) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/pos.conf");
   ASSERT_TRUE(Basic::Init((*conf)["basic"]));
@@ -45,4 +45,19 @@ TEST(test_case, all) {
   windowStatistics1->Dump(ss1);
 
   ASSERT_TRUE(*windowStatistics == *windowStatistics1);
+}
+*/
+TEST(test_case, bugfix) {
+  const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/pos.conf");
+  ASSERT_TRUE(Basic::Init((*conf)["basic"]));
+  ASSERT_TRUE(Segmentor::Init((*conf)["segmentor"], (*conf)["ner"]));
+
+  WindowStatistics *windowStatistics = WindowStatistics::Create("../../data/labeled_data");
+  ASSERT_TRUE(windowStatistics != nullptr);
+
+  auto result = windowStatistics->GetDominator(L"第一", L"局");
+  ASSERT_TRUE(result.second != nullptr);
+
+  std::stringstream ss;
+  windowStatistics->Dump(ss);
 }

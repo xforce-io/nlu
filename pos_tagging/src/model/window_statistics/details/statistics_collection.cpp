@@ -80,7 +80,8 @@ void StatisticsCollection::Dump(std::stringstream &ss) const {
 void StatisticsCollection::ShrinkCommon_() {
   size_t countAll = 0;
   for (auto *statisticsItems : container_) {
-    if (statisticsItems->GetCategory() == StatisticsItems::kCategory012) {
+    if (statisticsItems->GetCategory() == StatisticsItems::kCategory012 &&
+        statisticsItems->Size() == 1) {
       countAll = statisticsItems->GetCount();
       break;
     }
@@ -91,7 +92,8 @@ void StatisticsCollection::ShrinkCommon_() {
   }
 
   for (auto *statisticsItems : container_) {
-    if (statisticsItems->GetCount() != countAll) {
+    if (statisticsItems->GetCount() != countAll ||
+        statisticsItems->Size() != 1) {
       return;
     }
   }
