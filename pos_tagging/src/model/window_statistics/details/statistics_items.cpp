@@ -5,6 +5,9 @@ namespace xforce { namespace nlu { namespace pos {
 const int StatisticsItems::kThresholdCnt = 3;
 const double StatisticsItems::kThresholdLeader = 0.95;
 
+StatisticsItems::StatisticsItems() :
+  count_(0) {}
+
 void StatisticsItems::Add(const StatisticsUnit &newItem) {
   count_ += newItem.count;
 

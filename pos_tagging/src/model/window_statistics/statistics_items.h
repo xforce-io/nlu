@@ -24,7 +24,7 @@ class StatisticsItems {
   static const double kThresholdLeader;
 
  public:
-  StatisticsItems() {}
+  StatisticsItems();
   virtual ~StatisticsItems() {}
 
   virtual StatisticsItems::Category GetCategory() const = 0;
