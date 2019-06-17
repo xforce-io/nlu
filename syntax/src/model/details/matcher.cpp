@@ -79,8 +79,8 @@ void Matcher::Match(basic::NluContext &nluContext) {
         for (auto &storageItem : storageItems) {
           basic::Chunk chunk(
                   syntaxTag,
-                  storageItem.GetOffset(),
-                  storageItem.GetContent().length() + storageItem.GetOffset());
+                  storageItem.GetOffset() + (*cur)->GetOffset(),
+                  storageItem.GetContent().length() + storageItem.GetOffset() + (*cur)->GetOffset());
           nluContext.GetChunks().Add(chunk);
         }
       } else {
