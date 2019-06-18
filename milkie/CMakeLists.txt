@@ -31,7 +31,7 @@ set(LIB_DEPS
 find_library(LUA_LIBRARY lua ./3rd/lua-5.3.5/lib NO_DEFAULT_PATH)
 
 add_library(milkie
-  ${MILKIE_FILES})
+  ${MILKIE_FILES} src/core/model/pattern_item/parser/struct_pattern_item_end.h src/core/model/pattern_item/parser/details/struct_pattern_item_end.cpp src/core/model/pattern_item/pattern_item_end.h src/core/model/pattern_item/details/pattern_item_end.cpp)
 
 target_link_libraries(milkie
   ${LIB_DEPS}
