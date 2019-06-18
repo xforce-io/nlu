@@ -33,6 +33,12 @@ TEST(test_all, all) {
   Graph *graph = new Graph(wStrQuery);
   graph->Process(segments, nameEntities);
 
+  xforce::JsonType jsonToDump;
+  segments.Dump(jsonToDump);
+
+  std::stringstream ss;
+  jsonToDump.DumpJson(ss);
+  std::cout << ss.str() << std::endl;
   for (auto &segment : segments.GetAll()) {
     std::wcout << wStrQuery.substr(segment->GetOffset(), segment->GetLen()) << std::endl;
   }
