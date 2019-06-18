@@ -56,6 +56,13 @@ TEST(testAll, match) {
   context = std::make_shared<Context>(L"2012年12月11号");
   ASSERT_TRUE(ret.first->MatchPattern(*(context.get())));
   ASSERT_TRUE(ret.first->GetContentMatched() == L"2012年12月");
+
+  ret = PatternItem::Build(L"%");
+
+  context = std::make_shared<Context>(L"2012年12月11号");
+  ASSERT_TRUE(!ret.first->MatchPattern(*(context.get())));
+  context->SetCurPos(context->GetSentence().GetSentence().length());
+  ASSERT_TRUE(ret.first->MatchPattern(*(context.get())));
 }
 
 TEST(testAll, multiSegMatch) {

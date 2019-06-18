@@ -1,9 +1,11 @@
 #include "../pattern_item.h"
-#include "../pattern_item_str.h"
 #include "../parser/struct_pattern_item_str.h"
 #include "../parser/struct_pattern_item_common.h"
+#include "../parser/struct_pattern_item_end.h"
+#include "../pattern_item_str.h"
 #include "../pattern_item_reg.h"
 #include "../pattern_item_wordpos.h"
+#include "../pattern_item_end.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -18,7 +20,7 @@ std::shared_ptr<PatternItem> PatternItem::Build(const StructPatternItem &structP
   if (typeid(structPatternItem) == typeid(StructPatternItemStr)) {
     return std::make_shared<PatternItemStr>(SCAST<const StructPatternItemStr&>(structPatternItem).GetPatternStr());
   } else if (typeid(structPatternItem) == typeid(StructPatternItemCommon)) {
-    const StructPatternItemCommon &structPatternItemCommon = SCAST<const StructPatternItemCommon&>(structPatternItem);
+    const StructPatternItemCommon &structPatternItemCommon = SCAST<const StructPatternItemCommon &>(structPatternItem);
     if (structPatternItemCommon.GetCategory() == CategoryPatternItem::kReg) {
       return std::make_shared<PatternItemReg>(structPatternItemCommon.GetArgs(0));
     } else if (structPatternItemCommon.GetCategory() == CategoryPatternItem::kPos) {
@@ -28,10 +30,12 @@ std::shared_ptr<PatternItem> PatternItem::Build(const StructPatternItem &structP
       return nullptr;
     } else {
       FATAL("[INTERNAL ERROR] invalid_pattern_item_category("
-          << structPatternItemCommon.GetCategory()
-          << ")");
+                    << structPatternItemCommon.GetCategory()
+                    << ")");
       return nullptr;
     }
+  } else if (typeid(structPatternItem) == typeid(StructPatternItemEnd)) {
+    return std::make_shared<PatternItemEnd>();
   } else {
     FATAL("[INTERNAL ERROR] invalid_pattern_item()");
     return nullptr;

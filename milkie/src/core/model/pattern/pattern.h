@@ -53,7 +53,7 @@ const std::wstring* Pattern::AsStr() const {
 }
 
 bool Pattern::IsStartingChar(wchar_t c) {
-  return '"' == c || '#' == c;
+  return '"' == c || '#' == c || '%' == c;
 }
 
 std::pair<std::shared_ptr<Pattern>, size_t> Pattern::Build(const std::wstring &statement) {
