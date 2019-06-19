@@ -26,7 +26,7 @@ TEST(test_all, all) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("conf/segmentor.conf");
   ASSERT_TRUE(Segmentor::Init((*conf)["segmentor"], (*conf)["ner"]));
 
-  std::wstring wStrQuery = L"单根主缆拉力高达9.2万吨";
+  std::wstring wStrQuery = L"中国女排在赛后";
   Segment::Set segments(wStrQuery);
   NameEntity::Set nameEntities(wStrQuery);
 

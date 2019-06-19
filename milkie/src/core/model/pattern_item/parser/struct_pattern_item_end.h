@@ -7,7 +7,7 @@ namespace xforce { namespace nlu { namespace milkie {
 
 class StructPatternItemEnd : public StructPatternItem {
  public:
-  inline StructPatternItemEnd(
+  StructPatternItemEnd(
       const std::wstring &statement,
       const std::vector<std::wstring> &args);
 
