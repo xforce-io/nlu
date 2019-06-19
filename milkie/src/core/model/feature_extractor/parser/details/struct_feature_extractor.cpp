@@ -68,6 +68,10 @@ bool StructFeatureExtractor::Parse(
         patternExpr = PatternExpr::Build(referManager, curName, lineAfterProcess.substr(1)).first;
       }
 
+      if (nullptr == patternExpr) {
+        return false;
+      }
+
       if (patternExpr->GetRepeatPattern() != CategoryPatternExpr::kOnce) {
         FATAL("feature_extractor_category_pattern_expr_should_be_once");
         return false;
