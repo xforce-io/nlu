@@ -58,6 +58,7 @@ std::shared_ptr<StructPatternSet> StructPatternSet::ParseForStrSet(
         &patternStrs,
         nullptr);
   } else {
+    FATAL("invalid_pattern_str_set(" << statement << ")");
     return nullptr;
   }
 }

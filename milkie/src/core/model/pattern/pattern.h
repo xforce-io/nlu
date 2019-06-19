@@ -58,6 +58,9 @@ bool Pattern::IsStartingChar(wchar_t c) {
 
 std::pair<std::shared_ptr<Pattern>, size_t> Pattern::Build(const std::wstring &statement) {
   std::shared_ptr<StructPattern> structPattern = StructPattern::Parse(statement);
+  if (nullptr == structPattern) {
+    return std::make_pair(nullptr, -1);
+  }
   return std::make_pair(
           std::make_shared<Pattern>(structPattern),
           structPattern->GetStatement().length());
@@ -67,7 +70,7 @@ PatternItem::Vector Pattern::CreatePatternItems(const StructPatternItem::Vector 
   PatternItem::Vector patternItems;
   for (auto &structPatternItem : structPatternItems) {
     auto patternItem = PatternItem::Build(*structPatternItem);
-    if (patternItem.get() == nullptr) {
+    if (nullptr == patternItem) {
       FATAL("illegal_pattern_item(" << structPatternItem->GetStatement() << ")");
     }
     patternItems.push_back(patternItem);

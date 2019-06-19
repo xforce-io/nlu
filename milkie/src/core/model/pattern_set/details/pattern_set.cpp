@@ -97,7 +97,7 @@ std::pair<std::shared_ptr<PatternSet>, ssize_t> PatternSet::Build(
     const std::wstring &blockKey,
     const std::wstring &statement) {
   std::shared_ptr<StructPatternSet> structPatternSet = StructPatternSet::Parse(referManager, blockKey, statement);
-  if (nullptr == structPatternSet.get()) {
+  if (nullptr == structPatternSet) {
     return std::make_pair(nullptr, -1);
   }
   return std::make_pair(Build(structPatternSet), structPatternSet->GetStatement().length());
