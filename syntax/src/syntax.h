@@ -12,7 +12,7 @@ class Syntax {
   virtual ~Syntax();
 
   bool Init();
-  void Process(basic::NluContext &nluContext);
+  void Process(std::shared_ptr<basic::NluContext> nluContext);
 
  public: 
   static bool Init(const xforce::JsonType &confJson);

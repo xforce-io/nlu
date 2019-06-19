@@ -29,7 +29,7 @@ bool Matcher::Init() {
   return true;
 }
 
-void Matcher::Match(basic::NluContext &nluContext) {
+void Matcher::Match(std::shared_ptr<basic::NluContext> nluContext) {
   SyntaxProcessForChunkSep_(nluContext);
   SyntaxProcessForChunk_(nluContext);
 }
@@ -38,22 +38,22 @@ Matcher::~Matcher() {
   XFC_DELETE(milkie_)
 }
 
-bool Matcher::SyntaxProcessForChunkSep_(basic::NluContext &nluContext) {
+bool Matcher::SyntaxProcessForChunkSep_(std::shared_ptr<basic::NluContext> nluContext) {
   bool newChunkAdded = false;
-  auto cur = nluContext.GetChunkSeps().Begin();
-  while (cur != nluContext.GetChunkSeps().End()) {
+  auto cur = nluContext->GetChunkSeps().Begin();
+  while (cur != nluContext->GetChunkSeps().End()) {
     auto next = cur;
     ++next;
 
     std::shared_ptr<basic::NluContext> fragment;
-    if (next != nluContext.GetChunkSeps().End()) {
-      fragment = nluContext.Build(
+    if (next != nluContext->GetChunkSeps().End()) {
+      fragment = nluContext->Build(
               (*cur)->GetOffset(),
               (*next)->GetOffset());
     } else {
-      fragment = nluContext.Build(
+      fragment = nluContext->Build(
               (*cur)->GetOffset(),
-              nluContext.GetQuery().length());
+              nluContext->GetQuery().length());
     }
 
     if (fragment == nullptr) {
@@ -97,7 +97,7 @@ bool Matcher::SyntaxProcessForChunkSep_(basic::NluContext &nluContext) {
                   syntaxTag,
                   storageItem.GetOffset() + (*cur)->GetOffset(),
                   storageItem.GetContent().length());
-          nluContext.GetChunks().Add(chunk);
+          nluContext->GetChunks().Add(chunk);
           newChunkAdded = true;
         }
       } else {
@@ -109,7 +109,7 @@ bool Matcher::SyntaxProcessForChunkSep_(basic::NluContext &nluContext) {
   return newChunkAdded;
 }
 
-bool Matcher::SyntaxProcessForChunk_(basic::NluContext &nluContext) {
+bool Matcher::SyntaxProcessForChunk_(std::shared_ptr<basic::NluContext> nluContext) {
   bool newChunkAdded = false;
   auto context = std::make_shared<milkie::Context>(nluContext);
   auto errCode = feChunk_->MatchPattern(*context);
@@ -146,7 +146,7 @@ bool Matcher::SyntaxProcessForChunk_(basic::NluContext &nluContext) {
                 syntaxTag,
                 storageItem.GetOffset(),
                 storageItem.GetContent().length());
-        nluContext.GetChunks().Add(chunk);
+        nluContext->GetChunks().Add(chunk);
         newChunkAdded = true;
       }
     } else {

@@ -12,13 +12,13 @@ class Matcher {
   Matcher();
 
   bool Init();
-  void Match(basic::NluContext &nluContext);
+  void Match(std::shared_ptr<basic::NluContext> nluContext);
 
   virtual ~Matcher();
 
  private:
-  bool SyntaxProcessForChunkSep_(basic::NluContext &nluContext);
-  bool SyntaxProcessForChunk_(basic::NluContext &nluContext);
+  bool SyntaxProcessForChunkSep_(std::shared_ptr<basic::NluContext> nluContext);
+  bool SyntaxProcessForChunk_(std::shared_ptr<basic::NluContext> nluContext);
 
  private:
   milkie::Milkie *milkie_;

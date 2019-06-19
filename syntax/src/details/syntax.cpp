@@ -22,7 +22,7 @@ bool Syntax::Init() {
   return true;
 }
 
-void Syntax::Process(basic::NluContext &nluContext) {
+void Syntax::Process(std::shared_ptr<basic::NluContext> nluContext) {
   matcher_->Match(nluContext);
 }
 
