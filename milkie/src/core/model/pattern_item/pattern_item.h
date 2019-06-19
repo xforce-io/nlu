@@ -48,7 +48,7 @@ CategoryPatternItem::Category PatternItem::ParseCategory(const std::wstring &cat
 }
 
 bool PatternItem::IsStartingChar(wchar_t c) {
-  return '"' == c || '#' == c;
+  return '"' == c || '#' == c || '%' == c;
 }
 
 std::pair<std::shared_ptr<PatternItem>, ssize_t> PatternItem::Build(const std::wstring &statement) {
