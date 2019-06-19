@@ -43,7 +43,7 @@ bool Syntax::Init(const xforce::JsonType &confJson) {
 }
 
 void Syntax::Parse(std::shared_ptr<basic::NluContext> nluContext) {
-  return syntax_.Process(*nluContext);
+  return syntax_.Process(nluContext);
 }
 
 }}}
