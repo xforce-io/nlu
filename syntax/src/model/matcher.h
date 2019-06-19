@@ -17,8 +17,13 @@ class Matcher {
   virtual ~Matcher();
 
  private:
+  bool SyntaxProcessForChunkSep_(basic::NluContext &nluContext);
+  bool SyntaxProcessForChunk_(basic::NluContext &nluContext);
+
+ private:
   milkie::Milkie *milkie_;
-  std::shared_ptr<milkie::FeatureExtractor> featureExtractor_;
+  std::shared_ptr<milkie::FeatureExtractor> feChunkSep_;
+  std::shared_ptr<milkie::FeatureExtractor> feChunk_;
 };
 
 }}}
