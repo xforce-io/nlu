@@ -12,7 +12,7 @@ bool PatternItemSyntax::MatchPattern(Context &context) {
     return false;
   }
 
-  if (featureChunk->GetSyntaxTag() == syntaxType_) {
+  if (featureChunk->GetSyntaxTag() != syntaxType_) {
     return false;
   }
 
