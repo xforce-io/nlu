@@ -112,7 +112,11 @@ bool PatternExpr::MatchPattern(Context &context, bool singleton) const {
       return true;
     }
 
-    if (nullptr != pattern_ || nullptr != patternSet_) {
+    if (nullptr != pattern_) {
+      bool ret = pattern_->MatchPattern(context);
+      DebugMatch_(context, startIdx, ret);
+      return ret;
+    } else if (nullptr != patternSet_) {
       DebugMatch_(context, startIdx, false);
       return false;
     }
@@ -131,20 +135,12 @@ bool PatternExpr::MatchPattern(Context &context, bool singleton) const {
   context.StartMatch();
   if (nullptr != pattern_) {
     bool ret = pattern_->MatchPattern(context);
-    if (ret) {
-      StopMatch(true, context, singleton);
-    } else {
-      StopMatch(false, context, singleton);
-    }
+    StopMatch(ret, context, singleton);
     DebugMatch_(context, startIdx, ret);
     return ret;
   } else if (nullptr != patternSet_) {
     bool ret = patternSet_->MatchPattern(context);
-    if (ret) {
-      StopMatch(true, context, singleton);
-    } else {
-      StopMatch(false, context, singleton);
-    }
+    StopMatch(ret, context, singleton);
     DebugMatch_(context, startIdx, ret);
     return ret;
   }
