@@ -32,7 +32,7 @@ std::shared_ptr<StructPattern> StructPattern::Parse(const std::wstring &statemen
   if (!structPatternItems.empty()) {
     return std::make_shared<StructPattern>(statement.substr(0, curIdx), structPatternItems);
   } else {
-    FATAL("invalid_pattern(" << *(StrHelper::Wstr2Str(statement)) << "]");
+    FATAL("invalid_pattern(" << statement << "]");
     return nullptr;
   }
 }
