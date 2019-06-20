@@ -37,6 +37,8 @@ SyntaxTag::Type SyntaxTag::GetSyntaxTag(const std::wstring &syntaxTag) {
     return SyntaxTag::kUcp;
   } else if (L"vp" == syntaxTag) {
     return SyntaxTag::kVp;
+  } else if (L"stc" == syntaxTag) {
+    return SyntaxTag::kStc;
   } else {
     return SyntaxTag::kUndef;
   }
@@ -130,9 +132,10 @@ const std::wstring& SyntaxTag::Str(SyntaxTag::Type type) {
   static const std::wstring kNp = L"np";
   static const std::wstring kPp = L"pp";
   static const std::wstring kPrn = L"prn";
-  static const std::wstring kQp = L"Qp";
+  static const std::wstring kQp = L"qp";
   static const std::wstring kUcp = L"ucp";
-  static const std::wstring kVp = L"Vp";
+  static const std::wstring kVp = L"vp";
+  static const std::wstring kStc = L"stc";
   static const std::wstring kUndef = L"undef";
   switch (type) {
     case SyntaxTag::kAdjp :
@@ -169,6 +172,8 @@ const std::wstring& SyntaxTag::Str(SyntaxTag::Type type) {
       return kUcp;
     case SyntaxTag::kVp :
       return kVp;
+    case SyntaxTag::kStc :
+      return kStc;
     default:
       return kUndef;
   }
