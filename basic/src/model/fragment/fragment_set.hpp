@@ -9,7 +9,7 @@ template <typename FragmentType>
 class FragmentSet {
  private:
   typedef FragmentSet<FragmentType> Self;
-  typedef std::multiset<
+  typedef std::set<
       std::shared_ptr<FragmentType>, 
       typename FragmentType::Compare> Container;
 
