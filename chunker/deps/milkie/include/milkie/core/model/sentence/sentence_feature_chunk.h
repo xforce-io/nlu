@@ -10,7 +10,7 @@ class SentenceFeatureChunk : public SentenceFeature {
   inline explicit SentenceFeatureChunk(std::shared_ptr<basic::NluContext> nluContext);
 
   inline std::shared_ptr<basic::Chunk::Set> GetChunksFromOffset(ssize_t offset);
-  inline const std::shared_ptr<basic::Chunk> GetChunkAtOffset(ssize_t offset) const;
+  inline const std::shared_ptr<basic::Chunk::Set> GetChunkAtOffset(ssize_t offset) const;
 };
 
 SentenceFeatureChunk::SentenceFeatureChunk(std::shared_ptr<basic::NluContext> nluContext) :
@@ -30,13 +30,14 @@ std::shared_ptr<basic::Chunk::Set> SentenceFeatureChunk::GetChunksFromOffset(ssi
   return nullptr;
 }
 
-const std::shared_ptr<basic::Chunk> SentenceFeatureChunk::GetChunkAtOffset(ssize_t offset) const {
+const std::shared_ptr<basic::Chunk::Set> SentenceFeatureChunk::GetChunkAtOffset(ssize_t offset) const {
+  auto result = std::make_shared<basic::Chunk::Set>(nluContext_->GetQuery());
   for (auto &chunk : nluContext_->GetChunks().GetAll()) {
     if (offset == (ssize_t)chunk->GetOffset()) {
-      return chunk;
+      result->Add(*chunk);
     }
   }
-  return nullptr;
+  return result;
 }
 
 }}}

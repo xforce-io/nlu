@@ -31,7 +31,8 @@ bool Matcher::Init() {
 
 void Matcher::Match(std::shared_ptr<basic::NluContext> nluContext) {
   SyntaxProcessForChunkSep_(nluContext);
-  SyntaxProcessForChunk_(nluContext);
+  while (SyntaxProcessForChunk_(nluContext)) {
+  }
 }
 
 Matcher::~Matcher() {

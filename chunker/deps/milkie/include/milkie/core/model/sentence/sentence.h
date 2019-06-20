@@ -19,7 +19,7 @@ class Sentence {
   inline std::shared_ptr<basic::Segment::Set> GetFeatureSegmentsFromOffset(ssize_t offset);
   inline const std::shared_ptr<basic::Segment> GetFeatureSegmentAtOffset(ssize_t offset);
   inline std::shared_ptr<basic::Chunk::Set> GetFeatureChunksFromOffset(ssize_t offset);
-  inline const std::shared_ptr<basic::Chunk> GetFeatureChunkAtOffset(ssize_t offset);
+  inline const std::shared_ptr<basic::Chunk::Set> GetFeatureChunkAtOffset(ssize_t offset);
   const basic::NluContext& GetNluContext() const { return *nluContext_; }
   std::shared_ptr<basic::NluContext> GetNluContext() { return nluContext_; }
 
@@ -77,7 +77,7 @@ std::shared_ptr<basic::Chunk::Set> Sentence::GetFeatureChunksFromOffset(ssize_t 
   return featureChunk_->GetChunksFromOffset(offset);
 }
 
-const std::shared_ptr<basic::Chunk> Sentence::GetFeatureChunkAtOffset(ssize_t offset) {
+const std::shared_ptr<basic::Chunk::Set> Sentence::GetFeatureChunkAtOffset(ssize_t offset) {
   if (nullptr == featureSegment_) {
     featureChunk_ = new SentenceFeatureChunk(nluContext_);
   }
