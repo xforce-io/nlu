@@ -22,8 +22,8 @@ class FragmentSet {
 
   void Reset(const std::wstring &text);
 
-  virtual void Add(std::shared_ptr<FragmentType> fragment);
-  void Add(const FragmentType &fragment);
+  virtual bool Add(std::shared_ptr<FragmentType> fragment);
+  bool Add(const FragmentType &fragment);
 
   Self& operator=(const FragmentSet<FragmentType> &other);
 
@@ -57,17 +57,18 @@ void FragmentSet<FragmentType>::Reset(const std::wstring &text) {
 }
 
 template <typename FragmentType>
-void FragmentSet<FragmentType>::Add(std::shared_ptr<FragmentType> fragment) {
+bool FragmentSet<FragmentType>::Add(std::shared_ptr<FragmentType> fragment) {
   if (fragment->GetOffset() < text_->length()) {
-    fragments_.insert(fragment);
+    return fragments_.insert(fragment).second;
   }
+  return false;
 }
 
 template <typename FragmentType>
-void FragmentSet<FragmentType>::Add(const FragmentType &fragment) {
+bool FragmentSet<FragmentType>::Add(const FragmentType &fragment) {
   auto newFragment = std::make_shared<FragmentType>();
   *newFragment = fragment;
-  Add(newFragment);
+  return Add(newFragment);
 }
 
 template <typename FragmentType>
