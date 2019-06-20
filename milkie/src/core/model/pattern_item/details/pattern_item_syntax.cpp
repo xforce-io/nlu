@@ -3,8 +3,8 @@
 
 namespace xforce { namespace nlu { namespace milkie {
 
-PatternItemSyntax::PatternItemSyntax(const std::wstring &pattern) :
-  pattern_(pattern) {}
+PatternItemSyntax::PatternItemSyntax(const basic::SyntaxTag::Type &syntaxType) :
+  syntaxType_(syntaxType) {}
 
 bool PatternItemSyntax::MatchPattern(Context &context) {
   auto featureChunk = context.GetSentence().GetFeatureChunkAtOffset(context.GetCurPos());
@@ -12,7 +12,7 @@ bool PatternItemSyntax::MatchPattern(Context &context) {
     return false;
   }
 
-  if (*(featureChunk->GetStr()) == pattern_) {
+  if (featureChunk->GetSyntaxTag() == syntaxType_) {
     return false;
   }
 

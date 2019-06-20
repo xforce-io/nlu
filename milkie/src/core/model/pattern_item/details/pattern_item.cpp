@@ -27,7 +27,13 @@ std::shared_ptr<PatternItem> PatternItem::Build(const StructPatternItem &structP
     } else if (structPatternItemCommon.GetCategory() == CategoryPatternItem::kPos) {
       return std::make_shared<PatternItemWordpos>(structPatternItemCommon.GetArgs(0));
     } else if (structPatternItemCommon.GetCategory() == CategoryPatternItem::kChunk) {
-      return std::make_shared<PatternItemSyntax>(structPatternItemCommon.GetArgs(0));
+      basic::SyntaxTag::Type syntaxTag = basic::SyntaxTag::GetSyntaxTag(structPatternItemCommon.GetArgs(0));
+      if (basic::SyntaxTag::kUndef != syntaxTag) {
+        return std::make_shared<PatternItemSyntax>(syntaxTag);
+      } else {
+        FATAL("invalid_syntax_tag(" << structPatternItemCommon.GetArgs(0) << ")");
+        return nullptr;
+      }
     } else if (structPatternItemCommon.GetCategory() == CategoryPatternItem::kDep) {
       FATAL("[INTERNAL ERROR] dep_pattern_item_currently_not_supported");
       return nullptr;
