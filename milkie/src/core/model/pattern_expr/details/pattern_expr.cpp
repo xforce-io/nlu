@@ -103,7 +103,154 @@ void PatternExpr::NotifyStorageSpace(const std::wstring &storageSpace) {
   }
 }
 
-bool PatternExpr::MatchPattern(Context &context, bool singleton) const {
+ssize_t PatternExpr::MatchFromIdx(ssize_t fromIdx, Context &context) const {
+  ssize_t idx = fromIdx;
+  while (idx < items_.size()) {
+    auto patternExpr = items_[idx];
+    if (nullptr != patternExpr->AsWildcard()) {
+      return -(idx+1);
+    }
+
+    bool mark = false;
+    if (items_.size() == 1) {
+      mark = true;
+    }
+
+    if (!patternExpr->MatchPattern_(context, mark)) {
+      return 1;
+    }
+    ++idx;
+  }
+  return 0;
+}
+
+bool PatternExpr::MatchForWildcard(Context &context, ssize_t itemIdx) const {
+  ssize_t offset = context.GetCurPos();
+  bool exitInner = false;
+
+  auto wordposAtPos = context.GetSentence().GetFeatureSegmentAtOffset(offset);
+  if (nullptr != wordposAtPos) {
+    auto fullWordpos = basic::PosTag::Str(wordposAtPos->GetPosTag());
+    auto leadingWordpos = fullWordpos[0];
+    if (PatternExpr::invalidLeadPosForWildcard_.find(leadingWordpos) != PatternExpr::invalidLeadPosForWildcard_.end() ||
+        PatternExpr::invalidFullPosForWildcard_.find(fullWordpos) != PatternExpr::invalidFullPosForWildcard_.end()) {
+      exitInner = true;
+    }
+  }
+
+  ssize_t oldCurPos = context.GetCurPos();
+  while (!exitInner) {
+    StorageKey storageKeyForWildcard = StorageKey(
+            storageKey_ != nullptr ? storageKey_->GetSpace() : nullptr,
+            items_[itemIdx-1]->AsWildcard());
+
+    context.StartMatch(offset);
+    ssize_t retInner = MatchFromIdx(itemIdx, context);
+    if (0 == retInner &&
+        oldCurPos != offset &&
+        context.GetCurPos() == context.GetSentence().GetSentence().length()) {
+      context.SetStorageStr(
+              storageKeyForWildcard,
+              context.GetSentence().GetSentence().substr(oldCurPos, offset-oldCurPos),
+              oldCurPos);
+      if (nullptr == filter_ || filter_->Match(context)) {
+        context.StopMatch(true);
+        if (nullptr != storageKey_) {
+          context.SetStorage(*storageKey_, *(context.GetCurStoragePattern()));
+        }
+        return true;
+      } else {
+        context.RemoveStorage(storageKeyForWildcard);
+      }
+    }
+
+    if (offset == context.Length()) {
+      exitInner = true;
+    }
+    context.StopMatch(false);
+    ++offset;
+  }
+  return false;
+}
+
+void PatternExpr::StopMatch(bool succ, Context &context, bool singleton) const {
+  if (succ) {
+    if (nullptr != storageKey_) {
+      context.SetStorage(*storageKey_, *(context.GetCurStoragePattern()));
+      context.StopMatch(true);
+    } else if (singleton) {
+      context.StopMatch(true, context.GetCurStoragePattern());
+    } else {
+      context.StopMatch(true);
+    }
+  } else {
+    context.StopMatch(false);
+  }
+}
+
+const std::wstring* PatternExpr::AsStr() const {
+  if (nullptr != pattern_) {
+    return pattern_->AsStr();
+  } else if (nullptr != patternSet_) {
+    return patternSet_->AsStr();
+  }
+  return nullptr;
+}
+
+bool PatternExpr::IsExactStartingChar(char c) {
+  return '{' == c;
+}
+
+bool PatternExpr::IsPatternExprStartingChar(char c) {
+  return IsPatternExprExactStartingChar(c) ||
+    IsPatternExprPrefixStartingChar(c) ||
+    IsPatternExprPartlyStartingChar(c);
+}
+
+bool PatternExpr::IsPatternExprExactStartingChar(char c) {
+  return Pattern::IsStartingChar(c) ||
+    PatternSet::IsStartingChar(c) ||
+    PatternExpr::IsExactStartingChar(c) ||
+    Variable::IsStartingChar(c);
+}
+
+bool PatternExpr::IsPatternExprPrefixStartingChar(char c) {
+  return '^' == c;
+}
+
+bool PatternExpr::IsPatternExprPartlyStartingChar(char c) {
+  return '~' == c;
+}
+
+std::pair<std::shared_ptr<PatternExpr>, ssize_t> PatternExpr::Build(
+        const ReferManager &referManager,
+        const std::wstring &blockKey,
+        const std::wstring &statement) {
+  auto structPatternExpr = StructPatternExpr::Parse(referManager, blockKey, statement);
+  if (nullptr == structPatternExpr) {
+    return std::make_pair(nullptr, -1);
+  }
+
+  if (nullptr == structPatternExpr->GetPatternExpr()) {
+    return std::make_pair(
+            std::make_shared<PatternExpr>(structPatternExpr),
+            structPatternExpr->GetStatement().length());
+  } else {
+    return std::make_pair(
+            structPatternExpr->GetPatternExpr(),
+            structPatternExpr->GetStatement().length());
+  }
+}
+
+std::shared_ptr<PatternExpr> PatternExpr::Build(std::shared_ptr<Pattern> &pattern) {
+  return std::make_shared<PatternExpr>(pattern);
+}
+
+std::shared_ptr<PatternExpr> PatternExpr::Build(std::shared_ptr<PatternSet> &patternSet) {
+  return std::make_shared<PatternExpr>(patternSet);
+}
+
+bool PatternExpr::MatchPattern_(Context &context, bool singleton) const {
   ssize_t startIdx = context.GetCurPos();
   if (context.End()) {
     if (repeatPattern_ == CategoryPatternExpr::kZeroOrOnce ||
@@ -186,153 +333,6 @@ bool PatternExpr::MatchPattern(Context &context, bool singleton) const {
   StopMatch(true, context, singleton);
   DebugMatch_(context, startIdx, true);
   return true;
-}
-
-ssize_t PatternExpr::MatchFromIdx(ssize_t fromIdx, Context &context) const {
-  ssize_t idx = fromIdx;
-  while (idx < items_.size()) {
-    auto patternExpr = items_[idx];
-    if (nullptr != patternExpr->AsWildcard()) {
-      return -(idx+1);
-    }
-
-    bool mark = false;
-    if (items_.size() == 1) {
-      mark = true;
-    }
-
-    if (!patternExpr->MatchPattern(context, mark)) {
-      return 1;
-    }
-    ++idx;
-  }
-  return 0;
-}
-
-bool PatternExpr::MatchForWildcard(Context &context, ssize_t itemIdx) const {
-  ssize_t offset = context.GetCurPos();
-  bool exitInner = false;
-
-  auto wordposAtPos = context.GetSentence().GetFeatureSegmentAtOffset(offset);
-  if (nullptr != wordposAtPos) {
-    auto fullWordpos = basic::PosTag::Str(wordposAtPos->GetPosTag());
-    auto leadingWordpos = fullWordpos[0];
-    if (PatternExpr::invalidLeadPosForWildcard_.find(leadingWordpos) != PatternExpr::invalidLeadPosForWildcard_.end() ||
-        PatternExpr::invalidFullPosForWildcard_.find(fullWordpos) != PatternExpr::invalidFullPosForWildcard_.end()) {
-      exitInner = true;
-    }
-  }
-
-  ssize_t oldCurPos = context.GetCurPos();
-  while (!exitInner) {
-    StorageKey storageKeyForWildcard = StorageKey(
-            storageKey_ != nullptr ? storageKey_->GetSpace() : nullptr,
-            items_[itemIdx-1]->AsWildcard());
-
-    context.StartMatch(offset);
-    ssize_t retInner = MatchFromIdx(itemIdx, context);
-    if (0 == retInner &&
-        oldCurPos != offset &&
-        context.GetCurPos() == context.GetSentence().GetSentence().length()) {
-      context.SetStorageStr(
-              storageKeyForWildcard,
-              context.GetSentence().GetSentence().substr(oldCurPos, offset-oldCurPos),
-              oldCurPos);
-      if (nullptr == filter_ || filter_->Match(context)) {
-        context.StopMatch(true);
-        if (nullptr != storageKey_) {
-          context.SetStorage(*storageKey_, *(context.GetStoragePattern()));
-        }
-        return true;
-      } else {
-        context.RemoveStorage(storageKeyForWildcard);
-      }
-    }
-
-    if (offset == context.Length()) {
-      exitInner = true;
-    }
-    context.StopMatch(false);
-    ++offset;
-  }
-  return false;
-}
-
-void PatternExpr::StopMatch(bool succ, Context &context, bool singleton) const {
-  if (succ) {
-    if (nullptr != storageKey_) {
-      context.SetStorage(*storageKey_, *(context.GetStoragePattern()));
-      context.StopMatch(true);
-    } else if (singleton) {
-      context.StopMatch(true, context.GetStoragePattern());
-    } else {
-      context.StopMatch(true);
-    }
-  } else {
-    context.StopMatch(false);
-  }
-}
-
-const std::wstring* PatternExpr::AsStr() const {
-  if (nullptr != pattern_) {
-    return pattern_->AsStr();
-  } else if (nullptr != patternSet_) {
-    return patternSet_->AsStr();
-  }
-  return nullptr;
-}
-
-bool PatternExpr::IsExactStartingChar(char c) {
-  return '{' == c;
-}
-
-bool PatternExpr::IsPatternExprStartingChar(char c) {
-  return IsPatternExprExactStartingChar(c) ||
-    IsPatternExprPrefixStartingChar(c) ||
-    IsPatternExprPartlyStartingChar(c);
-}
-
-bool PatternExpr::IsPatternExprExactStartingChar(char c) {
-  return Pattern::IsStartingChar(c) ||
-    PatternSet::IsStartingChar(c) ||
-    PatternExpr::IsExactStartingChar(c) ||
-    Variable::IsStartingChar(c);
-}
-
-bool PatternExpr::IsPatternExprPrefixStartingChar(char c) {
-  return '^' == c;
-}
-
-bool PatternExpr::IsPatternExprPartlyStartingChar(char c) {
-  return '~' == c;
-}
-
-std::pair<std::shared_ptr<PatternExpr>, ssize_t> PatternExpr::Build(
-        const ReferManager &referManager,
-        const std::wstring &blockKey,
-        const std::wstring &statement) {
-  auto structPatternExpr = StructPatternExpr::Parse(referManager, blockKey, statement);
-  if (nullptr == structPatternExpr) {
-    return std::make_pair(nullptr, -1);
-  }
-
-  if (nullptr == structPatternExpr->GetPatternExpr()) {
-    return std::make_pair(
-            std::make_shared<PatternExpr>(structPatternExpr),
-            structPatternExpr->GetStatement().length());
-  } else {
-    return std::make_pair(
-            structPatternExpr->GetPatternExpr(),
-            structPatternExpr->GetStatement().length());
-  }
-}
-
-std::shared_ptr<PatternExpr> PatternExpr::Build(std::shared_ptr<Pattern> &pattern) {
-  return std::make_shared<PatternExpr>(pattern);
-}
-
-std::shared_ptr<PatternExpr> PatternExpr::Build(std::shared_ptr<PatternSet> &patternSet) {
-  return std::make_shared<PatternExpr>(patternSet);
 }
 
 void PatternExpr::DebugMatch_(Context &context, ssize_t startIdx, bool ok) const {

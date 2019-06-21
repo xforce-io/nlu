@@ -109,7 +109,6 @@ const Storage::Container& Storage::Get() const {
 }
 
 void Storage::Get(std::unordered_map<std::wstring, std::shared_ptr<StorageVal>> &kvs) {
-  kvs.clear();
   for (auto iter = container_.begin(); iter != container_.end(); ++iter) {
     auto value = iter->second;
     if (value != nullptr) {

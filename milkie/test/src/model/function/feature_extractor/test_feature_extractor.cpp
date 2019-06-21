@@ -52,7 +52,7 @@ TEST(testAll, all) {
   ASSERT_TRUE(err == Errno::kOk);
 
   ASSERT_TRUE(*(context->GetStorageAsStr(storageKey)) == L"11");
-  auto storageVal = context->GetStorage(storageKey);
+  auto storageVal = context->GetCurStorage(storageKey);
   ASSERT_TRUE(storageVal->Size() == 1);
   ASSERT_TRUE(storageVal->Get()[0].GetOffset() == 5);
 
@@ -68,7 +68,7 @@ TEST(testAll, all) {
   err = timeFeatureExtractor->MatchPattern(*context);
   ASSERT_TRUE(err == Errno::kOk);
   ASSERT_TRUE(*(context->GetStorageAsStr(storageKey)) == L"11");
-  storageVal = context->GetStorage(storageKey);
+  storageVal = context->GetCurStorage(storageKey);
   ASSERT_TRUE(storageVal->Size() == 1);
   ASSERT_TRUE(storageVal->Get()[0].GetOffset() == 9);
 }

@@ -12,13 +12,16 @@ class StorageKey;
 
 class Context {
  public:
+  typedef std::unordered_map<std::wstring, std::shared_ptr<StorageVal>> Storages;
+
+ public:
   inline Context(std::shared_ptr<basic::NluContext> nluContext);
   inline Context(const std::wstring &sentenceStr);
   virtual ~Context();
 
   inline void Reset();
-  inline void Reset(size_t offset);
   inline void Reset(const std::wstring &otherSentence);
+  inline void Reset(size_t offset);
   const Sentence& GetSentence() const { return *sentence_; }
   Sentence& GetSentence() { return *sentence_; }
   inline void Pass(ssize_t n);
@@ -41,18 +44,21 @@ class Context {
   inline void RemoveStorage(
           const StorageKey &key);
 
-  inline const std::shared_ptr<StorageVal> GetStorage(const StorageKey &key);
-  inline const std::shared_ptr<StorageVal> GetStorage(const wchar_t *item);
-  inline const std::wstring* GetStorageAsStr(const StorageKey &key);
-  inline const std::wstring* GetStorageAsStr(const wchar_t *item);
+  inline void Store();
+  void Clear();
+
+  inline const std::shared_ptr<StorageVal> GetCurStorage(const StorageKey &key);
+  inline const std::shared_ptr<StorageVal> GetCurStorage(const wchar_t *item);
+  inline const std::wstring* GetCurStorageAsStr(const StorageKey &key);
+  inline const std::wstring* GetCurStorageAsStr(const wchar_t *item);
 
   /*
    * mark : str env supported only now
    */
-  inline void GetStorages(std::unordered_map<std::wstring, std::shared_ptr<StorageVal>> &kvs);
+  const Storages& GetStorages() const { return storages_; }
 
-  inline void SetStoragePattern(StorageVal &storageItem);
-  inline std::shared_ptr<StorageVal> GetStoragePattern();
+  inline void SetCurStoragePattern(StorageVal &storageItem);
+  inline std::shared_ptr<StorageVal> GetCurStoragePattern();
   inline bool End() const;
   inline size_t Length() const;
 
@@ -60,6 +66,8 @@ class Context {
   Sentence *sentence_;
   ssize_t curPos_;
   std::stack<std::shared_ptr<Frame>> stack_;
+
+  Storages storages_;
 };
 
 }}}
@@ -82,17 +90,17 @@ void Context::Reset() {
   Reset(0);
 }
 
+void Context::Reset(const std::wstring &otherSentence) {
+  sentence_ = new Sentence(otherSentence);
+  Reset();
+}
+
 void Context::Reset(size_t offset) {
   curPos_ = offset;
   while (!stack_.empty()) {
     stack_.pop();
   }
   stack_.push(std::make_shared<Frame>(curPos_));
-}
-
-void Context::Reset(const std::wstring &otherSentence) {
-  sentence_ = new Sentence(otherSentence);
-  Reset();
 }
 
 void Context::Pass(ssize_t n) {
@@ -159,7 +167,26 @@ void Context::RemoveStorage(const StorageKey &storageKey) {
   stack_.top()->GetStorage().Remove(storageKey);
 }
 
-const std::shared_ptr<StorageVal> Context::GetStorage(const StorageKey &key) {
+void Context::Store() {
+  std::stack<std::shared_ptr<Frame>> tmpStack;
+  while (!stack_.empty()) {
+    auto frame = stack_.top();
+    frame->GetStorage().Get(storages_);
+    tmpStack.push(frame);
+    stack_.pop();
+  }
+
+  while (!tmpStack.empty()) {
+      stack_.push(tmpStack.top());
+      tmpStack.pop();
+  }
+}
+
+void Context::Clear() {
+  storages_.clear();
+}
+
+const std::shared_ptr<StorageVal> Context::GetCurStorage(const StorageKey &key) {
   std::shared_ptr<StorageVal> result;
   std::stack<std::shared_ptr<Frame>> tmpStack;
   while (!stack_.empty()) {
@@ -179,44 +206,27 @@ const std::shared_ptr<StorageVal> Context::GetStorage(const StorageKey &key) {
   return result;
 }
 
-const std::shared_ptr<StorageVal> Context::GetStorage(const wchar_t *item) {
-  return GetStorage(StorageKey(nullptr, item));
+const std::shared_ptr<StorageVal> Context::GetCurStorage(const wchar_t *item) {
+  return GetCurStorage(StorageKey(nullptr, item));
 }
 
-const std::wstring* Context::GetStorageAsStr(const StorageKey &key) {
-  auto storageItem = GetStorage(key);
+const std::wstring* Context::GetCurStorageAsStr(const StorageKey &key) {
+  auto storageItem = GetCurStorage(key);
   if (nullptr != storageItem) {
     return storageItem->GetAsString();
   }
   return nullptr;
 }
 
-const std::wstring* Context::GetStorageAsStr(const wchar_t *item) {
-  return GetStorageAsStr(StorageKey(nullptr, item));
+const std::wstring* Context::GetCurStorageAsStr(const wchar_t *item) {
+  return GetCurStorageAsStr(StorageKey(nullptr, item));
 }
 
-void Context::GetStorages(std::unordered_map<std::wstring, std::shared_ptr<StorageVal>> &kvs) {
-  kvs.clear();
-
-  std::stack<std::shared_ptr<Frame>> tmpStack;
-  while (!stack_.empty()) {
-    auto frame = stack_.top();
-    frame->GetStorage().Get(kvs);
-    tmpStack.push(frame);
-    stack_.pop();
-  }
-
-  while (!tmpStack.empty()) {
-      stack_.push(tmpStack.top());
-      tmpStack.pop();
-  }
-}
-
-void Context::SetStoragePattern(StorageVal &storageItem) {
+void Context::SetCurStoragePattern(StorageVal &storageItem) {
   stack_.top()->SetStoragePattern(storageItem);
 }
 
-std::shared_ptr<StorageVal> Context::GetStoragePattern() {
+std::shared_ptr<StorageVal> Context::GetCurStoragePattern() {
   if (stack_.top()->GetStoragePattern() != nullptr) {
     return stack_.top()->GetStoragePattern();
   } else {

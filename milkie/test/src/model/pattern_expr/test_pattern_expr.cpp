@@ -62,7 +62,7 @@ void testcase1() {
   segments.Add(Segment(PosTag::Type::kA, 1, 1));
   context->GetSentence().GetNluContext()->SetSegments(segments);
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
-  ASSERT_TRUE(*(context->GetStorageAsStr(L"target")) == L"不好");
+  ASSERT_TRUE(*(context->GetCurStorageAsStr(L"target")) == L"不好");
 
   query = L"不好不好";
   context = std::make_shared<Context>(query);
@@ -101,9 +101,9 @@ void testcase2() {
   segments.Add(Segment(PosTag::Type::kY, 7, 1));
   context->GetSentence().GetNluContext()->SetSegments(segments);
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
-  ASSERT_TRUE(*(context->GetStorageAsStr(*new StorageKey(L"target", nullptr))) == L"苹果橘子不好吃吧");
-  ASSERT_TRUE(*(context->GetStorageAsStr(*new StorageKey(L"target", L"noun"))) == L"苹果橘子");
-  ASSERT_TRUE(*(context->GetStorageAsStr(*new StorageKey(L"target", L"yPhrase"))) == L"吧");
+  ASSERT_TRUE(*(context->GetCurStorageAsStr(*new StorageKey(L"target", nullptr))) == L"苹果橘子不好吃吧");
+  ASSERT_TRUE(*(context->GetCurStorageAsStr(*new StorageKey(L"target", L"noun"))) == L"苹果橘子");
+  ASSERT_TRUE(*(context->GetCurStorageAsStr(*new StorageKey(L"target", L"yPhrase"))) == L"吧");
 
   query = L"苹果不好吃";
   context = std::make_shared<Context>(query);
@@ -113,9 +113,9 @@ void testcase2() {
   segments.Add(Segment(PosTag::Type::kA, 3, 2));
   context->GetSentence().GetNluContext()->SetSegments(segments);
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
-  ASSERT_TRUE(*(context->GetStorageAsStr(*new StorageKey(L"target", nullptr))) == L"苹果不好吃");
-  ASSERT_TRUE(*(context->GetStorageAsStr(*new StorageKey(L"target", L"noun"))) == L"苹果");
-  ASSERT_TRUE(context->GetStorageAsStr(*new StorageKey(L"target", L"yPhrase")) == nullptr);
+  ASSERT_TRUE(*(context->GetCurStorageAsStr(*new StorageKey(L"target", nullptr))) == L"苹果不好吃");
+  ASSERT_TRUE(*(context->GetCurStorageAsStr(*new StorageKey(L"target", L"noun"))) == L"苹果");
+  ASSERT_TRUE(context->GetCurStorageAsStr(*new StorageKey(L"target", L"yPhrase")) == nullptr);
 }
 
 void testcaseWildcard() {
@@ -135,10 +135,10 @@ void testcaseWildcard() {
   segments.Add(Segment(PosTag::Type::kY,11, 1));
   context->GetSentence().GetNluContext()->SetSegments(segments);
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
-  ASSERT_TRUE(*(context->GetStorageAsStr(L"Wield")) == L"真的真的");
-  ASSERT_TRUE(*(context->GetStorageAsStr(L"target")) == query);
-  ASSERT_TRUE(*(context->GetStorageAsStr(L"noun")) == L"苹果橘子");
-  ASSERT_TRUE(*(context->GetStorageAsStr(L"yPhrase")) == L"吧");
+  ASSERT_TRUE(*(context->GetCurStorageAsStr(L"Wield")) == L"真的真的");
+  ASSERT_TRUE(*(context->GetCurStorageAsStr(L"target")) == query);
+  ASSERT_TRUE(*(context->GetCurStorageAsStr(L"noun")) == L"苹果橘子");
+  ASSERT_TRUE(*(context->GetCurStorageAsStr(L"yPhrase")) == L"吧");
 
   expr = Helper::PreprocessExprLine(L"{ {$ContinousN -> noun} $*Wield #Pos(v) #Pos(yP-) }");
   ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, expr);
@@ -157,7 +157,7 @@ void testcaseWildcard() {
   segments.Add(Segment(PosTag::Type::kY,12, 1));
   context->GetSentence().GetNluContext()->SetSegments(segments);
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
-  ASSERT_TRUE(*(context->GetStorageAsStr(L"Wield")) == L"真的真的不好吃");
+  ASSERT_TRUE(*(context->GetCurStorageAsStr(L"Wield")) == L"真的真的不好吃");
 
   expr = Helper::PreprocessExprLine(L"{ {$ContinousN -> noun} $*Wield }");
   ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, expr);
@@ -174,7 +174,7 @@ void testcaseWildcard() {
   segments.Add(Segment(PosTag::Type::kA, 9, 2));
   context->GetSentence().GetNluContext()->SetSegments(segments);
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
-  ASSERT_TRUE(*(context->GetStorageAsStr(L"Wield")) == L"真的真的不好吃");
+  ASSERT_TRUE(*(context->GetCurStorageAsStr(L"Wield")) == L"真的真的不好吃");
 }
 
 void testcaseMultimatch() {
