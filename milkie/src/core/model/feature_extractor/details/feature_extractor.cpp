@@ -16,6 +16,7 @@ FeatureExtractor::FeatureExtractor(
 }
 
 Errno::Code FeatureExtractor::MatchPattern(Context &context, size_t offset) const {
+  bool ok = false;
   for (auto &instruction : instructions_) {
     context.Reset(offset);
     switch (instruction->GetCategoryInstruction()) {
@@ -27,7 +28,7 @@ Errno::Code FeatureExtractor::MatchPattern(Context &context, size_t offset) cons
               instruction->GetPatternExpr()->MatchPattern(context, false)) ||
             (instruction->GetMatchType() == MatchType::kPartlyMatch &&
              instruction->GetPatternExpr()->PartlyMatch(context, false))) {
-          return Errno::kOk;
+          ok = true;
         }
         break;
       }
@@ -39,7 +40,7 @@ Errno::Code FeatureExtractor::MatchPattern(Context &context, size_t offset) cons
       }
     }
   }
-  return Errno::kNotMatched;
+  return ok ? Errno::kOk : Errno::kNotMatched;
 }
 
 bool FeatureExtractor::Build(
