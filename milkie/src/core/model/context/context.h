@@ -45,7 +45,7 @@ class Context {
           const StorageKey &key);
 
   inline void Store();
-  void Clear();
+  inline void Clear();
 
   inline const std::shared_ptr<StorageVal> GetCurStorage(const StorageKey &key);
   inline const std::shared_ptr<StorageVal> GetCurStorage(const wchar_t *item);

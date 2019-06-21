@@ -61,6 +61,10 @@ class SyntaxTag {
       kQp, //Quantifier phrase / 量词短语
       kUcp, //unidentical coordination phrase / 非对等同位语短语
       kVp, //Verb phrase / 动词短语
+
+      //special mark
+      kStc,
+
       kUndef,
   };
 

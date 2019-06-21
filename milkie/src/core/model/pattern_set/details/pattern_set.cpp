@@ -67,7 +67,7 @@ bool PatternSet::MatchPattern(Context &context) {
     }
   } else {
     for (auto &patternExpr : *patternExprs_) {
-      if (patternExpr->MatchPattern(context, false)) {
+      if (patternExpr->PrefixMatch(context, false)) {
         return true;
       }
     }
