@@ -69,8 +69,7 @@ bool Matcher::SyntaxProcessForChunkSep_(std::shared_ptr<basic::NluContext> nluCo
       continue;
     }
 
-    std::unordered_map<std::wstring, std::shared_ptr<milkie::StorageVal>> storages;
-    context->GetStorages(storages);
+    const milkie::Context::Storages &storages = context->GetStorages();
     for (auto &storage : storages) {
       const std::wstring &key = storage.first;
       std::vector<std::wstring> vals;
@@ -118,8 +117,7 @@ bool Matcher::SyntaxProcessForChunk_(std::shared_ptr<basic::NluContext> nluConte
     return false;
   }
 
-  std::unordered_map<std::wstring, std::shared_ptr<milkie::StorageVal>> storages;
-  context->GetStorages(storages);
+  const milkie::Context::Storages &storages = context->GetStorages();
   for (auto &storage : storages) {
     const std::wstring &key = storage.first;
     std::vector<std::wstring> vals;

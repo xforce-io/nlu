@@ -26,8 +26,7 @@ int CodeSeg::Match(Context &context) {
   lock_->Lock();
   lua_newtable(luaState_);
 
-  std::unordered_map<std::wstring, std::shared_ptr<StorageVal>> kvs;
-  context.GetStorages(kvs);
+  const typename Context::Storages& kvs = context.GetStorages();
   for (auto iter = kvs.begin(); iter != kvs.end(); ++iter) {
     lua_pushstring(luaState_, StrHelper::Wstr2Str(iter->first)->c_str());
     lua_pushstring(luaState_, StrHelper::Wstr2Str(*(iter->second->GetAsString()))->c_str());

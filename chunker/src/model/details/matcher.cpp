@@ -3,8 +3,8 @@
 
 namespace xforce { namespace nlu { namespace chunker {
 
-const std::wstring Matcher::kChunkStoragePrefix = L"chunkSep";
-const std::wstring Matcher::kSyntacticStoragePrefix = L"syntactic";
+const std::wstring Matcher::kChunkStoragePrefix = L"/chunkSep";
+const std::wstring Matcher::kSyntacticStoragePrefix = L"/syntactic";
 
 Matcher::Matcher() :
     milkie_(new milkie::Milkie()) {}
@@ -86,8 +86,7 @@ void Matcher::ParseAccordingToRule_(std::shared_ptr<basic::NluContext> nluContex
     return;
   }
 
-  std::unordered_map<std::wstring, std::shared_ptr<milkie::StorageVal>> storages;
-  context->GetStorages(storages);
+  const milkie::Context::Storages &storages = context->GetStorages();
   for (auto &storage : storages) {
     const std::wstring &key = storage.first;
     std::vector<std::wstring> vals;
@@ -123,7 +122,7 @@ void Matcher::ParseAccordingToRule_(std::shared_ptr<basic::NluContext> nluContex
         basic::Chunk chunk(
                 syntaxTag,
                 storageItem.GetOffset(),
-                storageItem.GetContent().length() + storageItem.GetOffset());
+                storageItem.GetContent().length());
         nluContext->GetChunkSeps().Add(basic::ChunkSep(storageItem.GetOffset()));
         nluContext->GetChunkSeps().Add(basic::ChunkSep(
                 storageItem.GetOffset() + storageItem.GetContent().length()));

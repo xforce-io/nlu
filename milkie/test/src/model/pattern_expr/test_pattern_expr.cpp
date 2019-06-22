@@ -83,7 +83,7 @@ void testcase1() {
   segments.Add(Segment(PosTag::Type::kA, 3, 1));
   segments.Add(Segment(PosTag::Type::kN, 4, 3));
   context->GetSentence().GetNluContext()->SetSegments(segments);
-  ASSERT_TRUE(ret.first->MatchPattern(*(context.get()), false));
+  ASSERT_TRUE(ret.first->PrefixMatch(*(context.get()), false));
 }
 
 void testcase2() {
@@ -193,7 +193,7 @@ void testcaseMultimatch() {
   segments.Add(Segment(PosTag::Type::kY, 8, 1));
   context->GetSentence().GetNluContext()->SetSegments(segments);
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
-  ASSERT_TRUE(context->GetStorage(L"yPhrase")->Size() == 2);
+  ASSERT_TRUE(context->GetCurStorage(L"yPhrase")->Size() == 2);
 
   query = L"苹果橘子不好吃";
   context = std::make_shared<Context>(query);
@@ -204,7 +204,7 @@ void testcaseMultimatch() {
   segments.Add(Segment(PosTag::Type::kA, 5, 2));
   context->GetSentence().GetNluContext()->SetSegments(segments);
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
-  ASSERT_TRUE(context->GetStorage(L"yPhrase") == nullptr);
+  ASSERT_TRUE(context->GetCurStorage(L"yPhrase") == nullptr);
 
   expr = Helper::PreprocessExprLine(L"{ {$ContinousN -> noun} #Pos(dP-aP-) { #Pos(yP-) -> yPhrase +} -> target }");
   ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, expr);
@@ -221,7 +221,7 @@ void testcaseMultimatch() {
   segments.Add(Segment(PosTag::Type::kY, 8, 1));
   context->GetSentence().GetNluContext()->SetSegments(segments);
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
-  ASSERT_TRUE(context->GetStorage(L"yPhrase")->Size() == 2);
+  ASSERT_TRUE(context->GetCurStorage(L"yPhrase")->Size() == 2);
 
   query = L"苹果橘子不好吃";
   context = std::make_shared<Context>(query);
