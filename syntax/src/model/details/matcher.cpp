@@ -55,7 +55,7 @@ bool Matcher::Process_(std::shared_ptr<basic::NluContext> nluContext) {
 }
 
 bool Matcher::SyntaxProcessForChunkSep_(std::shared_ptr<basic::NluContext> nluContext) {
-  bool newChunkAdded = false;
+  bool touched = false;
   auto cur = nluContext->GetChunkSeps().Begin();
   while (cur != nluContext->GetChunkSeps().End()) {
     auto next = cur;
@@ -113,7 +113,7 @@ bool Matcher::SyntaxProcessForChunkSep_(std::shared_ptr<basic::NluContext> nluCo
                   storageItem.GetOffset() + (*cur)->GetOffset(),
                   storageItem.GetContent().length());
           nluContext->GetChunks().Add(chunk);
-          newChunkAdded = true;
+          touched = true;
         }
       } else {
         FATAL("invalid_chunk_parse_prefix[" << vals[0] << "]");
@@ -121,11 +121,11 @@ bool Matcher::SyntaxProcessForChunkSep_(std::shared_ptr<basic::NluContext> nluCo
     }
     cur = next;
   }
-  return newChunkAdded;
+  return touched;
 }
 
 bool Matcher::SyntaxProcessForChunk_(std::shared_ptr<basic::NluContext> nluContext) {
-  bool newChunkAdded = false;
+  bool touched = false;
   auto context = std::make_shared<milkie::Context>(nluContext);
   auto errCode = feChunk_->MatchPattern(*context);
   if (milkie::Errno::kOk != errCode) {
@@ -161,14 +161,14 @@ bool Matcher::SyntaxProcessForChunk_(std::shared_ptr<basic::NluContext> nluConte
                 storageItem.GetOffset(),
                 storageItem.GetContent().length());
         if (nluContext->GetChunks().Add(chunk)) {
-          newChunkAdded = true;
+          touched = true;
         }
       }
     } else {
       FATAL("invalid_chunk_parse_prefix[" << vals[0] << "]");
     }
   }
-  return newChunkAdded;
+  return touched;
 }
 
 bool Matcher::PostProcess_(std::shared_ptr<basic::NluContext> nluContext) {
@@ -176,8 +176,13 @@ bool Matcher::PostProcess_(std::shared_ptr<basic::NluContext> nluContext) {
   for (auto &chunk : nluContext->GetChunks().GetAll()) {
     if (chunk->GetSyntaxTag() == basic::SyntaxTag::kContNp &&
         nluContext->HasPredPosBefore(chunk->GetOffset())) {
-      chunk->SetSyntaxTag(basic::SyntaxTag::kNp);
-      touched = true;
+      basic::Chunk newChunk(
+              basic::SyntaxTag::kNp,
+              chunk->GetOffset(),
+              chunk->GetLen());
+      if (nluContext->GetChunks().Add(newChunk)) {
+        touched = true;
+      }
     }
   }
   return touched;
