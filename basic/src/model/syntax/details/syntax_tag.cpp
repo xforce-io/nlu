@@ -37,83 +37,12 @@ SyntaxTag::Type SyntaxTag::GetSyntaxTag(const std::wstring &syntaxTag) {
     return SyntaxTag::kUcp;
   } else if (L"vp" == syntaxTag) {
     return SyntaxTag::kVp;
-  } else if (L"stc" == syntaxTag) {
+  } else if (L"_stc_" == syntaxTag) {
     return SyntaxTag::kStc;
+  } else if (L"_cont_np_" == syntaxTag) {
+    return SyntaxTag::kContNp;
   } else {
     return SyntaxTag::kUndef;
-  }
-}
-
-SyntaxTag::Type SyntaxTag::GetSyntaxTag(basic::PosCtbTag::Type posCtbTag) {
-  switch (posCtbTag) {
-    case PosCtbTag::kAd :
-      return SyntaxTag::kAd;
-    case PosCtbTag::kAs :
-      return SyntaxTag::kAs;
-    case PosCtbTag::kBa :
-      return SyntaxTag::kBa;
-    case PosCtbTag::kCc :
-      return SyntaxTag::kCc;
-    case PosCtbTag::kCd :
-      return SyntaxTag::kCd;
-    case PosCtbTag::kCs :
-      return SyntaxTag::kCs;
-    case PosCtbTag::kDec :
-      return SyntaxTag::kDec;
-    case PosCtbTag::kDeg :
-      return SyntaxTag::kDeg;
-    case PosCtbTag::kDer :
-      return SyntaxTag::kDer;
-    case PosCtbTag::kDev :
-      return SyntaxTag::kDev;
-    case PosCtbTag::kDt :
-      return SyntaxTag::kDt;
-    case PosCtbTag::kEtc :
-      return SyntaxTag::kEtc;
-    case PosCtbTag::kFw :
-      return SyntaxTag::kFw;
-    case PosCtbTag::kIj :
-      return SyntaxTag::kIj;
-    case PosCtbTag::kJj :
-      return SyntaxTag::kJj;
-    case PosCtbTag::kLb :
-      return SyntaxTag::kLb;
-    case PosCtbTag::kLc :
-      return SyntaxTag::kLc;
-    case PosCtbTag::kM :
-      return SyntaxTag::kM;
-    case PosCtbTag::kMsp :
-      return SyntaxTag::kMsp;
-    case PosCtbTag::kNn :
-      return SyntaxTag::kNn;
-    case PosCtbTag::kNr :
-      return SyntaxTag::kNr;
-    case PosCtbTag::kNt :
-      return SyntaxTag::kNt;
-    case PosCtbTag::kOd :
-      return SyntaxTag::kOd;
-    case PosCtbTag::kOn :
-      return SyntaxTag::kOn;
-    case PosCtbTag::kP :
-      return SyntaxTag::kP;
-    case PosCtbTag::kPn :
-      return SyntaxTag::kPn;
-    case PosCtbTag::kPu :
-      return SyntaxTag::kPu;
-    case PosCtbTag::kSb :
-      return SyntaxTag::kSb;
-    case PosCtbTag::kSp :
-      return SyntaxTag::kSp;
-    case PosCtbTag::kVa :
-      return SyntaxTag::kVa;
-    case PosCtbTag::kVc :
-      return SyntaxTag::kVc;
-    case PosCtbTag::kVe :
-      return SyntaxTag::kVe;
-    case PosCtbTag::kVv :
-      return SyntaxTag::kVv;
-    default:
-      return SyntaxTag::kUndef;
   }
 }
 
@@ -135,7 +64,8 @@ const std::wstring& SyntaxTag::Str(SyntaxTag::Type type) {
   static const std::wstring kQp = L"qp";
   static const std::wstring kUcp = L"ucp";
   static const std::wstring kVp = L"vp";
-  static const std::wstring kStc = L"stc";
+  static const std::wstring kStc = L"_stc_";
+  static const std::wstring kContNp = L"_cont_np_";
   static const std::wstring kUndef = L"undef";
   switch (type) {
     case SyntaxTag::kAdjp :
@@ -174,10 +104,11 @@ const std::wstring& SyntaxTag::Str(SyntaxTag::Type type) {
       return kVp;
     case SyntaxTag::kStc :
       return kStc;
+    case SyntaxTag::kContNp :
+      return kContNp;
     default:
       return kUndef;
   }
 }
-
 
 }}}

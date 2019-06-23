@@ -30,13 +30,28 @@ bool Matcher::Init() {
 }
 
 void Matcher::Match(std::shared_ptr<basic::NluContext> nluContext) {
-  SyntaxProcessForChunkSep_(nluContext);
-  while (SyntaxProcessForChunk_(nluContext)) {
-  }
+  while (Process_(nluContext))
+    ;
 }
 
 Matcher::~Matcher() {
   XFC_DELETE(milkie_)
+}
+
+bool Matcher::Process_(std::shared_ptr<basic::NluContext> nluContext) {
+  bool touched = false;
+  if (SyntaxProcessForChunkSep_(nluContext)) {
+    touched = true;
+  }
+
+  if (SyntaxProcessForChunk_(nluContext)) {
+    touched = true;
+  }
+
+  if (PostProcess_(nluContext)) {
+    touched = true;
+  }
+  return touched;
 }
 
 bool Matcher::SyntaxProcessForChunkSep_(std::shared_ptr<basic::NluContext> nluContext) {
@@ -154,6 +169,18 @@ bool Matcher::SyntaxProcessForChunk_(std::shared_ptr<basic::NluContext> nluConte
     }
   }
   return newChunkAdded;
+}
+
+bool Matcher::PostProcess_(std::shared_ptr<basic::NluContext> nluContext) {
+  bool touched = false;
+  for (auto &chunk : nluContext->GetChunks().GetAll()) {
+    if (chunk->GetSyntaxTag() == basic::SyntaxTag::kContNp &&
+        nluContext->HasPredPosBefore(chunk->GetOffset())) {
+      chunk->SetSyntaxTag(basic::SyntaxTag::kNp);
+      touched = true;
+    }
+  }
+  return touched;
 }
 
 }}}
