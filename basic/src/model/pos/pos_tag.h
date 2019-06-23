@@ -77,7 +77,7 @@ class PosTag {
     enum Val {
       kNominal,
       kPredicate,
-      kAdvOrDis,
+      kAdv,
       kFuncWord,
       kMood,
       kAppendixSubword,
@@ -197,8 +197,8 @@ PosTag::Class::Val PosTag::GetClass(PosTag::Type::Val posTag) {
     return PosTag::Class::kNominal;
   } else if (IsPredicate(posTag)) {
     return PosTag::Class::kPredicate;
-  } else if (IsAdvOrDis(posTag)) {
-    return PosTag::Class::kAdvOrDis;
+  } else if (IsAdv(posTag)) {
+    return PosTag::Class::kAdv;
   } else if (IsFuncWord(posTag)) {
     return PosTag::Class::kFuncWord;
   } else if (IsMood(posTag)) {

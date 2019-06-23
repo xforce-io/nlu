@@ -64,14 +64,14 @@ void Matcher::ParseCommon_(basic::NluContext &nluContext) {
 
       if (basic::PosTag::Class::kNominal == curClassOfPosTags &&
           (basic::PosTag::Class::kPredicate == nextClassOfPosTags ||
-              basic::PosTag::Class::kAdvOrDis == nextClassOfPosTags)) {
+              basic::PosTag::Class::kAdv == nextClassOfPosTags)) {
         chunkSeps.Add(std::make_shared<basic::ChunkSep>((*next)->GetOffset()));
       } else if ((basic::PosTag::Class::kPredicate == curClassOfPosTags ||
-              basic::PosTag::Class::kAdvOrDis == curClassOfPosTags) &&
+              basic::PosTag::Class::kAdv == curClassOfPosTags) &&
           basic::PosTag::Class::kNominal == nextClassOfPosTags) {
         chunkSeps.Add(std::make_shared<basic::ChunkSep>((*next)->GetOffset()));
       } else if (basic::PosTag::Class::kPredicate == curClassOfPosTags &&
-          basic::PosTag::Class::kAdvOrDis == nextClassOfPosTags) {
+          basic::PosTag::Class::kAdv == nextClassOfPosTags) {
         chunkSeps.Add(std::make_shared<basic::ChunkSep>((*next)->GetOffset()));
       }
     }

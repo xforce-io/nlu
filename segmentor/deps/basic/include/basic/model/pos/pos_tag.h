@@ -77,7 +77,7 @@ class PosTag {
     enum Val {
       kNominal,
       kPredicate,
-      kAdvOrDis,
+      kAdv,
       kFuncWord,
       kMood,
       kAppendixSubword,
@@ -93,7 +93,7 @@ class PosTag {
 
   inline static bool IsNominal(PosTag::Type::Val posTag);
   inline static bool IsPredicate(PosTag::Type::Val posTag);
-  inline static bool IsAdvOrDis(PosTag::Type::Val posTag);
+  inline static bool IsAdv(PosTag::Type::Val posTag);
   inline static bool IsFuncWord(PosTag::Type::Val posTag);
   inline static bool IsMood(PosTag::Type::Val posTag);
   inline static bool IsAppendixSubword(PosTag::Type::Val posTag);
@@ -148,18 +148,19 @@ bool PosTag::IsNominal(PosTag::Type::Val posTag) {
     PosTag::Type::kS == posTag ||
     PosTag::Type::kF == posTag ||
     PosTag::Type::kM == posTag ||
-    PosTag::Type::kQ == posTag;
+    PosTag::Type::kQ == posTag ||
+    PosTag::Type::kR == posTag;
 }
 
 bool PosTag::IsPredicate(PosTag::Type::Val posTag) {
   return PosTag::Type::kV == posTag ||
     PosTag::Type::kA == posTag ||
-    PosTag::Type::kZ == posTag;
+    PosTag::Type::kZ == posTag ||
+    PosTag::Type::kB == posTag;
 }
 
-bool PosTag::IsAdvOrDis(PosTag::Type::Val posTag) {
-  return PosTag::Type::kD == posTag ||
-    PosTag::Type::kB == posTag;
+bool PosTag::IsAdv(PosTag::Type::Val posTag) {
+  return PosTag::Type::kD == posTag;
 }
 
 bool PosTag::IsFuncWord(PosTag::Type::Val posTag) {
@@ -196,8 +197,8 @@ PosTag::Class::Val PosTag::GetClass(PosTag::Type::Val posTag) {
     return PosTag::Class::kNominal;
   } else if (IsPredicate(posTag)) {
     return PosTag::Class::kPredicate;
-  } else if (IsAdvOrDis(posTag)) {
-    return PosTag::Class::kAdvOrDis;
+  } else if (IsAdv(posTag)) {
+    return PosTag::Class::kAdv;
   } else if (IsFuncWord(posTag)) {
     return PosTag::Class::kFuncWord;
   } else if (IsMood(posTag)) {
