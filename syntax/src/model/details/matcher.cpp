@@ -176,7 +176,7 @@ bool Matcher::PostProcess_(std::shared_ptr<basic::NluContext> nluContext) {
   bool touched = false;
   for (auto &chunk : nluContext->GetChunks().GetAll()) {
     if (chunk->GetSyntaxTag() == basic::SyntaxTag::kContNp &&
-        nluContext->HasPredPosBefore(chunk->GetOffset())) {
+        !nluContext->HasPredPosBefore(chunk->GetOffset())) {
       basic::Chunk newChunk(
               basic::SyntaxTag::kNp,
               chunk->GetOffset(),
