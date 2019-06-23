@@ -30,47 +30,6 @@ void StrategyWindowStatistics::Process(basic::NluContext &nluContext) {
 
   auto segIter0 = segments.begin();
   auto segIter1 = segments.end();
-  if (segIter0 != segments.end()) {
-    segIter1 = segIter0;
-    ++segIter1;
-  }
-
-  while (segIter1 != segments.end()) {
-    std::wstring seg0 = (*segIter0)->GetStrFromSentence(nluContext.GetQuery());
-    std::wstring seg1 = (*segIter1)->GetStrFromSentence(nluContext.GetQuery());
-
-    auto dominator = windowStatistics_->GetDominator(seg0, seg1);
-    if (dominator.first == StatisticsItems::kOther) {
-      ++segIter0;
-      ++segIter1;
-      continue;
-    } else if (dominator.first == StatisticsItems::kCategory0) {
-      SetPos(
-              **segIter0,
-              dominator.second->type0,
-              Strategy::kStrategyWindowStatistics);
-    } else if (dominator.first == StatisticsItems::kCategory1) {
-      SetPos(
-              **segIter1,
-              dominator.second->type1,
-              Strategy::kStrategyWindowStatistics);
-    } else if (dominator.first == StatisticsItems::kCategory01) {
-      SetPos(
-              **segIter0,
-              dominator.second->type0,
-              Strategy::kStrategyWindowStatistics);
-      SetPos(
-              **segIter1,
-              dominator.second->type1,
-              Strategy::kStrategyWindowStatistics);
-    }
-
-    ++segIter0;
-    ++segIter1;
-  }
-
-  segIter0 = segments.begin();
-  segIter1 = segments.end();
   auto segIter2 = segments.end();
   if (segIter0 != segments.end()) {
     segIter1 = segIter0;
@@ -152,6 +111,47 @@ void StrategyWindowStatistics::Process(basic::NluContext &nluContext) {
     ++segIter0;
     ++segIter1;
     ++segIter2;
+  }
+
+  segIter0 = segments.begin();
+  segIter1 = segments.end();
+  if (segIter0 != segments.end()) {
+    segIter1 = segIter0;
+    ++segIter1;
+  }
+
+  while (segIter1 != segments.end()) {
+    std::wstring seg0 = (*segIter0)->GetStrFromSentence(nluContext.GetQuery());
+    std::wstring seg1 = (*segIter1)->GetStrFromSentence(nluContext.GetQuery());
+
+    auto dominator = windowStatistics_->GetDominator(seg0, seg1);
+    if (dominator.first == StatisticsItems::kOther) {
+      ++segIter0;
+      ++segIter1;
+      continue;
+    } else if (dominator.first == StatisticsItems::kCategory0) {
+      SetPos(
+              **segIter0,
+              dominator.second->type0,
+              Strategy::kStrategyWindowStatistics);
+    } else if (dominator.first == StatisticsItems::kCategory1) {
+      SetPos(
+              **segIter1,
+              dominator.second->type1,
+              Strategy::kStrategyWindowStatistics);
+    } else if (dominator.first == StatisticsItems::kCategory01) {
+      SetPos(
+              **segIter0,
+              dominator.second->type0,
+              Strategy::kStrategyWindowStatistics);
+      SetPos(
+              **segIter1,
+              dominator.second->type1,
+              Strategy::kStrategyWindowStatistics);
+    }
+
+    ++segIter0;
+    ++segIter1;
   }
 }
 
