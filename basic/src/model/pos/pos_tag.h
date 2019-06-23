@@ -93,7 +93,7 @@ class PosTag {
 
   inline static bool IsNominal(PosTag::Type::Val posTag);
   inline static bool IsPredicate(PosTag::Type::Val posTag);
-  inline static bool IsAdvOrDis(PosTag::Type::Val posTag);
+  inline static bool IsAdv(PosTag::Type::Val posTag);
   inline static bool IsFuncWord(PosTag::Type::Val posTag);
   inline static bool IsMood(PosTag::Type::Val posTag);
   inline static bool IsAppendixSubword(PosTag::Type::Val posTag);
@@ -155,12 +155,12 @@ bool PosTag::IsNominal(PosTag::Type::Val posTag) {
 bool PosTag::IsPredicate(PosTag::Type::Val posTag) {
   return PosTag::Type::kV == posTag ||
     PosTag::Type::kA == posTag ||
-    PosTag::Type::kZ == posTag;
+    PosTag::Type::kZ == posTag ||
+    PosTag::Type::kB == posTag;
 }
 
-bool PosTag::IsAdvOrDis(PosTag::Type::Val posTag) {
-  return PosTag::Type::kD == posTag ||
-    PosTag::Type::kB == posTag;
+bool PosTag::IsAdv(PosTag::Type::Val posTag) {
+  return PosTag::Type::kD == posTag;
 }
 
 bool PosTag::IsFuncWord(PosTag::Type::Val posTag) {
