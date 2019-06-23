@@ -112,8 +112,9 @@ bool Matcher::SyntaxProcessForChunkSep_(std::shared_ptr<basic::NluContext> nluCo
                   syntaxTag,
                   storageItem.GetOffset() + (*cur)->GetOffset(),
                   storageItem.GetContent().length());
-          nluContext->GetChunks().Add(chunk);
-          touched = true;
+          if (nluContext->GetChunks().Add(chunk)) {
+            touched = true;
+          }
         }
       } else {
         FATAL("invalid_chunk_parse_prefix[" << vals[0] << "]");
