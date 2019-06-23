@@ -64,13 +64,13 @@ class SyntaxTag {
 
       //special mark
       kStc,
+      kContNp,
 
       kUndef,
   };
 
  public:
   static SyntaxTag::Type GetSyntaxTag(const std::wstring &syntaxTag);
-  static SyntaxTag::Type GetSyntaxTag(basic::PosCtbTag::Type posCtbTag);
   static const std::wstring& Str(SyntaxTag::Type type);
 };
 

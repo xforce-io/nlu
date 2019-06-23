@@ -28,8 +28,9 @@ class NluContext {
   inline const typename Chunk::Set& GetChunks() const;
   inline typename Chunk::Set& GetChunks();
 
-  void Dump(JsonType &jsonType);
+  inline bool HasPredPosBefore(size_t offset) const;
 
+  void Dump(JsonType &jsonType);
 
  private:
   std::wstring query_;
@@ -82,6 +83,16 @@ const typename Chunk::Set& NluContext::GetChunks() const {
 
 typename Chunk::Set& NluContext::GetChunks() {
   return managerFragmentSet_->GetChunks();
+}
+
+bool NluContext::HasPredPosBefore(size_t offset) const {
+  for (auto &segment : managerFragmentSet_->GetSegments().GetAll()) {
+    if (segment->GetOffset() < offset &&
+        PosTag::IsPredicate(segment->GetPosTag())) {
+      return true;
+    }
+  }
+  return false;
 }
 
 }}}
