@@ -67,7 +67,7 @@ PosTag::Type::Val PosTag::GetPosTag(const std::wstring &posTag) {
   };
 }
 
-const std::wstring& PosTag::tr(PosTag::Type::Val posTag) {
+const std::wstring& PosTag::Str(PosTag::Type::Val posTag) {
   static const std::wstring kN = L"n";
   static const std::wstring kT = L"t";
   static const std::wstring kS = L"s";
