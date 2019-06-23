@@ -12,13 +12,13 @@ class Fragment {
 
  public:
   struct Compare {
-      bool operator() (
-              const std::shared_ptr<Fragment> &lhs,
-              const std::shared_ptr<Fragment> &rhs) const {
-        return lhs->GetOffset() < rhs->GetOffset() ||
-            (lhs->GetOffset() == rhs->GetOffset() &&
-                lhs->GetLen() < rhs->GetLen());
-      }
+    bool operator() (
+            const std::shared_ptr<Fragment> &lhs,
+            const std::shared_ptr<Fragment> &rhs) const {
+      return lhs->GetOffset() < rhs->GetOffset() ||
+          (lhs->GetOffset() == rhs->GetOffset() &&
+              lhs->GetLen() < rhs->GetLen());
+    }
   };
 
  public:
