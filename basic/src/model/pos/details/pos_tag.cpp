@@ -76,7 +76,7 @@ const std::wstring& PosTag::Str(PosTag::Type::Val posTag) {
   static const std::wstring kQ = L"q";
   static const std::wstring kR = L"r";
   static const std::wstring kV = L"v";
-  static const std::wstring kVn = L"vn";
+  static const std::wstring kVn = L"nv";
   static const std::wstring kA = L"a";
   static const std::wstring kZ = L"z";
   static const std::wstring kB = L"b";
