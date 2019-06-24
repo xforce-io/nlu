@@ -57,5 +57,5 @@ add_executable(testMatcher
 
 add_executable(testRecall
   ${LOCAL_CPP_FILES}
-  ${CMAKE_SOURCE_DIR}/src/model/test_recall.cpp
+  ${CMAKE_SOURCE_DIR}/src/test_recall.cpp
 )
