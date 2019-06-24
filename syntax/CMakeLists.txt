@@ -29,7 +29,7 @@ set(LIB_DEPS
 )
 
 add_library(syntax
-  ${SEG_FILES})
+  ${SEG_FILES} test/src/test_recall.cpp)
 
 target_link_libraries(syntax
   ${LIB_DEPS}
