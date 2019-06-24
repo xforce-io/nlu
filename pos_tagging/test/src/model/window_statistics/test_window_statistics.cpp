@@ -52,10 +52,10 @@ TEST(test_case, bugfix) {
   ASSERT_TRUE(Basic::Init((*conf)["basic"]));
   ASSERT_TRUE(Segmentor::Init((*conf)["segmentor"], (*conf)["ner"]));
 
-  WindowStatistics *windowStatistics = WindowStatistics::Create("../../data/labeled_data");
+  WindowStatistics *windowStatistics = WindowStatistics::Create("../data/labeled_data");
   ASSERT_TRUE(windowStatistics != nullptr);
 
-  auto result = windowStatistics->GetDominator(L"第一", L"局");
+  auto result = windowStatistics->GetDominator(L"无谓", L"的", L"失误");
   ASSERT_TRUE(result.second != nullptr);
 
   std::stringstream ss;

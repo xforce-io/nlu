@@ -13,6 +13,20 @@ class Chunk : public Fragment {
   typedef FragmentSet<Chunk> Set;
 
  public:
+  struct Compare {
+    bool operator() (
+            const std::shared_ptr<Chunk> &lhs,
+            const std::shared_ptr<Chunk> &rhs) const {
+      return lhs->GetOffset() < rhs->GetOffset() ||
+             (lhs->GetOffset() == rhs->GetOffset() &&
+              lhs->GetLen() < rhs->GetLen()) ||
+             (lhs->GetOffset() == rhs->GetOffset() &&
+              lhs->GetLen() == rhs->GetLen() &&
+              lhs->GetSyntaxTag() < rhs->GetSyntaxTag());
+    }
+  };
+
+ public:
   inline Chunk();
   inline Chunk(SyntaxTag::Type syntaxTag, size_t offset, size_t len);
   inline Chunk(const Chunk &other);
