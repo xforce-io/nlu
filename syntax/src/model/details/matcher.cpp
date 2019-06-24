@@ -30,8 +30,8 @@ bool Matcher::Init() {
 }
 
 void Matcher::Match(std::shared_ptr<basic::NluContext> nluContext) {
-  while (Process_(nluContext))
-    ;
+  while (Process_(nluContext)) {
+  }
 }
 
 Matcher::~Matcher() {
