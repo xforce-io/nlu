@@ -16,6 +16,11 @@ class Segmentor {
       OUT basic::FragmentSet<basic::NameEntity> &nameEntities);
 
   static void Tini();
+
+ private:
+  static void PostProcess_(
+          IN const std::wstring &query,
+          basic::FragmentSet<basic::Segment> &segments);
 };
 
 }}}
