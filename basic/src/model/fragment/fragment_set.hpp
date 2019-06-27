@@ -29,6 +29,9 @@ class FragmentSet {
 
   inline const Container GetAll() const;
   inline const typename FragmentSet<FragmentType>::Container::iterator Erase(const typename Container::iterator iter);
+  inline const typename FragmentSet<FragmentType>::Container::iterator Erase(
+          const typename Container::iterator from,
+          const typename Container::iterator to);
   inline typename Container::iterator Begin();
   inline typename Container::iterator End();
   inline size_t Size() const;
@@ -91,6 +94,13 @@ const typename FragmentSet<FragmentType>::Container FragmentSet<FragmentType>::G
 template <typename FragmentType>
 const typename FragmentSet<FragmentType>::Container::iterator FragmentSet<FragmentType>::Erase(const typename Container::iterator iter) {
   return fragments_.erase(iter);
+}
+
+template <typename FragmentType>
+const typename FragmentSet<FragmentType>::Container::iterator FragmentSet<FragmentType>::Erase(
+        const typename Container::iterator from,
+        const typename Container::iterator to) {
+  return fragments_.erase(from, to);
 }
 
 template <typename FragmentType>
