@@ -28,7 +28,7 @@ class FragmentSet {
   Self& operator=(const FragmentSet<FragmentType> &other);
 
   inline const Container GetAll() const;
-  inline void Erase(const typename Container::iterator iter);
+  inline const typename FragmentSet<FragmentType>::Container::iterator Erase(const typename Container::iterator iter);
   inline typename Container::iterator Begin();
   inline typename Container::iterator End();
   inline size_t Size() const;
@@ -89,8 +89,8 @@ const typename FragmentSet<FragmentType>::Container FragmentSet<FragmentType>::G
 }
 
 template <typename FragmentType>
-void FragmentSet<FragmentType>::Erase(const typename Container::iterator iter) {
-  fragments_.erase(iter);
+const typename FragmentSet<FragmentType>::Container::iterator FragmentSet<FragmentType>::Erase(const typename Container::iterator iter) {
+  return fragments_.erase(iter);
 }
 
 template <typename FragmentType>
