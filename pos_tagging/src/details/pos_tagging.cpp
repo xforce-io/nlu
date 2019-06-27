@@ -89,8 +89,12 @@ void PosTagging::PostProcess_(basic::NluContext &nluContext) {
                 (*cur)->GetOffset(),
                 (*cur)->GetLen() + (*next)->GetLen());
         nluContext.GetSegments().Erase(cur);
-        nluContext.GetSegments().Erase(next);
+        cur = nluContext.GetSegments().Erase(next);
         nluContext.GetSegments().Add(newSegment);
+        if (cur == segs.end()) {
+          return;
+        }
+        continue;
       }
     }
     cur = next;
