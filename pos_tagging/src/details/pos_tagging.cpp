@@ -65,40 +65,46 @@ void PosTagging::Tagging(std::shared_ptr<basic::NluContext> nluContext) {
 void PosTagging::Tini() {}
 
 void PosTagging::PostProcess_(basic::NluContext &nluContext) {
-  auto &segs = nluContext.GetSegments().GetAll();
-  auto cur = segs.begin();
-  if (cur == segs.end()) {
-    return;
-  }
-
   while (true) {
-    auto next = cur;
-    ++next;
-    if (next == segs.end()) {
+    bool touched = false;
+
+    auto &segs = nluContext.GetSegments().GetAll();
+    auto cur = segs.begin();
+    if (cur == segs.end()) {
       return;
     }
 
-    if ((*cur)->GetPosTag() == basic::PosTag::Type::kV &&
-        (*next)->GetPosTag() == basic::PosTag::Type::kV) {
-      bool ret = basic::Manager::Get().GetGkb().IsPhrase(
-              (*cur)->GetStrFromSentence(nluContext.GetQuery()),
-              (*next)->GetStrFromSentence(nluContext.GetQuery()));
-      if (ret) {
-        basic::Segment newSegment(
-                basic::PosTag::Type::kV,
-                (*cur)->GetOffset(),
-                (*cur)->GetLen() + (*next)->GetLen());
-        auto afterNext = next;
-        ++afterNext;
-        cur = nluContext.GetSegments().Erase(cur, afterNext);
-        nluContext.GetSegments().Add(newSegment);
-        if (cur == segs.end()) {
-          return;
-        }
-        continue;
+    while (true) {
+      auto next = cur;
+      ++next;
+      if (next == segs.end()) {
+        return;
       }
+
+      if ((*cur)->GetPosTag() == basic::PosTag::Type::kV &&
+          (*next)->GetPosTag() == basic::PosTag::Type::kV) {
+        bool ret = basic::Manager::Get().GetGkb().IsPhrase(
+                (*cur)->GetStrFromSentence(nluContext.GetQuery()),
+                (*next)->GetStrFromSentence(nluContext.GetQuery()));
+        if (ret) {
+          basic::Segment newSegment(
+                  basic::PosTag::Type::kV,
+                  (*cur)->GetOffset(),
+                  (*cur)->GetLen() + (*next)->GetLen());
+          auto afterNext = next;
+          ++afterNext;
+          nluContext.GetSegments().Erase(cur, afterNext);
+          nluContext.GetSegments().Add(newSegment);
+          touched = true;
+          break;
+        }
+      }
+      cur = next;
     }
-    cur = next;
+
+    if (!touched) {
+      return;
+    }
   }
 }
 
