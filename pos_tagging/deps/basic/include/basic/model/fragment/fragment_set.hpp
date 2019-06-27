@@ -108,8 +108,10 @@ template <typename FragmentType>
 void FragmentSet<FragmentType>::Dump(JsonType &jsonType) {
   jsonType["text"] = *StrHelper::Wstr2Str(*text_);
   size_t i=0;
-  for (auto &fragment : fragments_) {
-    fragment->Dump(jsonType[fragment->GetCategory().c_str()][i]);
+  auto iter = fragments_.begin();
+  while (iter != fragments_.end()) {
+    (*iter)->Dump(jsonType[(*iter)->GetCategory().c_str()][i]);
+    ++iter;
     ++i;
   }
 }
