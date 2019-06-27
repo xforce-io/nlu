@@ -38,48 +38,12 @@ void Segmentor::Parse(
   Graph *graph = new Graph(query);
   graph->Process(segments, nameEntities);
   XFC_DELETE(graph)
-  Segmentor::PostProcess_(query, segments);
 }
 
 void Segmentor::Tini() {
   ManagerTriggers::Tini();  
   Manager::Tini();  
   Conf::Tini();
-}
-
-void Segmentor::PostProcess_(
-        const std::wstring &query,
-        basic::FragmentSet<basic::Segment> &segments) {
-  auto &segs = segments.GetAll();
-  auto cur = segs.begin();
-  if (cur == segs.end()) {
-    return;
-  }
-
-  while (true) {
-    auto next = cur;
-    ++next;
-    if (next == segs.end()) {
-      return;
-    }
-
-    if ((*cur)->GetPosTag() == basic::PosTag::Type::kV &&
-        (*next)->GetPosTag() == basic::PosTag::Type::kV) {
-      bool ret = basic::Manager::Get().GetGkb().IsPhrase(
-              (*cur)->GetStrFromSentence(query),
-              (*next)->GetStrFromSentence(query));
-      if (ret) {
-        basic::Segment newSegment(
-                basic::PosTag::Type::kV,
-                (*cur)->GetOffset(),
-                (*cur)->GetLen() + (*next)->GetLen());
-        segments.Erase(cur);
-        segments.Erase(next);
-        segments.Add(newSegment);
-      }
-    }
-    cur = next;
-  }
 }
 
 }}}

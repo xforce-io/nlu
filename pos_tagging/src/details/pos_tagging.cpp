@@ -39,6 +39,7 @@ void PosTagging::Process(basic::NluContext &nluContext) {
   for (auto &strategy : strategies_) {
     strategy->Process(nluContext);
   }
+  PostProcess_(nluContext);
 }
 
 bool PosTagging::Init(const xforce::JsonType &confPos) {
@@ -62,5 +63,38 @@ void PosTagging::Tagging(std::shared_ptr<basic::NluContext> nluContext) {
 }
 
 void PosTagging::Tini() {}
+
+void PosTagging::PostProcess_(basic::NluContext &nluContext) {
+  auto &segs = nluContext.GetSegments().GetAll();
+  auto cur = segs.begin();
+  if (cur == segs.end()) {
+    return;
+  }
+
+  while (true) {
+    auto next = cur;
+    ++next;
+    if (next == segs.end()) {
+      return;
+    }
+
+    if ((*cur)->GetPosTag() == basic::PosTag::Type::kV &&
+        (*next)->GetPosTag() == basic::PosTag::Type::kV) {
+      bool ret = basic::Manager::Get().GetGkb().IsPhrase(
+              (*cur)->GetStrFromSentence(nluContext.GetQuery()),
+              (*next)->GetStrFromSentence(nluContext.GetQuery()));
+      if (ret) {
+        basic::Segment newSegment(
+                basic::PosTag::Type::kV,
+                (*cur)->GetOffset(),
+                (*cur)->GetLen() + (*next)->GetLen());
+        nluContext.GetSegments().Erase(cur);
+        nluContext.GetSegments().Erase(next);
+        nluContext.GetSegments().Add(newSegment);
+      }
+    }
+    cur = next;
+  }
+}
 
 }}}
