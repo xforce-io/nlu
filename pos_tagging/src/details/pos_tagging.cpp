@@ -65,13 +65,13 @@ void PosTagging::Tagging(std::shared_ptr<basic::NluContext> nluContext) {
 void PosTagging::Tini() {}
 
 void PosTagging::PostProcess_(basic::NluContext &nluContext) {
-  auto &segs = nluContext.GetSegments().GetAll();
-  auto cur = segs.begin();
-  if (cur == segs.end()) {
-    return;
-  }
-
   while (true) {
+    auto &segs = nluContext.GetSegments().GetAll();
+    auto cur = segs.begin();
+    if (cur == segs.end()) {
+      return;
+    }
+
     bool touched = false;
     while (true) {
       auto next = cur;
