@@ -5,16 +5,9 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
-class EntryAdv : public Entry {
- private:
-
+class EntryVerb : public Entry {
  public:
   int Parse(const std::vector<std::wstring> &items);
-
-  bool beforeSbv() const { return beforeSbv_; }
-
- private:
-  bool beforeSbv_;
 };
 
 }}}

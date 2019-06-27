@@ -24,7 +24,7 @@ FILE(GLOB_RECURSE BASIC_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -DUNICODE=1")
 
 add_library(basic
-  ${BASIC_FILES} src/model/details/chunk_sep.cpp)
+  ${BASIC_FILES} src/model/details/chunk_sep.cpp src/data/gkb/table/gkb_verb.h src/data/gkb/entry/entry_verb.h src/data/gkb/entry/details/entry_verb.cpp src/data/gkb/entry/entry_verb_dongqu.h src/data/gkb/entry/details/entry.cpp src/data/gkb/entry/details/entry_verb_dongqu.cpp src/data/gkb/table/gkb_verb_dongqu.h src/data/gkb/table/details/gkb_verb_dongqu.cpp src/data/gkb/table/details/gkb_verb.cpp)
 
 target_link_libraries(basic
   log4cplus

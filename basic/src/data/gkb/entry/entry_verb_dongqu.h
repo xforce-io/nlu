@@ -5,16 +5,13 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
-class EntryAdv : public Entry {
- private:
-
+class EntryVerbDongqu : public Entry {
  public:
   int Parse(const std::vector<std::wstring> &items);
-
-  bool beforeSbv() const { return beforeSbv_; }
+  bool ConnWord(const std::wstring &word) const;
 
  private:
-  bool beforeSbv_;
+    std::unordered_set<std::wstring> connWords_;
 };
 
 }}}

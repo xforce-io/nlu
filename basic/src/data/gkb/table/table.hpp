@@ -11,8 +11,13 @@ class Table {
   Table() {}
   virtual ~Table();
 
-  bool Init(const std::string &filepath);
+  virtual bool Init(
+          const std::string &dir,
+          const std::string &filepath);
   inline const std::vector<EntryType*>* GetEntries(const std::wstring &word) const;
+  virtual bool IsPhrase(
+          const std::wstring &word0,
+          const std::wstring &word1) const { return false; }
 
  private:
   void PutIntoInverted_(EntryType &entry);
@@ -30,7 +35,9 @@ Table<EntryType>::~Table() {
 }
 
 template <class EntryType>
-bool Table<EntryType>::Init(const std::string &filepath) {
+bool Table<EntryType>::Init(
+        const std::string &dir,
+        const std::string &filepath) {
   std::vector<std::string> lines;
   bool ret = IOHelper::ReadLinesFromFilepath(filepath, lines);
   if (!ret) {
