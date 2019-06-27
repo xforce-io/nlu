@@ -37,22 +37,22 @@ TEST(testAll, all) {
   ASSERT_TRUE(Syntax::Init((*conf)["syntax"]));
 
   std::wstring wStrQuery[] = {
-          L"我们自己有太多无谓的失误";
+          L"我们自己有太多无谓的失误",
   };
 
-  for (auto & query : wStrQuery) {
-  auto nluContext = std::make_shared<NluContext>(wStrQuery);
-  Segmentor::Parse(wStrQuery, nluContext->GetSegments(), nluContext->GetNameEntities());
-  PosTagging::Tagging(nluContext);
-  Chunker::Parse(nluContext);
+  for (auto &query : wStrQuery) {
+    auto nluContext = std::make_shared<NluContext>(query);
+    Segmentor::Parse(query, nluContext->GetSegments(), nluContext->GetNameEntities());
+    PosTagging::Tagging(nluContext);
+    Chunker::Parse(nluContext);
+    Syntax::Parse(nluContext);
 
-  bool touch = false;
-  for (auto &chunk : nluContext->GetChunks().GetAll()) {
-    if (chunk.GetSyntaxTag == basic::SyntaxTag::kStc) {
-      touch = true;
+    bool touch = false;
+    for (auto &chunk : nluContext->GetChunks().GetAll()) {
+      if (chunk->GetSyntaxTag() == SyntaxTag::kStc) {
+        touch = true;
+      }
     }
+    assert(touch);
   }
-
-  assert(touch);
-
 }
