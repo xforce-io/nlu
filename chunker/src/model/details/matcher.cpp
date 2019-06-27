@@ -126,10 +126,10 @@ void Matcher::ParseAccordingToRule_(std::shared_ptr<basic::NluContext> nluContex
                 syntaxTag,
                 storageItem.GetOffset(),
                 storageItem.GetContent().length());
+        nluContext->GetChunks().Add(chunk);
         nluContext->GetChunkSeps().Add(basic::ChunkSep(storageItem.GetOffset()));
         nluContext->GetChunkSeps().Add(basic::ChunkSep(
                 storageItem.GetOffset() + storageItem.GetContent().length()));
-        nluContext->GetChunks().Add(chunk);
       }
     } else {
       FATAL("invalid_chunk_parse_prefix[" << vals[0] << "]");
@@ -161,6 +161,7 @@ void Matcher::MergeFromDict_(std::shared_ptr<basic::NluContext> nluContext) {
                 basic::SyntaxTag::kVp,
                 (*cur)->GetOffset(),
                 (*cur)->GetLen() + (*next)->GetLen());
+        nluContext->GetChunks().Add(chunk);
         nluContext->GetChunkSeps().Add(basic::ChunkSep((*cur)->GetOffset()));
         nluContext->GetChunkSeps().Add(basic::ChunkSep((*next)->GetOffset() + (*next)->GetLen()));
       }
