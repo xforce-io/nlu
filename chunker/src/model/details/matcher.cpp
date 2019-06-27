@@ -1,5 +1,7 @@
 #include "../matcher.h"
 #include "../../conf/conf.h"
+#include "basic/data/manager.h"
+#include "basic/data/gkb/gkb.h"
 
 namespace xforce { namespace nlu { namespace chunker {
 
