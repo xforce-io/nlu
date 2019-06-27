@@ -72,32 +72,37 @@ void PosTagging::PostProcess_(basic::NluContext &nluContext) {
   }
 
   while (true) {
-    auto next = cur;
-    ++next;
-    if (next == segs.end()) {
-      return;
+    bool touched = false;
+    while (true) {
+      auto next = cur;
+      ++next;
+      if (next == segs.end()) {
+        return;
+      }
+
+      if ((*cur)->GetPosTag() == basic::PosTag::Type::kV &&
+          (*next)->GetPosTag() == basic::PosTag::Type::kV) {
+        bool ret = basic::Manager::Get().GetGkb().IsPhrase(
+                (*cur)->GetStrFromSentence(nluContext.GetQuery()),
+                (*next)->GetStrFromSentence(nluContext.GetQuery()));
+        if (ret) {
+          basic::Segment newSegment(
+                  basic::PosTag::Type::kV,
+                  (*cur)->GetOffset(),
+                  (*cur)->GetLen() + (*next)->GetLen());
+          nluContext.GetSegments().Erase(cur);
+          nluContext.GetSegments().Erase(next);
+          nluContext.GetSegments().Add(newSegment);
+          touched = true;
+          break;
+        }
+      }
+      cur = next;
     }
 
-    if ((*cur)->GetPosTag() == basic::PosTag::Type::kV &&
-        (*next)->GetPosTag() == basic::PosTag::Type::kV) {
-      bool ret = basic::Manager::Get().GetGkb().IsPhrase(
-              (*cur)->GetStrFromSentence(nluContext.GetQuery()),
-              (*next)->GetStrFromSentence(nluContext.GetQuery()));
-      if (ret) {
-        basic::Segment newSegment(
-                basic::PosTag::Type::kV,
-                (*cur)->GetOffset(),
-                (*cur)->GetLen() + (*next)->GetLen());
-        nluContext.GetSegments().Erase(cur);
-        cur = nluContext.GetSegments().Erase(next);
-        nluContext.GetSegments().Add(newSegment);
-        if (cur == segs.end()) {
-          return;
-        }
-        continue;
-      }
+    if (!touched) {
+      return;
     }
-    cur = next;
   }
 }
 
