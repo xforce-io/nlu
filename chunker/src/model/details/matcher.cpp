@@ -29,6 +29,7 @@ void Matcher::Match(std::shared_ptr<basic::NluContext> nluContext) {
 
   ParseCommon_(*nluContext);
   ParseAccordingToRule_(nluContext);
+  MergeFromDict_(nluContext);
 }
 
 void Matcher::ParseCommon_(basic::NluContext &nluContext) {
@@ -133,6 +134,39 @@ void Matcher::ParseAccordingToRule_(std::shared_ptr<basic::NluContext> nluContex
     }
   }
 }
+
+void Matcher::MergeFromDict_(std::shared_ptr<basic::NluContext> nluContext) {
+  auto &segments = nluContext->GetSegments().GetAll();
+  auto cur = segments.begin();
+  if (cur == segments.end()) {
+    return;
+  }
+
+  while (true) {
+    auto next = cur;
+    ++next;
+    if (next == segments.end()) {
+      return;
+    }
+
+    if ((*cur)->GetPosTag() == basic::PosTag::Type::kV &&
+        (*next)->GetPosTag() == basic::PosTag::Type::kV) {
+      bool ret = basic::Manager::Get().GetGkb().IsPhrase(
+              (*cur)->GetStrFromSentence(nluContext->GetQuery()),
+              (*next)->GetStrFromSentence(nluContext->GetQuery()));
+      if (ret) {
+        basic::Chunk chunk(
+                basic::SyntaxTag::kVp,
+                (*cur)->GetOffset(),
+                (*cur)->GetLen() + (*next)->GetLen());
+        nluContext->GetChunkSeps().Add(basic::ChunkSep((*cur)->GetOffset()));
+        nluContext->GetChunkSeps().Add(basic::ChunkSep((*next)->GetOffset() + (*next)->GetLen()));
+      }
+    }
+    cur = next;
+  }
+}
+
 
 Matcher::~Matcher() {
   XFC_DELETE(milkie_)

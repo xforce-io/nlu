@@ -20,7 +20,7 @@ class Matcher {
  private:
   void ParseCommon_(basic::NluContext &nluContext);
   void ParseAccordingToRule_(std::shared_ptr<basic::NluContext> nluContext);
-  void ParsePhraseFromDict_(std::shared_ptr<basic::NluContext> nluContext);
+  void MergeFromDict_(std::shared_ptr<basic::NluContext> nluContext);
 
  private:
   milkie::Milkie *milkie_;
