@@ -27,7 +27,7 @@ class FragmentSet {
 
   Self& operator=(const FragmentSet<FragmentType> &other);
 
-  inline const Container GetAll() const;
+  inline const Container& GetAll() const;
   inline const typename FragmentSet<FragmentType>::Container::iterator Erase(const typename Container::iterator iter);
   inline const typename FragmentSet<FragmentType>::Container::iterator Erase(
           const typename Container::iterator from,
@@ -87,7 +87,7 @@ FragmentSet<FragmentType>& FragmentSet<FragmentType>::operator=(const FragmentSe
 }
 
 template <typename FragmentType>
-const typename FragmentSet<FragmentType>::Container FragmentSet<FragmentType>::GetAll() const {
+const typename FragmentSet<FragmentType>::Container& FragmentSet<FragmentType>::GetAll() const {
   return fragments_;
 }
 
