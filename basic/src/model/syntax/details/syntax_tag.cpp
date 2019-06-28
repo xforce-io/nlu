@@ -2,51 +2,51 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
-SyntaxTag::Type SyntaxTag::GetSyntaxTag(const std::wstring &syntaxTag) {
+SyntaxTag::Type::Type::Val SyntaxTag::Type::GetSyntaxTag(const std::wstring &syntaxTag) {
   if (L"adjp" == syntaxTag) {
-    return SyntaxTag::kAdjp;
+    return SyntaxTag::Type::Type::kAdjp;
   } else if (L"advp" == syntaxTag) {
-    return SyntaxTag::kAdvp;
+    return SyntaxTag::Type::Type::kAdvp;
   } else if (L"clp" == syntaxTag) {
-    return SyntaxTag::kClp;
+    return SyntaxTag::Type::Type::kClp;
   } else if (L"cp" == syntaxTag) {
-    return SyntaxTag::kCp;
+    return SyntaxTag::Type::Type::kCp;
   } else if (L"dnp" == syntaxTag) {
-    return SyntaxTag::kDnp;
+    return SyntaxTag::Type::Type::kDnp;
   } else if (L"dp" == syntaxTag) {
-    return SyntaxTag::kDp;
+    return SyntaxTag::Type::Type::kDp;
   } else if (L"dvp" == syntaxTag) {
-    return SyntaxTag::kDvp;
+    return SyntaxTag::Type::Type::kDvp;
   } else if (L"frag" == syntaxTag) {
-    return SyntaxTag::kFrag;
+    return SyntaxTag::Type::Type::kFrag;
   } else if (L"ip" == syntaxTag) {
-    return SyntaxTag::kIp;
+    return SyntaxTag::Type::Type::kIp;
   } else if (L"lcp" == syntaxTag) {
-    return SyntaxTag::kLcp;
+    return SyntaxTag::Type::Type::kLcp;
   } else if (L"lst" == syntaxTag) {
-    return SyntaxTag::kLst;
+    return SyntaxTag::Type::Type::kLst;
   } else if (L"np" == syntaxTag) {
-    return SyntaxTag::kNp;
+    return SyntaxTag::Type::Type::kNp;
   } else if (L"pp" == syntaxTag) {
-    return SyntaxTag::kPp;
+    return SyntaxTag::Type::Type::kPp;
   } else if (L"prn" == syntaxTag) {
-    return SyntaxTag::kPrn;
+    return SyntaxTag::Type::Type::kPrn;
   } else if (L"qp" == syntaxTag) {
-    return SyntaxTag::kQp;
+    return SyntaxTag::Type::Type::kQp;
   } else if (L"ucp" == syntaxTag) {
-    return SyntaxTag::kUcp;
+    return SyntaxTag::Type::Type::kUcp;
   } else if (L"vp" == syntaxTag) {
-    return SyntaxTag::kVp;
+    return SyntaxTag::Type::Type::kVp;
   } else if (L"_stc_" == syntaxTag) {
-    return SyntaxTag::kStc;
+    return SyntaxTag::Type::Type::kStc;
   } else if (L"_cont_np_" == syntaxTag) {
-    return SyntaxTag::kContNp;
+    return SyntaxTag::Type::Type::kContNp;
   } else {
-    return SyntaxTag::kUndef;
+    return SyntaxTag::Type::Type::kUndef;
   }
 }
 
-const std::wstring& SyntaxTag::Str(SyntaxTag::Type type) {
+const std::wstring& SyntaxTag::Type::Str(SyntaxTag::Type::Type::Val syntaxTag) {
   static const std::wstring kAdjp = L"adjp";
   static const std::wstring kAdvp = L"advp";
   static const std::wstring kClp = L"clp";
@@ -67,44 +67,44 @@ const std::wstring& SyntaxTag::Str(SyntaxTag::Type type) {
   static const std::wstring kStc = L"_stc_";
   static const std::wstring kContNp = L"_cont_np_";
   static const std::wstring kUndef = L"undef";
-  switch (type) {
-    case SyntaxTag::kAdjp :
+  switch (syntaxTag) {
+    case SyntaxTag::Type::kAdjp :
       return kAdjp;
-    case SyntaxTag::kAdvp :
+    case SyntaxTag::Type::kAdvp :
       return kAdvp;
-    case SyntaxTag::kClp :
+    case SyntaxTag::Type::kClp :
       return kClp;
-    case SyntaxTag::kCp :
+    case SyntaxTag::Type::kCp :
       return kCp;
-    case SyntaxTag::kDnp :
+    case SyntaxTag::Type::kDnp :
       return kDnp;
-    case SyntaxTag::kDp :
+    case SyntaxTag::Type::kDp :
       return kDp;
-    case SyntaxTag::kDvp :
+    case SyntaxTag::Type::kDvp :
       return kDvp;
-    case SyntaxTag::kFrag :
+    case SyntaxTag::Type::kFrag :
       return kFrag;
-    case SyntaxTag::kIp :
+    case SyntaxTag::Type::kIp :
       return kIp;
-    case SyntaxTag::kLcp :
+    case SyntaxTag::Type::kLcp :
       return kLcp;
-    case SyntaxTag::kLst :
+    case SyntaxTag::Type::kLst :
       return kLst;
-    case SyntaxTag::kNp :
+    case SyntaxTag::Type::kNp :
       return kNp;
-    case SyntaxTag::kPp :
+    case SyntaxTag::Type::kPp :
       return kPp;
-    case SyntaxTag::kPrn :
+    case SyntaxTag::Type::kPrn :
       return kPrn;
-    case SyntaxTag::kQp :
+    case SyntaxTag::Type::kQp :
       return kQp;
-    case SyntaxTag::kUcp :
+    case SyntaxTag::Type::kUcp :
       return kUcp;
-    case SyntaxTag::kVp :
+    case SyntaxTag::Type::kVp :
       return kVp;
-    case SyntaxTag::kStc :
+    case SyntaxTag::Type::kStc :
       return kStc;
-    case SyntaxTag::kContNp :
+    case SyntaxTag::Type::kContNp :
       return kContNp;
     default:
       return kUndef;
