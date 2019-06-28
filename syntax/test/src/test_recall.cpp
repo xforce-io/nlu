@@ -38,6 +38,7 @@ TEST(testAll, all) {
 
   std::wstring wStrQuery[] = {
           L"我们自己有太多无谓的失误",
+          L"自己的节奏还没有踩上"
   };
 
   for (auto &query : wStrQuery) {

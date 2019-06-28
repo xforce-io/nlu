@@ -20,6 +20,9 @@ class PosTagging {
   static void Tini();
 
  private:
+  void PostProcess_(basic::NluContext &nluContext);
+
+ private:
   std::vector<Strategy*> strategies_;
 
   static PosTagging posTagging_;
