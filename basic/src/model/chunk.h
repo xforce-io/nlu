@@ -19,11 +19,9 @@ class Chunk : public FragmentMultitag<SyntaxTag::Type::Val> {
   inline Chunk(const Chunk &other);
   virtual ~Chunk() {}
 
-  bool Merge(const Fragment &other);
+  virtual const std::string& GetCategory() const;
 
-  const std::string& GetCategory() const;
-
-  void Dump(JsonType &jsonType);
+  virtual void Dump(JsonType &jsonType);
 };
 
 Chunk::Chunk() :
@@ -33,6 +31,6 @@ Chunk::Chunk(SyntaxTag::Type::Val syntaxTag, size_t offset, size_t len) :
     Super(syntaxTag, offset, len) {}
 
 Chunk::Chunk(const Chunk &other) :
-    Super(other) {}
+    Super(SCAST<const Super&>(other)) {}
 
 }}}

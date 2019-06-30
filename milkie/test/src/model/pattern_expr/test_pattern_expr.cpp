@@ -56,8 +56,8 @@ void testcase1() {
   ASSERT_TRUE(ret.first != nullptr);
 
   auto query = L"不好";
-  auto context = std::make_shared<Context>(query);
   FragmentSet<Segment> segments(query);
+  auto context = std::make_shared<Context>(query);
   segments.Add(Segment(PosTag::Type::kD, 0, 1));
   segments.Add(Segment(PosTag::Type::kA, 1, 1));
   context->GetSentence().GetNluContext()->SetSegments(segments);
@@ -119,9 +119,13 @@ void testcase2() {
 }
 
 void testcaseWildcard() {
+  std::cout << "A" << std::endl;
+
   std::wstring expr = Helper::PreprocessExprLine(L"{ {$ContinousN -> noun} $*Wield #Pos(dP-aP-) { #Pos(yP-) -> yPhrase *} -> target }");
   auto ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, expr);
   ASSERT_TRUE(ret.first != nullptr);
+
+  std::cout << "A.1" << std::endl;
 
   std::wstring query = L"苹果橘子真的真的不好吃吧";
   auto context = std::make_shared<Context>(query);
@@ -134,11 +138,15 @@ void testcaseWildcard() {
   segments.Add(Segment(PosTag::Type::kA, 9, 2));
   segments.Add(Segment(PosTag::Type::kY,11, 1));
   context->GetSentence().GetNluContext()->SetSegments(segments);
+  std::cout << "A.2" << std::endl;
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
+  std::cout << "A.3" << std::endl;
   ASSERT_TRUE(*(context->GetCurStorageAsStr(L"Wield")) == L"真的真的");
   ASSERT_TRUE(*(context->GetCurStorageAsStr(L"target")) == query);
   ASSERT_TRUE(*(context->GetCurStorageAsStr(L"noun")) == L"苹果橘子");
   ASSERT_TRUE(*(context->GetCurStorageAsStr(L"yPhrase")) == L"吧");
+
+  std::cout << "B" << std::endl;
 
   expr = Helper::PreprocessExprLine(L"{ {$ContinousN -> noun} $*Wield #Pos(v) #Pos(yP-) }");
   ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, expr);
@@ -159,6 +167,8 @@ void testcaseWildcard() {
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
   ASSERT_TRUE(*(context->GetCurStorageAsStr(L"Wield")) == L"真的真的不好吃");
 
+  std::cout << "C" << std::endl;
+
   expr = Helper::PreprocessExprLine(L"{ {$ContinousN -> noun} $*Wield }");
   ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, expr);
   ASSERT_TRUE(ret.first != nullptr);
@@ -175,6 +185,8 @@ void testcaseWildcard() {
   context->GetSentence().GetNluContext()->SetSegments(segments);
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
   ASSERT_TRUE(*(context->GetCurStorageAsStr(L"Wield")) == L"真的真的不好吃");
+
+  std::cout << "D" << std::endl;
 }
 
 void testcaseMultimatch() {

@@ -28,10 +28,14 @@ class FragmentSet {
   Self& operator=(const FragmentSet<FragmentType> &other);
 
   inline const Container& GetAll() const;
-  inline const typename FragmentSet<FragmentType>::Container::iterator Erase(const typename Container::iterator iter);
+
+  inline const typename FragmentSet<FragmentType>::Container::iterator Erase(
+          const typename Container::iterator iter);
+
   inline const typename FragmentSet<FragmentType>::Container::iterator Erase(
           const typename Container::iterator from,
           const typename Container::iterator to);
+
   inline typename Container::iterator Begin();
   inline typename Container::iterator End();
   inline size_t Size() const;
@@ -63,6 +67,10 @@ void FragmentSet<FragmentType>::Reset(const std::wstring &text) {
 template <typename FragmentType>
 bool FragmentSet<FragmentType>::Add(std::shared_ptr<FragmentType> fragment) {
   if (fragment->GetOffset() < text_->length()) {
+    auto iter = fragments_.find(fragment);
+    if (iter != fragments_.end()) {
+    } else {
+    }
     return fragments_.insert(fragment).second;
   }
   return false;
@@ -92,7 +100,8 @@ const typename FragmentSet<FragmentType>::Container& FragmentSet<FragmentType>::
 }
 
 template <typename FragmentType>
-const typename FragmentSet<FragmentType>::Container::iterator FragmentSet<FragmentType>::Erase(const typename Container::iterator iter) {
+const typename FragmentSet<FragmentType>::Container::iterator FragmentSet<FragmentType>::Erase(
+        const typename Container::iterator iter) {
   return fragments_.erase(iter);
 }
 
@@ -124,10 +133,8 @@ template <typename FragmentType>
 void FragmentSet<FragmentType>::Dump(JsonType &jsonType) {
   jsonType["text"] = *StrHelper::Wstr2Str(*text_);
   size_t i=0;
-  auto iter = fragments_.begin();
-  while (iter != fragments_.end()) {
-    (*iter)->Dump(jsonType[(*iter)->GetCategory().c_str()][i]);
-    ++iter;
+  for (auto &fragment : fragments_) {
+    fragment->Dump(jsonType[fragment->GetCategory().c_str()][i]);
     ++i;
   }
 }

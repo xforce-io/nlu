@@ -112,7 +112,7 @@ void Matcher::ParseAccordingToRule_(std::shared_ptr<basic::NluContext> nluContex
       }
 
       auto syntaxTag = basic::SyntaxTag::GetSyntaxTag(vals[1]);
-      if (basic::SyntaxTag::kUndef == syntaxTag) {
+      if (basic::SyntaxTag::Type::kUndef == syntaxTag) {
         ERROR("unknown_syntax_tag[" << syntaxTag << "]");
         continue;
       }

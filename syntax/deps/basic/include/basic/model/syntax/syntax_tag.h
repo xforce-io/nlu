@@ -7,7 +7,8 @@ namespace xforce { namespace nlu { namespace basic {
 
 class SyntaxTag {
  public:
-  enum Type {
+  struct Type {
+    enum Val {
       //pos tags
       kAd,
       kAs,
@@ -67,11 +68,12 @@ class SyntaxTag {
       kContNp,
 
       kUndef,
+    };
   };
 
  public:
-  static SyntaxTag::Type GetSyntaxTag(const std::wstring &syntaxTag);
-  static const std::wstring& Str(SyntaxTag::Type type);
+  static SyntaxTag::Type::Val GetSyntaxTag(const std::wstring &syntaxTag);
+  static const std::wstring& Str(SyntaxTag::Type::Val syntaxtTag);
 };
 
 }}}

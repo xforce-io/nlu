@@ -6,7 +6,7 @@ void StrategyComplement::Process(basic::NluContext &nluContext) {
   auto &clause = nluContext.GetQuery();
   typename basic::Segment::Set &segments = nluContext.GetSegments();
   for (auto segment : segments.GetAll()) {
-    if (segment->GetPosTags().empty()) {
+    if (segment->GetTags().empty()) {
       auto segmentStr = segment->GetStrFromSentence(clause);
       auto poses = basic::Manager::Get().GetGkb().GetGkbGlobal().GetPosTags(segmentStr);
       if (poses != nullptr && poses->size() >= 1) {

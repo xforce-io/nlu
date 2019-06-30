@@ -36,7 +36,7 @@ TEST(testAll, all) {
   ASSERT_TRUE(Chunker::Init((*conf)["chunker"]));
   ASSERT_TRUE(Syntax::Init((*conf)["syntax"]));
 
-  std::wstring wStrQuery = L"自己的节奏还没有踩上";
+  std::wstring wStrQuery = L"面对下一个对手意大利队";
   auto nluContext = std::make_shared<NluContext>(wStrQuery);
   Segmentor::Parse(wStrQuery, nluContext->GetSegments(), nluContext->GetNameEntities());
   PosTagging::Tagging(nluContext);

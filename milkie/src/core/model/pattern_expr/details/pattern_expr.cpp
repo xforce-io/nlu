@@ -130,7 +130,7 @@ bool PatternExpr::MatchForWildcard(Context &context, ssize_t itemIdx) const {
 
   auto wordposAtPos = context.GetSentence().GetFeatureSegmentAtOffset(offset);
   if (nullptr != wordposAtPos) {
-    auto fullWordpos = basic::PosTag::Str(wordposAtPos->GetPosTag());
+    auto fullWordpos = basic::PosTag::Str(wordposAtPos->GetTag());
     auto leadingWordpos = fullWordpos[0];
     if (PatternExpr::invalidLeadPosForWildcard_.find(leadingWordpos) != PatternExpr::invalidLeadPosForWildcard_.end() ||
         PatternExpr::invalidFullPosForWildcard_.find(fullWordpos) != PatternExpr::invalidFullPosForWildcard_.end()) {
@@ -308,7 +308,7 @@ bool PatternExpr::MatchPattern_(Context &context, bool singleton) const {
 
     if (!exit) {
       ++numMatches;
-      if (1 == numMatches &&
+      if (1==numMatches &&
           (CategoryPatternExpr::kZeroOrOnce == repeatPattern_ ||
           CategoryPatternExpr::kOnce == repeatPattern_)) {
         exit = true;

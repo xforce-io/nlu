@@ -41,7 +41,7 @@ Segment::Segment(size_t offset) :
     Super(offset) {}
 
 Segment::Segment(const Segment &other) :
-    Super(other) {}
+    Super(SCAST<const Super&>(other)) {}
 
 PosTag::Class::Val Segment::GetClassOfPosTags() const {
   PosTag::Class::Val result = PosTag::Class::kUndef;

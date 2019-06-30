@@ -81,8 +81,8 @@ void PosTagging::PostProcess_(basic::NluContext &nluContext) {
         return;
       }
 
-      if ((*cur)->GetPosTag() == basic::PosTag::Type::kV &&
-          (*next)->GetPosTag() == basic::PosTag::Type::kV) {
+      if ((*cur)->GetTag() == basic::PosTag::Type::kV &&
+          (*next)->GetTag() == basic::PosTag::Type::kV) {
         bool ret = basic::Manager::Get().GetGkb().IsPhrase(
                 (*cur)->GetStrFromSentence(nluContext.GetQuery()),
                 (*next)->GetStrFromSentence(nluContext.GetQuery()));

@@ -27,8 +27,8 @@ std::shared_ptr<PatternItem> PatternItem::Build(const StructPatternItem &structP
     } else if (structPatternItemCommon.GetCategory() == CategoryPatternItem::kPos) {
       return std::make_shared<PatternItemWordpos>(structPatternItemCommon.GetArgs(0));
     } else if (structPatternItemCommon.GetCategory() == CategoryPatternItem::kChunk) {
-      basic::SyntaxTag::Type syntaxTag = basic::SyntaxTag::GetSyntaxTag(structPatternItemCommon.GetArgs(0));
-      if (basic::SyntaxTag::kUndef != syntaxTag) {
+      basic::SyntaxTag::Type::Val syntaxTag = basic::SyntaxTag::GetSyntaxTag(structPatternItemCommon.GetArgs(0));
+      if (basic::SyntaxTag::Type::Val::kUndef != syntaxTag) {
         return std::make_shared<PatternItemSyntax>(syntaxTag);
       } else {
         FATAL("invalid_syntax_tag(" << structPatternItemCommon.GetArgs(0) << ")");

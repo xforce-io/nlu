@@ -71,7 +71,7 @@ TEST(testAll, multiSegMatch) {
 
   FragmentSet<Segment> segments(query);
   segments.Add(Segment(PosTag::Type::kA, 0, 2));
-  (*segments.Begin())->AddPosTag(PosTag::Type::kN);
+  (*segments.Begin())->AddTag(PosTag::Type::kN);
 
   segments.Add(Segment(PosTag::Type::kU, 2, 1));
   segments.Add(Segment(PosTag::Type::kN, 3, 3));

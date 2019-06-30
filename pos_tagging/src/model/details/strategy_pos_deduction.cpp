@@ -24,16 +24,16 @@ void StrategyPosDeduction::ProcessAdverb_(
   }
 
   auto cur = *curIter;
-  if ((cur->SizePosTags() == 1 &&
-               cur->GetPosTag() == basic::PosTag::Type::kD) ||
-      (cur->SizePosTags() > 1 &&
-          cur->ContainPosTag(basic::PosTag::Type::kD))) {
+  if ((cur->SizeTags() == 1 &&
+               cur->GetTag() == basic::PosTag::Type::kD) ||
+      (cur->SizeTags() > 1 &&
+          cur->ContainTag(basic::PosTag::Type::kD))) {
     const std::wstring &curQuery = cur->GetQuery(nluContext.GetQuery());
     if (basic::Manager::Get().GetGkb().GetGkbAdv().beforeSbv(curQuery) == 0) {
       auto afterNextIter = nextIter;
       ++afterNextIter;
       while (afterNextIter != segments.GetAll().end()) {
-        for (auto &posTag : (*afterNextIter)->GetPosTags()) {
+        for (auto &posTag : (*afterNextIter)->GetTags()) {
           if (basic::PosTag::IsPredicate(posTag)) {
             return;
           }
@@ -42,20 +42,20 @@ void StrategyPosDeduction::ProcessAdverb_(
       }
     }
 
-    if ((*curIter)->SizePosTags() == 1) {
-      if ((*nextIter)->SizePosTags() > 1) {
-        for (auto &posTag : (*nextIter)->GetPosTags()) {
+    if ((*curIter)->SizeTags() == 1) {
+      if ((*nextIter)->SizeTags() > 1) {
+        for (auto &posTag : (*nextIter)->GetTags()) {
           if (posTag != basic::PosTag::Type::kV &&
               posTag != basic::PosTag::Type::kA) {
-            (*nextIter)->RemovePosTag(posTag);
+            (*nextIter)->RemoveTag(posTag);
           }
         }
       }
     } else {
-      if ((*nextIter)->SizePosTags() == 1 &&
-          (*nextIter)->GetPosTag() != basic::PosTag::Type::kV &&
-          (*nextIter)->GetPosTag() != basic::PosTag::Type::kA) {
-        cur->RemovePosTag(basic::PosTag::Type::kD);
+      if ((*nextIter)->SizeTags() == 1 &&
+          (*nextIter)->GetTag() != basic::PosTag::Type::kV &&
+          (*nextIter)->GetTag() != basic::PosTag::Type::kA) {
+        cur->RemoveTag(basic::PosTag::Type::kD);
       }
     }
   }

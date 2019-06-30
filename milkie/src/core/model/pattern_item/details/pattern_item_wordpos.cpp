@@ -22,9 +22,9 @@ bool PatternItemWordpos::MatchPattern(Context &context) {
   size_t numMulti = 0;
   size_t sizeMulti = 1;
   for (auto &segment : featureWordposes->GetAll()) {
-    if (segment->GetPosTags().size() > 1) {
+    if (segment->GetTags().size() > 1) {
       ++numMulti;
-      sizeMulti = segment->GetPosTags().size();
+      sizeMulti = segment->GetTags().size();
     }
   }
 
@@ -33,7 +33,7 @@ bool PatternItemWordpos::MatchPattern(Context &context) {
   if (0 == numMulti) {
     std::wstringstream ss;
     for (auto &segment : featureWordposes->GetAll()) {
-      ss << basic::PosTag::Str(segment->GetPosTag()) << kSep;
+      ss << basic::PosTag::Str(segment->GetTag()) << kSep;
     }
 
     patternToMatch = ss.str();
@@ -44,13 +44,13 @@ bool PatternItemWordpos::MatchPattern(Context &context) {
     std::vector<std::wstringstream> multiSs;
     multiSs.resize(sizeMulti);
     for (auto &segment : featureWordposes->GetAll()) {
-      if (segment->GetPosTags().size() == 1) {
+      if (segment->GetTags().size() == 1) {
         for (auto &ss : multiSs) {
-          ss << basic::PosTag::Str(segment->GetPosTag()) << kSep;
+          ss << basic::PosTag::Str(segment->GetTag()) << kSep;
         }
       } else {
-        for (size_t i=0; i < segment->GetPosTags().size(); ++i) {
-          multiSs[i] << basic::PosTag::Str(segment->GetPosTags()[i]) << kSep;
+        for (size_t i=0; i < segment->GetTags().size(); ++i) {
+          multiSs[i] << basic::PosTag::Str(segment->GetTags()[i]) << kSep;
         }
       }
     }

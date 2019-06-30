@@ -2,51 +2,51 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
-SyntaxTag::Type::Type::Val SyntaxTag::Type::GetSyntaxTag(const std::wstring &syntaxTag) {
+SyntaxTag::Type::Val SyntaxTag::GetSyntaxTag(const std::wstring &syntaxTag) {
   if (L"adjp" == syntaxTag) {
-    return SyntaxTag::Type::Type::kAdjp;
+    return SyntaxTag::Type::kAdjp;
   } else if (L"advp" == syntaxTag) {
-    return SyntaxTag::Type::Type::kAdvp;
+    return SyntaxTag::Type::kAdvp;
   } else if (L"clp" == syntaxTag) {
-    return SyntaxTag::Type::Type::kClp;
+    return SyntaxTag::Type::kClp;
   } else if (L"cp" == syntaxTag) {
-    return SyntaxTag::Type::Type::kCp;
+    return SyntaxTag::Type::kCp;
   } else if (L"dnp" == syntaxTag) {
-    return SyntaxTag::Type::Type::kDnp;
+    return SyntaxTag::Type::kDnp;
   } else if (L"dp" == syntaxTag) {
-    return SyntaxTag::Type::Type::kDp;
+    return SyntaxTag::Type::kDp;
   } else if (L"dvp" == syntaxTag) {
-    return SyntaxTag::Type::Type::kDvp;
+    return SyntaxTag::Type::kDvp;
   } else if (L"frag" == syntaxTag) {
-    return SyntaxTag::Type::Type::kFrag;
+    return SyntaxTag::Type::kFrag;
   } else if (L"ip" == syntaxTag) {
-    return SyntaxTag::Type::Type::kIp;
+    return SyntaxTag::Type::kIp;
   } else if (L"lcp" == syntaxTag) {
-    return SyntaxTag::Type::Type::kLcp;
+    return SyntaxTag::Type::kLcp;
   } else if (L"lst" == syntaxTag) {
-    return SyntaxTag::Type::Type::kLst;
+    return SyntaxTag::Type::kLst;
   } else if (L"np" == syntaxTag) {
-    return SyntaxTag::Type::Type::kNp;
+    return SyntaxTag::Type::kNp;
   } else if (L"pp" == syntaxTag) {
-    return SyntaxTag::Type::Type::kPp;
+    return SyntaxTag::Type::kPp;
   } else if (L"prn" == syntaxTag) {
-    return SyntaxTag::Type::Type::kPrn;
+    return SyntaxTag::Type::kPrn;
   } else if (L"qp" == syntaxTag) {
-    return SyntaxTag::Type::Type::kQp;
+    return SyntaxTag::Type::kQp;
   } else if (L"ucp" == syntaxTag) {
-    return SyntaxTag::Type::Type::kUcp;
+    return SyntaxTag::Type::kUcp;
   } else if (L"vp" == syntaxTag) {
-    return SyntaxTag::Type::Type::kVp;
+    return SyntaxTag::Type::kVp;
   } else if (L"_stc_" == syntaxTag) {
-    return SyntaxTag::Type::Type::kStc;
+    return SyntaxTag::Type::kStc;
   } else if (L"_cont_np_" == syntaxTag) {
-    return SyntaxTag::Type::Type::kContNp;
+    return SyntaxTag::Type::kContNp;
   } else {
-    return SyntaxTag::Type::Type::kUndef;
+    return SyntaxTag::Type::kUndef;
   }
 }
 
-const std::wstring& SyntaxTag::Type::Str(SyntaxTag::Type::Type::Val syntaxTag) {
+const std::wstring& SyntaxTag::Str(SyntaxTag::Type::Val syntaxTag) {
   static const std::wstring kAdjp = L"adjp";
   static const std::wstring kAdvp = L"advp";
   static const std::wstring kClp = L"clp";

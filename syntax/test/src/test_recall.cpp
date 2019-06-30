@@ -50,7 +50,7 @@ TEST(testAll, all) {
 
     bool touch = false;
     for (auto &chunk : nluContext->GetChunks().GetAll()) {
-      if (chunk->GetSyntaxTag() == SyntaxTag::kStc) {
+      if (chunk->GetTag() == SyntaxTag::Type::kStc) {
         touch = true;
       }
     }

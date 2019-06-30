@@ -155,7 +155,7 @@ void Graph::MakeResults_(
     if (!curNode->IsBegin()) {
       basic::Segment segment = basic::Segment(curNode->GetOffset());
       if (curNode->GetPosTag() != basic::PosTag::Type::kUndef) {
-        segment.SetPosTag(curNode->GetPosTag());
+        segment.SetTag(curNode->GetPosTag());
       }
       tmpSegments.push_back(segment);
     }

@@ -101,7 +101,7 @@ bool Matcher::SyntaxProcessForChunkSep_(std::shared_ptr<basic::NluContext> nluCo
         }
 
         auto syntaxTag = basic::SyntaxTag::GetSyntaxTag(vals[1]);
-        if (basic::SyntaxTag::kUndef == syntaxTag) {
+        if (basic::SyntaxTag::Type::kUndef == syntaxTag) {
           ERROR("unknown_syntax_tag[" << syntaxTag << "]");
           continue;
         }
@@ -150,7 +150,7 @@ bool Matcher::SyntaxProcessForChunk_(std::shared_ptr<basic::NluContext> nluConte
       }
 
       auto syntaxTag = basic::SyntaxTag::GetSyntaxTag(vals[1]);
-      if (basic::SyntaxTag::kUndef == syntaxTag) {
+      if (basic::SyntaxTag::Type::kUndef == syntaxTag) {
         ERROR("unknown_syntax_tag[" << syntaxTag << "]");
         return false;
       }
@@ -175,9 +175,9 @@ bool Matcher::SyntaxProcessForChunk_(std::shared_ptr<basic::NluContext> nluConte
 bool Matcher::PostProcess_(std::shared_ptr<basic::NluContext> nluContext) {
   bool touched = false;
   for (auto &chunk : nluContext->GetChunks().GetAll()) {
-    if (chunk->GetSyntaxTag() == basic::SyntaxTag::kContNp) {
+    if (chunk->GetTag() == basic::SyntaxTag::Type::kContNp) {
       basic::Chunk newChunk(
-              basic::SyntaxTag::kNp,
+              basic::SyntaxTag::Type::kNp,
               chunk->GetOffset(),
               chunk->GetLen());
       if (nluContext->GetChunks().Add(newChunk)) {

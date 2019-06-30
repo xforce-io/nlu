@@ -33,6 +33,7 @@ class Fragment {
   inline void SetLen(size_t len);
   inline void SetConfidence(const Confidence &confidence);
   inline void SetStrategy(uint32_t strategy);
+  virtual bool Merge(const Fragment &) { return true; }
   inline Fragment& operator=(const Fragment &other);
 
   virtual const std::string& GetCategory() const = 0;

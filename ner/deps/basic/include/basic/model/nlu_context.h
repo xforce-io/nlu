@@ -88,7 +88,7 @@ typename Chunk::Set& NluContext::GetChunks() {
 bool NluContext::HasPredPosBefore(size_t offset) const {
   for (auto &segment : managerFragmentSet_->GetSegments().GetAll()) {
     if (segment->GetOffset() < offset &&
-        PosTag::IsPredicate(segment->GetPosTag())) {
+        PosTag::IsPredicate(segment->GetTag())) {
       return true;
     }
   }

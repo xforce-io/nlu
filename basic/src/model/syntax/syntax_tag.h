@@ -45,7 +45,7 @@ class SyntaxTag {
       kVv,
 
       //syntax tags
-              kAdjp, //Adjective phrase / 形容词短语
+      kAdjp, //Adjective phrase / 形容词短语
       kAdvp, //Adverbial phrase headed by AD (adverb) / 由副词开头的副词短语
       kClp, //Classifier phrase / 量词短语
       kCp, //Clause headed by C (complementizer) / 由补语引导的补语从句
@@ -64,7 +64,7 @@ class SyntaxTag {
       kVp, //Verb phrase / 动词短语
 
       //special mark
-              kStc,
+      kStc,
       kContNp,
 
       kUndef,

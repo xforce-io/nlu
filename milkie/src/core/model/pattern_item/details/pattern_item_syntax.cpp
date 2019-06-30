@@ -3,7 +3,7 @@
 
 namespace xforce { namespace nlu { namespace milkie {
 
-PatternItemSyntax::PatternItemSyntax(const basic::SyntaxTag::Type &syntaxType) :
+PatternItemSyntax::PatternItemSyntax(const basic::SyntaxTag::Type::Val &syntaxType) :
   syntaxType_(syntaxType) {}
 
 bool PatternItemSyntax::MatchPattern(Context &context) {
@@ -15,7 +15,7 @@ bool PatternItemSyntax::MatchPattern(Context &context) {
   std::shared_ptr<basic::Chunk> theChunk = nullptr;
   size_t maxLen = 0;
   for (auto &chunk : chunkSet->GetAll()) {
-    if (chunk->GetSyntaxTag() != syntaxType_) {
+    if (chunk->GetTag() != syntaxType_) {
       continue;
     }
 

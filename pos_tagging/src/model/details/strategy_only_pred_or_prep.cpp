@@ -6,10 +6,10 @@ void StrategyOnlyPredOrPrep::Process(basic::NluContext &nluContext) {
   auto segments = nluContext.GetSegments().GetAll();
   auto theIter = segments.end();
   for (auto segIter = segments.begin(); segIter != segments.end(); ++segIter) {
-    if (PosFilter_((*segIter)->GetPosTag())) {
+    if (PosFilter_((*segIter)->GetTag())) {
       return;
-    } else if ((*segIter)->SizePosTags() > 1) {
-      for (auto &posTag : (*segIter)->GetPosTags()) {
+    } else if ((*segIter)->SizeTags() > 1) {
+      for (auto &posTag : (*segIter)->GetTags()) {
         if (PosFilter_(posTag)) {
           if (theIter != segments.end()) {
             return;
@@ -22,7 +22,7 @@ void StrategyOnlyPredOrPrep::Process(basic::NluContext &nluContext) {
   }
 
   if (theIter != segments.end()) {
-    auto &posTags = (*theIter)->GetPosTags();
+    auto &posTags = (*theIter)->GetTags();
     auto iter = posTags.begin();
     while (iter != posTags.end()) {
       if (!PosFilter_(*iter)) {
