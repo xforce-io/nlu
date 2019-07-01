@@ -176,12 +176,24 @@ bool Matcher::PostProcess_(std::shared_ptr<basic::NluContext> nluContext) {
   bool touched = false;
   for (auto &chunk : nluContext->GetChunks().GetAll()) {
     if (chunk->GetTag() == basic::SyntaxTag::Type::kContNp) {
-      basic::Chunk newChunk(
-              basic::SyntaxTag::Type::kNp,
-              chunk->GetOffset(),
-              chunk->GetLen());
-      if (nluContext->GetChunks().Add(newChunk)) {
-        touched = true;
+      auto segBefore = nluContext->GetSegments().GetFragmentBefore(chunk->GetOffset());
+      auto segAfter = nluContext->GetSegments().GetFragmentAfter(chunk->GetOffset() + chunk->GetLen());
+      bool beforeCond = (nullptr == segBefore ||
+              basic::PosTag::Type::kV == segBefore->GetTag() ||
+              basic::PosTag::Type::kP == segBefore->GetTag());
+
+      bool afterCond = (nullptr == segAfter ||
+              basic::PosTag::IsPredicate(segAfter->GetTag()) ||
+              basic::PosTag::Type::kP == segBefore->GetTag());
+
+      if (beforeCond && afterCond) {
+        basic::Chunk newChunk(
+                basic::SyntaxTag::Type::kNp,
+                chunk->GetOffset(),
+                chunk->GetLen());
+        if (nluContext->GetChunks().Add(newChunk)) {
+          touched = true;
+        }
       }
     }
   }
