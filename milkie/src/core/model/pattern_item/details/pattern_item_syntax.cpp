@@ -15,7 +15,15 @@ bool PatternItemSyntax::MatchPattern(Context &context) {
   std::shared_ptr<basic::Chunk> theChunk = nullptr;
   size_t maxLen = 0;
   for (auto &chunk : chunkSet->GetAll()) {
-    if (chunk->GetTag() != syntaxType_) {
+    bool matched = false;
+    for (auto tag : chunk->GetTags()) {
+      if (tag == syntaxType_) {
+        matched = true;
+        break;
+      }
+    }
+
+    if (!matched) {
       continue;
     }
 
