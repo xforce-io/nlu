@@ -114,7 +114,13 @@ void Storage::Get(std::unordered_map<std::wstring, std::shared_ptr<StorageVal>> 
     if (value != nullptr) {
       std::wstring repr;
       iter->first.GetRepr(repr);
-      kvs.insert(std::make_pair(repr, value));
+
+      auto iter2 = kvs.find(repr);
+      if (iter2 != kvs.end()) {
+        iter2->second->Add(*value);
+      } else {
+        kvs.insert(std::make_pair(repr, value));
+      }
     }
   }
 }
