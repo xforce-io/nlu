@@ -3,7 +3,9 @@
 namespace xforce { namespace nlu { namespace basic {
 
 SyntaxTag::Type::Val SyntaxTag::GetSyntaxTag(const std::wstring &syntaxTag) {
-  if (L"adjp" == syntaxTag) {
+  if (L"p" == syntaxTag) {
+    return SyntaxTag::Type::kP;
+  } else if (L"adjp" == syntaxTag) {
     return SyntaxTag::Type::kAdjp;
   } else if (L"advp" == syntaxTag) {
     return SyntaxTag::Type::kAdvp;
@@ -47,6 +49,7 @@ SyntaxTag::Type::Val SyntaxTag::GetSyntaxTag(const std::wstring &syntaxTag) {
 }
 
 const std::wstring& SyntaxTag::Str(SyntaxTag::Type::Val syntaxTag) {
+  static const std::wstring kP = L"p";
   static const std::wstring kAdjp = L"adjp";
   static const std::wstring kAdvp = L"advp";
   static const std::wstring kClp = L"clp";
@@ -68,6 +71,8 @@ const std::wstring& SyntaxTag::Str(SyntaxTag::Type::Val syntaxTag) {
   static const std::wstring kContNp = L"_cont_np_";
   static const std::wstring kUndef = L"undef";
   switch (syntaxTag) {
+    case SyntaxTag::Type::kP :
+      return kP;
     case SyntaxTag::Type::kAdjp :
       return kAdjp;
     case SyntaxTag::Type::kAdvp :
