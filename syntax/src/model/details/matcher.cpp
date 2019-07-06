@@ -186,7 +186,7 @@ bool Matcher::PostProcess_(std::shared_ptr<basic::NluContext> nluContext) {
           (!basic::PosTag::IsPredicate(segAfter->GetTag()) &&
           basic::PosTag::Type::kP != segBefore->GetTag()));
 
-      if (beforeCond && afterCond) {
+      if (beforeCond || afterCond) {
         basic::Chunk newChunk(
                 basic::SyntaxTag::Type::kNp,
                 chunk->GetOffset(),
