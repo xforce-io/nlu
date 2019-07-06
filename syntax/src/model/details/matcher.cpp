@@ -162,6 +162,9 @@ bool Matcher::SyntaxProcessForChunk_(std::shared_ptr<basic::NluContext> nluConte
                 storageItem.GetOffset(),
                 storageItem.GetContent().length());
         if (nluContext->GetChunks().Add(chunk)) {
+          if (basic::SyntaxTag::Type::kStc == syntaxTag) {
+            return true;
+          }
           touched = true;
         }
       }
