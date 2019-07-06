@@ -55,7 +55,7 @@ TEST(test_case, bugfix) {
   WindowStatistics *windowStatistics = WindowStatistics::Create("../data/labeled_data");
   ASSERT_TRUE(windowStatistics != nullptr);
 
-  auto result = windowStatistics->GetDominator(L"无谓", L"的", L"失误");
+  auto result = windowStatistics->GetDominator(L"本场", L"比赛");
   ASSERT_TRUE(result.second != nullptr);
 
   std::stringstream ss;

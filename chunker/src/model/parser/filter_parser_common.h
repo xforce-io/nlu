@@ -6,6 +6,9 @@ namespace xforce { namespace nlu { namespace chunker {
 
 class FilterParserCommon {
  public:
+  FilterParserCommon() {}
+  virtual ~FilterParserCommon() {}
+
   virtual ParserCommon::ChunkPos Filter(
           basic::NluContext &nluContext,
           std::shared_ptr<basic::Segment> cur,

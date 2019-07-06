@@ -71,9 +71,10 @@ bool FragmentSet<FragmentType>::Add(std::shared_ptr<FragmentType> fragment) {
   if (fragment->GetOffset() < text_->length()) {
     auto iter = fragments_.find(fragment);
     if (iter != fragments_.end()) {
+      return (*iter)->Merge(*fragment);
     } else {
+      return fragments_.insert(fragment).second;
     }
-    return fragments_.insert(fragment).second;
   }
   return false;
 }
