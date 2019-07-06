@@ -2,6 +2,8 @@
 
 #include "public-cpp/public.h"
 
+#include "basic/data/manager.h"
+#include "basic/data/gkb/gkb.h"
 #include "basic/model/fragment/fragment_set.hpp"
 #include "basic/model/segment.h"
 #include "basic/model/name_entity.h"

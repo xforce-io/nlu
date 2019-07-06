@@ -4,6 +4,8 @@
 
 namespace xforce { namespace nlu { namespace chunker {
 
+class FilterParserCommon;
+
 class Matcher {
  private:
   static const std::wstring kChunkStoragePrefix;
@@ -11,11 +13,10 @@ class Matcher {
 
  public:
   Matcher();
+  virtual ~Matcher();
 
   bool Init();
   void Match(std::shared_ptr<basic::NluContext> nluContext);
-
-  virtual ~Matcher();
 
  private:
   void ParseCommon_(basic::NluContext &nluContext);
@@ -24,6 +25,7 @@ class Matcher {
  private:
   milkie::Milkie *milkie_;
   std::shared_ptr<milkie::FeatureExtractor> featureExtractor_;
+  std::vector<FilterParserCommon*> filterParserCommons_;
 };
 
 }}}
