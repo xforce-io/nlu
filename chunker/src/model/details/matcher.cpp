@@ -1,5 +1,6 @@
 #include "../matcher.h"
 #include "../../conf/conf.h"
+#include "../parser/filter_parser_common.h"
 
 namespace xforce { namespace nlu { namespace chunker {
 
@@ -7,7 +8,18 @@ const std::wstring Matcher::kChunkStoragePrefix = L"/chunkSep";
 const std::wstring Matcher::kSyntacticStoragePrefix = L"/syntactic";
 
 Matcher::Matcher() :
-    milkie_(new milkie::Milkie()) {}
+    milkie_(new milkie::Milkie()) {
+  filterParserCommons_.push_back(new FPCDongqu());
+  filterParserCommons_.push_back(new FPCMid());
+  filterParserCommons_.push_back(new FPCSurround());
+}
+
+Matcher::~Matcher() {
+  for (auto *filterParserCommon : filterParserCommons_) {
+    XFC_DELETE(filterParserCommon)
+  }
+  XFC_DELETE(milkie_)
+}
 
 bool Matcher::Init() {
   bool ret = milkie_->Init(Conf::Get().GetMilkieConfpath());
@@ -33,46 +45,42 @@ void Matcher::Match(std::shared_ptr<basic::NluContext> nluContext) {
 
 void Matcher::ParseCommon_(basic::NluContext &nluContext) {
   auto &segments = nluContext.GetSegments().GetAll();
-  auto &chunkSeps = nluContext.GetChunkSeps();
   auto cur = segments.begin();
   while (cur != segments.end()) {
     auto next = cur;
     ++next;
 
-    auto &segment = *cur;
-    auto curClassOfPosTags = segment->GetClassOfPosTags();
-    if (basic::PosTag::Class::kUndef == curClassOfPosTags) {
-      cur = next;
-      continue;
-    }
+    if (segments.end() != next) {
+      for (auto *fpc : filterParserCommons_) {
+        ParserCommon::ChunkPos chunkPos = fpc->Filter(
+                nluContext,
+                *cur,
+                *next);
 
-    if (basic::PosTag::Class::kFuncWord == curClassOfPosTags ||
-        basic::PosTag::Class::kMood == curClassOfPosTags ||
-        basic::PosTag::Class::kPunctuation == curClassOfPosTags) {
-      chunkSeps.Add(std::make_shared<basic::ChunkSep>(segment->GetOffset()));
-      if (next != segments.end()) {
-        chunkSeps.Add(std::make_shared<basic::ChunkSep>((*next)->GetOffset()));
+        ParserCommon::Process(
+                nluContext,
+                *cur,
+                *next,
+                chunkPos);
+        if (ParserCommon::kUndef != chunkPos) {
+          break;
+        }
       }
-    }
+    } else {
+      for (auto *fpc : filterParserCommons_) {
+        ParserCommon::ChunkPos chunkPos = fpc->Filter(
+                nluContext,
+                *cur,
+                nullptr);
 
-    if (next != segments.end()) {
-      auto nextClassOfPosTags = (*next)->GetClassOfPosTags();
-      if (basic::PosTag::Class::kUndef == nextClassOfPosTags) {
-        cur = next;
-        continue;
-      }
-
-      if (basic::PosTag::Class::kNominal == curClassOfPosTags &&
-          (basic::PosTag::Class::kPredicate == nextClassOfPosTags ||
-              basic::PosTag::Class::kAdv == nextClassOfPosTags)) {
-        chunkSeps.Add(std::make_shared<basic::ChunkSep>((*next)->GetOffset()));
-      } else if ((basic::PosTag::Class::kPredicate == curClassOfPosTags ||
-              basic::PosTag::Class::kAdv == curClassOfPosTags) &&
-          basic::PosTag::Class::kNominal == nextClassOfPosTags) {
-        chunkSeps.Add(std::make_shared<basic::ChunkSep>((*next)->GetOffset()));
-      } else if (basic::PosTag::Class::kPredicate == curClassOfPosTags &&
-          basic::PosTag::Class::kAdv == nextClassOfPosTags) {
-        chunkSeps.Add(std::make_shared<basic::ChunkSep>((*next)->GetOffset()));
+        ParserCommon::Process(
+                nluContext,
+                *cur,
+                nullptr,
+                chunkPos);
+        if (ParserCommon::kUndef != chunkPos) {
+          break;
+        }
       }
     }
     cur = next;
@@ -132,10 +140,6 @@ void Matcher::ParseAccordingToRule_(std::shared_ptr<basic::NluContext> nluContex
       FATAL("invalid_chunk_parse_prefix[" << vals[0] << "]");
     }
   }
-}
-
-Matcher::~Matcher() {
-  XFC_DELETE(milkie_)
 }
 
 }}}
