@@ -35,6 +35,7 @@ void testcase1();
 void testcase2();
 void testcaseWildcard();
 void testcaseMultimatch();
+void testBugfix();
 
 TEST(testAll, all) {
   ASSERT_TRUE(milkie->GetReferManager().AddToGlobalDict("../../data/test/dict"));
@@ -43,6 +44,7 @@ TEST(testAll, all) {
   testcase2();
   testcaseWildcard();
   testcaseMultimatch();
+  testBugfix();
 }
 
 void testcase0() {
@@ -244,4 +246,21 @@ void testcaseMultimatch() {
   segments.Add(Segment(PosTag::Type::kA, 5, 2));
   context->GetSentence().GetNluContext()->SetSegments(segments);
   ASSERT_TRUE(!ret.first->ExactMatch(*(context.get())));
+}
+
+void testBugfix() {
+  std::wstring expr = Helper::PreprocessExprLine(L"{ #Pos(lP) \"的\" -> target }");
+  auto ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, expr);
+  ASSERT_TRUE(ret.first != nullptr);
+
+  std::wstring query = L"强有力的";
+  auto context = std::make_shared<Context>(query);
+  FragmentSet<Segment> segments(query);
+  segments.Add(Segment(PosTag::Type::kL, 0, 3));
+  segments.Add(Segment(PosTag::Type::kU, 3, 1));
+  context->GetSentence().GetNluContext()->SetSegments(segments);
+  ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
+  ASSERT_TRUE(*(context->GetCurStorageAsStr(L"target")) == L"强有力的");
+
+
 }

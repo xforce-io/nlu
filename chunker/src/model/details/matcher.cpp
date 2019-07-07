@@ -16,7 +16,7 @@ Matcher::Matcher() :
 
 Matcher::~Matcher() {
   for (auto *filterParserCommon : filterParserCommons_) {
-    XFC_DELETE(filterParserCommon)
+    delete filterParserCommon;
   }
   XFC_DELETE(milkie_)
 }

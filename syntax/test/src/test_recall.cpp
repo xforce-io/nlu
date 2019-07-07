@@ -38,7 +38,10 @@ TEST(testAll, all) {
 
   std::wstring wStrQuery[] = {
           L"我们自己有太多无谓的失误",
-          L"自己的节奏还没有踩上"
+          L"自己的节奏还没有踩上",
+          L"面对下一个对手意大利队",
+          L"保加利亚队尽管实力并不强",
+          L"但却在本场比赛给了中国队强有力的冲击"
   };
 
   for (auto &query : wStrQuery) {
@@ -50,8 +53,10 @@ TEST(testAll, all) {
 
     bool touch = false;
     for (auto &chunk : nluContext->GetChunks().GetAll()) {
-      if (chunk->GetTag() == SyntaxTag::Type::kStc) {
-        touch = true;
+      for (auto &tag : chunk->GetTags()) {
+        if (tag == SyntaxTag::Type::kStc) {
+          touch = true;
+        }
       }
     }
     assert(touch);

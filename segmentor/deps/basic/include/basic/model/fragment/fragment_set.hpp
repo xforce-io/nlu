@@ -28,6 +28,8 @@ class FragmentSet {
   Self& operator=(const FragmentSet<FragmentType> &other);
 
   inline const Container& GetAll() const;
+  inline std::shared_ptr<FragmentType> GetFragmentBefore(size_t offset);
+  inline std::shared_ptr<FragmentType> GetFragmentAfter(size_t offset);
 
   inline const typename FragmentSet<FragmentType>::Container::iterator Erase(
           const typename Container::iterator iter);
@@ -69,9 +71,10 @@ bool FragmentSet<FragmentType>::Add(std::shared_ptr<FragmentType> fragment) {
   if (fragment->GetOffset() < text_->length()) {
     auto iter = fragments_.find(fragment);
     if (iter != fragments_.end()) {
+      return (*iter)->Merge(*fragment);
     } else {
+      return fragments_.insert(fragment).second;
     }
-    return fragments_.insert(fragment).second;
   }
   return false;
 }
@@ -97,6 +100,26 @@ FragmentSet<FragmentType>& FragmentSet<FragmentType>::operator=(const FragmentSe
 template <typename FragmentType>
 const typename FragmentSet<FragmentType>::Container& FragmentSet<FragmentType>::GetAll() const {
   return fragments_;
+}
+
+template <typename FragmentType>
+std::shared_ptr<FragmentType> FragmentSet<FragmentType>::GetFragmentBefore(size_t offset) {
+  for (auto &fragment : fragments_) {
+    if (fragment->GetOffset() + fragment->GetLen() == offset) {
+      return fragment;
+    }
+  }
+  return nullptr;
+}
+
+template <typename FragmentType>
+std::shared_ptr<FragmentType> FragmentSet<FragmentType>::GetFragmentAfter(size_t offset) {
+  for (auto &fragment : fragments_) {
+    if (fragment->GetOffset() == offset) {
+      return fragment;
+    }
+  }
+  return nullptr;
 }
 
 template <typename FragmentType>

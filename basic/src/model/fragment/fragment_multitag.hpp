@@ -95,7 +95,7 @@ template <typename TagVal>
 bool FragmentMultitag<TagVal>::Merge(const Self &other) {
   bool touched = false;
   for (auto &tag : other.GetTags()) {
-    if (!ContainPosTag(tag)) {
+    if (!ContainTag(tag)) {
       tags_.push_back(tag);
       touched = true;
     }
