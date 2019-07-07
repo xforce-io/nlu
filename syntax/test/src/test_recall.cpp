@@ -53,8 +53,10 @@ TEST(testAll, all) {
 
     bool touch = false;
     for (auto &chunk : nluContext->GetChunks().GetAll()) {
-      if (chunk->GetTag() == SyntaxTag::Type::kStc) {
-        touch = true;
+      for (auto &tag : chunk->GetTags()) {
+        if (tag == SyntaxTag::Type::kStc) {
+          touch = true;
+        }
       }
     }
     assert(touch);
