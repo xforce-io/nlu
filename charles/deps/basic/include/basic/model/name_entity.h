@@ -2,12 +2,14 @@
 
 #include "../public.h"
 #include "fragment/fragment.h"
+#include "fragment/fragment_set.hpp"
 
 namespace xforce { namespace nlu { namespace basic {
 
 class NameEntity : public basic::Fragment {
- private:
-  typedef basic::Fragment Super;
+ public:
+  typedef Fragment Super;
+  typedef FragmentSet<NameEntity> Set;
 
  public:
   enum Category {
@@ -20,16 +22,24 @@ class NameEntity : public basic::Fragment {
   };
 
  public: 
+  inline NameEntity();
   inline NameEntity(size_t offset, size_t len);
+  inline NameEntity(const NameEntity &other);
+  virtual ~NameEntity();
 
-  virtual int GetCategory() const = 0; 
+  int GetNECategory() const { return kCategoryOther; }
+  const std::string& GetCategory() const;
 
   void Dump(JsonType &jsonType);
-
-  virtual ~NameEntity() {}
 };
+
+NameEntity::NameEntity() :
+    Fragment(-1, -1) {}
 
 NameEntity::NameEntity(size_t offset, size_t len) :
   Super(offset, len) {}
+
+NameEntity::NameEntity(const NameEntity &other) :
+    Super(other) {}
 
 }}}

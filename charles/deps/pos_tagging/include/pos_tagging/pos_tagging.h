@@ -4,11 +4,28 @@
 
 namespace xforce { namespace nlu { namespace pos {
 
+class Strategy;  
+
 class PosTagging {
- public: 
-  static void Tagging(
-      const std::wstring &clause,
-      basic::FragmentSet<basic::Segment> &segments);
+ public:
+  PosTagging();
+  virtual ~PosTagging();
+
+  bool Init();
+  void Process(basic::NluContext &nluContext);
+
+ public:
+  static bool Init(const xforce::JsonType &confPos);
+  static void Tagging(std::shared_ptr<basic::NluContext> nluContext);
+  static void Tini();
+
+ private:
+  void PostProcess_(basic::NluContext &nluContext);
+
+ private:
+  std::vector<Strategy*> strategies_;
+
+  static PosTagging posTagging_;
 };
 
 }}}
