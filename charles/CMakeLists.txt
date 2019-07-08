@@ -30,7 +30,7 @@ set(LIB_DEPS
 )
 
 add_executable(charles
-  ${SEG_FILES} src/model/process/details/processor_clause.cpp)
+  ${SEG_FILES})
 
 target_link_libraries(charles
   ${LIB_DEPS}
