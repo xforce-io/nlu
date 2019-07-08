@@ -6,8 +6,7 @@ namespace xforce { namespace nlu { namespace charles {
 
 AnalysisClause::AnalysisClause(const std::wstring &clause) :
   clause_(clause),
-  featureSegments_(clause),
-  featureNameEntities_(clause) {}
+  nluContext_(std::make_shared<std::wstring>(clause)) {}
 
 void AnalysisClause::Segment() {
   BaseModules::Get().GetSegmentor().Parse(clause_, featureSegments_, featureNameEntities_);
