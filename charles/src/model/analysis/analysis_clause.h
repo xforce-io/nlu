@@ -16,7 +16,9 @@ class AnalysisClause : public AnalysisComponent {
 
   void Dump(JsonType &jsonType);
 
- private: 
+ private:
+  AnalysisClause *father_;
+
   std::wstring clause_;
   std::shared_ptr<basic::NluContext> nluContext_;
 };

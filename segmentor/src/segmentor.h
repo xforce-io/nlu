@@ -10,9 +10,7 @@ class Segmentor {
     const xforce::JsonType &confSeg,
     const xforce::JsonType &confNer);
 
-  static void Parse(
-      IN const std::wstring &query, 
-      OUT std::shared_ptr<basic::NluContext> &nluContext);
+  static void Parse(OUT std::shared_ptr<basic::NluContext> &nluContext);
 
   static void Tini();
 };

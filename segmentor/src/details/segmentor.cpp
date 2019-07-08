@@ -31,10 +31,8 @@ bool Segmentor::Init(
   return true;
 }
 
-void Segmentor::Parse(
-    const std::wstring &query, 
-    std::shared_ptr<basic::NluContext> &nluContext) {
-  auto graph = new Graph(query);
+void Segmentor::Parse(std::shared_ptr<basic::NluContext> &nluContext) {
+  auto graph = new Graph(nluContext->GetQuery());
   graph->Process(nluContext->GetSegments(), nluContext->GetNameEntities());
   XFC_DELETE(graph)
 }

@@ -5,12 +5,13 @@
 namespace xforce { namespace nlu { namespace charles {
 
 AnalysisClause::AnalysisClause(const std::wstring &clause) :
+  father_(nullptr),
   clause_(clause),
   nluContext_(std::make_shared<std::wstring>(clause)) {}
 
 void AnalysisClause::Segment() {
-  BaseModules::Get().GetSegmentor().Parse(clause_, featureSegments_, featureNameEntities_);
-  BaseModules::Get().GetPosTagging().Tagging(clause_, featureSegments_);
+  BaseModules::Get().GetSegmentor().Parse(nluContext_);
+  BaseModules::Get().GetPosTagging().Tagging(nluContext_);
 }
 
 void AnalysisClause::Dump(JsonType &jsonType) {

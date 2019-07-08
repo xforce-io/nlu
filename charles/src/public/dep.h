@@ -1,6 +1,7 @@
 #pragma once
 
 #include "public-cpp/public.h"
+#include "public-cpp/str_helper.hpp"
 
 #include "basic/model/nlu_context.h"
 #include "basic/model/name_entity.h"
