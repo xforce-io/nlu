@@ -24,6 +24,12 @@ std::shared_ptr<NluContext> NluContext::Build(
   return result;
 }
 
+std::shared_ptr<NluContext> NluContext::Clone() {
+  auto nluContext = std::make_shared<NluContext>(query_);
+  nluContext->managerFragmentSet_ = managerFragmentSet_->Clone();
+  return nluContext;
+}
+
 void NluContext::Dump(JsonType &jsonType) {
   jsonType["query"] = *(StrHelper::Wstr2Str(query_));
   managerFragmentSet_->Dump(jsonType["fragments"]);

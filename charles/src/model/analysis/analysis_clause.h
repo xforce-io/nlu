@@ -5,22 +5,35 @@
 
 namespace xforce { namespace nlu { namespace charles {
 
-class FeatureSegments;
-class FeatureNameEntity;
-
 class AnalysisClause : public AnalysisComponent {
- public: 
-  AnalysisClause(const std::wstring &clause);
+ public:
+  enum Stage {
+      kNone,
+      kSegment,
+      kPosTag,
+      kChunk,
+      kSyntax,
+      kEnd,
+  };
 
-  void Segment();
+ public:
+  AnalysisClause(
+          const std::wstring &clause);
+
+  AnalysisClause(
+          const std::wstring &clause,
+          bool isMaster);
+
+  void Process();
+
+  std::shared_ptr<AnalysisClause> Clone();
 
   void Dump(JsonType &jsonType);
 
  private:
-  AnalysisClause *father_;
-
-  std::wstring clause_;
+  bool isMaster_;
   std::shared_ptr<basic::NluContext> nluContext_;
+  std::unordered_map<Stage, std::shared_ptr<AnalysisClause>> ancestors_;
 };
 
 }}}

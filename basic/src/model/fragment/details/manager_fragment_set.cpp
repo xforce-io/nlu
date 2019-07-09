@@ -58,4 +58,13 @@ ManagerFragmentSet* ManagerFragmentSet::Build(
   return result;
 }
 
+ManagerFragmentSet* ManagerFragmentSet::Clone() {
+  auto managerFragmentSet = new ManagerFragmentSet(query_);
+  managerFragmentSet->SetNameEntities(nameEntities_);
+  managerFragmentSet->SetSegments(segments_);
+  managerFragmentSet->SetChunkSeps(chunkSeps_);
+  managerFragmentSet->SetChunks(chunks_);
+  return managerFragmentSet;
+}
+
 }}}

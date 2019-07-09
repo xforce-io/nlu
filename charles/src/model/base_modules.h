@@ -11,6 +11,7 @@ class BaseModules {
   bool Init(const xforce::JsonType &conf); 
   segmentor::Segmentor& GetSegmentor() { return *segmentor_; }
   pos::PosTagging& GetPosTagging() { return *posTagging_; }
+  chunk::Chunker& GetChunker() {}
 
   static BaseModules& Get() { return *baseModules_; }
 
