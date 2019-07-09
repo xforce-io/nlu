@@ -16,7 +16,9 @@ class ManagerFragmentSet {
   inline void SetSegments(const Segment::Set &segments);
   inline void SetChunkSeps(const ChunkSep::Set &chunkSeps);
   inline void SetChunks(const Chunk::Set &chunks);
+
   ManagerFragmentSet* Build(size_t from, size_t to);
+  ManagerFragmentSet* Clone();
 
   const typename NameEntity::Set& GetNameEntities() const { return nameEntities_; }
   typename NameEntity::Set& GetNameEntities() { return nameEntities_; }

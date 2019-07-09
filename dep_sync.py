@@ -124,6 +124,10 @@ def buildCharles() :
             (kBuildPathSegmentor, kDepPathCharles))
     call("cp -rf %s/pos_tagging %s/pos_tagging/" % \
             (kBuildPathPosTagging, kDepPathCharles))
+    call("cp -rf %s/chunker %s/chunker/" % \
+            (kBuildPathChunker, kDepPathCharles))
+    call("cp -rf %s/syntax %s/syntax/" % \
+            (kBuildPathSyntax, kDepPathCharles))
     call("mkdir -p %s && cd %s && cmake ../ && make clean && make -j4 -s" % \
             (kBuildPathCharles, kBuildPathCharles))
 
