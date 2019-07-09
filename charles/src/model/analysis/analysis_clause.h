@@ -7,16 +7,6 @@ namespace xforce { namespace nlu { namespace charles {
 
 class AnalysisClause : public AnalysisComponent {
  public:
-  enum Stage {
-      kNone,
-      kSegment,
-      kPosTag,
-      kChunk,
-      kSyntax,
-      kEnd,
-  };
-
- public:
   AnalysisClause(
           const std::wstring &clause);
 
@@ -24,16 +14,19 @@ class AnalysisClause : public AnalysisComponent {
           const std::wstring &clause,
           bool isMaster);
 
-  void Process();
+  bool Process(std::vector<std::shared_ptr<AnalysisClause>> &children);
 
   std::shared_ptr<AnalysisClause> Clone();
 
   void Dump(JsonType &jsonType);
 
  private:
+  static bool IsFinished_(basic::NluContext &nluContext);
+
+ private:
   bool isMaster_;
   std::shared_ptr<basic::NluContext> nluContext_;
-  std::unordered_map<Stage, std::shared_ptr<AnalysisClause>> ancestors_;
+  std::unordered_map<basic::Stage::Type, std::shared_ptr<AnalysisClause>> ancestors_;
 };
 
 }}}

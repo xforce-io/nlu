@@ -16,3 +16,7 @@
 #include "ner/data/manager.h"
 
 #include "pos_tagging/pos_tagging.h"
+
+#include "chunker/chunker.h"
+
+#include "syntax/syntax.h"

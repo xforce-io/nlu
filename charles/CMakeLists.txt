@@ -10,6 +10,8 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/deps/ner/include/
   ${CMAKE_SOURCE_DIR}/deps/segmentor/include/
   ${CMAKE_SOURCE_DIR}/deps/pos_tagging/include/
+  ${CMAKE_SOURCE_DIR}/deps/chunker/include/
+  ${CMAKE_SOURCE_DIR}/deps/syntax/include/
 )
 
 link_directories(

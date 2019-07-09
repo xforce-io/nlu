@@ -2,3 +2,9 @@
 
 #include "public/public.h"
 #include "constant.h"
+
+namespace xforce { namespace nlu { namespace charles {
+
+
+
+}}}
