@@ -18,16 +18,16 @@ AnalysisClause::AnalysisClause(
 
 bool AnalysisClause::Process(std::vector<std::shared_ptr<AnalysisClause>> &children) {
   xforce::nlu::segmentor::Segmentor::Parse(nluContext_);
-  ancestors_.insert(std::make_pair(Stage::kSegment, Clone()));
+  ancestors_.insert(std::make_pair(basic::Stage::kSegment, Clone()));
 
   xforce::nlu::pos::PosTagging::Tagging(nluContext_);
-  ancestors_.insert(std::make_pair(Stage::kPosTag, Clone()));
+  ancestors_.insert(std::make_pair(basic::Stage::kPosTag, Clone()));
 
   xforce::nlu::chunker::Chunker::Parse(nluContext_);
-  ancestors_.insert(std::make_pair(Stage::kChunk, Clone()));
+  ancestors_.insert(std::make_pair(basic::Stage::kChunk, Clone()));
 
   xforce::nlu::syntax::Syntax::Parse(nluContext_);
-  ancestors_.insert(std::make_pair(Stage::kSyntax, Clone()));
+  ancestors_.insert(std::make_pair(basic::Stage::kSyntax, Clone()));
 
   if (IsFinished_(*nluContext_)) {
     return true;
