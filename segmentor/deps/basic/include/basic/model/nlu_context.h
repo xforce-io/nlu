@@ -19,7 +19,7 @@ class NluContext {
 
   std::shared_ptr<NluContext> Build(size_t from, size_t to);
   std::shared_ptr<NluContext> Clone();
-  bool Split(std::vector<std::shared_ptr<NluContext>> &nluContexts);
+  Stage::Val Split(std::vector<std::shared_ptr<NluContext>> &nluContexts);
 
   inline const typename NameEntity::Set& GetNameEntities() const;
   inline typename NameEntity::Set& GetNameEntities();

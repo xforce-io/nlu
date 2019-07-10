@@ -5,7 +5,7 @@
 namespace xforce { namespace nlu { namespace basic {
 
 struct Stage {
-  enum Type {
+  enum Val {
     kNone,
     kSegment,
     kPosTag,
