@@ -24,7 +24,7 @@ std::shared_ptr<NluContext> NluContext::Build(
   return result;
 }
 
-std::shared_ptr<NluContext> NluContext::Clone() {
+std::shared_ptr<NluContext> NluContext::Clone() const {
   auto nluContext = std::make_shared<NluContext>(query_);
   nluContext->managerFragmentSet_ = managerFragmentSet_->Clone();
   return nluContext;

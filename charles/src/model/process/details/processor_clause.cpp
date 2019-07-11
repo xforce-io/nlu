@@ -10,8 +10,15 @@ namespace xforce { namespace nlu { namespace charles {
 bool ProcessorClause::Process(
         AnalysisContext &analysisContext,
         AnalysisClause &analysisClause) {
-  while (true) {
-    analysisClause.Segment();
+  std::queue<std::shared_ptr<AnalysisClause>> analysises;
+  if (analysisClause.Process(analysises)) {
+    return true;
+  }
+
+  while (analysises.empty()) {
+    if (analysisClause.Process(analysises)) {
+      return true;
+    }
   }
 }
 

@@ -32,7 +32,7 @@ set(LIB_DEPS
 )
 
 add_executable(charles
-  ${SEG_FILES})
+  ${SEG_FILES} src/model/analysis/analysis_clause_branch.h)
 
 target_link_libraries(charles
   ${LIB_DEPS}
