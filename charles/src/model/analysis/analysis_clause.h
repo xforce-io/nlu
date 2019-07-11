@@ -11,9 +11,12 @@ class AnalysisClause : public AnalysisComponent {
   AnalysisClause(
           const std::wstring &clause);
 
+  bool Process();
+
  private:
   std::shared_ptr<AnalysisClauseBranch> master_;
-  std::queue<AnalysisClauseBranch> branches_;
+  std::queue<std::shared_ptr<AnalysisClauseBranch>> branches_;
+  std::list<std::shared_ptr<AnalysisClauseBranch>> results_;
 };
 
 }}}

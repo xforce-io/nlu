@@ -11,7 +11,7 @@ class AnalysisClauseBranch {
   AnalysisClauseBranch(const basic::NluContext &nluContext);
 
   bool Process(std::queue<std::shared_ptr<AnalysisClauseBranch>> &children);
-  std::shared_ptr<AnalysisClauseBranch> Clone();
+  std::shared_ptr<AnalysisClauseBranch> Clone() const;
 
   void Dump(JsonType &jsonType);
 
