@@ -18,7 +18,7 @@ class NluContext {
   inline void SetChunks(const Chunk::Set &chunks);
 
   std::shared_ptr<NluContext> Build(size_t from, size_t to);
-  std::shared_ptr<NluContext> Clone();
+  std::shared_ptr<NluContext> Clone() const;
   Stage::Val Split(std::vector<std::shared_ptr<NluContext>> &nluContexts);
 
   inline const typename NameEntity::Set& GetNameEntities() const;
