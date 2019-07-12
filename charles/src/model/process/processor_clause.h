@@ -13,7 +13,7 @@ class ProcessorClause {
   //@return : is analysisSentence modified
   typedef bool (*Processor)(
           AnalysisContext &analysisContext,
-          AnalysisSentence &analysisSentence);
+          AnalysisClause &analysisClause);
 
  public:
   inline static bool Process(
