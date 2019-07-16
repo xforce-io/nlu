@@ -39,6 +39,7 @@ class SyntaxTag {
       kPu,
       kSb,
       kSp,
+      kV,
       kVa,
       kVc,
       kVe,
