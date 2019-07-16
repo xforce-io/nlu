@@ -46,7 +46,7 @@ TEST(testAll, all) {
 
   for (auto &query : wStrQuery) {
     auto nluContext = std::make_shared<NluContext>(query);
-    Segmentor::Parse(query, nluContext->GetSegments(), nluContext->GetNameEntities());
+    Segmentor::Parse(nluContext);
     PosTagging::Tagging(nluContext);
     Chunker::Parse(nluContext);
     Syntax::Parse(nluContext);

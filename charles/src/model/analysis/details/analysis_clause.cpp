@@ -26,4 +26,8 @@ bool AnalysisClause::Process() {
   return succ;
 }
 
+void AnalysisClause::Dump(JsonType &jsonType) {
+  UNUSE(jsonType)
+}
+
 }}}

@@ -10,6 +10,7 @@ namespace xforce { namespace nlu { namespace charles {
 bool ProcessorClause::Process(
         AnalysisContext &analysisContext,
         AnalysisClause &analysisClause) {
+  UNUSE(analysisContext)
   return analysisClause.Process();
 }
 

@@ -21,7 +21,7 @@ int main() {
     return 1;
   }
 
-  bool ret = BaseModules::Get().Init(*conf);
+  bool ret = BaseModules::Init(*conf);
   if (!ret) {
     FATAL("fail_init_base_module");
     return 2;

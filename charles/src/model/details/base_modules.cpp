@@ -1,5 +1,6 @@
 #include "../base_modules.h"
 
+#include "basic/basic.h"
 #include "segmentor/segmentor.h"
 #include "pos_tagging/pos_tagging.h"
 #include "chunker/chunker.h"
@@ -8,7 +9,7 @@
 namespace xforce { namespace nlu { namespace charles {
 
 bool BaseModules::Init(const xforce::JsonType &conf) {
-  bool ret = xforce::nlu::segmentor::Segmentor::Init(conf["basic"]);
+  bool ret = xforce::nlu::basic::Basic::Init(conf["basic"]);
   if (!ret) {
     FATAL("fail_init_basic");
     return false;

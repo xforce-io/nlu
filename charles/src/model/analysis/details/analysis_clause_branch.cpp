@@ -23,7 +23,7 @@ bool AnalysisClauseBranch::Process(
   std::vector<std::shared_ptr<basic::NluContext>> nluContexts;
   nluContext_->Split(nluContexts);
   for (auto nluContext : nluContexts) {
-    children.push(std::make_shared<AnalysisClauseBranch>(nluContext));
+    children.push(std::make_shared<AnalysisClauseBranch>(*nluContext));
   }
   return false;
 }
@@ -33,7 +33,7 @@ std::shared_ptr<AnalysisClauseBranch> AnalysisClauseBranch::Clone() const {
 }
 
 void AnalysisClauseBranch::Dump(JsonType &jsonType) {
-
+  UNUSE(jsonType)
 }
 
 bool AnalysisClauseBranch::IsFinished_(basic::NluContext &nluContext) {

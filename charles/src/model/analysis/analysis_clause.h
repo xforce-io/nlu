@@ -13,6 +13,8 @@ class AnalysisClause : public AnalysisComponent {
 
   bool Process();
 
+  void Dump(JsonType &jsonType);
+
  private:
   std::shared_ptr<AnalysisClauseBranch> master_;
   std::queue<std::shared_ptr<AnalysisClauseBranch>> branches_;

@@ -38,7 +38,7 @@ TEST(testAll, all) {
 
   std::wstring wStrQuery = L"位于B组的中国女排迎战保加利亚队";
   auto nluContext = std::make_shared<NluContext>(wStrQuery);
-  Segmentor::Parse(wStrQuery, nluContext->GetSegments(), nluContext->GetNameEntities());
+  Segmentor::Parse(nluContext);
   PosTagging::Tagging(nluContext);
   Chunker::Parse(nluContext);
 

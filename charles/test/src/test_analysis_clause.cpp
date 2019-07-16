@@ -2,6 +2,7 @@
 
 #include "gtest/gtest.h"
 
+#include "../../../src/model/base_modules.h"
 #include "../../../src/model/analysis/analysis_clause.h"
 
 LOGGER_IMPL(xforce::xforce_logger, L"charles")
@@ -21,6 +22,6 @@ TEST(testAll, all) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/charles.conf");
 
   ASSERT_TRUE(BaseModules::Init(*conf));
-  AnalysisClause analysisClause("我请你吃饭");
-  analysisClause.Process();
+  AnalysisClause analysisClause(L"自己的节奏还没有踩上");
+  std::cout << analysisClause.Process() << std::endl;
 }
