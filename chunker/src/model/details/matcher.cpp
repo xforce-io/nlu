@@ -39,52 +39,8 @@ bool Matcher::Init() {
 void Matcher::Match(std::shared_ptr<basic::NluContext> nluContext) {
   nluContext->GetChunkSeps().Add(std::make_shared<basic::ChunkSep>(0));
 
-  ParseCommon_(*nluContext);
   ParseAccordingToRule_(nluContext);
-}
-
-void Matcher::ParseCommon_(basic::NluContext &nluContext) {
-  auto &segments = nluContext.GetSegments().GetAll();
-  auto cur = segments.begin();
-  while (cur != segments.end()) {
-    auto next = cur;
-    ++next;
-
-    if (segments.end() != next) {
-      for (auto *fpc : filterParserCommons_) {
-        ParserCommon::ChunkPos chunkPos = fpc->Filter(
-                nluContext,
-                *cur,
-                *next);
-
-        ParserCommon::Process(
-                nluContext,
-                *cur,
-                *next,
-                chunkPos);
-        if (ParserCommon::kUndef != chunkPos) {
-          break;
-        }
-      }
-    } else {
-      for (auto *fpc : filterParserCommons_) {
-        ParserCommon::ChunkPos chunkPos = fpc->Filter(
-                nluContext,
-                *cur,
-                nullptr);
-
-        ParserCommon::Process(
-                nluContext,
-                *cur,
-                nullptr,
-                chunkPos);
-        if (ParserCommon::kUndef != chunkPos) {
-          break;
-        }
-      }
-    }
-    cur = next;
-  }
+  ParseCommon_(*nluContext);
 }
 
 void Matcher::ParseAccordingToRule_(std::shared_ptr<basic::NluContext> nluContext) {
@@ -139,6 +95,50 @@ void Matcher::ParseAccordingToRule_(std::shared_ptr<basic::NluContext> nluContex
     } else {
       FATAL("invalid_chunk_parse_prefix[" << vals[0] << "]");
     }
+  }
+}
+
+void Matcher::ParseCommon_(basic::NluContext &nluContext) {
+  auto &segments = nluContext.GetSegments().GetAll();
+  auto cur = segments.begin();
+  while (cur != segments.end()) {
+    auto next = cur;
+    ++next;
+
+    if (segments.end() != next) {
+      for (auto *fpc : filterParserCommons_) {
+        ParserCommon::ChunkPos chunkPos = fpc->Filter(
+                nluContext,
+                *cur,
+                *next);
+
+        ParserCommon::Process(
+                nluContext,
+                *cur,
+                *next,
+                chunkPos);
+        if (ParserCommon::kUndef != chunkPos) {
+          break;
+        }
+      }
+    } else {
+      for (auto *fpc : filterParserCommons_) {
+        ParserCommon::ChunkPos chunkPos = fpc->Filter(
+                nluContext,
+                *cur,
+                nullptr);
+
+        ParserCommon::Process(
+                nluContext,
+                *cur,
+                nullptr,
+                chunkPos);
+        if (ParserCommon::kUndef != chunkPos) {
+          break;
+        }
+      }
+    }
+    cur = next;
   }
 }
 
