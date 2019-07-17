@@ -43,7 +43,7 @@ class Storage {
 
   inline const Container& Get() const;
 
-  inline void Get(std::unordered_map<StorageKey, std::shared_ptr<StorageVal>> &kvs);
+  inline void Get(Container &kvs);
 
   inline void Merge(const Storage &storage);
 
@@ -108,7 +108,7 @@ const Storage::Container& Storage::Get() const {
   return container_;
 }
 
-void Storage::Get(std::unordered_map<StorageKey, std::shared_ptr<StorageVal>> &kvs) {
+void Storage::Get(Container &kvs) {
   for (auto iter = container_.begin(); iter != container_.end(); ++iter) {
     auto value = iter->second;
     if (value != nullptr) {
