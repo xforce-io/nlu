@@ -127,15 +127,16 @@ bool PatternExpr::PartlyMatch(Context &context) const {
 }
 
 bool PatternExpr::PartlyMatch(Context &context, bool singleton) const {
+  bool ret = false;
   for (size_t curPos=0; curPos < context.GetSentence().GetSentence().length(); ++curPos) {
     context.Reset();
     context.SetCurPos(curPos);
     if (MatchPattern_(context, singleton)) {
       context.Store();
-      return true;
+      ret = true;
     }
   }
-  return false;
+  return ret;
 }
 
 bool PatternExpr::PrefixMatch(Context &context, bool singleton) const {
