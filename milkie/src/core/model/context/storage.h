@@ -43,7 +43,7 @@ class Storage {
 
   inline const Container& Get() const;
 
-  inline void Get(std::unordered_map<std::wstring, std::shared_ptr<StorageVal>> &kvs);
+  inline void Get(std::unordered_map<StorageKey, std::shared_ptr<StorageVal>> &kvs);
 
   inline void Merge(const Storage &storage);
 
@@ -108,18 +108,15 @@ const Storage::Container& Storage::Get() const {
   return container_;
 }
 
-void Storage::Get(std::unordered_map<std::wstring, std::shared_ptr<StorageVal>> &kvs) {
+void Storage::Get(std::unordered_map<StorageKey, std::shared_ptr<StorageVal>> &kvs) {
   for (auto iter = container_.begin(); iter != container_.end(); ++iter) {
     auto value = iter->second;
     if (value != nullptr) {
-      std::wstring repr;
-      iter->first.GetRepr(repr);
-
-      auto iter2 = kvs.find(repr);
+      auto iter2 = kvs.find(iter->first);
       if (iter2 != kvs.end()) {
         iter2->second->Add(*value);
       } else {
-        kvs.insert(std::make_pair(repr, value));
+        kvs.insert(std::make_pair(iter->first, value));
       }
     }
   }

@@ -51,8 +51,8 @@ TEST(testAll, all) {
   auto err = timeFeatureExtractor->MatchPattern(*context);
   ASSERT_TRUE(err == Errno::kOk);
 
-  ASSERT_TRUE(*(context->GetCurStorageAsStr(storageKey)) == L"11");
-  auto storageVal = context->GetCurStorage(storageKey);
+  ASSERT_TRUE(*(context->GetStorageAsStr(storageKey)) == L"11");
+  auto storageVal = context->GetStorage(storageKey);
   ASSERT_TRUE(storageVal->Size() == 1);
   ASSERT_TRUE(storageVal->Get()[0].GetOffset() == 5);
 
@@ -67,8 +67,8 @@ TEST(testAll, all) {
   context = std::make_shared<Context>(L"我讲的是1932年11月啊");
   err = timeFeatureExtractor->MatchPattern(*context);
   ASSERT_TRUE(err == Errno::kOk);
-  ASSERT_TRUE(*(context->GetCurStorageAsStr(storageKey)) == L"11");
-  storageVal = context->GetCurStorage(storageKey);
+  ASSERT_TRUE(*(context->GetStorageAsStr(storageKey)) == L"11");
+  storageVal = context->GetStorage(storageKey);
   ASSERT_TRUE(storageVal->Size() == 1);
   ASSERT_TRUE(storageVal->Get()[0].GetOffset() == 9);
 }
@@ -101,5 +101,5 @@ TEST(testBugfix, test) {
  
   auto err = testFeatureExtractor->MatchPattern(*context);
   ASSERT_TRUE(err == Errno::kOk);
-  ASSERT_TRUE((*(context->GetCurStorageAsStr(storageKey)) == L"很"));
+  ASSERT_TRUE((*(context->GetStorageAsStr(storageKey)) == L"很"));
 }
