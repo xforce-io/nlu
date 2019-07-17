@@ -1,18 +1,20 @@
 #pragma once
 
 #include "../../../public.h"
+#include "storage_key.h"
 #include "storage_val.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
 class Frame;
 class Sentence;
-class StorageVal;
-class StorageKey;
 
 class Context {
  public:
-  typedef std::unordered_map<StorageKey, std::shared_ptr<StorageVal>> Storages;
+  typedef std::unordered_map<
+      StorageKey, 
+      std::shared_ptr<StorageVal>,
+      StorageKey::HashVal> Storages;
 
  public:
   inline Context(std::shared_ptr<basic::NluContext> nluContext);

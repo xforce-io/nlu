@@ -6,6 +6,13 @@ namespace xforce { namespace nlu { namespace milkie {
 
 class StorageKey {
  public:
+  struct HashVal {
+      size_t operator()(const StorageKey &storageKey) const{
+        return storageKey.Hash();
+      }
+  };
+
+ public:
   StorageKey() {}
 
   inline StorageKey(

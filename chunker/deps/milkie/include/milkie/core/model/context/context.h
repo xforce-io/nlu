@@ -1,18 +1,20 @@
 #pragma once
 
 #include "../../../public.h"
+#include "storage_key.h"
 #include "storage_val.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
 class Frame;
 class Sentence;
-class StorageVal;
-class StorageKey;
 
 class Context {
  public:
-  typedef std::unordered_map<std::wstring, std::shared_ptr<StorageVal>> Storages;
+  typedef std::unordered_map<
+      StorageKey, 
+      std::shared_ptr<StorageVal>,
+      StorageKey::HashVal> Storages;
 
  public:
   inline Context(std::shared_ptr<basic::NluContext> nluContext);
@@ -51,6 +53,8 @@ class Context {
   inline const std::shared_ptr<StorageVal> GetCurStorage(const wchar_t *item);
   inline const std::wstring* GetCurStorageAsStr(const StorageKey &key);
   inline const std::wstring* GetCurStorageAsStr(const wchar_t *item);
+  inline const std::shared_ptr<StorageVal> GetStorage(const StorageKey &key);
+  inline const std::wstring* GetStorageAsStr(const StorageKey &key);
 
   /*
    * mark : str env supported only now
@@ -220,6 +224,25 @@ const std::wstring* Context::GetCurStorageAsStr(const StorageKey &key) {
 
 const std::wstring* Context::GetCurStorageAsStr(const wchar_t *item) {
   return GetCurStorageAsStr(StorageKey(nullptr, item));
+}
+
+
+const std::shared_ptr<StorageVal> Context::GetStorage(const StorageKey &key) {
+  auto iter = storages_.find(key);
+  if (iter != storages_.end()) {
+    return iter->second;
+  } else {
+    return nullptr;
+  }
+}
+
+const std::wstring* Context::GetStorageAsStr(const StorageKey &key) {
+  auto storageVal = GetStorage(key);
+  if (nullptr != storageVal) {
+    return storageVal->GetAsString();
+  } else {
+    return nullptr;
+  }
 }
 
 void Context::SetCurStoragePattern(StorageVal &storageItem) {

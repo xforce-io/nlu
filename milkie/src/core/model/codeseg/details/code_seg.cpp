@@ -28,7 +28,9 @@ int CodeSeg::Match(Context &context) {
 
   const typename Context::Storages& kvs = context.GetStorages();
   for (auto iter = kvs.begin(); iter != kvs.end(); ++iter) {
-    lua_pushstring(luaState_, StrHelper::Wstr2Str(iter->first)->c_str());
+    std::wstring tmpStr;
+    iter->first.GetRepr(tmpStr);
+    lua_pushstring(luaState_, StrHelper::Wstr2Str(tmpStr)->c_str());
     lua_pushstring(luaState_, StrHelper::Wstr2Str(*(iter->second->GetAsString()))->c_str());
     lua_settable(luaState_, -3);
   }
