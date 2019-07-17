@@ -128,12 +128,16 @@ bool PatternExpr::PartlyMatch(Context &context) const {
 
 bool PatternExpr::PartlyMatch(Context &context, bool singleton) const {
   bool ret = false;
-  for (size_t curPos=0; curPos < context.GetSentence().GetSentence().length(); ++curPos) {
+  size_t curPos = 0;
+  while (curPos < context.GetSentence().GetSentence().length()) {
     context.Reset();
     context.SetCurPos(curPos);
     if (MatchPattern_(context, singleton)) {
+      curPos = context.GetCurPos();
       context.Store();
       ret = true;
+    } else {
+      ++curPos;
     }
   }
   return ret;
