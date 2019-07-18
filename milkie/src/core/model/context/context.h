@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../../public.h"
-#include "storage_val.h"
+#include "storage.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -11,9 +11,6 @@ class StorageVal;
 class StorageKey;
 
 class Context {
- public:
-  typedef std::unordered_map<StorageKey, std::shared_ptr<StorageVal>> Storages;
-
  public:
   inline Context(std::shared_ptr<basic::NluContext> nluContext);
   inline Context(const std::wstring &sentenceStr);
@@ -57,7 +54,7 @@ class Context {
   /*
    * mark : str env supported only now
    */
-  const Storages& GetStorages() const { return storages_; }
+  const Storage& GetStorage() const { return storage_; }
 
   inline void SetCurStoragePattern(StorageVal &storageItem);
   inline std::shared_ptr<StorageVal> GetCurStoragePattern();
@@ -69,14 +66,13 @@ class Context {
   ssize_t curPos_;
   std::stack<std::shared_ptr<Frame>> stack_;
 
-  Storages storages_;
+  Storage storage_;
 };
 
 }}}
 
 #include "../sentence/sentence.h"
 #include "frame.h"
-#include "storage_val.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -173,7 +169,7 @@ void Context::Store() {
   std::stack<std::shared_ptr<Frame>> tmpStack;
   while (!stack_.empty()) {
     auto frame = stack_.top();
-    frame->GetStorage().Get(storages_);
+    frame->GetStorage().Store(storage_);
     tmpStack.push(frame);
     stack_.pop();
   }
@@ -185,7 +181,7 @@ void Context::Store() {
 }
 
 void Context::Clear() {
-  storages_.clear();
+  storage_.Clear();
 }
 
 const std::shared_ptr<StorageVal> Context::GetCurStorage(const StorageKey &key) {

@@ -43,9 +43,11 @@ class Storage {
 
   inline const Container& Get() const;
 
-  inline void Get(Container &kvs);
+  inline void Store(Storage &storage);
 
   inline void Merge(const Storage &storage);
+
+  inline void Clear();
 
  private:
   Container container_;
@@ -108,15 +110,15 @@ const Storage::Container& Storage::Get() const {
   return container_;
 }
 
-void Storage::Get(Container &kvs) {
+void Storage::Store(Storage &storage) {
   for (auto iter = container_.begin(); iter != container_.end(); ++iter) {
     auto value = iter->second;
     if (value != nullptr) {
-      auto iter2 = kvs.find(iter->first);
-      if (iter2 != kvs.end()) {
-        iter2->second->Add(*value);
+      auto storageVal = storage.Get(iter->first);
+      if (nullptr != storageVal) {
+        storageVal->Add(*value);
       } else {
-        kvs.insert(std::make_pair(iter->first, value));
+        storage.Set(iter->first, *value);
       }
     }
   }
@@ -131,6 +133,10 @@ void Storage::Merge(const Storage &storage) {
       container_.insert(std::make_pair(iter->first, iter->second));
     }
   }
+}
+
+void Storage::Clear() {
+  container_.clear();
 }
 
 }}}
