@@ -6,23 +6,14 @@
 
 namespace xforce { namespace nlu { namespace milkie {
 
-class StorageVal;
-class StorageKey;
 class StorageItem;
 
 class Storage {
- private:
-  struct HashVal {
-      size_t operator()(const StorageKey &storageKey) const{
-        return storageKey.Hash();
-      }
-  };
-
  public:
   typedef std::unordered_map<
           StorageKey,
           std::shared_ptr<StorageVal>,
-          HashVal> Container;
+          StorageKey::HashVal> Container;
 
  public:
   inline void Set(

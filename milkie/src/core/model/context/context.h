@@ -7,8 +7,6 @@ namespace xforce { namespace nlu { namespace milkie {
 
 class Frame;
 class Sentence;
-class StorageVal;
-class StorageKey;
 
 class Context {
  public:
@@ -219,7 +217,6 @@ const std::wstring* Context::GetCurStorageAsStr(const StorageKey &key) {
 const std::wstring* Context::GetCurStorageAsStr(const wchar_t *item) {
   return GetCurStorageAsStr(StorageKey(nullptr, item));
 }
-
 
 const std::shared_ptr<StorageVal> Context::GetStorage(const StorageKey &key) {
   auto iter = storages_.find(key);
