@@ -219,12 +219,7 @@ const std::wstring* Context::GetCurStorageAsStr(const wchar_t *item) {
 }
 
 const std::shared_ptr<StorageVal> Context::GetStorage(const StorageKey &key) {
-  auto iter = storages_.find(key);
-  if (iter != storages_.end()) {
-    return iter->second;
-  } else {
-    return nullptr;
-  }
+  return storage_.Get(key);
 }
 
 const std::wstring* Context::GetStorageAsStr(const StorageKey &key) {
