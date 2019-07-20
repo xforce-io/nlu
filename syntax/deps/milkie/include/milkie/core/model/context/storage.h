@@ -6,23 +6,14 @@
 
 namespace xforce { namespace nlu { namespace milkie {
 
-class StorageVal;
-class StorageKey;
 class StorageItem;
 
 class Storage {
- private:
-  struct HashVal {
-      size_t operator()(const StorageKey &storageKey) const{
-        return storageKey.Hash();
-      }
-  };
-
  public:
   typedef std::unordered_map<
           StorageKey,
           std::shared_ptr<StorageVal>,
-          HashVal> Container;
+          StorageKey::HashVal> Container;
 
  public:
   inline void Set(
@@ -43,9 +34,11 @@ class Storage {
 
   inline const Container& Get() const;
 
-  inline void Get(std::unordered_map<std::wstring, std::shared_ptr<StorageVal>> &kvs);
+  inline void Store(Storage &storage);
 
   inline void Merge(const Storage &storage);
+
+  inline void Clear();
 
  private:
   Container container_;
@@ -108,14 +101,16 @@ const Storage::Container& Storage::Get() const {
   return container_;
 }
 
-void Storage::Get(std::unordered_map<std::wstring, std::shared_ptr<StorageVal>> &kvs) {
-  kvs.clear();
+void Storage::Store(Storage &storage) {
   for (auto iter = container_.begin(); iter != container_.end(); ++iter) {
     auto value = iter->second;
     if (value != nullptr) {
-      std::wstring repr;
-      iter->first.GetRepr(repr);
-      kvs.insert(std::make_pair(repr, value));
+      auto storageVal = storage.Get(iter->first);
+      if (nullptr != storageVal) {
+        storageVal->Add(*value);
+      } else {
+        storage.Set(iter->first, *value);
+      }
     }
   }
 }
@@ -129,6 +124,10 @@ void Storage::Merge(const Storage &storage) {
       container_.insert(std::make_pair(iter->first, iter->second));
     }
   }
+}
+
+void Storage::Clear() {
+  container_.clear();
 }
 
 }}}

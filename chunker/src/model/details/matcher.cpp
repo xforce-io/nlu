@@ -50,16 +50,19 @@ void Matcher::ParseAccordingToRule_(std::shared_ptr<basic::NluContext> nluContex
     return;
   }
 
-  const milkie::Context::Storages &storages = context->GetStorages();
-  for (auto &storage : storages) {
-    const std::wstring &key = storage.first;
+  const milkie::Storage &storage = context->GetStorage();
+  for (auto &storageKv : storage.Get()) {
+    const milkie::StorageKey &key = storageKv.first;
+    std::wstring repr;
+    key.GetRepr(repr);
+
     std::vector<std::wstring> vals;
-    StrHelper::SplitStr(key, L'.', vals);
+    StrHelper::SplitStr(repr, L'.', vals);
     if (vals.size() != 2) {
       continue;
     }
 
-    auto storageItems = storage.second->Get();
+    auto storageItems = storageKv.second->Get();
     if (vals[0] == kChunkStoragePrefix) {
       for (auto &segment : nluContext->GetSegments().GetAll()) {
         for (auto &storageItem : storageItems) {
@@ -71,7 +74,7 @@ void Matcher::ParseAccordingToRule_(std::shared_ptr<basic::NluContext> nluContex
       }
     } else if (vals[0] == kSyntacticStoragePrefix) {
       if (vals.size() != 2) {
-        ERROR("invalid_storage_key[" << key << "]");
+        ERROR("invalid_storage_key[" << repr << "]");
         continue;
       }
 
@@ -81,7 +84,7 @@ void Matcher::ParseAccordingToRule_(std::shared_ptr<basic::NluContext> nluContex
         continue;
       }
 
-      auto storageItems = storage.second->Get();
+      auto storageItems = storageKv.second->Get();
       for (auto &storageItem : storageItems) {
         basic::Chunk chunk(
                 syntaxTag,

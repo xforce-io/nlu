@@ -19,7 +19,6 @@ class NluContext {
 
   std::shared_ptr<NluContext> Build(size_t from, size_t to);
   std::shared_ptr<NluContext> Clone() const;
-  Stage::Val Split(std::vector<std::shared_ptr<NluContext>> &nluContexts);
 
   inline const typename NameEntity::Set& GetNameEntities() const;
   inline typename NameEntity::Set& GetNameEntities();
@@ -33,9 +32,6 @@ class NluContext {
   inline bool HasPredPosBefore(size_t offset) const;
 
   void Dump(JsonType &jsonType);
-
- private:
-  void AdjustSegTags_(size_t i, PosTag::Type::Val posTag);
 
  private:
   std::wstring query_;
