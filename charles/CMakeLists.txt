@@ -36,7 +36,7 @@ set(LIB_DEPS
 )
 
 add_executable(charles
-  ${SEG_FILES})
+  ${SEG_FILES} src/model/analysis/nlu_context_split.h src/model/analysis/details/nlu_context_split.cpp)
 
 target_link_libraries(charles
   ${LIB_DEPS}

@@ -12,6 +12,7 @@ bool Conf::Init(const xforce::JsonType &confJson) {
     return false;
   }
   dataDir_ = confJson["dataDir"].AsStr();
+  splitRuleConfpath_ = confJson["splitRuleConfpath"].AsStr();
   return true;
 }
 

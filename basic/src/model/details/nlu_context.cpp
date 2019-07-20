@@ -30,40 +30,9 @@ std::shared_ptr<NluContext> NluContext::Clone() const {
   return nluContext;
 }
 
-Stage::Val NluContext::Split(std::vector<std::shared_ptr<NluContext>> &nluContexts) {
-  auto iterSeg = GetSegments().GetAll().begin();
-  size_t idx=0;
-  while (iterSeg != GetSegments().GetAll().end()) {
-    if ((*iterSeg)->GetTags().size() > 1) {
-      for (auto tag : ((*iterSeg)->GetTags())) {
-        auto newNluContext = Clone();
-        newNluContext->AdjustSegTags_(idx, tag);
-        nluContexts.push_back(newNluContext);
-      }
-      return Stage::kSegment;
-    }
-    ++iterSeg;
-    ++idx;
-  }
-  return Stage::kNone;
-}
-
 void NluContext::Dump(JsonType &jsonType) {
   jsonType["query"] = *(StrHelper::Wstr2Str(query_));
   managerFragmentSet_->Dump(jsonType["fragments"]);
-}
-
-void NluContext::AdjustSegTags_(size_t i, PosTag::Type::Val posTag) {
-  auto iterSeg = GetSegments().GetAll().begin();
-  size_t idx=0;
-  while (iterSeg != GetSegments().GetAll().end()) {
-    if (idx == i) {
-      (*iterSeg)->SetTag(posTag);
-      break;
-    }
-    ++iterSeg;
-    ++idx;
-  }
 }
 
 }}}
