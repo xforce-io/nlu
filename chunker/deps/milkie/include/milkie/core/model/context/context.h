@@ -1,8 +1,7 @@
 #pragma once
 
 #include "../../../public.h"
-#include "storage_key.h"
-#include "storage_val.h"
+#include "storage.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -10,12 +9,6 @@ class Frame;
 class Sentence;
 
 class Context {
- public:
-  typedef std::unordered_map<
-      StorageKey, 
-      std::shared_ptr<StorageVal>,
-      StorageKey::HashVal> Storages;
-
  public:
   inline Context(std::shared_ptr<basic::NluContext> nluContext);
   inline Context(const std::wstring &sentenceStr);
@@ -59,7 +52,7 @@ class Context {
   /*
    * mark : str env supported only now
    */
-  const Storages& GetStorages() const { return storages_; }
+  const Storage& GetStorage() const { return storage_; }
 
   inline void SetCurStoragePattern(StorageVal &storageItem);
   inline std::shared_ptr<StorageVal> GetCurStoragePattern();
@@ -71,14 +64,13 @@ class Context {
   ssize_t curPos_;
   std::stack<std::shared_ptr<Frame>> stack_;
 
-  Storages storages_;
+  Storage storage_;
 };
 
 }}}
 
 #include "../sentence/sentence.h"
 #include "frame.h"
-#include "storage_val.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -175,7 +167,7 @@ void Context::Store() {
   std::stack<std::shared_ptr<Frame>> tmpStack;
   while (!stack_.empty()) {
     auto frame = stack_.top();
-    frame->GetStorage().Get(storages_);
+    frame->GetStorage().Store(storage_);
     tmpStack.push(frame);
     stack_.pop();
   }
@@ -187,7 +179,7 @@ void Context::Store() {
 }
 
 void Context::Clear() {
-  storages_.clear();
+  storage_.Clear();
 }
 
 const std::shared_ptr<StorageVal> Context::GetCurStorage(const StorageKey &key) {
@@ -226,14 +218,8 @@ const std::wstring* Context::GetCurStorageAsStr(const wchar_t *item) {
   return GetCurStorageAsStr(StorageKey(nullptr, item));
 }
 
-
 const std::shared_ptr<StorageVal> Context::GetStorage(const StorageKey &key) {
-  auto iter = storages_.find(key);
-  if (iter != storages_.end()) {
-    return iter->second;
-  } else {
-    return nullptr;
-  }
+  return storage_.Get(key);
 }
 
 const std::wstring* Context::GetStorageAsStr(const StorageKey &key) {
