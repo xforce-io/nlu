@@ -5,6 +5,12 @@
 namespace xforce { namespace nlu { namespace charles {
 
 class NluContextSplit {
+ private:
+  static const size_t kMaxNumBranches = 3;
+  static const std::wstring kBranch0SyntaxStoragePrefix;
+  static const std::wstring kBranch1SyntaxStoragePrefix;
+  static const std::wstring kBranch2SyntaxStoragePrefix;
+
  public:
   NluContextSplit();
   virtual ~NluContextSplit();
@@ -32,6 +38,7 @@ class NluContextSplit {
 
  private:
   milkie::Milkie *splitRuleEngine_;
+  std::shared_ptr<milkie::FeatureExtractor> feNluContextSplit_;
 };
 
 }}}

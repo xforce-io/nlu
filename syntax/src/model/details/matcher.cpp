@@ -11,7 +11,7 @@ Matcher::Matcher() :
 bool Matcher::Init() {
   bool ret = milkie_->Init(Conf::Get().GetMilkieConfpath());
   if (!ret) {
-    FATAL("fail_init[milkie]");
+    FATAL("fail_init[parser]");
     return false;
   }
 
@@ -150,11 +150,6 @@ bool Matcher::SyntaxProcessForChunk_(std::shared_ptr<basic::NluContext> nluConte
 
     auto storageItems = storageKv.second->Get();
     if (vals[0] == kSyntacticStoragePrefix) {
-      if (vals.size() != 2) {
-        ERROR("invalid_storage_key[" << repr << "]");
-        return false;
-      }
-
       auto syntaxTag = basic::SyntaxTag::GetSyntaxTag(vals[1]);
       if (basic::SyntaxTag::Type::kUndef == syntaxTag) {
         ERROR("unknown_syntax_tag[" << syntaxTag << "]");

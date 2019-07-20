@@ -1,0 +1,8 @@
+FEATURE_EXTRACTOR_BEGIN(chunker)
+    ^{ #Pos((nP-)+) -> syntactic.np }
+    ~{ #Pos((cP-)+) -> syntactic.advp }
+    ~{ #Pos((dP-)*(vP-)) -> syntactic.v }
+    ~{ #Pos((dP-)*(pP-)) -> syntactic.p }
+    ~{ [#Pos((rP-)*(mP-)*(qP-)+), #Pos((rP-)*(mP-)+), #Pos((rP-)*(qP-)+)] -> syntactic.qp }
+    ~{ #Pos(lP) "的" -> syntactic.advp}
+FEATURE_EXTRACTOR_END

@@ -7,6 +7,7 @@ include_directories(
   /home/freeman/software/include/
   ${CMAKE_SOURCE_DIR}/deps/public-cpp/include/
   ${CMAKE_SOURCE_DIR}/deps/basic/include/
+  ${CMAKE_SOURCE_DIR}/deps/milkie/include/
   ${CMAKE_SOURCE_DIR}/deps/ner/include/
   ${CMAKE_SOURCE_DIR}/deps/segmentor/include/
   ${CMAKE_SOURCE_DIR}/deps/pos_tagging/include/
@@ -36,7 +37,7 @@ set(LIB_DEPS
 )
 
 add_executable(charles
-  ${SEG_FILES} src/model/analysis/nlu_context_split.h src/model/analysis/details/nlu_context_split.cpp)
+  ${SEG_FILES})
 
 target_link_libraries(charles
   ${LIB_DEPS}
