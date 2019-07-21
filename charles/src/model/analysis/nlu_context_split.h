@@ -18,17 +18,17 @@ class NluContextSplit {
   bool Init();
 
   bool Split(
-          const basic::NluContext &nluContext,
+          const std::shared_ptr<basic::NluContext> &nluContext,
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts,
           basic::Stage::Val stage);
 
  private:
   bool SplitBySegment_(
-          const basic::NluContext &nluContext,
+          const std::shared_ptr<basic::NluContext> &nluContext,
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
 
   bool SplitBySyntax_(
-          const basic::NluContext &nluContext,
+          const std::shared_ptr<basic::NluContext> &nluContext,
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
 
   void AdjustSegTags_(
