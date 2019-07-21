@@ -23,7 +23,7 @@ class Matcher {
   void ParseCommon_(basic::NluContext &nluContext);
 
  private:
-  milkie::Milkie *milkie_;
+  milkie::Milkie *parser_;
   std::shared_ptr<milkie::FeatureExtractor> featureExtractor_;
   std::vector<FilterParserCommon*> filterParserCommons_;
 };

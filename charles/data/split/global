@@ -1,8 +1,4 @@
-FEATURE_EXTRACTOR_BEGIN(chunker)
-    ^{ #Pos((nP-)+) -> syntactic.np }
-    ~{ #Pos((cP-)+) -> syntactic.advp }
-    ~{ #Pos((dP-)*(vP-)) -> syntactic.v }
-    ~{ #Pos((dP-)*(pP-)) -> syntactic.p }
-    ~{ [#Pos((rP-)*(mP-)*(qP-)+), #Pos((rP-)*(mP-)+), #Pos((rP-)*(qP-)+)] -> syntactic.qp }
-    ~{ #Pos(lP) "的" -> syntactic.advp}
+FEATURE_EXTRACTOR_BEGIN(nluContextSplit)
+  ~{ #Chk(v) { #Chk(np) “的” #Chk(np) -> branch0-syntactic.np} }
+  ~{ { #Chk(v) #Chk(np) -> branch1-syntactic.vp } “的” #Chk(np) }
 FEATURE_EXTRACTOR_END

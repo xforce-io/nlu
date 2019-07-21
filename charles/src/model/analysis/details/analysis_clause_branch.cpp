@@ -43,7 +43,7 @@ bool AnalysisClauseBranch::Process(
 
   std::vector<std::shared_ptr<basic::NluContext>> nluContexts;
   while (basic::Stage::kNone != splitStage_) {
-      bool ret = nluContextSplit_->Split(*nluContext_, nluContexts, splitStage_);
+      bool ret = nluContextSplit_->Split(nluContext_, nluContexts, splitStage_);
       splitStage_ = basic::Stage::GetPrev(splitStage_);
       if (!ret) {
         continue;
@@ -57,7 +57,7 @@ bool AnalysisClauseBranch::Process(
   }
 
   if (basic::Stage::kNone != splitStage_) {
-    branches.push(std::make_shared<AnalysisClauseBranch>(*nluContextSplit_, *this));
+    branches.push(std::make_shared<AnalysisClauseBranch>(*nluContextSplit_, *nluContext_));
   } else {
     end_ = true;
   }

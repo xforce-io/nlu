@@ -15,9 +15,13 @@ NluContextSplit::~NluContextSplit() {
 }
 
 bool NluContextSplit::Init() {
+  splitRuleEngine_ = new milkie::Milkie();
+
   bool ret = splitRuleEngine_->Init(Conf::Get().GetSplitRuleConfpath());
   if (!ret) {
-    FATAL("fail_init[split_rule_engine]");
+    FATAL("fail_init[split_rule_engine] confpath[" 
+        << *StrHelper::Str2Wstr(Conf::Get().GetSplitRuleConfpath()) 
+        << "]");
     return false;
   }
 
@@ -106,7 +110,7 @@ bool NluContextSplit::SplitBySyntax_(
     }
 
     if (nullptr == branches[index]) {
-      branches[index] = nluContext.Clone();
+      branches[index] = nluContext->Clone();
     }
 
     auto syntaxTag = basic::SyntaxTag::GetSyntaxTag(vals[1]);

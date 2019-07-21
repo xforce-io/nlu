@@ -16,7 +16,7 @@ Chunker::~Chunker() {
 bool Chunker::Init() {
   auto ret = matcher_->Init();
   if (!ret) {
-    FATAL("fail_init_milkie");
+    FATAL("fail_init_parser");
     return false;
   }
   return true;

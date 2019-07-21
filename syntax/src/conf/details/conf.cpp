@@ -15,7 +15,7 @@ bool Conf::Init(const xforce::JsonType &confJson) {
    XFC_FAIL_HANDLE_FATAL(
           !confJson["parserConfpath"].IsStr(),
           "fail_get_parserConfpath")
-  parserConfpath_ = confJson["milkieConfpath"].AsStr();
+  parserConfpath_ = confJson["parserConfpath"].AsStr();
   return true;
 
   ERROR_HANDLE:
