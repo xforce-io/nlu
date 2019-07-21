@@ -4,14 +4,17 @@ namespace xforce { namespace nlu { namespace charles {
 
 AnalysisClause::AnalysisClause(const std::wstring &clause) :
   nluContextSplit_(nullptr),
-  master_(std::make_shared<AnalysisClauseBranch>(clause)) {}
+  clause_(clause),
+  master_(nullptr) {}
 
 AnalysisClause::~AnalysisClause() {
   XFC_DELETE(nluContextSplit_)
 }
 
 bool AnalysisClause::Init() {
-  return nluContextSplit_->Init();
+  bool ret = nluContextSplit_->Init();
+  master_ = std::make_shared<AnalysisClauseBranch>(*nluContextSplit_, clause_);
+  return ret;
 }
 
 bool AnalysisClause::Process() {

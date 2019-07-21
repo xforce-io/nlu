@@ -20,6 +20,7 @@ class AnalysisClause : public AnalysisComponent {
  private:
   NluContextSplit *nluContextSplit_;
 
+  std::wstring clause_;
   std::shared_ptr<AnalysisClauseBranch> master_;
   std::queue<std::shared_ptr<AnalysisClauseBranch>> branches_;
   std::list<std::shared_ptr<AnalysisClauseBranch>> results_;
