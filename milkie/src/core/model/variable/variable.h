@@ -41,6 +41,7 @@ bool Variable::IsValidChar(wchar_t c, ssize_t idx) {
     (c >= L'0' && c <= L'9') ||
     (c >= L'*' && 0==idx) ||
     L'_' == c ||
+    L'-' == c ||
     L'.' == c;
 }
 
