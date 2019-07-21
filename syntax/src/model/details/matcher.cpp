@@ -9,7 +9,7 @@ Matcher::Matcher() :
     milkie_(new milkie::Milkie()) {}
 
 bool Matcher::Init() {
-  bool ret = milkie_->Init(Conf::Get().GetMilkieConfpath());
+  bool ret = milkie_->Init(Conf::Get().GetParserConfpath());
   if (!ret) {
     FATAL("fail_init[parser]");
     return false;

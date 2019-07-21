@@ -8,7 +8,7 @@ const std::wstring Matcher::kChunkStoragePrefix = L"/chunkSep";
 const std::wstring Matcher::kSyntacticStoragePrefix = L"/syntactic";
 
 Matcher::Matcher() :
-    milkie_(new milkie::Milkie()) {
+    parser_(new milkie::Milkie()) {
   filterParserCommons_.push_back(new FPCDongqu());
   filterParserCommons_.push_back(new FPCMid());
   filterParserCommons_.push_back(new FPCSurround());
@@ -18,18 +18,18 @@ Matcher::~Matcher() {
   for (auto *filterParserCommon : filterParserCommons_) {
     delete filterParserCommon;
   }
-  XFC_DELETE(milkie_)
+  XFC_DELETE(parser_)
 }
 
 bool Matcher::Init() {
-  bool ret = milkie_->Init(Conf::Get().GetMilkieConfpath());
+  bool ret = parser_->Init(Conf::Get().GetParserConfpath());
   if (!ret) {
-    FATAL("fail_init[milkie]");
+    FATAL("fail_init[parser]");
     return false;
   }
 
-  featureExtractor_ = milkie_->GetManager().GetFeatureExtractor(L"chunker");
-  if (featureExtractor_ == nullptr) {
+  featureExtractor_ = parser_->GetManager().GetFeatureExtractor(L"chunker");
+  if (nullptr == featureExtractor_) {
     FATAL("fail_get_feature_extractor_named_chunker");
     return false;
   }

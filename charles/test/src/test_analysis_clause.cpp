@@ -23,5 +23,6 @@ TEST(testAll, all) {
 
   ASSERT_TRUE(BaseModules::Init(*conf));
   AnalysisClause analysisClause(L"自己的节奏还没有踩上");
+  ASSERT_TRUE(analysisClause.Init());
   std::cout << analysisClause.Process() << std::endl;
 }
