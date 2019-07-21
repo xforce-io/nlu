@@ -51,13 +51,13 @@ bool AnalysisClauseBranch::Process(
   }
 
   for (auto nluContext : nluContexts) {
-    auto child = std::make_shared<AnalysisClauseBranch>(*nluContext);
+    auto child = std::make_shared<AnalysisClauseBranch>(*nluContextSplit_, *nluContext);
     branches.push(child);
     children_.push_back(child);
   }
 
   if (basic::Stage::kNone != splitStage_) {
-    branches.push(std::make_shared<AnalysisClauseBranch>(*this));
+    branches.push(std::make_shared<AnalysisClauseBranch>(*nluContextSplit_, *this));
   } else {
     end_ = true;
   }
@@ -65,7 +65,7 @@ bool AnalysisClauseBranch::Process(
 }
 
 std::shared_ptr<AnalysisClauseBranch> AnalysisClauseBranch::Clone() const {
-  return std::make_shared<AnalysisClauseBranch>(*nluContext_);
+  return std::make_shared<AnalysisClauseBranch>(*nluContextSplit_, *nluContext_);
 }
 
 void AnalysisClauseBranch::Dump(JsonType &jsonType) {

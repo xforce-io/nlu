@@ -91,7 +91,7 @@ bool NluContextSplit::SplitBySyntax_(
       continue;
     }
 
-    size_t index = -1;
+    int index = -1;
     if (kBranch0SyntaxStoragePrefix == vals[0]) {
       index = 0;
     } else if (kBranch1SyntaxStoragePrefix == vals[0]) {
