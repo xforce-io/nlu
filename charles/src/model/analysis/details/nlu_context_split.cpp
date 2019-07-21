@@ -30,7 +30,7 @@ bool NluContextSplit::Init() {
 }
 
 bool NluContextSplit::Split(
-        const basic::NluContext &nluContext,
+        const std::shared_ptr<basic::NluContext> &nluContext,
         std::vector<std::shared_ptr<basic::NluContext>> &nluContexts,
         basic::Stage::Val stage) {
   switch (stage) {
@@ -48,14 +48,14 @@ bool NluContextSplit::Split(
 }
 
 bool NluContextSplit::SplitBySegment_(
-        const basic::NluContext &nluContext,
+        const std::shared_ptr<basic::NluContext> &nluContext,
         std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) {
-  auto iterSeg = nluContext.GetSegments().GetAll().begin();
+  auto iterSeg = nluContext->GetSegments().GetAll().begin();
   size_t idx=0;
-  while (iterSeg != nluContext.GetSegments().GetAll().end()) {
+  while (iterSeg != nluContext->GetSegments().GetAll().end()) {
     if ((*iterSeg)->GetTags().size() > 1) {
       for (auto tag : ((*iterSeg)->GetTags())) {
-        auto newNluContext = nluContext.Clone();
+        auto newNluContext = nluContext->Clone();
         AdjustSegTags_(*newNluContext, idx, tag);
         nluContexts.push_back(newNluContext);
       }
@@ -68,7 +68,7 @@ bool NluContextSplit::SplitBySegment_(
 }
 
 bool NluContextSplit::SplitBySyntax_(
-        const basic::NluContext &nluContext,
+        const std::shared_ptr<basic::NluContext> &nluContext,
         std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) {
   std::vector<std::shared_ptr<basic::NluContext>> branches;
   branches.resize(kMaxNumBranches, nullptr);
