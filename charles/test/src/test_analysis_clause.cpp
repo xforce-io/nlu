@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
 TEST(testAll, all) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/charles.conf");
 
-  ASSERT_TRUE(BaseModules::Init(*conf));
+  ASSERT_TRUE(Charles::Init(*conf));
   AnalysisClause analysisClause(L"自己的节奏还没有踩上");
   std::cout << analysisClause.Process() << std::endl;
 }

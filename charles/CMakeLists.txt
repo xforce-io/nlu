@@ -37,7 +37,7 @@ set(LIB_DEPS
 )
 
 add_executable(charles
-  ${SEG_FILES})
+  ${SEG_FILES} src/charles.h src/details/charles.cpp)
 
 target_link_libraries(charles
   ${LIB_DEPS}
