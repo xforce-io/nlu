@@ -4,13 +4,19 @@
 
 namespace xforce { namespace nlu { namespace charles {
 
-AnalysisClauseBranch::AnalysisClauseBranch(const std::wstring &clause) :
+AnalysisClauseBranch::AnalysisClauseBranch(
+        NluContextSplit &nluContextSplit,
+        const std::wstring &clause) :
+  nluContextSplit_(&nluContextSplit),
   nluContext_(std::make_shared<basic::NluContext>(clause)),
   splitStage_(basic::Stage::kEnd),
   processed_(false),
   end_(false) {}
 
-AnalysisClauseBranch::AnalysisClauseBranch(const basic::NluContext &nluContext) :
+AnalysisClauseBranch::AnalysisClauseBranch(
+        NluContextSplit &nluContextSplit,
+        const basic::NluContext &nluContext) :
+  nluContextSplit_(&nluContextSplit),
   nluContext_(nluContext.Clone()),
   splitStage_(basic::Stage::kSyntax),
   processed_(false),
@@ -37,7 +43,7 @@ bool AnalysisClauseBranch::Process(
 
   std::vector<std::shared_ptr<basic::NluContext>> nluContexts;
   while (basic::Stage::kNone != splitStage_) {
-      bool ret = NluContextSplit::Split(*nluContext_, nluContexts, splitStage_);
+      bool ret = nluContextSplit_->Split(*nluContext_, nluContexts, splitStage_);
       splitStage_ = basic::Stage::GetPrev(splitStage_);
       if (!ret) {
         continue;
