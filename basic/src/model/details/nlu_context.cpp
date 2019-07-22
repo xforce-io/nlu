@@ -35,4 +35,15 @@ void NluContext::Dump(JsonType &jsonType) {
   managerFragmentSet_->Dump(jsonType["fragments"]);
 }
 
+void NluContext::Dump(std::string &json) {
+  xforce::JsonType jsonToDump;
+  GetSegments().Dump(jsonToDump);
+  GetChunkSeps().Dump(jsonToDump);
+  GetChunks().Dump(jsonToDump);
+
+  std::stringstream ss;
+  jsonToDump.DumpJson(ss);
+  json = ss.str();
+}
+
 }}}
