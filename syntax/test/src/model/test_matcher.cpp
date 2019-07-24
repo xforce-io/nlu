@@ -41,20 +41,9 @@ TEST(testAll, all) {
   Segmentor::Parse(nluContext);
   PosTagging::Tagging(nluContext);
   Chunker::Parse(nluContext);
-
-  xforce::JsonType jsonToDump;
-  nluContext->GetSegments().Dump(jsonToDump);
-  nluContext->GetChunkSeps().Dump(jsonToDump);
-
-  std::stringstream ss;
-  jsonToDump.DumpJson(ss);
-  std::cout << ss.str() << std::endl;
-
   Syntax::Parse(nluContext);
 
-  nluContext->GetChunks().Dump(jsonToDump);
-
-  ss.str("");
-  jsonToDump.DumpJson(ss);
-  std::cout << ss.str() << std::endl;
+  std::string repr;
+  nluContext->Dump(repr);
+  std::cout << repr << std::endl;
 }
