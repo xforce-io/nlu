@@ -14,7 +14,7 @@ AnalysisClause::~AnalysisClause() {
 bool AnalysisClause::Init() {
   nluContextSplit_ = new NluContextSplit();
   bool ret = nluContextSplit_->Init();
-  master_ = std::make_shared<AnalysisClauseBranch>(*nluContextSplit_, clause_);
+  master_ = std::make_shared<AnalysisClauseBranch>(*nluContextSplit_, 1, clause_);
   return ret;
 }
 

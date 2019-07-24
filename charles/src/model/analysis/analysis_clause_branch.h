@@ -10,14 +10,18 @@ class AnalysisClauseBranch {
  public:
   AnalysisClauseBranch(
           NluContextSplit &nluContextSplit,
+          size_t no,
           const std::wstring &clause);
 
   AnalysisClauseBranch(
           NluContextSplit &nluContextSplit,
+          size_t no,
           const basic::NluContext &nluContext);
 
   bool Process(std::queue<std::shared_ptr<AnalysisClauseBranch>> &children);
   std::shared_ptr<AnalysisClauseBranch> Clone() const;
+
+  const std::shared_ptr<basic::NluContext>& GetNluContext() const { return nluContext_; }
 
   void Dump(JsonType &jsonType);
 
@@ -27,7 +31,7 @@ class AnalysisClauseBranch {
 
  private:
   NluContextSplit *nluContextSplit_;
-
+  size_t no_;
   std::shared_ptr<basic::NluContext> nluContext_;
   std::unordered_map<basic::Stage::Val, std::shared_ptr<AnalysisClauseBranch>> ancestors_;
   std::list<std::shared_ptr<AnalysisClauseBranch>> children_;
