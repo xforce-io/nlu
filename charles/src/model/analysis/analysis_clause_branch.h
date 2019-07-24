@@ -21,6 +21,7 @@ class AnalysisClauseBranch {
   bool Process(std::queue<std::shared_ptr<AnalysisClauseBranch>> &children);
   std::shared_ptr<AnalysisClauseBranch> Clone() const;
 
+  size_t GetNo() const { return no_; }
   const std::shared_ptr<basic::NluContext>& GetNluContext() const { return nluContext_; }
 
   void Dump(JsonType &jsonType);
