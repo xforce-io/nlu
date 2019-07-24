@@ -15,6 +15,7 @@ class AnalysisClause : public AnalysisComponent {
 
   bool Init();
   bool Process();
+  const std::list<std::shared_ptr<AnalysisClauseBranch>>& GetResults() const { return results_; }
   void Dump(JsonType &jsonType);
 
  private:

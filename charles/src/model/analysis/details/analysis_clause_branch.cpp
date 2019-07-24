@@ -6,8 +6,10 @@ namespace xforce { namespace nlu { namespace charles {
 
 AnalysisClauseBranch::AnalysisClauseBranch(
         NluContextSplit &nluContextSplit,
+        size_t no,
         const std::wstring &clause) :
   nluContextSplit_(&nluContextSplit),
+  no_(no),
   nluContext_(std::make_shared<basic::NluContext>(clause)),
   splitStage_(basic::Stage::kEnd),
   processed_(false),
@@ -15,8 +17,10 @@ AnalysisClauseBranch::AnalysisClauseBranch(
 
 AnalysisClauseBranch::AnalysisClauseBranch(
         NluContextSplit &nluContextSplit,
+        size_t no,
         const basic::NluContext &nluContext) :
   nluContextSplit_(&nluContextSplit),
+  no_(no),
   nluContext_(nluContext.Clone()),
   splitStage_(basic::Stage::kSyntax),
   processed_(false),
@@ -50,10 +54,15 @@ bool AnalysisClauseBranch::Process(
       }
   }
 
+  size_t idx=0;
   for (auto nluContext : nluContexts) {
-    auto child = std::make_shared<AnalysisClauseBranch>(*nluContextSplit_, *nluContext);
+    auto child = std::make_shared<AnalysisClauseBranch>(
+            *nluContextSplit_,
+            no_ * 10 + idx,
+            *nluContext);
     branches.push(child);
     children_.push_back(child);
+    ++idx;
   }
 
   if (basic::Stage::kNone != splitStage_) {

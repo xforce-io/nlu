@@ -26,4 +26,11 @@ TEST(testAll, all) {
   AnalysisClause analysisClause(L"自己的节奏还没有踩上");
   ASSERT_TRUE(analysisClause.Init());
   std::cout << analysisClause.Process() << std::endl;
+
+  std::string repr;
+  for (auto result : analysisClause.GetResults()) {
+    std::cout << "no[" << result->GetNo() << "] ";
+    result->GetNluContext()->Dump(repr);
+    std::cout << "result[" << repr << "]" << std::endl;
+  }
 }
