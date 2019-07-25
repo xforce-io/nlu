@@ -49,8 +49,8 @@ bool AnalysisClauseBranch::Process(
   while (basic::Stage::kNone != splitStage_) {
       bool ret = nluContextSplit_->Split(nluContext_, nluContexts, splitStage_);
       splitStage_ = basic::Stage::GetPrev(splitStage_);
-      if (!ret) {
-        continue;
+      if (ret) {
+        break;
       }
   }
 
