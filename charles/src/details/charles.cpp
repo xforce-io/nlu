@@ -16,6 +16,7 @@ bool Charles::Init() {
 }
 
 void Charles::Process(std::shared_ptr<basic::NluContext> nluContext) {
+  UNUSE(nluContext)
 }
 
 bool Charles::Init(const xforce::JsonType &confJson) {

@@ -2,6 +2,7 @@
 
 #include "gtest/gtest.h"
 
+#include "../../../src/charles.h"
 #include "../../../src/model/base_modules.h"
 #include "../../../src/model/analysis/analysis_clause.h"
 

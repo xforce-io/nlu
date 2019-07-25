@@ -32,6 +32,7 @@ class NluContext {
   inline bool HasPredPosBefore(size_t offset) const;
 
   void Dump(JsonType &jsonType);
+  void Dump(std::string &json);
 
  private:
   std::wstring query_;
