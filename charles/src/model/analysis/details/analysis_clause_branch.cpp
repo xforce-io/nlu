@@ -69,7 +69,9 @@ bool AnalysisClauseBranch::Process(
   }
 
   if (basic::Stage::kNone != splitStage_) {
-    branches.push(std::make_shared<AnalysisClauseBranch>(*nluContextSplit_, no_, *nluContext_));
+    auto copy = std::make_shared<AnalysisClauseBranch>(*nluContextSplit_, no_, *nluContext_);
+    copy->splitStage_ = splitStage_;
+    branches.push(copy);
   } else {
     end_ = true;
   }
