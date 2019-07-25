@@ -11,7 +11,7 @@ AnalysisClauseBranch::AnalysisClauseBranch(
   nluContextSplit_(&nluContextSplit),
   no_(no),
   nluContext_(std::make_shared<basic::NluContext>(clause)),
-  bornStage_(basic::Stage::kSyntax),
+  bornStage_(basic::Stage::kEnd),
   curStage_(basic::Stage::kSyntax),
   processed_(false),
   end_(false) {}
@@ -23,7 +23,7 @@ AnalysisClauseBranch::AnalysisClauseBranch(
   nluContextSplit_(&nluContextSplit),
   no_(no),
   nluContext_(nluContext.Clone()),
-  bornStage_(basic::Stage::kSyntax),
+  bornStage_(basic::Stage::kEnd),
   curStage_(basic::Stage::kSyntax),
   processed_(false),
   end_(false) {}

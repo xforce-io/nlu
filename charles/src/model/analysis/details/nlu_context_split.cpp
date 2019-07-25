@@ -38,10 +38,10 @@ bool NluContextSplit::Split(
         std::vector<std::shared_ptr<basic::NluContext>> &nluContexts,
         basic::Stage::Val stage) {
   switch (stage) {
-    case basic::Stage::Val::kSegment : {
-      return SplitBySegment_(nluContext, nluContexts);
+    case basic::Stage::Val::kPosTag : {
+      return SplitByPosTag_(nluContext, nluContexts);
     }
-    case basic::Stage::Val ::kSyntax : {
+    case basic::Stage::Val::kSyntax : {
       return SplitBySyntax_(nluContext, nluContexts);
     }
     default : {
@@ -51,7 +51,7 @@ bool NluContextSplit::Split(
   return false;
 }
 
-bool NluContextSplit::SplitBySegment_(
+bool NluContextSplit::SplitByPosTag_(
         const std::shared_ptr<basic::NluContext> &nluContext,
         std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) {
   auto iterSeg = nluContext->GetSegments().GetAll().begin();

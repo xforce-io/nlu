@@ -23,7 +23,7 @@ class AnalysisClauseBranch {
 
   size_t GetNo() const { return no_; }
   const std::shared_ptr<basic::NluContext>& GetNluContext() const { return nluContext_; }
-  const basic::Stage::Val GetBornStage() const { return bornStage_; }
+  basic::Stage::Val GetBornStage() const { return bornStage_; }
   bool GetEnd() const { return end_; }
 
   void Dump(JsonType &jsonType);

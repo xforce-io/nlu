@@ -23,7 +23,7 @@ class NluContextSplit {
           basic::Stage::Val stage);
 
  private:
-  bool SplitBySegment_(
+  bool SplitByPosTag_(
           const std::shared_ptr<basic::NluContext> &nluContext,
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
 
