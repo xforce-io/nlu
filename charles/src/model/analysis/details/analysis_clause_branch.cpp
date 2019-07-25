@@ -11,7 +11,8 @@ AnalysisClauseBranch::AnalysisClauseBranch(
   nluContextSplit_(&nluContextSplit),
   no_(no),
   nluContext_(std::make_shared<basic::NluContext>(clause)),
-  splitStage_(basic::Stage::kEnd),
+  bornStage_(basic::Stage::kSyntax),
+  curStage_(basic::Stage::kSyntax),
   processed_(false),
   end_(false) {}
 
@@ -22,7 +23,8 @@ AnalysisClauseBranch::AnalysisClauseBranch(
   nluContextSplit_(&nluContextSplit),
   no_(no),
   nluContext_(nluContext.Clone()),
-  splitStage_(basic::Stage::kSyntax),
+  bornStage_(basic::Stage::kSyntax),
+  curStage_(basic::Stage::kSyntax),
   processed_(false),
   end_(false) {}
 
@@ -46,11 +48,13 @@ bool AnalysisClauseBranch::Process(
   }
 
   std::vector<std::shared_ptr<basic::NluContext>> nluContexts;
-  while (basic::Stage::kNone != splitStage_) {
+  basic::Stage::Val lastStage = basic::Stage::kEnd;
+  while (basic::Stage::kNone != curStage_) {
     nluContexts.clear();
 
-    bool ret = nluContextSplit_->Split(nluContext_, nluContexts, splitStage_);
-    splitStage_ = basic::Stage::GetPrev(splitStage_);
+    bool ret = nluContextSplit_->Split(nluContext_, nluContexts, curStage_);
+    lastStage = curStage_;
+    curStage_ = basic::Stage::GetPrev(curStage_);
     if (ret) {
       break;
     }
@@ -62,15 +66,17 @@ bool AnalysisClauseBranch::Process(
             *nluContextSplit_,
             no_ * 10 + idx,
             *nluContext);
-    child->splitStage_ = splitStage_;
+    child->bornStage_ = lastStage;
+    child->curStage_ = curStage_;
     branches.push(child);
     children_.push_back(child);
     ++idx;
   }
 
-  if (basic::Stage::kNone != splitStage_) {
+  if (basic::Stage::kNone != curStage_) {
     auto copy = std::make_shared<AnalysisClauseBranch>(*nluContextSplit_, no_, *nluContext_);
-    copy->splitStage_ = splitStage_;
+    copy->bornStage_ = bornStage_;
+    copy->curStage_ = curStage_;
     branches.push(copy);
   } else {
     end_ = true;

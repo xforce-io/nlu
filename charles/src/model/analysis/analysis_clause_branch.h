@@ -23,6 +23,7 @@ class AnalysisClauseBranch {
 
   size_t GetNo() const { return no_; }
   const std::shared_ptr<basic::NluContext>& GetNluContext() const { return nluContext_; }
+  const basic::Stage::Val GetBornStage() const { return bornStage_; }
   bool GetEnd() const { return end_; }
 
   void Dump(JsonType &jsonType);
@@ -37,7 +38,8 @@ class AnalysisClauseBranch {
   std::shared_ptr<basic::NluContext> nluContext_;
   std::unordered_map<basic::Stage::Val, std::shared_ptr<AnalysisClauseBranch>> ancestors_;
   std::list<std::shared_ptr<AnalysisClauseBranch>> children_;
-  basic::Stage::Val splitStage_;
+  basic::Stage::Val bornStage_;
+  basic::Stage::Val curStage_;
   bool processed_;
   bool end_;
 };

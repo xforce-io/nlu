@@ -30,6 +30,7 @@ TEST(testAll, all) {
   std::string repr;
   for (auto result : analysisClause.GetFinished()) {
     std::cout << "no[" << result->GetNo() << "] ";
+    std::cout << "born[" << result->GetBornStage() << "] ";
     result->GetNluContext()->Dump(repr);
     std::cout << "result[" << repr << "]" << std::endl;
   }
