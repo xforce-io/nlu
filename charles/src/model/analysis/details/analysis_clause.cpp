@@ -33,7 +33,10 @@ bool AnalysisClause::Process() {
     ret = branch->Process(branches_);
     if (ret) {
       succ = true;
+      finished_.push_back(branch);
       results_.push_back(branch);
+    } else if (branch->GetEnd()) {
+      finished_.push_back(branch);
     }
   }
   return succ;

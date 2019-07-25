@@ -9,13 +9,17 @@ namespace xforce { namespace nlu { namespace charles {
 
 class AnalysisClause : public AnalysisComponent {
  public:
+  typedef std::list<std::shared_ptr<AnalysisClauseBranch>> Branches;
+
+ public:
   AnalysisClause(
           const std::wstring &clause);
   virtual ~AnalysisClause();
 
   bool Init();
   bool Process();
-  const std::list<std::shared_ptr<AnalysisClauseBranch>>& GetResults() const { return results_; }
+  inline const Branches& GetFinished() const { return finished_; }
+  inline const Branches& GetResults() const { return results_; }
   void Dump(JsonType &jsonType);
 
  private:
@@ -24,7 +28,8 @@ class AnalysisClause : public AnalysisComponent {
   std::wstring clause_;
   std::shared_ptr<AnalysisClauseBranch> master_;
   std::queue<std::shared_ptr<AnalysisClauseBranch>> branches_;
-  std::list<std::shared_ptr<AnalysisClauseBranch>> results_;
+  Branches finished_;
+  Branches results_;
 };
 
 }}}
