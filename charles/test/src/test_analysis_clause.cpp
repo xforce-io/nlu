@@ -25,10 +25,10 @@ TEST(testAll, all) {
   ASSERT_TRUE(Charles::Init(*conf));
   AnalysisClause analysisClause(L"位于B组的中国女排迎战保加利亚队");
   ASSERT_TRUE(analysisClause.Init());
-  std::cout << analysisClause.Process() << std::endl;
+  analysisClause.Process();
 
   std::string repr;
-  for (auto result : analysisClause.GetResults()) {
+  for (auto result : analysisClause.GetFinished()) {
     std::cout << "no[" << result->GetNo() << "] ";
     result->GetNluContext()->Dump(repr);
     std::cout << "result[" << repr << "]" << std::endl;
