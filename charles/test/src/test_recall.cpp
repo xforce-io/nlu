@@ -6,7 +6,7 @@
 #include "../../../src/model/base_modules.h"
 #include "../../../src/model/analysis/analysis_clause.h"
 
-LOGGER_IMPL(xforce::xforce_logger, L"charles")
+LOGGER_IMPL(xforce::xforce_logger, L"syntax")
 
 using namespace xforce;
 using namespace xforce::nlu::charles;
@@ -21,19 +21,20 @@ int main(int argc, char **argv) {
 
 TEST(testAll, all) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/charles.conf");
-
   ASSERT_TRUE(Charles::Init(*conf));
-  AnalysisClause analysisClause(L"我们也是做了很多的困难准备");
-  ASSERT_TRUE(analysisClause.Init());
-  analysisClause.Process();
 
-  std::cout << analysisClause.GetResults().size() << std::endl;
+  std::wstring wStrQuery[] = {
+          L"我们自己有太多无谓的失误",
+          L"自己的节奏还没有踩上",
+          L"面对下一个对手意大利队",
+          L"保加利亚队尽管实力并不强",
+          L"但却在本场比赛给了中国队强有力的冲击"
+  };
 
-  std::string repr;
-  for (auto result : analysisClause.GetFinished()) {
-    std::cout << "no[" << result->GetNo() << "] ";
-    std::cout << "born[" << result->GetBornStage() << "] ";
-    result->GetNluContext()->Dump(repr);
-    std::cout << "result[" << repr << "]" << std::endl;
+  for (auto &query : wStrQuery) {
+    AnalysisClause analysisClause(query);
+    ASSERT_TRUE(analysisClause.Init());
+    analysisClause.Process();
+    assert(analysisClause.GetResults().size() == 1);
   }
 }

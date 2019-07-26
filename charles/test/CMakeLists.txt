@@ -56,3 +56,8 @@ add_executable(testAnalysisClause
   ${LOCAL_CPP_FILES}
   ${CMAKE_SOURCE_DIR}/src/test_analysis_clause.cpp
 )
+
+add_executable(testRecall
+  ${LOCAL_CPP_FILES}
+  ${CMAKE_SOURCE_DIR}/src/test_recall.cpp
+)

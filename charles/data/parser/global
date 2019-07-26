@@ -23,6 +23,7 @@ FEATURE_EXTRACTOR_BEGIN(syntax)
     { { #Chk(advp) ?} #Chk(pp) #Chk(v) #Chk(np) #Chk(np) -> syntactic._stc_ }
 
     ^{ #Chk(np) "的" #Chk(np) -> syntactic.np }
+    ^{ #Chk(vp) "的" #Chk(np) -> syntactic.np }
 
     ~{ "在" #Chk(np) % -> syntactic.pp }
     ~{ #Chk(advp) {"的" ?} #Chk(np) % -> syntactic.np }
