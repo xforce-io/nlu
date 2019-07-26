@@ -13,6 +13,9 @@ void StrategyComplement::Process(basic::NluContext &nluContext) {
         SetPos(*segment, (*poses)[0], kStrategyOther);
         for (size_t i=1; i < poses->size(); ++i) {
           AddPos(*segment, (*poses)[i]);
+          if ((*poses)[i] == basic::PosTag::Type::kV) {
+            AddPos(*segment, basic::PosTag::Type::kVn);
+          }
         }
       }
     }
