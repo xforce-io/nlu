@@ -21,6 +21,7 @@ bool AnalysisClause::Init() {
 bool AnalysisClause::Process() {
   bool ret = master_->Process(branches_);
   if (ret) {
+    finished_.push_back(master_);
     results_.push_back(master_);
     return true;
   }
