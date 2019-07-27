@@ -24,6 +24,15 @@ class Matcher {
   bool PostProcess_(std::shared_ptr<basic::NluContext> nluContext);
 
  private:
+  bool RuleContNp_(
+          std::shared_ptr<basic::NluContext> nluContext,
+          const std::shared_ptr<basic::Chunk> &chunk);
+
+  bool RuleIntransitiveVerb_(
+          std::shared_ptr<basic::NluContext> nluContext,
+          const std::shared_ptr<basic::Chunk> &chunk);
+
+ private:
   milkie::Milkie *milkie_;
   std::shared_ptr<milkie::FeatureExtractor> feChunkSep_;
   std::shared_ptr<milkie::FeatureExtractor> feChunk_;

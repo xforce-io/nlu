@@ -26,4 +26,20 @@ bool GkbVerb::IsPhrase(
   return gkbVerbDongqu_->IsPhrase(word0, word1);
 }
 
+EntryVerb::TiWeiZhun::Val GkbVerb::TiWeiZhun(
+    const std::wstring &word) const {
+  auto entries = GetEntries(word);
+  if (entries->empty()) {
+    return EntryVerb::TiWeiZhun::kOther;
+  }
+
+  EntryVerb::TiWeiZhun::Val firstTag = (*entries)[0]->TiWeiZhun();
+  for (size_t i=1; i < entries->size(); ++i) {
+    if ((*entries)[i]->TiWeiZhun() != firstTag) {
+      return EntryVerb::TiWeiZhun::kOther;
+    }
+  }
+  return firstTag;
+}
+
 }}}

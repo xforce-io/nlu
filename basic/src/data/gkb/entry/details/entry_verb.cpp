@@ -8,6 +8,15 @@ int EntryVerb::Parse(const std::vector<std::wstring> &items) {
     return ret;
   }
 
+  if (L"体" == items[kColTiWeiZhun]) {
+    tiWeiZhun_ = TiWeiZhun::kTi;
+  } else if (L"谓" == items[kColTiWeiZhun]) {
+    tiWeiZhun_ = TiWeiZhun::kWei;
+  } else if (L"准" == items[kColTiWeiZhun]) {
+    tiWeiZhun_ = TiWeiZhun::kZhun;
+  } else {
+    tiWeiZhun_ = TiWeiZhun::kNone;
+  }
   return 0;
 }
 

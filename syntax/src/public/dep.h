@@ -7,6 +7,9 @@
 #include "basic/model/name_entity.h"
 #include "basic/model/chunk.h"
 #include "basic/model/nlu_context.h"
+#include "basic/data/manager.h"
+#include "basic/data/gkb/gkb.h"
+#include "basic/data/gkb/table/gkb_verb.h"
 
 #include "milkie/milkie.h"
 #include "milkie/manager/manager.h"
