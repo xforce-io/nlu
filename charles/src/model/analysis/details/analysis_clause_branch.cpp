@@ -35,13 +35,13 @@ bool AnalysisClauseBranch::Process(
   }
 
   if (!processed_) {
-    if (bornStage_ >= basic::Stage::kSegment) {
+    if (bornStage_ <= basic::Stage::kSegment) {
       segmentor::Segmentor::Parse(nluContext_);
-      if (bornStage_ >= basic::Stage::kPosTag) {
+      if (bornStage_ <= basic::Stage::kPosTag) {
         pos::PosTagging::Tagging(nluContext_);
-        if (bornStage_ >= basic::Stage::kChunk) {
+        if (bornStage_ <= basic::Stage::kChunk) {
           chunker::Chunker::Parse(nluContext_);
-          if (bornStage_ >= basic::Stage::kSyntax) {
+          if (bornStage_ <= basic::Stage::kSyntax) {
             syntax::Syntax::Parse(nluContext_);
           }
         }
