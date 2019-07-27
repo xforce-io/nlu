@@ -62,7 +62,15 @@ bool NluContextSplit::SplitByPosTag_(
         auto newNluContext = nluContext->Clone();
         AdjustSegTags_(*newNluContext, idx, tag);
         nluContexts.push_back(newNluContext);
+
+        std::string repr;
+        newNluContext->Dump(repr);
+        std::cout << repr << std::endl;
       }
+
+      std::string repr;
+      nluContext->Dump(repr);
+      std::cout << repr << std::endl;
       return true;
     }
     ++iterSeg;
