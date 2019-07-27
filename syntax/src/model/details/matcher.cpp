@@ -236,7 +236,7 @@ bool Matcher::RuleIntransitiveVerb_(
 
   while (true) {
     auto chunkBefore = nluContext->GetChunks().GetFragmentBefore(npBefore->GetOffset());
-    if (nullptr != chunkBefore && chunkBefore->GetTag() == basic::SyntaxTag::Type::kNp) {
+    if (nullptr != chunkBefore && chunkBefore->ContainTag(basic::SyntaxTag::Type::kNp)) {
       npBefore = chunkBefore;
     } else {
       break;
