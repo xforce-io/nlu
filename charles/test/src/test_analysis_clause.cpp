@@ -23,11 +23,11 @@ TEST(testAll, all) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/charles.conf");
 
   ASSERT_TRUE(Charles::Init(*conf));
-  AnalysisClause analysisClause(L"我们也是做了很多的困难准备");
+  AnalysisClause analysisClause(L"第一局比赛失利原因主要在我们自己");
   ASSERT_TRUE(analysisClause.Init());
   analysisClause.Process();
 
-  std::cout << analysisClause.GetResults().size() << std::endl;
+  std::cout << analysisClause.GetFinished().size() << std::endl;
 
   std::string repr;
   for (auto result : analysisClause.GetFinished()) {

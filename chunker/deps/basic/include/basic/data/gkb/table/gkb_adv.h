@@ -18,7 +18,7 @@ int GkbAdv::beforeSbv(const std::wstring &word) const {
   }
 
   for (auto *entry : *entries) {
-    if (entry->beforeSbv()) {
+    if (entry->BeforeSbv()) {
       return 0;
     }
   }

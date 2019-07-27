@@ -218,7 +218,7 @@ bool Matcher::RuleContNp_(
 bool Matcher::RuleIntransitiveVerb_(
     std::shared_ptr<basic::NluContext> nluContext,
     const std::shared_ptr<basic::Chunk> &chunk) {
-  if (chunk->GetTag() != basic::SyntaxTag::Type::kV ||
+  if (chunk->GetTag() != basic::SyntaxTag::Type::kV 
 /*      basic::Manager::Get().GetGkb().GetGkbVerb().TiWeiZhun(
               chunk->GetStrFromSentence(nluContext->GetQuery())) != Entry*/) {
     return false;

@@ -77,6 +77,7 @@ bool AnalysisClauseBranch::Process(
     auto copy = std::make_shared<AnalysisClauseBranch>(*nluContextSplit_, no_, *nluContext_);
     copy->bornStage_ = bornStage_;
     copy->curStage_ = curStage_;
+    copy->processed_ = processed_;
     branches.push(copy);
   } else {
     end_ = true;

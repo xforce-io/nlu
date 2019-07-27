@@ -92,7 +92,7 @@ FragmentSet<FragmentType>& FragmentSet<FragmentType>::operator=(const FragmentSe
   text_ = new std::wstring(*(other.text_));
   fragments_.clear();
   for (auto &fragment : other.fragments_) {
-    fragments_.insert(fragment);
+    fragments_.insert(std::make_shared<FragmentType>(*fragment));
   }
   return *this;
 }

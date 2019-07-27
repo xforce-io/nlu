@@ -20,6 +20,9 @@ class GkbVerb : public Table<EntryVerb> {
       const std::wstring &word0,
       const std::wstring &word1) const;
 
+  EntryVerb::TiWeiZhun::Val TiWeiZhun(
+          const std::wstring &word) const;
+
  private:
   GkbVerbDongqu *gkbVerbDongqu_;
 };

@@ -8,7 +8,7 @@ FEATURE_EXTRACTOR_BEGIN(chunker)
 FEATURE_EXTRACTOR_END
 
 FEATURE_EXTRACTOR_BEGIN(syntaxFromChunk)
-    { #Pos((rP-)*(n|t|r|f)P-) -> syntactic.np }
+    { #Pos((aP-)*(rP-)*(n|t|r|f)P-) -> syntactic.np }
     { #Pos(((n|r|t|m|q|f)P-)+) -> syntactic._cont_np_ }
     { #Pos((dP-)*((a|b)P-)+) -> syntactic.advp }
 FEATURE_EXTRACTOR_END
@@ -20,13 +20,16 @@ FEATURE_EXTRACTOR_BEGIN(syntax)
     { #Chk(np) #Chk(pp) -> syntactic._stc_ }
     { #Chk(np) #Chk(advp) #Chk(np) #Chk(advp) -> syntactic._stc_ }
     { #Chk(np) #Chk(v) #Chk(np) -> syntactic._stc_ }
+    { #Chk(np) #Chk(v) #Chk(v) #Chk(np) -> syntactic._stc_ }
     { { #Chk(advp) ?} #Chk(pp) #Chk(v) #Chk(np) #Chk(np) -> syntactic._stc_ }
 
     ^{ #Chk(np) "的" #Chk(np) -> syntactic.np }
-    ^{ #Chk(vp) "的" #Chk(np) -> syntactic.np }
 
     ~{ "在" #Chk(np) % -> syntactic.pp }
     ~{ #Chk(advp) {"的" ?} #Chk(np) % -> syntactic.np }
+    ~{ #Chk(v) "的" #Chk(np) -> syntactic.np }
+    ~{ #Chk(vp) "的" #Chk(np) -> syntactic.np }
+    ~{ #Chk(qp) "的" #Chk(np) -> syntactic.np }
     ~{ #Chk(qp) #Chk(np) -> syntactic.np }
     ~{ #Chk(p) #Chk(np) -> syntactic.pp }
     ~{ #Chk(v) "了" -> syntactic.v }

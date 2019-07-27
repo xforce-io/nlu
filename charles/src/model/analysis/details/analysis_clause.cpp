@@ -24,6 +24,9 @@ bool AnalysisClause::Process() {
     finished_.push_back(master_);
     results_.push_back(master_);
     return true;
+  } else if (master_->GetEnd()) {
+    finished_.push_back(master_);
+    return false;
   }
 
   bool succ = false;
