@@ -230,7 +230,7 @@ bool Matcher::RuleIntransitiveVerb_(
   }
 
   auto npBefore = nluContext->GetChunks().GetFragmentBefore(chunk->GetOffset());
-  if (nullptr == npBefore || npBefore->ContainTag(basic::SyntaxTag::Type::kNp)) {
+  if (nullptr == npBefore || !npBefore->ContainTag(basic::SyntaxTag::Type::kNp)) {
     return false;
   }
 
@@ -244,7 +244,7 @@ bool Matcher::RuleIntransitiveVerb_(
   }
 
   basic::Chunk newChunk(
-          basic::SyntaxTag::Type::kNp,
+          basic::SyntaxTag::Type::kVp,
           npBefore->GetOffset(),
           chunk->GetEnd() - npBefore->GetOffset());
   if (nluContext->GetChunks().Add(newChunk)) {
