@@ -35,17 +35,27 @@ bool AnalysisClauseBranch::Process(
   }
 
   if (!processed_) {
-    if (bornStage_ <= basic::Stage::kSegment) {
-      segmentor::Segmentor::Parse(nluContext_);
-      if (bornStage_ <= basic::Stage::kPosTag) {
+    switch (bornStage_) {
+      case basic::Stage::kSegment :
+        segmentor::Segmentor::Parse(nluContext_);
         pos::PosTagging::Tagging(nluContext_);
-        if (bornStage_ <= basic::Stage::kChunk) {
-          chunker::Chunker::Parse(nluContext_);
-          if (bornStage_ <= basic::Stage::kSyntax) {
-            syntax::Syntax::Parse(nluContext_);
-          }
-        }
-      }
+        chunker::Chunker::Parse(nluContext_);
+        syntax::Syntax::Parse(nluContext_);
+        break;
+      case basic::Stage::kPosTag :
+        pos::PosTagging::Tagging(nluContext_);
+        chunker::Chunker::Parse(nluContext_);
+        syntax::Syntax::Parse(nluContext_);
+        break;
+      case basic::Stage::kChunk :
+        chunker::Chunker::Parse(nluContext_);
+        syntax::Syntax::Parse(nluContext_);
+        break;
+      case basic::Stage::kSyntax :
+        syntax::Syntax::Parse(nluContext_);
+        break;
+      default :
+        break;
     }
     processed_ = true;
 
