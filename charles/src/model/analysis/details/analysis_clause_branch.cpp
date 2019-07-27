@@ -11,7 +11,7 @@ AnalysisClauseBranch::AnalysisClauseBranch(
   nluContextSplit_(&nluContextSplit),
   no_(no),
   nluContext_(std::make_shared<basic::NluContext>(clause)),
-  bornStage_(basic::Stage::kEnd),
+  bornStage_(basic::Stage::kNone),
   curStage_(basic::Stage::kSyntax),
   processed_(false),
   end_(false) {}
@@ -23,7 +23,7 @@ AnalysisClauseBranch::AnalysisClauseBranch(
   nluContextSplit_(&nluContextSplit),
   no_(no),
   nluContext_(nluContext.Clone()),
-  bornStage_(basic::Stage::kEnd),
+  bornStage_(basic::Stage::kNone),
   curStage_(basic::Stage::kSyntax),
   processed_(false),
   end_(false) {}
@@ -35,10 +35,18 @@ bool AnalysisClauseBranch::Process(
   }
 
   if (!processed_) {
-    segmentor::Segmentor::Parse(nluContext_);
-    pos::PosTagging::Tagging(nluContext_);
-    chunker::Chunker::Parse(nluContext_);
-    syntax::Syntax::Parse(nluContext_);
+    if (bornStage_ >= basic::Stage::kSegment) {
+      segmentor::Segmentor::Parse(nluContext_);
+      if (bornStage_ >= basic::Stage::kPosTag) {
+        pos::PosTagging::Tagging(nluContext_);
+        if (bornStage_ >= basic::Stage::kChunk) {
+          chunker::Chunker::Parse(nluContext_);
+          if (bornStage_ >= basic::Stage::kSyntax) {
+            syntax::Syntax::Parse(nluContext_);
+          }
+        }
+      }
+    }
     processed_ = true;
 
     if (IsFinished_(*nluContext_)) {

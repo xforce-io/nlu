@@ -179,7 +179,8 @@ bool Matcher::SyntaxProcessForChunk_(std::shared_ptr<basic::NluContext> nluConte
 bool Matcher::PostProcess_(std::shared_ptr<basic::NluContext> nluContext) {
   bool touched = false;
   for (auto &chunk : nluContext->GetChunks().GetAll()) {
-    if (RuleContNp_(nluContext, chunk)) {
+    if (RuleContNp_(nluContext, chunk) ||
+        RuleIntransitiveVerb_(nluContext, chunk)) {
       touched = true;
     }
   }
@@ -218,12 +219,34 @@ bool Matcher::RuleContNp_(
 bool Matcher::RuleIntransitiveVerb_(
     std::shared_ptr<basic::NluContext> nluContext,
     const std::shared_ptr<basic::Chunk> &chunk) {
-  if (chunk->GetTag() != basic::SyntaxTag::Type::kV 
-/*      basic::Manager::Get().GetGkb().GetGkbVerb().TiWeiZhun(
-              chunk->GetStrFromSentence(nluContext->GetQuery())) != Entry*/) {
-    return false;
+  if (chunk->GetTag() != basic::SyntaxTag::Type::kV ||
+      basic::Manager::Get().GetGkb().GetGkbVerb().TiWeiZhun(
+              chunk->GetStrFromSentence(nluContext->GetQuery())) !=
+              basic::EntryVerb::TiWeiZhun::kNone) {
+
+    auto npBefore = nluContext->GetChunks().GetFragmentBefore(chunk->GetOffset());
+    if (nullptr == npBefore || npBefore->GetTag() != basic::SyntaxTag::Type::kNp) {
+      return false;
+    }
+
+    while (true) {
+      auto chunkBefore = nluContext->GetChunks().GetFragmentBefore(npBefore->GetOffset());
+      if (nullptr != chunkBefore && chunkBefore->GetTag() == basic::SyntaxTag::Type::kNp) {
+        npBefore = chunkBefore;
+      } else {
+        break;
+      }
+    }
+
+    basic::Chunk newChunk(
+            basic::SyntaxTag::Type::kNp,
+            npBefore->GetOffset(),
+            chunk->GetEnd() - npBefore->GetOffset());
+    if (nluContext->GetChunks().Add(newChunk)) {
+      return true;
+    }
   }
-  return true;
+  return false;
 }
 
 }}}
