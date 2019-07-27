@@ -36,6 +36,12 @@ bool AnalysisClauseBranch::Process(
 
   if (!processed_) {
     switch (bornStage_) {
+      case basic::Stage::kNone :
+        segmentor::Segmentor::Parse(nluContext_);
+        pos::PosTagging::Tagging(nluContext_);
+        chunker::Chunker::Parse(nluContext_);
+        syntax::Syntax::Parse(nluContext_);
+        break;
       case basic::Stage::kSegment :
         segmentor::Segmentor::Parse(nluContext_);
         pos::PosTagging::Tagging(nluContext_);
