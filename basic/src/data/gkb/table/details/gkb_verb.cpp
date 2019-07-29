@@ -29,7 +29,7 @@ bool GkbVerb::IsPhrase(
 EntryVerb::TiWeiZhun::Val GkbVerb::TiWeiZhun(
     const std::wstring &word) const {
   auto entries = GetEntries(word);
-  if (entries->empty()) {
+  if (nullptr == entries || entries->empty()) {
     return EntryVerb::TiWeiZhun::kOther;
   }
 

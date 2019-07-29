@@ -104,29 +104,22 @@ const typename FragmentSet<FragmentType>::Container& FragmentSet<FragmentType>::
 
 template <typename FragmentType>
 std::shared_ptr<FragmentType> FragmentSet<FragmentType>::GetFragmentBefore(size_t offset) {
-  std::shared_ptr<FragmentType> result = nullptr;
-  size_t maxLen = 0;
   for (auto &fragment : fragments_) {
-    if (fragment->GetOffset() + fragment->GetLen() == offset &&
-        fragment->GetLen() > maxLen)  {
-      result = fragment;
-      maxLen = fragment->GetLen();
+    if (fragment->GetOffset() + fragment->GetLen() == offset) {
+      return fragment;
     }
   }
-  return 0 != maxLen ? result : nullptr;
+  return nullptr;
 }
 
 template <typename FragmentType>
 std::shared_ptr<FragmentType> FragmentSet<FragmentType>::GetFragmentAfter(size_t offset) {
-  std::shared_ptr<FragmentType> result = nullptr;
-  size_t maxLen = 0;
   for (auto &fragment : fragments_) {
     if (fragment->GetOffset() == offset) {
-      result = fragment;
-      maxLen = fragment->GetLen();
+      return fragment;
     }
   }
-  return 0 != maxLen ? result : nullptr;
+  return nullptr;
 }
 
 template <typename FragmentType>

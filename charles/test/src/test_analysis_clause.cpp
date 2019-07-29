@@ -23,7 +23,7 @@ TEST(testAll, all) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/charles.conf");
 
   ASSERT_TRUE(Charles::Init(*conf));
-  AnalysisClause analysisClause(L"第一局比赛失利原因主要在我们自己");
+  AnalysisClause analysisClause(L"对方对我们的拦防也是做得很好");
   ASSERT_TRUE(analysisClause.Init());
   analysisClause.Process();
 
