@@ -37,7 +37,7 @@ set(LIB_DEPS
 )
 
 add_executable(charles
-  ${SEG_FILES} src/charles.h src/details/charles.cpp)
+  ${SEG_FILES} src/charles.h src/details/charles.cpp src/model/analysis/split/rule.h src/model/analysis/split/rule_pos_tag.h src/model/analysis/split/details/rule_pos_tag.cpp src/model/analysis/split/rule_syntax.h src/model/analysis/split/details/rule_syntax.cpp src/model/analysis/split/split_stages.h src/model/analysis/split/details/split_stages.cpp)
 
 target_link_libraries(charles
   ${LIB_DEPS}
