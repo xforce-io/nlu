@@ -3,34 +3,43 @@
 
 namespace xforce { namespace nlu { namespace milkie {
 
-PatternItemSyntax::PatternItemSyntax(const std::wstring &pattern) :
-  pattern_(pattern) {}
+PatternItemSyntax::PatternItemSyntax(const basic::SyntaxTag::Type::Val &syntaxType) :
+  syntaxType_(syntaxType) {}
 
 bool PatternItemSyntax::MatchPattern(Context &context) {
-  auto featureChunk = context.GetSentence().GetFeatureChunksFromOffset(context.GetCurPos());
-  if (nullptr == featureChunk) {
+  auto chunkSet = context.GetSentence().GetFeatureChunkAtOffset(context.GetCurPos());
+  if (nullptr == chunkSet) {
     return false;
   }
 
+  std::shared_ptr<basic::Chunk> theChunk = nullptr;
   size_t maxLen = 0;
-  std::shared_ptr<basic::Chunk> matchedChunk;
-  for (auto &chunk : featureChunk->GetAll()) {
-    if (*(chunk->GetStr()) == pattern_ &&
-        chunk->GetOffset() == context.GetCurPos() &&
-        chunk->GetLen() > maxLen) {
+  for (auto &chunk : chunkSet->GetAll()) {
+    bool matched = false;
+    for (auto tag : chunk->GetTags()) {
+      if (tag == syntaxType_) {
+        matched = true;
+        break;
+      }
+    }
+
+    if (!matched) {
+      continue;
+    }
+
+    if (chunk->GetLen() > maxLen) {
+      theChunk = chunk;
       maxLen = chunk->GetLen();
-      matchedChunk = chunk;
     }
   }
 
-  if (maxLen != 0) {
+  if (nullptr != theChunk) {
     contentMatched_ = context.GetSentence().GetSentence().substr(
-            matchedChunk->GetOffset(),
-            matchedChunk->GetLen());
+            theChunk->GetOffset(),
+            theChunk->GetLen());
     return true;
-  } else {
-    return false;
   }
+  return false;
 }
 
 

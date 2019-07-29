@@ -19,25 +19,70 @@ bool PatternItemWordpos::MatchPattern(Context &context) {
     return false;
   }
 
-  std::wstringstream ss;
+  size_t numMulti = 0;
+  size_t sizeMulti = 1;
   for (auto &segment : featureWordposes->GetAll()) {
-    ss << basic::PosTag::Str(segment->GetPosTag()) << kSep;
+    if (segment->GetTags().size() > 1) {
+      ++numMulti;
+      sizeMulti = segment->GetTags().size();
+    }
   }
 
-  std::wstring patternToMatch = ss.str();
   std::wcmatch wcm;
-  if (std::regex_search(patternToMatch.c_str(), wcm, *regex_)) {
-    const std::wstring &matched = wcm[0].str();
-    if (patternToMatch.substr(0, matched.length()) == matched) {
-      Wstrings items;
-      StrHelper::SplitStr(matched, kSep, items);
-      contentMatched_ = L"";
-      for (size_t i=0; i < items.size(); ++i) {
-        contentMatched_ += (*featureWordposes)[i]->GetQuery(
+  std::wstring patternToMatch;
+  if (0 == numMulti) {
+    std::wstringstream ss;
+    for (auto &segment : featureWordposes->GetAll()) {
+      ss << basic::PosTag::Str(segment->GetTag()) << kSep;
+    }
+
+    patternToMatch = ss.str();
+    if (!std::regex_search(patternToMatch.c_str(), wcm, *regex_)) {
+      return false;
+    }
+  } else if (numMulti<=1) {
+    std::vector<std::wstringstream> multiSs;
+    multiSs.resize(sizeMulti);
+    for (auto &segment : featureWordposes->GetAll()) {
+      if (segment->GetTags().size() == 1) {
+        for (auto &ss : multiSs) {
+          ss << basic::PosTag::Str(segment->GetTag()) << kSep;
+        }
+      } else {
+        for (size_t i=0; i < segment->GetTags().size(); ++i) {
+          multiSs[i] << basic::PosTag::Str(segment->GetTags()[i]) << kSep;
+        }
+      }
+    }
+
+    for (auto &ss : multiSs) {
+      patternToMatch = ss.str();
+      if (!std::regex_search(patternToMatch.c_str(), wcm, *regex_)) {
+        return false;
+      }
+    }
+  } else {
+    return false;
+  }
+
+  const std::wstring &matched = wcm[0].str();
+  if (patternToMatch.substr(0, matched.length()) == matched) {
+    Wstrings items;
+    StrHelper::SplitStr(matched, kSep, items);
+    contentMatched_ = L"";
+
+    size_t i=0;
+    for (auto &segment : featureWordposes->GetAll()) {
+      if (!items[i].empty()) {
+        contentMatched_ += segment->GetQuery(
             context.GetSentence().GetSentence());
       }
-      return true;
+
+      if (++i >= items.size()) {
+        break;
+      }
     }
+    return true;
   }
   return false;
 }

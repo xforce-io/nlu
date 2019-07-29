@@ -2,25 +2,40 @@
 
 #include "public.h"
 #include "analysis_component.h"
+#include "nlu_context_split.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
-class FeatureSegments;
-class FeatureNameEntity;
+class AnalysisClauseBranch;
 
 class AnalysisClause : public AnalysisComponent {
- public: 
-  AnalysisClause(const std::wstring &clause);
+ public:
+  typedef std::list<std::shared_ptr<AnalysisClauseBranch>> Branches;
 
-  void Segment();
+ public:
+  AnalysisClause(
+          const std::wstring &clause);
+  virtual ~AnalysisClause();
 
+  bool Init();
+  bool Process();
+  inline const Branches& GetFinished() const { return finished_; }
+  inline const Branches& GetResults() const { return results_; }
+  inline bool IsAnalysised() const;
   void Dump(JsonType &jsonType);
 
- private: 
-  std::wstring clause_;
+ private:
+  NluContextSplit *nluContextSplit_;
 
-  basic::FragmentSet<basic::Segment> featureSegments_;
-  basic::FragmentSet<basic::NameEntity> featureNameEntities_;
+  std::wstring clause_;
+  std::shared_ptr<AnalysisClauseBranch> master_;
+  std::queue<std::shared_ptr<AnalysisClauseBranch>> branches_;
+  Branches finished_;
+  Branches results_;
 };
+
+bool AnalysisClause::IsAnalysised() const {
+  return results_.size() == 1;
+}
 
 }}}

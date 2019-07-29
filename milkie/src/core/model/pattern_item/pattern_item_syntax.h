@@ -7,13 +7,13 @@ namespace xforce { namespace nlu { namespace milkie {
 
 class PatternItemSyntax : public PatternItem {
  public:
-  explicit PatternItemSyntax(const std::wstring &pattern);
+  explicit PatternItemSyntax(const basic::SyntaxTag::Type::Val &syntaxType);
   virtual ~PatternItemSyntax() {}
 
   bool MatchPattern(Context &context) final;
 
  private:
-  std::wstring pattern_;
+  basic::SyntaxTag::Type::Val syntaxType_;
 };
 
 }}}

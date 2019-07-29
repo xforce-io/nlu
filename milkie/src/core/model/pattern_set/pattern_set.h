@@ -13,7 +13,7 @@ class ReferManager;
 
 class PatternSet {
  public: 
-  explicit PatternSet(const StructPatternSet &structPatternSet);
+  explicit PatternSet(std::shared_ptr<StructPatternSet> structPatternSet);
   virtual ~PatternSet();
 
   void SetFather(const PatternExpr &patternExpr);
@@ -33,7 +33,7 @@ class PatternSet {
           const std::wstring &blockKey,
           const std::wstring &statement);
   static std::shared_ptr<PatternSet> Build(
-          const StructPatternSet &structPatternSet);
+          std::shared_ptr<StructPatternSet> structPatternSet);
 
  private:
   inline aho_corasick::wtrie* BuildPatternStrsTrie_(
@@ -42,7 +42,7 @@ class PatternSet {
  private:
   const PatternExpr *father_;
 
-  const StructPatternSet *structPatternSet_;
+  std::shared_ptr<StructPatternSet> structPatternSet_;
   size_t maxLengthPatternStrs_; 
   aho_corasick::wtrie *patternStrsTrie_;
   const PatternExpr::Vector *patternExprs_;

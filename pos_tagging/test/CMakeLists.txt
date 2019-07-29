@@ -44,3 +44,8 @@ add_executable(testCase
   ${LOCAL_CPP_FILES}
   ${CMAKE_SOURCE_DIR}/src/test_case.cpp
 )
+
+add_executable(testWindowStatistics
+  ${LOCAL_CPP_FILES}
+  ${CMAKE_SOURCE_DIR}/src/model/window_statistics/test_window_statistics.cpp
+)

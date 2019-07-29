@@ -13,6 +13,7 @@ class StorageItem {
 
   const std::wstring& GetContent() const { return content_; }
   size_t GetOffset() const { return offset_; }
+  inline size_t GetLen() const;
 
  private:
   std::wstring content_;
@@ -29,6 +30,10 @@ void StorageItem::SetContent(const std::wstring &content) {
 
 void StorageItem::SetOffset(size_t offset) {
   offset_ = offset;
+}
+
+size_t StorageItem::GetLen() const {
+  return content_.length();
 }
 
 }}}

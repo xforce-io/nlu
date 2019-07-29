@@ -9,8 +9,11 @@
 namespace xforce { namespace nlu { namespace pos {
 
 class WindowStatistics {
+ private:
+  static const std::string kFilepathCache;
+
  public:
-  WindowStatistics() {}
+  WindowStatistics();
   virtual ~WindowStatistics();
 
  public:
@@ -23,6 +26,16 @@ class WindowStatistics {
           const std::wstring &item1,
           const std::wstring &item2) const;
 
+  void Shrink();
+  size_t Size() const { return statistics_.size(); }
+  bool operator==(const WindowStatistics &other) const;
+  void Clear();
+
+  int Load(const std::string &str);
+  int LoadFromFile(const std::string &filepath);
+  void Dump(std::stringstream &ss) const;
+  int DumpToFile(const std::string &filepath);
+
  public:
   static WindowStatistics* Create(const std::string &filepath);
 
@@ -30,7 +43,7 @@ class WindowStatistics {
   inline std::pair<StatisticsItems::Category, const StatisticsUnit*>
           GetDominatorFromFeatures_(const std::vector<FeatureComb3> &featureCombs) const;
 
-  void Add_(const std::vector<std::pair<std::wstring, basic::PosTag::Type >> &pairs);
+  void Add_(const std::vector<std::pair<std::wstring, basic::PosTag::Type::Val >> &pairs);
   void ActualAdd_(const FeatureComb3 &key, const StatisticsUnit &newItem);
 
  private:
@@ -52,10 +65,6 @@ std::pair<StatisticsItems::Category, const StatisticsUnit*> WindowStatistics::Ge
         const std::wstring &item0,
         const std::wstring &item1,
         const std::wstring &item2) const {
-  if (item0 == L"没有" && item2 == L"上") {
-    int a = 0;
-  }
-
   tmpFeatureCombs_.clear();
   windowFeaturesExtractor_.Enum(item0, item1, item2, tmpFeatureCombs_);
   return GetDominatorFromFeatures_(tmpFeatureCombs_);

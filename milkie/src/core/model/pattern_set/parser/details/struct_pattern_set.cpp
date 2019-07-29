@@ -16,11 +16,14 @@ std::shared_ptr<StructPatternSet> StructPatternSet::Parse(
   }
 
   auto structPatternSet = ParseForStrSet(blockKey, statement);
-  if (nullptr != structPatternSet) {
-    return structPatternSet;
-  } else {
-    return ParseForPatternExprSet(referManager, blockKey, statement);
+  if (nullptr == structPatternSet) {
+    structPatternSet = ParseForPatternExprSet(referManager, blockKey, statement);
+    if (nullptr == structPatternSet) {
+      FATAL("invalid_pattern_set(" << blockKey << "|" << statement << ")");
+      return nullptr;
+    }
   }
+  return structPatternSet;
 }
 
 std::shared_ptr<StructPatternSet> StructPatternSet::ParseForStrSet(
@@ -92,7 +95,6 @@ std::shared_ptr<StructPatternSet> StructPatternSet::ParseForPatternExprSet(
             nullptr,
             &patternExprs);
   } else {
-    FATAL("invalid_pattern_set(" << blockKey << "|" << statement << ")");
     return nullptr;
   }
 }

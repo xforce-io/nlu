@@ -4,6 +4,8 @@
 #include "../model/graph/graph.h"
 #include "../model/graph/trigger/manager_triggers.h"
 #include "ner/ner.h"
+#include "basic/data/manager.h"
+#include "basic/data/gkb/gkb.h"
 
 namespace xforce { namespace nlu { namespace segmentor {
 
@@ -29,12 +31,9 @@ bool Segmentor::Init(
   return true;
 }
 
-void Segmentor::Parse(
-    const std::wstring &query, 
-    basic::FragmentSet<basic::Segment> &segments,
-    basic::FragmentSet<basic::NameEntity> &nameEntities) {
-  Graph *graph = new Graph(query);
-  graph->Process(segments, nameEntities);
+void Segmentor::Parse(std::shared_ptr<basic::NluContext> &nluContext) {
+  auto graph = new Graph(nluContext->GetQuery());
+  graph->Process(nluContext->GetSegments(), nluContext->GetNameEntities());
   XFC_DELETE(graph)
 }
 

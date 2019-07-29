@@ -6,12 +6,12 @@
 
 namespace xforce { namespace nlu { namespace milkie {
 
-PatternSet::PatternSet(const StructPatternSet &structPatternSet) :
+PatternSet::PatternSet(std::shared_ptr<StructPatternSet> structPatternSet) :
     father_(nullptr),
-    structPatternSet_(&structPatternSet),
+    structPatternSet_(structPatternSet),
     maxLengthPatternStrs_(0),
-    patternExprs_(structPatternSet.GetPatternExprs()) {
-  patternStrsTrie_ = BuildPatternStrsTrie_(structPatternSet.GetPatternStrs());
+    patternExprs_(structPatternSet->GetPatternExprs()) {
+  patternStrsTrie_ = BuildPatternStrsTrie_(structPatternSet->GetPatternStrs());
 }
 
 PatternSet::~PatternSet() {
@@ -67,7 +67,7 @@ bool PatternSet::MatchPattern(Context &context) {
     }
   } else {
     for (auto &patternExpr : *patternExprs_) {
-      if (patternExpr->MatchPattern(context, false)) {
+      if (patternExpr->PrefixMatch(context, false)) {
         return true;
       }
     }
@@ -97,13 +97,13 @@ std::pair<std::shared_ptr<PatternSet>, ssize_t> PatternSet::Build(
     const std::wstring &blockKey,
     const std::wstring &statement) {
   std::shared_ptr<StructPatternSet> structPatternSet = StructPatternSet::Parse(referManager, blockKey, statement);
-  if (nullptr == structPatternSet.get()) {
+  if (nullptr == structPatternSet) {
     return std::make_pair(nullptr, -1);
   }
-  return std::make_pair(Build(*structPatternSet), structPatternSet->GetStatement().length());
+  return std::make_pair(Build(structPatternSet), structPatternSet->GetStatement().length());
 }
 
-std::shared_ptr<PatternSet> PatternSet::Build(const StructPatternSet &structPatternSet) {
+std::shared_ptr<PatternSet> PatternSet::Build(std::shared_ptr<StructPatternSet> structPatternSet) {
   return std::make_shared<PatternSet>(structPatternSet);
 }
 

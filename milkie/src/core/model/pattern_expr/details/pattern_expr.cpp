@@ -103,95 +103,6 @@ void PatternExpr::NotifyStorageSpace(const std::wstring &storageSpace) {
   }
 }
 
-bool PatternExpr::MatchPattern(Context &context, bool singleton) const {
-  ssize_t startIdx = context.GetCurPos();
-  if (context.End()) {
-    if (repeatPattern_ == CategoryPatternExpr::kZeroOrOnce ||
-        repeatPattern_ == CategoryPatternExpr::kZeroOrMore) {
-      DebugMatch_(context, startIdx, true);
-      return true;
-    }
-
-    if (nullptr != pattern_ || nullptr != patternSet_) {
-      DebugMatch_(context, startIdx, false);
-      return false;
-    }
-
-    for (auto &item : items_) {
-      if (item->repeatPattern_ != CategoryPatternExpr::kZeroOrOnce &&
-          item->repeatPattern_ != CategoryPatternExpr::kZeroOrMore) {
-        DebugMatch_(context, startIdx, false);
-        return false;
-      }
-    }
-    DebugMatch_(context, startIdx, true);
-    return true;
-  }
-
-  context.StartMatch();
-  if (nullptr != pattern_) {
-    bool ret = pattern_->MatchPattern(context);
-    if (ret) {
-      StopMatch(true, context, singleton);
-    } else {
-      StopMatch(false, context, singleton);
-    }
-    DebugMatch_(context, startIdx, ret);
-    return ret;
-  } else if (nullptr != patternSet_) {
-    bool ret = patternSet_->MatchPattern(context);
-    if (ret) {
-      StopMatch(true, context, singleton);
-    } else {
-      StopMatch(false, context, singleton);
-    }
-    DebugMatch_(context, startIdx, ret);
-    return ret;
-  }
-
-  bool exit = false;
-  size_t numMatches = 0;
-  do {
-    exit = false;
-    ssize_t ret = MatchFromIdx(0, context);
-    if (ret>0) {
-      exit = true;
-    } else if (ret<0) {
-      bool tmpRet = MatchForWildcard(context, -ret);
-      context.StopMatch(tmpRet);
-      DebugMatch_(context, startIdx, tmpRet);
-      return tmpRet;
-    }
-
-    if (!exit) {
-      ++numMatches;
-      if (1 == numMatches &&
-          (CategoryPatternExpr::kZeroOrOnce == repeatPattern_ ||
-          CategoryPatternExpr::kOnce == repeatPattern_)) {
-        exit = true;
-      }
-    }
-  } while (!exit);
-
-  if (0 == numMatches) {
-    bool ret = (CategoryPatternExpr::kZeroOrOnce == repeatPattern_ ||
-            CategoryPatternExpr::kZeroOrMore == repeatPattern_);
-    context.StopMatch(ret);
-    DebugMatch_(context, startIdx, ret);
-    return ret;
-  }
-
-  if (nullptr != filter_ && filter_->Match(context) <= 0) {
-    context.StopMatch(false);
-    DebugMatch_(context, startIdx, false);
-    return false;
-  }
-
-  StopMatch(true, context, singleton);
-  DebugMatch_(context, startIdx, true);
-  return true;
-}
-
 ssize_t PatternExpr::MatchFromIdx(ssize_t fromIdx, Context &context) const {
   ssize_t idx = fromIdx;
   while (idx < items_.size()) {
@@ -205,7 +116,7 @@ ssize_t PatternExpr::MatchFromIdx(ssize_t fromIdx, Context &context) const {
       mark = true;
     }
 
-    if (!patternExpr->MatchPattern(context, mark)) {
+    if (!patternExpr->MatchPattern_(context, mark)) {
       return 1;
     }
     ++idx;
@@ -219,7 +130,7 @@ bool PatternExpr::MatchForWildcard(Context &context, ssize_t itemIdx) const {
 
   auto wordposAtPos = context.GetSentence().GetFeatureSegmentAtOffset(offset);
   if (nullptr != wordposAtPos) {
-    auto fullWordpos = basic::PosTag::Str(wordposAtPos->GetPosTag());
+    auto fullWordpos = basic::PosTag::Str(wordposAtPos->GetTag());
     auto leadingWordpos = fullWordpos[0];
     if (PatternExpr::invalidLeadPosForWildcard_.find(leadingWordpos) != PatternExpr::invalidLeadPosForWildcard_.end() ||
         PatternExpr::invalidFullPosForWildcard_.find(fullWordpos) != PatternExpr::invalidFullPosForWildcard_.end()) {
@@ -245,7 +156,7 @@ bool PatternExpr::MatchForWildcard(Context &context, ssize_t itemIdx) const {
       if (nullptr == filter_ || filter_->Match(context)) {
         context.StopMatch(true);
         if (nullptr != storageKey_) {
-          context.SetStorage(*storageKey_, *(context.GetStoragePattern()));
+          context.SetStorage(*storageKey_, *(context.GetCurStoragePattern()));
         }
         return true;
       } else {
@@ -265,10 +176,10 @@ bool PatternExpr::MatchForWildcard(Context &context, ssize_t itemIdx) const {
 void PatternExpr::StopMatch(bool succ, Context &context, bool singleton) const {
   if (succ) {
     if (nullptr != storageKey_) {
-      context.SetStorage(*storageKey_, *(context.GetStoragePattern()));
+      context.SetStorage(*storageKey_, *(context.GetCurStoragePattern()));
       context.StopMatch(true);
     } else if (singleton) {
-      context.StopMatch(true, context.GetStoragePattern());
+      context.StopMatch(true, context.GetCurStoragePattern());
     } else {
       context.StopMatch(true);
     }
@@ -337,6 +248,91 @@ std::shared_ptr<PatternExpr> PatternExpr::Build(std::shared_ptr<Pattern> &patter
 
 std::shared_ptr<PatternExpr> PatternExpr::Build(std::shared_ptr<PatternSet> &patternSet) {
   return std::make_shared<PatternExpr>(patternSet);
+}
+
+bool PatternExpr::MatchPattern_(Context &context, bool singleton) const {
+  ssize_t startIdx = context.GetCurPos();
+  if (context.End()) {
+    if (repeatPattern_ == CategoryPatternExpr::kZeroOrOnce ||
+        repeatPattern_ == CategoryPatternExpr::kZeroOrMore) {
+      DebugMatch_(context, startIdx, true);
+      return true;
+    }
+
+    if (nullptr != pattern_) {
+      bool ret = pattern_->MatchPattern(context);
+      DebugMatch_(context, startIdx, ret);
+      return ret;
+    } else if (nullptr != patternSet_) {
+      DebugMatch_(context, startIdx, false);
+      return false;
+    }
+
+    for (auto &item : items_) {
+      if (item->repeatPattern_ != CategoryPatternExpr::kZeroOrOnce &&
+          item->repeatPattern_ != CategoryPatternExpr::kZeroOrMore) {
+        DebugMatch_(context, startIdx, false);
+        return false;
+      }
+    }
+    DebugMatch_(context, startIdx, true);
+    return true;
+  }
+
+  context.StartMatch();
+  if (nullptr != pattern_) {
+    bool ret = pattern_->MatchPattern(context);
+    StopMatch(ret, context, singleton);
+    DebugMatch_(context, startIdx, ret);
+    return ret;
+  } else if (nullptr != patternSet_) {
+    bool ret = patternSet_->MatchPattern(context);
+    StopMatch(ret, context, singleton);
+    DebugMatch_(context, startIdx, ret);
+    return ret;
+  }
+
+  bool exit = false;
+  size_t numMatches = 0;
+  do {
+    exit = false;
+    ssize_t ret = MatchFromIdx(0, context);
+    if (ret>0) {
+      exit = true;
+    } else if (ret<0) {
+      bool tmpRet = MatchForWildcard(context, -ret);
+      context.StopMatch(tmpRet);
+      DebugMatch_(context, startIdx, tmpRet);
+      return tmpRet;
+    }
+
+    if (!exit) {
+      ++numMatches;
+      if (1==numMatches &&
+          (CategoryPatternExpr::kZeroOrOnce == repeatPattern_ ||
+          CategoryPatternExpr::kOnce == repeatPattern_)) {
+        exit = true;
+      }
+    }
+  } while (!exit);
+
+  if (0 == numMatches) {
+    bool ret = (CategoryPatternExpr::kZeroOrOnce == repeatPattern_ ||
+            CategoryPatternExpr::kZeroOrMore == repeatPattern_);
+    context.StopMatch(ret);
+    DebugMatch_(context, startIdx, ret);
+    return ret;
+  }
+
+  if (nullptr != filter_ && filter_->Match(context) <= 0) {
+    context.StopMatch(false);
+    DebugMatch_(context, startIdx, false);
+    return false;
+  }
+
+  StopMatch(true, context, singleton);
+  DebugMatch_(context, startIdx, true);
+  return true;
 }
 
 void PatternExpr::DebugMatch_(Context &context, ssize_t startIdx, bool ok) const {

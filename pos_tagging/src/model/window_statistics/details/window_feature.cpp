@@ -12,13 +12,13 @@ bool WindowFeatureSelf::ExtractFeature(const std::wstring &word, std::wstring &f
 }
 
 bool WindowFeatureIsVerb::ExtractFeature(const std::wstring &word, std::wstring &feature) {
-  auto poses = basic::Manager::Get().GetGkbZk().GetPos(word);
+  auto poses = basic::Manager::Get().GetGkb().GetGkbGlobal().GetPosTags(word);
   if (poses == nullptr) {
     return false;
   }
 
   for (auto &pos : *poses) {
-    if (basic::PosTag::kV != pos && basic::PosTag::kVn != pos) {
+    if (basic::PosTag::Type::kV != pos && basic::PosTag::Type::kVn != pos) {
       return false;
     }
   }
@@ -27,13 +27,13 @@ bool WindowFeatureIsVerb::ExtractFeature(const std::wstring &word, std::wstring 
 }
 
 bool WindowFeatureIsNoun::ExtractFeature(const std::wstring &word, std::wstring &feature) {
-  auto poses = basic::Manager::Get().GetGkbZk().GetPos(word);
+  auto poses = basic::Manager::Get().GetGkb().GetGkbGlobal().GetPosTags(word);
   if (poses == nullptr) {
     return false;
   }
 
   for (auto &pos : *poses) {
-    if (basic::PosTag::kN != pos) {
+    if (basic::PosTag::Type::kN != pos) {
       return false;
     }
   }
@@ -43,6 +43,7 @@ bool WindowFeatureIsNoun::ExtractFeature(const std::wstring &word, std::wstring 
 
 bool WindowFeatureWildcard::ExtractFeature(const std::wstring &word, std::wstring &feature) {
   feature = kMark;
+  UNUSE(word)
   return true;
 }
 

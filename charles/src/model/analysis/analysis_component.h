@@ -5,7 +5,8 @@
 namespace xforce { namespace nlu { namespace charles {
 
 class AnalysisComponent {
- public: 
+ public:
+  virtual bool Init() { return true; }
   virtual void Dump(JsonType &jsonType) = 0;
 };
 

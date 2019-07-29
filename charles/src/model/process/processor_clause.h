@@ -6,32 +6,19 @@ namespace xforce { namespace nlu { namespace charles {
 
 class AnalysisContext;
 class AnalysisClause;
+class AnalysisSentence;
 
 class ProcessorClause {
  public:
-  //@return : is analysisContext modified 
+  //@return : is analysisSentence modified
   typedef bool (*Processor)(
-      AnalysisContext &analysisContext,
-      AnalysisClause &analysisClause);
+          AnalysisContext &analysisContext,
+          AnalysisClause &analysisClause);
 
- public: 
-  inline static bool Segment(
+ public:
+  inline static bool Process(
       AnalysisContext &analysisContext,
       AnalysisClause &analysisClause); 
 };
-
-}}}
-
-#include "../analysis/analysis_context.h"
-#include "../analysis/analysis_clause.h"
-
-namespace xforce { namespace nlu { namespace charles {
-
-bool ProcessorClause::Segment(
-    AnalysisContext &analysisContext,
-    AnalysisClause &analysisClause) {
-  analysisClause.Segment();
-  return false;
-}
 
 }}}

@@ -1,7 +1,7 @@
 #include "../manager.h"
 #include "../../conf/conf.h"
 #include "../../data/word_dict.h"
-#include "../../data/gkb_zk.h"
+#include "../../data/gkb/gkb.h"
 
 namespace xforce { namespace nlu { namespace basic {
 
@@ -16,10 +16,10 @@ bool Manager::Init() {
   XFC_FAIL_HANDLE_FATAL(!ret, "fail_init_word_dict")
 
   ss.str("");
-  ss << Conf::Get().GetDataDir() << "data/gkb_zk";
-  gkbZk_ = new GkbZk();
-  ret = gkbZk_->Init(ss.str());
-  XFC_FAIL_HANDLE_FATAL(!ret, "fail_init_gkb_zk")
+  ss << Conf::Get().GetDataDir() << "data/gkb";
+  gkb_ = new Gkb();
+  ret = gkb_->Init(ss.str());
+  XFC_FAIL_HANDLE_FATAL(!ret, "fail_init_gkb")
 
   return true;
 
@@ -28,7 +28,7 @@ bool Manager::Init() {
 }
 
 Manager::~Manager() {
-  XFC_DELETE(gkbZk_)
+  XFC_DELETE(gkb_)
   XFC_DELETE(wordDict_)
 }
 

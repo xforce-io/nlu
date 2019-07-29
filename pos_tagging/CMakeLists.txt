@@ -23,7 +23,7 @@ set(POS_TAGGING_SRC_DIR "${CMAKE_SOURCE_DIR}/src/")
 
 FILE(GLOB_RECURSE SEG_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -DUNICODE=1 -O2")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -DUNICODE=1")
 set(LIB_DEPS 
   ${CMAKE_SOURCE_DIR}/deps/public-cpp/lib/public-cpp/libpublic-cpp.a
   ${CMAKE_SOURCE_DIR}/deps/basic/lib/basic/libbasic.a
@@ -31,7 +31,7 @@ set(LIB_DEPS
 )
 
 add_library(pos_tagging
-  ${SEG_FILES} src/model/details/strategy.cpp src/model/window_statistics/statistics_unit.h src/model/window_statistics/statistics_items.h src/model/window_statistics/details/statistics_items.cpp src/model/window_statistics/statistics_collection.h src/model/window_statistics/details/statistics_collection.cpp src/model/window_statistics/window_feature.h src/model/window_statistics/details/window_feature.cpp src/model/window_statistics/feature_comb.h)
+  ${SEG_FILES} src/model/strategy_special_token.h src/model/details/strategy_special_token.cpp)
 
 target_link_libraries(pos_tagging
   ${LIB_DEPS}

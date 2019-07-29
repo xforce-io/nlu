@@ -26,15 +26,21 @@ TEST(test_all, all) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("conf/segmentor.conf");
   ASSERT_TRUE(Segmentor::Init((*conf)["segmentor"], (*conf)["ner"]));
 
-  std::wstring wStrQuery = L"单根主缆拉力高达9.2万吨";
+  std::wstring wStrQuery = L"中国女排在赛后";
   Segment::Set segments(wStrQuery);
   NameEntity::Set nameEntities(wStrQuery);
 
   Graph *graph = new Graph(wStrQuery);
   graph->Process(segments, nameEntities);
 
-  for (size_t i=0; i < segments.Size(); ++i) {
-    std::wcout << wStrQuery.substr(segments[i]->GetOffset(), segments[i]->GetLen()) << std::endl;
+  xforce::JsonType jsonToDump;
+  segments.Dump(jsonToDump);
+
+  std::stringstream ss;
+  jsonToDump.DumpJson(ss);
+  std::cout << ss.str() << std::endl;
+  for (auto &segment : segments.GetAll()) {
+    std::wcout << wStrQuery.substr(segment->GetOffset(), segment->GetLen()) << std::endl;
   }
 
   XFC_DELETE(graph)

@@ -9,14 +9,16 @@ namespace xforce { namespace nlu { namespace basic {
 
 class ChunkSep : public Fragment {
  public:
-    typedef Fragment Super;
-    typedef FragmentSet<ChunkSep> Set;
+  typedef Fragment Super;
+  typedef FragmentSet<ChunkSep> Set;
 
  public:
   inline ChunkSep();
   inline ChunkSep(size_t offset);
+  inline ChunkSep(const ChunkSep &other);
   virtual ~ChunkSep() {}
 
+  const std::string& GetCategory() const;
 };
 
 ChunkSep::ChunkSep() :
@@ -24,6 +26,9 @@ ChunkSep::ChunkSep() :
 
 ChunkSep::ChunkSep(size_t offset) :
   Fragment(offset, 0) {}
+
+ChunkSep::ChunkSep(const ChunkSep &other) :
+    Super(other) {}
 
 }}}
 

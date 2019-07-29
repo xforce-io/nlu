@@ -5,75 +5,56 @@
 #include "pos_ctb/pos_ctb_tag.h"
 #include "fragment/fragment.h"
 #include "fragment/fragment_set.hpp"
+#include "fragment/fragment_multitag.hpp"
 
 namespace xforce { namespace nlu { namespace basic {
 
-class Segment : public Fragment {
+class Segment : public FragmentMultitag<PosTag::Type::Val> {
  public:
-  typedef Fragment Super;
+  typedef FragmentMultitag<PosTag::Type::Val> Super;
   typedef FragmentSet<Segment> Set;
 
  public:
   inline Segment();
-  inline Segment(PosTag::Type posTag, size_t offset, size_t len);
+  inline Segment(PosTag::Type::Val posTag, size_t offset, size_t len);
   inline Segment(size_t offset, size_t len);
   inline Segment(size_t offset);
+  inline Segment(const Segment &other);
   virtual ~Segment() {}
 
-  inline void SetPosTag(PosTag::Type posTag);
-  inline void SetPosCtbTag(PosCtbTag::Type posCtb);
-
-  PosTag::Type GetPosTag() const { return posTag_; }
-  PosCtbTag::Type GetPosCtbTag() const { return posCtbTag_; }
-
-  inline std::wstring GetQuery(const std::wstring &sentence) const;
-
-  inline void operator=(const Segment &segment);
+  const std::string& GetCategory() const;
+  inline PosTag::Class::Val GetClassOfPosTags() const;
 
   void Dump(JsonType &jsonType);
-
- private:
-  PosTag::Type posTag_;
-  PosCtbTag::Type posCtbTag_;
 };
 
 Segment::Segment() :
-  Fragment(-1, -1),
-  posTag_(PosTag::kUndef),
-  posCtbTag_(PosCtbTag::kUndef) {}
+    Super() {}
 
-Segment::Segment(PosTag::Type posTag, size_t offset, size_t len) :
-  Fragment(offset, len),
-  posTag_(posTag),
-  posCtbTag_(PosCtbTag::kUndef) {}
+Segment::Segment(PosTag::Type::Val posTag, size_t offset, size_t len) :
+    Super(posTag, offset, len) {}
 
 Segment::Segment(size_t offset, size_t len) :
-  Fragment(offset, len),
-  posTag_(PosTag::kUndef),
-  posCtbTag_(PosCtbTag::kUndef) {}
+    Super(offset, len) {}
 
 Segment::Segment(size_t offset) :
-  Fragment(offset, -1),
-  posTag_(PosTag::kUndef),
-  posCtbTag_(PosCtbTag::kUndef) {}
+    Super(offset) {}
 
-void Segment::SetPosTag(PosTag::Type posTag) {
-  posTag_ = posTag;
-}
+Segment::Segment(const Segment &other) :
+    Super(SCAST<const Super&>(other)) {}
 
-void Segment::SetPosCtbTag(PosCtbTag::Type posCtb) {
-  posCtbTag_ = posCtb;
-}
-
-std::wstring Segment::GetQuery(const std::wstring &sentence) const {
-  return sentence.substr(offset_, len_);
-}
-
-void Segment::operator=(const Segment &segment) {
-  posTag_ = segment.posTag_;
-  posCtbTag_ = segment.posCtbTag_;
-  offset_ = segment.offset_;
-  len_ = segment.len_;
+PosTag::Class::Val Segment::GetClassOfPosTags() const {
+  PosTag::Class::Val result = PosTag::Class::kUndef;
+  for (auto &posTag : tags_) {
+    auto curPosTag = PosTag::GetClass(posTag);
+    if (PosTag::Class::kUndef == curPosTag ||
+        (PosTag::Class::kUndef != result &&
+        curPosTag != result)) {
+      return PosTag::Class::kUndef;
+    }
+    result = curPosTag;
+  }
+  return result;
 }
 
 }}}

@@ -33,9 +33,9 @@ TEST(testAll, build) {
   auto query = L"美味的方便面才好吃";
   auto context = std::make_shared<Context>(query);
   FragmentSet<Segment> segments(query);
-  segments.Add(Segment(PosTag::kA, 0, 2));
-  segments.Add(Segment(PosTag::kU, 2, 1));
-  segments.Add(Segment(PosTag::kN, 3, 3));
+  segments.Add(Segment(PosTag::Type::kA, 0, 2));
+  segments.Add(Segment(PosTag::Type::kU, 2, 1));
+  segments.Add(Segment(PosTag::Type::kN, 3, 3));
   context->GetSentence().GetNluContext()->SetSegments(segments);
   ASSERT_TRUE(ret.first->MatchPattern(*(context.get())));
 

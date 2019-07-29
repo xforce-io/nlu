@@ -21,14 +21,14 @@ set(SEGMENTOR_SRC_DIR "${CMAKE_SOURCE_DIR}/src/")
 
 FILE(GLOB_RECURSE SEG_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -DUNICODE=1 -O2")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -DUNICODE=1")
 set(LIB_DEPS 
   ${CMAKE_SOURCE_DIR}/deps/public-cpp/lib/public-cpp/libpublic-cpp.a
   ${CMAKE_SOURCE_DIR}/deps/basic/lib/basic/libbasic.a
 )
 
 add_library(chunker
-  ${SEG_FILES} src/model/matcher.h src/model/details/matcher.cpp test/src/model/test_matcher.cpp src/conf/details/conf.cpp src/model/function/function.h src/model/function/function_post_np.h src/model/function/details/function_post_np.cpp)
+  ${SEG_FILES} src/model/parser/parser_common.h src/model/parser/details/parser_common.cpp src/model/parser/filter_parser_common.h src/model/parser/details/filter_parser_common.cpp)
 
 target_link_libraries(chunker
   ${LIB_DEPS}

@@ -4,13 +4,14 @@ namespace xforce { namespace nlu { namespace pos {
 
 void StrategyUniq::Process(basic::NluContext &nluContext) {
   auto &clause = nluContext.GetQuery();
-  typename basic::Segment::Set &segments = nluContext.GetSegments();
-  for (size_t i=0; i < segments.Size(); ++i) {
-    auto &segment = segments[i];
+  basic::Segment::Set &segments = nluContext.GetSegments();
+  for (auto &segment : segments.GetAll()) {
     auto segmentStr = segment->GetStrFromSentence(clause);
-    auto poses = basic::Manager::Get().GetGkbZk().GetPos(segmentStr);
-    if (poses != nullptr && poses->size() == 1) {
-      SetPos(segment, (*poses)[0], kStrategyUniq);
+    auto poses = basic::Manager::Get().GetGkb().GetGkbGlobal().GetPosTags(segmentStr);
+    if (poses != nullptr && 
+        poses->size() == 1 &&
+        basic::PosTag::Type::kV != (*poses)[0]) {
+      SetPos(*segment, (*poses)[0], kStrategyUniq);
     }
   }
 }

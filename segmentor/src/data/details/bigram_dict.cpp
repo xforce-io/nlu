@@ -57,10 +57,6 @@ bool BigramDict::Init(const std::string &dictpath) {
 }
 
 uint32_t BigramDict::GetFreq(const std::wstring &word0, const std::wstring &word1) const {
-  if (word0 == L"达" && word1 == L"9.2") {
-    int a = 0;
-  }
-
   const std::wstring &key0 = WordMapper_(word0);
   auto iter = container_.find(key0);
   if (iter == container_.end()) {

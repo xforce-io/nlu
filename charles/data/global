@@ -1,3 +1,0 @@
-FEATURE_EXTRACTOR_BEGIN(posTagging)
-  ~{ "很" && #Pos(P) -> pos._d_ }
-FEATURE_EXTRACTOR_END

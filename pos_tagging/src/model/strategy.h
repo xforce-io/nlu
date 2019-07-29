@@ -8,7 +8,8 @@ class Strategy {
  public:
   static const uint32_t kStrategyUniq = 1; 
   static const uint32_t kStrategyWindowStatistics = 2; 
-  static const uint32_t kStrategyContextInfer = 3; 
+  static const uint32_t kStrategyContextInfer = 3;
+  static const uint32_t kStrategyOther = 0;
 
  public:
   Strategy() {}
@@ -19,9 +20,13 @@ class Strategy {
 
  protected:
   virtual void SetPos(
-          std::shared_ptr<basic::Segment> &segment,
-          basic::PosTag::Type posTag,
+          basic::Segment &segment,
+          basic::PosTag::Type::Val posTag,
           uint32_t strategy);
+
+  virtual void AddPos(
+          basic::Segment &segment,
+          basic::PosTag::Type::Val posTag);
 };
 
 }}}

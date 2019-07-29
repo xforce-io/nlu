@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../public.h"
-#include "../model/pos/pos.h"
+#include "../model/pos/pos_tag.h"
 
 namespace xforce { namespace nlu { namespace basic {
 
@@ -10,7 +10,7 @@ struct DictItem {
    inline static DictItem* CreateFromJson(const JsonType &jsonType);
 
  public: 
-   Pos::Type pos; 
+   PosTag::Type::Val posTag; 
    std::string shape;
    std::string pinyin;
    NotionOrForm::Type notionOrForm;
@@ -24,7 +24,13 @@ DictItem* DictItem::CreateFromJson(const JsonType &jsonType) {
   }
 
   DictItem *dictItem = new DictItem();
-  dictItem->pos = Pos::GetPos(jsonType["pos"].AsStr());
+  auto posStr = StrHelper::Str2Wstr(jsonType["pos"].AsStr());
+  if (posStr != nullptr) {
+    dictItem->posTag = PosTag::GetPosTag(*posStr);
+  } else {
+    dictItem->posTag = PosTag::Type::kUndef;
+  }
+
   dictItem->shape = jsonType["shape"].AsStr();
   dictItem->pinyin = jsonType["pinyin"].AsStr();
   dictItem->notionOrForm = NotionOrForm::GetNotionOrForm(jsonType["notionOrForm"].AsStr());

@@ -3,6 +3,10 @@
 #include "../model/strategy_uniq.h"
 #include "../model/strategy_window_statistics.h"
 #include "../model/strategy_context_infer.h"
+#include "../model/strategy_complement.h"
+#include "../model/strategy_pos_deduction.h"
+#include "../model/strategy_only_pred_or_prep.h"
+#include "../model/strategy_special_token.h"
 
 namespace xforce { namespace nlu { namespace pos {
 
@@ -11,7 +15,10 @@ PosTagging PosTagging::posTagging_;
 PosTagging::PosTagging() {
   strategies_.push_back(new StrategyUniq());
   strategies_.push_back(new StrategyWindowStatistics());
-  strategies_.push_back(new StrategyContextInfer());
+  strategies_.push_back(new StrategyComplement());
+  strategies_.push_back(new StrategyPosDeduction());
+  strategies_.push_back(new StrategyOnlyPredOrPrep());
+  strategies_.push_back(new StrategySpecialToken());
 }
 
 PosTagging::~PosTagging() {
@@ -34,6 +41,7 @@ void PosTagging::Process(basic::NluContext &nluContext) {
   for (auto &strategy : strategies_) {
     strategy->Process(nluContext);
   }
+  PostProcess_(nluContext);
 }
 
 bool PosTagging::Init(const xforce::JsonType &confPos) {
@@ -52,45 +60,52 @@ bool PosTagging::Init(const xforce::JsonType &confPos) {
   return true;
 }
 
-void PosTagging::Tagging(basic::NluContext &nluContext) {
-  posTagging_.Process(nluContext);
+void PosTagging::Tagging(std::shared_ptr<basic::NluContext> nluContext) {
+  posTagging_.Process(*nluContext);
 }
 
 void PosTagging::Tini() {}
 
-void PosTagging::SetPosCtbFromPos_(
-      const std::wstring &clause,
-      basic::FragmentSet<basic::Segment> &segments) {
-  for (size_t i=0; i < segments.Size(); ++i) {
-    auto &segment = segments[i];
-    auto pos = segment->GetPosTag();
-    if (basic::PosTag::kN == pos) {
-      segment->SetPosCtbTag(basic::PosCtbTag::kNn);
-    } else if (basic::PosTag::kT == pos) {
-      segment->SetPosCtbTag(basic::PosCtbTag::kNt);
-    } else if (basic::PosTag::kS == pos ||
-        basic::PosTag::kF == pos) {
-      segment->SetPosCtbTag(basic::PosCtbTag::kLc);
-    } else if (basic::PosTag::kM == pos) {
-      segment->SetPosCtbTag(basic::PosCtbTag::kCd);
-    } else if (basic::PosTag::kQ == pos) {
-      segment->SetPosCtbTag(basic::PosCtbTag::kM);
-    } else if (basic::PosTag::kR == pos) {
-      segment->SetPosCtbTag(basic::PosCtbTag::kPn);
-    } else if (basic::PosTag::kV == pos) {
-      segment->SetPosCtbTag(basic::PosCtbTag::kVv);
-    } else if (basic::PosTag::kA == pos) {
-      segment->SetPosCtbTag(basic::PosCtbTag::kJj);
-    } else if (basic::PosTag::kB == pos) {
-      segment->SetPosCtbTag(basic::PosCtbTag::kJj);
-    } else if (basic::PosTag::kD == pos) {
-      segment->SetPosCtbTag(basic::PosCtbTag::kAd);
-    } else if (basic::PosTag::kP == pos) {
-      segment->SetPosCtbTag(basic::PosCtbTag::kP);
-    } else if (basic::PosTag::kC == pos) {
-      segment->SetPosCtbTag(basic::PosCtbTag::kCc);
-    } else if (basic::PosTag::kW == pos) {
-      segment->SetPosCtbTag(basic::PosCtbTag::kPu);
+void PosTagging::PostProcess_(basic::NluContext &nluContext) {
+  while (true) {
+    bool touched = false;
+
+    auto &segs = nluContext.GetSegments().GetAll();
+    auto cur = segs.begin();
+    if (cur == segs.end()) {
+      return;
+    }
+
+    while (true) {
+      auto next = cur;
+      ++next;
+      if (next == segs.end()) {
+        return;
+      }
+
+      if ((*cur)->GetTag() == basic::PosTag::Type::kV &&
+          (*next)->GetTag() == basic::PosTag::Type::kV) {
+        bool ret = basic::Manager::Get().GetGkb().IsPhrase(
+                (*cur)->GetStrFromSentence(nluContext.GetQuery()),
+                (*next)->GetStrFromSentence(nluContext.GetQuery()));
+        if (ret) {
+          basic::Segment newSegment(
+                  basic::PosTag::Type::kV,
+                  (*cur)->GetOffset(),
+                  (*cur)->GetLen() + (*next)->GetLen());
+          auto afterNext = next;
+          ++afterNext;
+          nluContext.GetSegments().Erase(cur, afterNext);
+          nluContext.GetSegments().Add(newSegment);
+          touched = true;
+          break;
+        }
+      }
+      cur = next;
+    }
+
+    if (!touched) {
+      return;
     }
   }
 }

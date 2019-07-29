@@ -38,14 +38,24 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
         ++curIdx;
       } else if (Pattern::IsStartingChar(curChar)) {
         auto ret = Pattern::Build(statement.substr(curIdx));
+        if (nullptr == ret.first) {
+          return nullptr;
+        }
         items.push_back(std::make_shared<PatternExpr>(ret.first));
         curIdx += ret.second;
       } else if (PatternSet::IsStartingChar(curChar)) {
         auto ret = PatternSet::Build(referManager, blockKey, statement.substr(curIdx));
+        if (nullptr == ret.first) {
+          return nullptr;
+        }
         items.push_back(std::make_shared<PatternExpr>(ret.first));
         curIdx += ret.second;
       } else if (PatternExpr::IsExactStartingChar(curChar)) {
         auto ret = PatternExpr::Build(referManager, blockKey, statement.substr(curIdx));
+        if (nullptr == ret.first) {
+          return nullptr;
+        }
+
         items.push_back(ret.first);
         curIdx += ret.second;
       } else if (Variable::IsStartingChar(curChar)) {
@@ -138,7 +148,7 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
   } else if (Variable::IsStartingChar(startingChar)) {
     auto variableName = Variable::GetVariableName(statement, 1);
     auto patternExpr = referManager.Get(blockKey, *variableName);
-    if (patternExpr.get() == nullptr) {
+    if (nullptr == patternExpr) {
       FATAL("unknown_dict_key(" << variableName << ")");
       return nullptr;
     }

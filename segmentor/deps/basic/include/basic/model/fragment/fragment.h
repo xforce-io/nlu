@@ -11,8 +11,20 @@ class Fragment {
   typedef std::list<std::shared_ptr<Fragment>> List;
 
  public:
+  struct Compare {
+    bool operator() (
+            const std::shared_ptr<Fragment> &lhs,
+            const std::shared_ptr<Fragment> &rhs) const {
+      return lhs->GetOffset() < rhs->GetOffset() ||
+          (lhs->GetOffset() == rhs->GetOffset() &&
+              lhs->GetLen() < rhs->GetLen());
+    }
+  };
+
+ public:
   inline Fragment();
   inline Fragment(size_t offset, size_t len);
+  inline Fragment(const Fragment &other);
   virtual ~Fragment();
 
   inline void SetStr(const std::wstring &str);
@@ -21,7 +33,10 @@ class Fragment {
   inline void SetLen(size_t len);
   inline void SetConfidence(const Confidence &confidence);
   inline void SetStrategy(uint32_t strategy);
+  virtual bool Merge(const Fragment &) { return true; }
+  inline Fragment& operator=(const Fragment &other);
 
+  virtual const std::string& GetCategory() const = 0;
   const Fragment* GetFather() const { return father_; }
   const std::wstring* GetStr() const { return str_; }
   inline const std::wstring GetStrFromSentence(const std::wstring &sentence);
@@ -49,6 +64,8 @@ class Fragment {
 Fragment::Fragment() :
   father_(nullptr),
   str_(nullptr),
+  offset_(0),
+  len_(0),
   strategy_(0) {}
 
 Fragment::Fragment(size_t offset, size_t len) :
@@ -58,11 +75,31 @@ Fragment::Fragment(size_t offset, size_t len) :
   len_(len),
   strategy_(0) {}
 
+Fragment::Fragment(const Fragment &other) {
+  father_ = other.father_;
+  if (nullptr != other.str_) {
+    str_ = new std::wstring(*(other.str_));
+  } else {
+    str_ = nullptr;
+  }
+
+  offset_ = other.offset_;
+  len_= other.len_;
+  confidence_ = other.confidence_;
+  strategy_ = other.strategy_;
+}
+
 void Fragment::SetStr(const std::wstring &str) {
+  if (nullptr != str_) {
+    XFC_DELETE(str_)
+  }
   str_ = new std::wstring(str);
 }
 
 void Fragment::SetStrFromSentence(const std::wstring &sentence) {
+  if (nullptr != str_) {
+    XFC_DELETE(str_)
+  }
   str_ = new std::wstring(sentence.substr(offset_, len_));
 }
 
@@ -80,6 +117,27 @@ void Fragment::SetConfidence(const Confidence &confidence) {
 
 void Fragment::SetStrategy(uint32_t strategy) {
   strategy_ = strategy;
+}
+
+Fragment& Fragment::operator=(const Fragment &other) {
+  if (this == &other) {
+    return *this;
+  }
+
+  father_ = other.father_;
+  if (nullptr != str_) {
+    XFC_DELETE(str_)
+  }
+
+  if (nullptr != other.str_) {
+    str_ = new std::wstring(*(other.str_));
+  }
+
+  offset_ = other.offset_;
+  len_= other.len_;
+  confidence_ = other.confidence_;
+  strategy_ = other.strategy_;
+  return *this;
 }
 
 const std::wstring Fragment::GetStrFromSentence(const std::wstring &sentence) {

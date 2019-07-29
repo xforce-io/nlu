@@ -15,19 +15,20 @@ FeatureExtractor::FeatureExtractor(
   instructions_ = structFeatureExtractor->GetInstructions();
 }
 
-Errno::Code FeatureExtractor::MatchPattern(Context &context) const {
+Errno::Code FeatureExtractor::MatchPattern(Context &context, size_t offset) const {
+  bool ok = false;
   for (auto &instruction : instructions_) {
-    context.Reset();
+    context.Reset(offset);
     switch (instruction->GetCategoryInstruction()) {
       case CategoryInstruction::kPatternExpr : {
         if (
             (instruction->GetMatchType() == MatchType::kExactMatch &&
               instruction->GetPatternExpr()->ExactMatch(context)) ||
             (instruction->GetMatchType() == MatchType::kPrefixMatch &&
-              instruction->GetPatternExpr()->MatchPattern(context, false)) ||
+              instruction->GetPatternExpr()->PrefixMatch(context, false)) ||
             (instruction->GetMatchType() == MatchType::kPartlyMatch &&
              instruction->GetPatternExpr()->PartlyMatch(context, false))) {
-          return Errno::kOk;
+          ok = true;
         }
         break;
       }
@@ -39,7 +40,7 @@ Errno::Code FeatureExtractor::MatchPattern(Context &context) const {
       }
     }
   }
-  return Errno::kNotMatched;
+  return ok ? Errno::kOk : Errno::kNotMatched;
 }
 
 bool FeatureExtractor::Build(

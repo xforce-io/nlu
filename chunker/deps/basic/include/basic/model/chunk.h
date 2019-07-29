@@ -4,46 +4,33 @@
 #include "syntax/syntax_tag.h"
 #include "fragment/fragment.h"
 #include "fragment/fragment_set.hpp"
+#include "fragment/fragment_multitag.hpp"
 
 namespace xforce { namespace nlu { namespace basic {
 
-class Chunk : public Fragment {
+class Chunk : public FragmentMultitag<SyntaxTag::Type::Val> {
  public:
-  typedef Fragment Super;
+  typedef FragmentMultitag<SyntaxTag::Type::Val> Super;
   typedef FragmentSet<Chunk> Set;
 
  public:
   inline Chunk();
-  inline Chunk(SyntaxTag::Type syntaxTag, size_t offset, size_t len);
-  virtual ~Chunk();
+  inline Chunk(SyntaxTag::Type::Val syntaxTag, size_t offset, size_t len);
+  inline Chunk(const Chunk &other);
+  virtual ~Chunk() {}
 
-  inline void SetStr(const std::wstring &str);
-  inline void SetSyntaxTag(SyntaxTag::Type syntaxTag);
+  virtual const std::string& GetCategory() const;
 
-  const std::wstring* GetStr() const { return str_; }
-  SyntaxTag::Type GetSyntaxTag() const { return syntaxTag_; }
-
- private:
-  std::wstring *str_;
-  SyntaxTag::Type syntaxTag_;
+  virtual void Dump(JsonType &jsonType);
 };
 
 Chunk::Chunk() :
-  Fragment(-1, -1),
-  str_(nullptr),
-  syntaxTag_(SyntaxTag::kUndef) {}
+  Super() {}
 
-Chunk::Chunk(SyntaxTag::Type syntaxTag, size_t offset, size_t len) :
-  Fragment(offset, len),
-  str_(nullptr),
-  syntaxTag_(syntaxTag) {}
+Chunk::Chunk(SyntaxTag::Type::Val syntaxTag, size_t offset, size_t len) :
+    Super(syntaxTag, offset, len) {}
 
-void Chunk::SetStr(const std::wstring &str) {
-  str_ = new std::wstring(str);
-}
-
-void Chunk::SetSyntaxTag(SyntaxTag::Type syntaxTag) {
-  syntaxTag_ = syntaxTag;
-}
+Chunk::Chunk(const Chunk &other) :
+    Super(SCAST<const Super&>(other)) {}
 
 }}}

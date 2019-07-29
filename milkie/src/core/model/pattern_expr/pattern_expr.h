@@ -40,7 +40,7 @@ class PatternExpr {
   inline bool ExactMatch(Context &context, bool singleton) const;
   inline bool PartlyMatch(Context &context) const;
   inline bool PartlyMatch(Context &context, bool singleton) const;
-  bool MatchPattern(Context &context, bool singleton) const;
+  inline bool PrefixMatch(Context &context, bool singleton) const;
   ssize_t MatchFromIdx(ssize_t fromIdx, Context &context) const;
   bool MatchForWildcard(Context &context, ssize_t itemIdx) const;
   void StopMatch(bool succ, Context &context, bool singleton) const;
@@ -60,6 +60,7 @@ class PatternExpr {
   static std::shared_ptr<PatternExpr> Build(std::shared_ptr<PatternSet> &patternSet);
 
  private:
+  bool MatchPattern_(Context &context, bool singleton) const;
   void DebugMatch_(Context &context, ssize_t startIdx, bool ok) const;
 
   static std::unordered_set<wchar_t> CreateInvalidLeadPosForWildcard();
@@ -114,7 +115,11 @@ bool PatternExpr::ExactMatch(Context &context) const {
 }
 
 bool PatternExpr::ExactMatch(Context &context, bool singleton) const {
-  return MatchPattern(context, singleton) && context.End();
+  bool ret = MatchPattern_(context, singleton) && context.End();
+  if (ret) {
+    context.Store();
+  }
+  return ret;
 }
 
 bool PatternExpr::PartlyMatch(Context &context) const {
@@ -122,14 +127,28 @@ bool PatternExpr::PartlyMatch(Context &context) const {
 }
 
 bool PatternExpr::PartlyMatch(Context &context, bool singleton) const {
-  for (size_t curPos=0; curPos < context.GetSentence().GetSentence().length(); ++curPos) {
+  bool ret = false;
+  size_t curPos = 0;
+  while (curPos < context.GetSentence().GetSentence().length()) {
     context.Reset();
     context.SetCurPos(curPos);
-    if (MatchPattern(context, singleton)) {
-      return true;
+    if (MatchPattern_(context, singleton)) {
+      curPos = context.GetCurPos();
+      context.Store();
+      ret = true;
+    } else {
+      ++curPos;
     }
   }
-  return false;
+  return ret;
+}
+
+bool PatternExpr::PrefixMatch(Context &context, bool singleton) const {
+  bool ret = MatchPattern_(context, singleton);
+  if (ret) {
+    context.Store();
+  }
+  return ret;
 }
 
 }}}

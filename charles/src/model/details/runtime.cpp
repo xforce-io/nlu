@@ -5,7 +5,7 @@
 namespace xforce { namespace nlu { namespace charles {
 
 Runtime::Runtime() :
-  currentAnalysisContext_(NULL) {}
+  currentAnalysisContext_(nullptr) {}
 
 Runtime::~Runtime() {
   XFC_DELETE(currentAnalysisContext_)
