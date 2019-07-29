@@ -2,10 +2,11 @@
 
 #include "public.h"
 #include "analysis_component.h"
-#include "analysis_clause_branch.h"
 #include "nlu_context_split.h"
 
 namespace xforce { namespace nlu { namespace charles {
+
+class AnalysisClauseBranch;
 
 class AnalysisClause : public AnalysisComponent {
  public:
@@ -20,6 +21,7 @@ class AnalysisClause : public AnalysisComponent {
   bool Process();
   inline const Branches& GetFinished() const { return finished_; }
   inline const Branches& GetResults() const { return results_; }
+  inline bool IsAnalysised() const;
   void Dump(JsonType &jsonType);
 
  private:
@@ -31,5 +33,9 @@ class AnalysisClause : public AnalysisComponent {
   Branches finished_;
   Branches results_;
 };
+
+bool AnalysisClause::IsAnalysised() const {
+  return results_.size() == 1;
+}
 
 }}}

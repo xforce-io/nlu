@@ -1,4 +1,5 @@
 #include "../analysis_clause.h"
+#include "../analysis_clause_branch.h"
 
 namespace xforce { namespace nlu { namespace charles {
 

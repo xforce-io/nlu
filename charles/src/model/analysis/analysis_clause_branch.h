@@ -36,7 +36,6 @@ class AnalysisClauseBranch {
   NluContextSplit *nluContextSplit_;
   size_t no_;
   std::shared_ptr<basic::NluContext> nluContext_;
-  std::unordered_map<basic::Stage::Val, std::shared_ptr<AnalysisClauseBranch>> ancestors_;
   std::list<std::shared_ptr<AnalysisClauseBranch>> children_;
   basic::Stage::Val bornStage_;
   basic::Stage::Val curStage_;
