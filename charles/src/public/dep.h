@@ -19,6 +19,8 @@
 #include "milkie/core/model/context/storage_item.h"
 #include "milkie/core/model/feature_extractor/feature_extractor.h"
 
+#include "segmentor/segmentor.h"
+
 #include "ner/person_name.h"
 #include "ner/data/manager.h"
 

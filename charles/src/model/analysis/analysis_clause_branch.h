@@ -6,24 +6,27 @@
 
 namespace xforce { namespace nlu { namespace charles {
 
+class SplitStage;
+
 class AnalysisClauseBranch {
  public:
   AnalysisClauseBranch(
-          NluContextSplit &nluContextSplit,
           size_t no,
-          const std::wstring &clause);
+          const std::wstring &clause,
+          const SplitStage &splitStage);
 
   AnalysisClauseBranch(
-          NluContextSplit &nluContextSplit,
           size_t no,
-          const basic::NluContext &nluContext);
+          const basic::NluContext &nluContext,
+          const SplitStage &splitStage);
+
+  virtual ~AnalysisClauseBranch();
 
   bool Process(std::queue<std::shared_ptr<AnalysisClauseBranch>> &children);
-  std::shared_ptr<AnalysisClauseBranch> Clone() const;
 
   size_t GetNo() const { return no_; }
   const std::shared_ptr<basic::NluContext>& GetNluContext() const { return nluContext_; }
-  basic::Stage::Val GetBornStage() const { return bornStage_; }
+  const SplitStage& GetSplitStage() const { return *splitStage_; }
   bool GetEnd() const { return end_; }
 
   void Dump(JsonType &jsonType);
@@ -33,12 +36,10 @@ class AnalysisClauseBranch {
   static bool IsFinished_(basic::NluContext &nluContext);
 
  private:
-  NluContextSplit *nluContextSplit_;
   size_t no_;
   std::shared_ptr<basic::NluContext> nluContext_;
   std::list<std::shared_ptr<AnalysisClauseBranch>> children_;
-  basic::Stage::Val bornStage_;
-  basic::Stage::Val curStage_;
+  SplitStage *splitStage_;
   bool processed_;
   bool end_;
 };

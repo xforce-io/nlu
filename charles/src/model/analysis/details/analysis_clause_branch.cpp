@@ -1,32 +1,32 @@
 #include <segmentor/segmentor.h>
 #include "../analysis_clause_branch.h"
-#include "../nlu_context_split.h"
+#include "../split/split_stage.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
 AnalysisClauseBranch::AnalysisClauseBranch(
-        NluContextSplit &nluContextSplit,
         size_t no,
-        const std::wstring &clause) :
-  nluContextSplit_(&nluContextSplit),
+        const std::wstring &clause,
+        const SplitStage &splitStage) :
   no_(no),
   nluContext_(std::make_shared<basic::NluContext>(clause)),
-  bornStage_(basic::Stage::kNone),
-  curStage_(basic::Stage::kSyntax),
+  splitStage_(splitStage.Clone()),
   processed_(false),
   end_(false) {}
 
 AnalysisClauseBranch::AnalysisClauseBranch(
-        NluContextSplit &nluContextSplit,
         size_t no,
-        const basic::NluContext &nluContext) :
-  nluContextSplit_(&nluContextSplit),
+        const basic::NluContext &nluContext,
+        const SplitStage &splitStage) :
   no_(no),
   nluContext_(nluContext.Clone()),
-  bornStage_(basic::Stage::kNone),
-  curStage_(basic::Stage::kSyntax),
+  splitStage_(splitStage.Clone()),
   processed_(false),
   end_(false) {}
+
+AnalysisClauseBranch::~AnalysisClauseBranch() {
+  XFC_DELETE(splitStage_)
+}
 
 bool AnalysisClauseBranch::Process(
         std::queue<std::shared_ptr<AnalysisClauseBranch>> &branches) {
@@ -35,34 +35,7 @@ bool AnalysisClauseBranch::Process(
   }
 
   if (!processed_) {
-    switch (bornStage_) {
-      case basic::Stage::kNone :
-        segmentor::Segmentor::Parse(nluContext_);
-        pos::PosTagging::Tagging(nluContext_);
-        chunker::Chunker::Parse(nluContext_);
-        syntax::Syntax::Parse(nluContext_);
-        break;
-      case basic::Stage::kSegment :
-        segmentor::Segmentor::Parse(nluContext_);
-        pos::PosTagging::Tagging(nluContext_);
-        chunker::Chunker::Parse(nluContext_);
-        syntax::Syntax::Parse(nluContext_);
-        break;
-      case basic::Stage::kPosTag :
-        pos::PosTagging::Tagging(nluContext_);
-        chunker::Chunker::Parse(nluContext_);
-        syntax::Syntax::Parse(nluContext_);
-        break;
-      case basic::Stage::kChunk :
-        chunker::Chunker::Parse(nluContext_);
-        syntax::Syntax::Parse(nluContext_);
-        break;
-      case basic::Stage::kSyntax :
-        syntax::Syntax::Parse(nluContext_);
-        break;
-      default :
-        break;
-    }
+    splitStage_->Process(nluContext_);
     processed_ = true;
 
     if (IsFinished_(*nluContext_)) {
@@ -72,13 +45,10 @@ bool AnalysisClauseBranch::Process(
   }
 
   std::vector<std::shared_ptr<basic::NluContext>> nluContexts;
-  basic::Stage::Val lastStage = basic::Stage::kEnd;
-  while (basic::Stage::kNone != curStage_) {
+  while (!splitStage_->IsBegin()) {
     nluContexts.clear();
 
-    bool ret = nluContextSplit_->Split(nluContext_, nluContexts, curStage_);
-    lastStage = curStage_;
-    curStage_ = basic::Stage::GetPrev(curStage_);
+    bool ret = splitStage_->Split(nluContext_, nluContexts);
     if (ret) {
       break;
     }
@@ -87,30 +57,22 @@ bool AnalysisClauseBranch::Process(
   size_t idx=0;
   for (auto nluContext : nluContexts) {
     auto child = std::make_shared<AnalysisClauseBranch>(
-            *nluContextSplit_,
+            *splitStage_,
             no_ * 10 + idx,
             *nluContext);
-    child->bornStage_ = lastStage;
-    child->curStage_ = curStage_;
     branches.push(child);
     children_.push_back(child);
     ++idx;
   }
 
-  if (basic::Stage::kNone != curStage_) {
-    auto copy = std::make_shared<AnalysisClauseBranch>(*nluContextSplit_, no_, *nluContext_);
-    copy->bornStage_ = bornStage_;
-    copy->curStage_ = curStage_;
+  if (!splitStage_->IsBegin()) {
+    auto copy = std::make_shared<AnalysisClauseBranch>(*splitStage_, no_, *nluContext_);
     copy->processed_ = processed_;
     branches.push(copy);
   } else {
     end_ = true;
   }
   return false;
-}
-
-std::shared_ptr<AnalysisClauseBranch> AnalysisClauseBranch::Clone() const {
-  return std::make_shared<AnalysisClauseBranch>(*nluContextSplit_, no_, *nluContext_);
 }
 
 void AnalysisClauseBranch::Dump(JsonType &jsonType) {
