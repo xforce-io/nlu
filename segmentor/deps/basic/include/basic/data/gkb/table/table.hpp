@@ -15,18 +15,18 @@ class Table {
           const std::string &dir,
           const std::string &filepath);
 
-  inline const std::vector<EntryType*>* GetEntries(const std::wstring &word) const;
+  inline const std::vector<const EntryType*>* GetEntries(const std::wstring &word) const;
 
   virtual bool IsPhrase(
           const std::wstring &word0,
           const std::wstring &word1) const;
 
  private:
-  void PutIntoInverted_(EntryType &entry);
+  void PutIntoInverted_(const EntryType &entry);
 
  private:
   std::list<EntryType*> entries_;
-  std::unordered_map<std::wstring, std::vector<EntryType*>> inverted_;
+  std::unordered_map<std::wstring, std::vector<const EntryType*>> inverted_;
 };
 
 template <class EntryType>
@@ -74,7 +74,7 @@ bool Table<EntryType>::Init(
 }
 
 template <class EntryType>
-const std::vector<EntryType*>* Table<EntryType>::GetEntries(const std::wstring &word) const {
+const std::vector<const EntryType*>* Table<EntryType>::GetEntries(const std::wstring &word) const {
   auto iter = inverted_.find(word);
   if (iter != inverted_.end()) {
     return &iter->second;
@@ -93,12 +93,12 @@ bool Table<EntryType>::IsPhrase(
 }
 
 template <class EntryType>
-void Table<EntryType>::PutIntoInverted_(EntryType &entry) {
+void Table<EntryType>::PutIntoInverted_(const EntryType &entry) {
   auto iter = inverted_.find(entry.GetWord());
   if (iter != inverted_.end()) {
     iter->second.push_back(&entry);
   } else {
-    std::vector<EntryType*> entries;
+    std::vector<const EntryType*> entries;
     entries.push_back(&entry);
     inverted_.insert(std::make_pair(entry.GetWord(), entries));
   }

@@ -89,6 +89,7 @@ class PosTag {
 
  public:
   static PosTag::Type::Val GetPosTag(const std::wstring &pos);
+  static PosTag::Type::Val GetPosTag(wchar_t pos);
   static const std::wstring& Str(PosTag::Type::Val posTag);
 
   inline static bool IsNominal(PosTag::Type::Val posTag);

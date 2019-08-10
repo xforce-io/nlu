@@ -22,11 +22,11 @@ class Table {
           const std::wstring &word1) const;
 
  private:
-  void PutIntoInverted_(EntryType &entry);
+  void PutIntoInverted_(const EntryType &entry);
 
  private:
   std::list<EntryType*> entries_;
-  std::unordered_map<std::wstring, std::vector<EntryType*>> inverted_;
+  std::unordered_map<std::wstring, std::vector<const EntryType*>> inverted_;
 };
 
 template <class EntryType>
@@ -93,12 +93,12 @@ bool Table<EntryType>::IsPhrase(
 }
 
 template <class EntryType>
-void Table<EntryType>::PutIntoInverted_(EntryType &entry) {
+void Table<EntryType>::PutIntoInverted_(const EntryType &entry) {
   auto iter = inverted_.find(entry.GetWord());
   if (iter != inverted_.end()) {
     iter->second.push_back(&entry);
   } else {
-    std::vector<EntryType*> entries;
+    std::vector<const EntryType*> entries;
     entries.push_back(&entry);
     inverted_.insert(std::make_pair(entry.GetWord(), entries));
   }

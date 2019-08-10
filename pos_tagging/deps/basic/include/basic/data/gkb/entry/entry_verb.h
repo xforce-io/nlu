@@ -11,11 +11,11 @@ class EntryVerb : public Entry {
 
   struct TiWeiZhun {
     enum Val {
-        kNone,
-        kTi,
-        kWei,
-        kZhun,
-        kOther,
+      kNone,
+      kTi,
+      kWei,
+      kZhun,
+      kOther,
     };
   };
 
