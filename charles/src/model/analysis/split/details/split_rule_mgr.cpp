@@ -1,6 +1,7 @@
 #include "../split_rule_mgr.h"
 #include "../rule_pos_tag.h"
-#include "../rule_syntax.h"
+#include "../rule_syntax_rule.h"
+#include "../rule_syntax_prep.h"
 #include "../../../../conf/conf.h"
 
 namespace xforce { namespace nlu { namespace charles {
@@ -27,12 +28,17 @@ SplitRuleMgr::~SplitRuleMgr() {
   }
 }
 
-bool SplitRuleMgr::Init() {
+bool SplitRuleMgr::Init(const basic::NluContext &nluContext) {
   allRules_[basic::Stage::kPosTag]->push_back(new RulePosTagMultiTag());
-  return InitSyntax_();
+  return InitSyntax_(nluContext);
 }
 
-bool SplitRuleMgr::InitSyntax_() {
+bool SplitRuleMgr::InitSyntax_(const basic::NluContext &nluContext) {
+  return InitSyntaxForPrep_(nluContext) ||
+      InitSyntaxFromRules_(nluContext);
+}
+
+bool SplitRuleMgr::InitSyntaxFromRules_(const basic::NluContext &nluContext) {
   splitRuleEngine_ = new milkie::Milkie();
 
   bool ret = splitRuleEngine_->Init(Conf::Get().GetSplitRuleConfpath());
@@ -46,6 +52,17 @@ bool SplitRuleMgr::InitSyntax_() {
   auto featureExtractors = splitRuleEngine_->GetManager().GetFeatureExtractors();
   for (auto kv : featureExtractors) {
     allRules_[basic::Stage::kSyntax]->push_back(new RuleSyntaxRule(kv.second));
+  }
+  return true;
+}
+
+bool SplitRuleMgr::InitSyntaxForPrep_(const basic::NluContext &nluContext) {
+  size_t idx=0;
+  for (auto segment : nluContext.GetSegments().GetAll()) {
+    if (segment->GetTag() == basic::PosTag::Type::kP) {
+      allRules_[basic::Stage::kSyntax]->push_back(new RuleSyntaxPrep(idx));
+    }
+    ++idx;
   }
   return true;
 }

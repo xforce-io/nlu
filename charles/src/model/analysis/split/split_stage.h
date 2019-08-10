@@ -19,7 +19,6 @@ class SplitStage {
   bool NextStage();
   SplitStage* Clone() const;
 
-  inline const SplitRuleMgr& GetSplitRuleMgr() const { return *splitRuleMgr_; }
   inline bool IsBegin() const;
   inline bool IsEnd() const;
 

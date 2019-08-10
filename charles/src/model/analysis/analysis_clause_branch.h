@@ -12,11 +12,6 @@ class AnalysisClauseBranch {
  public:
   AnalysisClauseBranch(
           size_t no,
-          const std::wstring &clause,
-          const SplitStage &splitStage);
-
-  AnalysisClauseBranch(
-          size_t no,
           const basic::NluContext &nluContext,
           const SplitStage &splitStage);
 

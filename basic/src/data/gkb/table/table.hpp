@@ -15,7 +15,7 @@ class Table {
           const std::string &dir,
           const std::string &filepath);
 
-  inline const std::vector<EntryType*>* GetEntries(const std::wstring &word) const;
+  inline const std::vector<const EntryType*>* GetEntries(const std::wstring &word) const;
 
   virtual bool IsPhrase(
           const std::wstring &word0,
@@ -74,7 +74,7 @@ bool Table<EntryType>::Init(
 }
 
 template <class EntryType>
-const std::vector<EntryType*>* Table<EntryType>::GetEntries(const std::wstring &word) const {
+const std::vector<const EntryType*>* Table<EntryType>::GetEntries(const std::wstring &word) const {
   auto iter = inverted_.find(word);
   if (iter != inverted_.end()) {
     return &iter->second;

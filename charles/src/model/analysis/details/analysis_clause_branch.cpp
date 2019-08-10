@@ -6,16 +6,6 @@ namespace xforce { namespace nlu { namespace charles {
 
 AnalysisClauseBranch::AnalysisClauseBranch(
         size_t no,
-        const std::wstring &clause,
-        const SplitStage &splitStage) :
-  no_(no),
-  nluContext_(std::make_shared<basic::NluContext>(clause)),
-  splitStage_(splitStage.Clone()),
-  processed_(false),
-  end_(false) {}
-
-AnalysisClauseBranch::AnalysisClauseBranch(
-        size_t no,
         const basic::NluContext &nluContext,
         const SplitStage &splitStage) :
   no_(no),

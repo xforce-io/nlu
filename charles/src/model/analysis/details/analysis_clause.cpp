@@ -1,21 +1,28 @@
 #include "../analysis_clause.h"
 #include "../analysis_clause_branch.h"
+#include "../split/split_rule_mgr.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
 AnalysisClause::AnalysisClause(const std::wstring &clause) :
-  nluContextSplit_(nullptr),
-  clause_(clause),
-  master_(nullptr) {}
+    clause_(std::make_shared<basic::NluContext>(clause)),
+    master_(nullptr) {
+  splitRuleMgr_ = new SplitRuleMgr();
+}
 
 AnalysisClause::~AnalysisClause() {
-  XFC_DELETE(nluContextSplit_)
+  XFC_DELETE(splitRuleMgr_)
 }
 
 bool AnalysisClause::Init() {
-  nluContextSplit_ = new NluContextSplit();
-  bool ret = nluContextSplit_->Init();
-  master_ = std::make_shared<AnalysisClauseBranch>(*nluContextSplit_, 1, clause_);
+  bool ret = splitRuleMgr_->Init(*clause_);
+  if (!ret) {
+    return false;
+  }
+
+  auto splitStage = new SplitRuleMgr(*splitRuleMgr_);
+  master_ = std::make_shared<AnalysisClauseBranch>(1, clause_, *splitStage);
+  XFC_DELETE(splitStage);
   return ret;
 }
 

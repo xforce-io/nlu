@@ -1,4 +1,4 @@
-#include "../rule_syntax.h"
+#include "../rule_syntax_rule.h"
 
 namespace xforce { namespace nlu { namespace charles {
 

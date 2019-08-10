@@ -89,6 +89,7 @@ SplitStage* SplitStage::Clone() const {
   auto *newStage = new SplitStage(*splitRuleMgr_);
   newStage->bornStage_ = bornStage_;
   newStage->curStage_ = curStage_;
+  newStage->ruleIdx_ = ruleIdx_;
   return newStage;
 }
 

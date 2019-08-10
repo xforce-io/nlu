@@ -14,15 +14,16 @@ class SplitRuleMgr {
   SplitRuleMgr();
   virtual ~SplitRuleMgr();
 
-  bool Init();
+  bool Init(const basic::NluContext &nluContext);
   const std::vector<Rules*> GetRules() const { return allRules_; }
 
  private:
-  bool InitSyntax_();
+  bool InitSyntax_(const basic::NluContext &nluContext);
+  bool InitSyntaxFromRules_(const basic::NluContext &nluContext);
+  bool InitSyntaxForPrep_(const basic::NluContext &nluContext);
 
  private:
   std::vector<Rules*> allRules_;
-
   milkie::Milkie *splitRuleEngine_;
 };
 
