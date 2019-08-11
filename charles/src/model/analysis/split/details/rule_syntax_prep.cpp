@@ -9,7 +9,10 @@ RuleSyntaxPrep::RuleSyntaxPrep(size_t idx) :
 bool RuleSyntaxPrep::Split(
         const std::shared_ptr<basic::NluContext> &nluContext,
         std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) {
-  //basic::Manager::Get().GetGkb().G
+  std::vector<const basic::EntryPrep*> entriesPrep;
+  basic::Manager::Get().GetGkb().GetGkbPrep().GetEntriesPrep(
+          nluContext->GetQuery(),
+          entriesPrep);
 
   size_t idx=0;
   size_t offsetPrep=0;
@@ -24,6 +27,9 @@ bool RuleSyntaxPrep::Split(
     }
 
     //after words
+    for (auto *entryPrep : entriesPrep) {
+      for (auto )
+    }
 
 
     //after poses

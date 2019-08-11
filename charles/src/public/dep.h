@@ -10,6 +10,7 @@
 #include "basic/data/manager.h"
 #include "basic/data/word_dict.h"
 #include "basic/data/dict_item.h"
+#include "basic/data/gkb/entry/entry_prep.h"
 
 #include "milkie/milkie.h"
 #include "milkie/manager/manager.h"
