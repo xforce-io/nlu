@@ -2,8 +2,8 @@
 
 namespace xforce { namespace nlu { namespace charles {
 
-RuleSyntaxPrep::RuleSyntaxPrep(size_t idx) :
-  idxPrep_(idx) {
+RuleSyntaxPrep::RuleSyntaxPrep(size_t offset) :
+  offsetPrep_(offset) {
 }
 
 bool RuleSyntaxPrep::Split(
@@ -14,41 +14,58 @@ bool RuleSyntaxPrep::Split(
           nluContext->GetQuery(),
           entriesPrep);
 
-  size_t idx=0;
-  size_t offsetPrep=0;
-  for (auto chunk : nluContext->GetChunks().GetAll()) {
-    if (idx<idxPrep_) {
-      ++idx;
-      continue;
-    } else if (idx==idxPrep_) {
-      offsetPrep = chunk->GetOffset();
-      ++idx;
+  bool touched=false;
+  for (auto &segment : nluContext->GetSegments().GetAll()) {
+    if (segment->GetOffset() < offsetPrep_) {
       continue;
     }
 
-    //after words
+    //after words & after poses
     for (auto *entryPrep : entriesPrep) {
-      for (auto )
+      if (entryPrep->IsAfterWord(segment->GetQuery(nluContext->GetQuery())) ||
+          entryPrep->IsAfterPos(segment->GetTag())) {
+        AddNewChunk_(
+                nluContext,
+                nluContexts,
+                segment->GetOffset() - offsetPrep_ + segment->GetLen());
+        touched = true;
+        break;
+      }
     }
+  }
 
-
-    //after poses
+  for (auto &chunk : nluContext->GetChunks().GetAll()) {
+    if (chunk->GetOffset() <= offsetPrep_) {
+      continue;
+    }
 
     //NP
     if (chunk->GetTag() == basic::SyntaxTag::Type::kAdvp ||
         chunk->GetTag() == basic::SyntaxTag::Type::kU) {
       continue;
     } else if (chunk->GetTag() == basic::SyntaxTag::Type::kNp) {
-      basic::Chunk chunk(
-              basic::SyntaxTag::Type::kPp,
-              offsetPrep,
-              chunk.GetOffset() - offsetPrep + chunk.GetLen());
-
-      auto newBranch = nluContext->Clone();
-      newBranch->GetChunks().Add(chunk);
-      nluContexts.push_back(newBranch);
+      AddNewChunk_(
+              nluContext,
+              nluContexts,
+              chunk->GetOffset() - offsetPrep_ + chunk->GetLen());
+      touched = true;
     }
   }
+  return touched;
+}
+
+void RuleSyntaxPrep::AddNewChunk_(
+        const std::shared_ptr<basic::NluContext> &nluContext,
+        std::vector<std::shared_ptr<basic::NluContext>> &nluContexts,
+        size_t length) {
+  basic::Chunk newChunk(
+          basic::SyntaxTag::Type::kPp,
+          offsetPrep_,
+          length);
+
+  auto newBranch = nluContext->Clone();
+  newBranch->GetChunks().Add(newChunk);
+  nluContexts.push_back(newBranch);
 }
 
 }}}

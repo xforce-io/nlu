@@ -60,7 +60,7 @@ bool SplitRuleMgr::InitSyntaxForPrep_(const basic::NluContext &nluContext) {
   size_t idx=0;
   for (auto segment : nluContext.GetSegments().GetAll()) {
     if (segment->GetTag() == basic::PosTag::Type::kP) {
-      allRules_[basic::Stage::kSyntax]->push_back(new RuleSyntaxPrep(idx));
+      allRules_[basic::Stage::kSyntax]->push_back(new RuleSyntaxPrep(segment->GetOffset()));
     }
     ++idx;
   }
