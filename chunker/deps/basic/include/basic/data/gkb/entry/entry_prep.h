@@ -25,6 +25,9 @@ class EntryPrep : public Entry {
  public:
   int Parse(const std::vector<std::wstring> &items);
 
+  inline bool IsAfterWord(const std::wstring &word) const;
+  inline bool IsAfterPos(PosTag::Type::Val posTag) const;
+
   TiWei::Val TiWei() const { return tiWei_; }
   inline const std::vector<std::wstring>& GetAfterWords() const;
   inline const std::vector<PosTag::Type::Val>& GetAfterPoses() const;
@@ -34,6 +37,24 @@ class EntryPrep : public Entry {
   std::vector<std::wstring> afterWords_;
   std::vector<PosTag::Type::Val> afterPoses_;
 };
+
+bool EntryPrep::IsAfterWord(const std::wstring &word) const {
+  for (auto &afterWord : afterWords_) {
+    if (word == afterWord) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool EntryPrep::IsAfterPos(PosTag::Type::Val posTag) const {
+  for (auto afterPos : afterPoses_) {
+    if (posTag == afterPos) {
+      return true;
+    }
+  }
+  return false;
+}
 
 const std::vector<std::wstring>& EntryPrep::GetAfterWords() const {
   return afterWords_;
