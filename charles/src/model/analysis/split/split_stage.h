@@ -22,6 +22,9 @@ class SplitStage {
   inline bool IsBegin() const;
   inline bool IsEnd() const;
 
+  basic::Stage::Val GetBornStage() const { return bornStage_; }
+  basic::Stage::Val GetCurStage() const { return curStage_; }
+
  private:
   const SplitRuleMgr *splitRuleMgr_;
   basic::Stage::Val bornStage_;

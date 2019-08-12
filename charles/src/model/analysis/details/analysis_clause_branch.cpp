@@ -47,16 +47,16 @@ bool AnalysisClauseBranch::Process(
   size_t idx=0;
   for (auto nluContext : nluContexts) {
     auto child = std::make_shared<AnalysisClauseBranch>(
-            *splitStage_,
             no_ * 10 + idx,
-            *nluContext);
+            *nluContext,
+            *splitStage_);
     branches.push(child);
     children_.push_back(child);
     ++idx;
   }
 
   if (!splitStage_->IsBegin()) {
-    auto copy = std::make_shared<AnalysisClauseBranch>(*splitStage_, no_, *nluContext_);
+    auto copy = std::make_shared<AnalysisClauseBranch>(no_, *nluContext_, *splitStage_);
     copy->processed_ = processed_;
     branches.push(copy);
   } else {

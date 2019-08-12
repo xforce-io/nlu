@@ -12,7 +12,9 @@ SplitRuleMgr::SplitRuleMgr() :
   for (size_t i=0; i < allRules_.size(); ++i) {
     allRules_[i] = nullptr;
   }
+  allRules_[basic::Stage::kSegment] = new Rules();
   allRules_[basic::Stage::kPosTag] = new Rules();
+  allRules_[basic::Stage::kChunk] = new Rules();
   allRules_[basic::Stage::kSyntax] = new Rules();
 }
 
@@ -21,10 +23,12 @@ SplitRuleMgr::~SplitRuleMgr() {
   for (auto *rules : allRules_) {
     if (nullptr != rules) {
       for (auto *rule : *rules) {
-        delete rule;
+        if (nullptr != rule) {
+          delete rule;
+        }
       }
+      delete rules;
     }
-    delete rules;
   }
 }
 
@@ -34,7 +38,7 @@ bool SplitRuleMgr::Init(const basic::NluContext &nluContext) {
 }
 
 bool SplitRuleMgr::InitSyntax_(const basic::NluContext &nluContext) {
-  return InitSyntaxForPrep_(nluContext) ||
+  return InitSyntaxForPrep_(nluContext) &&
       InitSyntaxFromRules_(nluContext);
 }
 
