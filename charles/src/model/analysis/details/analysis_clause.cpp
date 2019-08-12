@@ -32,7 +32,7 @@ bool AnalysisClause::Process() {
     finished_.push_back(master_);
     results_.push_back(master_);
     return true;
-  } else if (master_->GetEnd()) {
+  } else if (master_->GetEnd() && branches_.empty()) {
     finished_.push_back(master_);
     return false;
   }
