@@ -51,6 +51,7 @@ bool Matcher::Process_(std::shared_ptr<basic::NluContext> nluContext) {
   if (PostProcess_(nluContext)) {
     touched = true;
   }
+
   return touched;
 }
 
@@ -190,6 +191,10 @@ bool Matcher::PostProcess_(std::shared_ptr<basic::NluContext> nluContext) {
   return touched;
 }
 
+void Matcher::AppendixProcess_(std::shared_ptr<basic::NluContext> nluContext) {
+  AddAdvpDescDir_(nluContext);
+}
+
 bool Matcher::RuleContNp_(
         std::shared_ptr<basic::NluContext> nluContext,
         const std::shared_ptr<basic::Chunk> &chunk) {
@@ -251,6 +256,26 @@ bool Matcher::RuleIntransitiveVerb_(
     return true;
   }
   return false;
+}
+
+void Matcher::AddAdvpDescDir_(std::shared_ptr<basic::NluContext> nluContext) {
+  for (auto &chunk : nluContext->GetChunks().GetAll()) {
+    if (chunk->GetTag() == basic::SyntaxTag::Type::kAdvp) {
+      AddAdvpDescDirForChunk_(nluContext, chunk);
+    }
+  }
+}
+
+void Matcher::AddAdvpDescDirForChunk_(
+        std::shared_ptr<basic::NluContext> nluContext,
+        std::shared_ptr<basic::Chunk> advp) {
+  std::list<std::pair<std::shared_ptr<basic::Segment>, basic::Chunk::>> segments;
+  for (auto &segment : nluContext->GetSegments().GetAll()) {
+    if (segment->GetOffset() >= advp->GetOffset() &&
+        segment->GetOffset() + segment->GetLen() <= advp->GetOffset() + advp->GetLen()) {
+      segments.push_back(segment);
+    }
+  }
 }
 
 }}}

@@ -22,6 +22,7 @@ class Matcher {
   bool SyntaxProcessForChunkSep_(std::shared_ptr<basic::NluContext> nluContext);
   bool SyntaxProcessForChunk_(std::shared_ptr<basic::NluContext> nluContext);
   bool PostProcess_(std::shared_ptr<basic::NluContext> nluContext);
+  void AppendixProcess_(std::shared_ptr<basic::NluContext> nluContext);
 
  private:
   bool RuleContNp_(
@@ -31,6 +32,11 @@ class Matcher {
   bool RuleIntransitiveVerb_(
           std::shared_ptr<basic::NluContext> nluContext,
           const std::shared_ptr<basic::Chunk> &chunk);
+
+  void AddAdvpDescDir_(std::shared_ptr<basic::NluContext> nluContext);
+  void AddAdvpDescDirForChunk_(
+          std::shared_ptr<basic::NluContext> nluContext,
+          std::shared_ptr<basic::Chunk> advp);
 
  private:
   milkie::Milkie *milkie_;
