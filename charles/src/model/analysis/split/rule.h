@@ -9,6 +9,8 @@ class Rule {
   virtual bool Split(
           const std::shared_ptr<basic::NluContext> &nluContext,
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) = 0;
+
+  virtual ~Rule() {}
 };
 
 }}}

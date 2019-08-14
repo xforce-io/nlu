@@ -44,7 +44,7 @@ void SplitStage::Process(std::shared_ptr<basic::NluContext> &nluContext) {
 bool SplitStage::Split(
         const std::shared_ptr<basic::NluContext> &nluContext,
         std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) {
-  if (IsBegin()) {
+  if (IsBegin() || IsEnd()) {
     return false;
   }
 
@@ -60,11 +60,18 @@ bool SplitStage::PrevStage() {
   }
 
   ++ruleIdx_;
-  size_t curStageSize = splitRuleMgr_->GetRules()[curStage_]->size();
-  if (curStageSize == ruleIdx_) {
-    curStage_ = basic::Stage::GetPrev(curStage_);
-    ruleIdx_ = 0;
-    return IsBegin();
+
+  while (true) {
+    size_t curStageSize = splitRuleMgr_->GetRules()[curStage_]->size();
+    if (curStageSize == ruleIdx_) {
+      curStage_ = basic::Stage::GetPrev(curStage_);
+      ruleIdx_ = 0;
+      if (IsBegin()) {
+        return false;
+      }
+    } else {
+      break;
+    }
   }
   return true;
 }
@@ -76,11 +83,17 @@ bool SplitStage::NextStage() {
 
   ++ruleIdx_;
 
-  size_t curStageSize = splitRuleMgr_->GetRules()[curStage_]->size();
-  if (curStageSize == ruleIdx_) {
-    curStage_ = basic::Stage::GetNext(curStage_);
-    ruleIdx_ = 0;
-    return IsEnd();
+  while (true) {
+    size_t curStageSize = splitRuleMgr_->GetRules()[curStage_]->size();
+    if (curStageSize == ruleIdx_) {
+      curStage_ = basic::Stage::GetNext(curStage_);
+      ruleIdx_ = 0;
+      if (IsEnd()) {
+        return false;
+      }
+    } else {
+      break;
+    }
   }
   return true;
 }
