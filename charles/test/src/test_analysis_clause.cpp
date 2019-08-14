@@ -25,7 +25,7 @@ TEST(testAll, all) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/charles.conf");
 
   ASSERT_TRUE(Charles::Init(*conf));
-  AnalysisClause analysisClause(L"我们也是做了很多的困难准备");
+  AnalysisClause analysisClause(L"车可以连续多少天不开");
   ASSERT_TRUE(analysisClause.Init());
   analysisClause.Process();
 
