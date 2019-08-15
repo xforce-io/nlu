@@ -14,8 +14,6 @@ bool GkbVerbDongqu::IsPhrase(
     if (entry->ConnWord(word1)) {
       return true;
     }
-
-    if (entry->)
   }
   return false;
 }

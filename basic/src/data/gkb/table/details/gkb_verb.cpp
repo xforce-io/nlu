@@ -42,7 +42,8 @@ bool GkbVerb::Init(
 bool GkbVerb::IsDongjieOrDongquPhrase(
     const std::wstring &word0,
     const std::wstring &word1) const {
-  return gkbVerbDongqu_->IsPhrase(word0, word1);
+  return gkbVerbDongjie_->IsPhrase(word0, word1) ||
+      gkbVerbDongqu_->IsPhrase(word0, word1);
 }
 
 EntryVerb::TiWeiZhun::Val GkbVerb::TiWeiZhun(
