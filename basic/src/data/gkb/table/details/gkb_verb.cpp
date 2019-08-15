@@ -9,6 +9,16 @@ bool GkbVerb::Init(
     return false;
   }
 
+  for (auto *entry : entries_) {
+    if (entry->isDongjie()) {
+      dongjie_.insert(entry->GetWord());
+    }
+
+    if (entry->isDongqu()) {
+      dongqu_.insert(entry->GetWord());
+    }
+  }
+
   std::stringstream ss;
   ss << dir << "/gkb_verb_dongjie";
   gkbVerbDongjie_ = new GkbVerbDongjie();

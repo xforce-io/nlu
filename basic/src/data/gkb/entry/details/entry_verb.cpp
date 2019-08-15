@@ -17,6 +17,9 @@ int EntryVerb::Parse(const std::vector<std::wstring> &items) {
   } else {
     tiWeiZhun_ = TiWeiZhun::kNone;
   }
+
+  dongjie_ = !items[kColDongjie].empty();
+  dongqu_ = !items[kColDongqu].empty();
   return 0;
 }
 
