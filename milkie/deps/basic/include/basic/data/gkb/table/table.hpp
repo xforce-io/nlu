@@ -24,7 +24,7 @@ class Table {
  private:
   void PutIntoInverted_(const EntryType &entry);
 
- private:
+ protected:
   std::list<EntryType*> entries_;
   std::unordered_map<std::wstring, std::vector<const EntryType*>> inverted_;
 };
