@@ -24,7 +24,7 @@ FILE(GLOB_RECURSE BASIC_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -DUNICODE=1")
 
 add_library(basic
-  ${BASIC_FILES} src/data/gkb/table/gkb_prep.h src/data/gkb/entry/entry_prep.h src/data/gkb/entry/details/entry_prep.cpp src/data/gkb/entry/entry_verb_dongjie.h src/data/gkb/entry/details/entry_verb_dongjie.cpp src/data/gkb/table/gkb_verb_dongjie.h src/data/gkb/table/details/gkb_verb_dongjie.cpp)
+  ${BASIC_FILES})
 
 target_link_libraries(basic
   log4cplus
@@ -58,12 +58,14 @@ add_custom_command(TARGET basic
   COMMAND cp ${BASIC_SRC_DIR}/data/gkb/table/gkb_global.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/table/
   COMMAND cp ${BASIC_SRC_DIR}/data/gkb/table/gkb_adv.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/table/
   COMMAND cp ${BASIC_SRC_DIR}/data/gkb/table/gkb_verb.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/table/
+  COMMAND cp ${BASIC_SRC_DIR}/data/gkb/table/gkb_verb_dongjie.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/table/
   COMMAND cp ${BASIC_SRC_DIR}/data/gkb/table/gkb_verb_dongqu.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/table/
   COMMAND cp ${BASIC_SRC_DIR}/data/gkb/table/gkb_prep.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/table/
   COMMAND cp ${BASIC_SRC_DIR}/data/gkb/entry/entry.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/entry/
   COMMAND cp ${BASIC_SRC_DIR}/data/gkb/entry/entry_global.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/entry/
   COMMAND cp ${BASIC_SRC_DIR}/data/gkb/entry/entry_adv.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/entry/
   COMMAND cp ${BASIC_SRC_DIR}/data/gkb/entry/entry_verb.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/entry/
+  COMMAND cp ${BASIC_SRC_DIR}/data/gkb/entry/entry_verb_dongjie.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/entry/
   COMMAND cp ${BASIC_SRC_DIR}/data/gkb/entry/entry_verb_dongqu.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/entry/
   COMMAND cp ${BASIC_SRC_DIR}/data/gkb/entry/entry_prep.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/entry/
   COMMAND cp ${BASIC_SRC_DIR}/data/word_dict.h ${BASIC_INC_OUTPUT_PATH}/data/
