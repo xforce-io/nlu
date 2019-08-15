@@ -281,6 +281,7 @@ void Matcher::AddAdvpDescDirForChunk_(
 
   bool left=false;
   bool right=false;
+  size_t rightBound=0;
   if (adjs.empty()) {
     return;
   } else if (adjs.size() == 1) {
@@ -292,6 +293,38 @@ void Matcher::AddAdvpDescDirForChunk_(
             (basic::Manager::Get().GetGkb().GetGkbVerb().IsDongjie(strSegBefore) ||
             basic::Manager::Get().GetGkb().GetGkbVerb().IsDongqu(strSegBefore))) {
       left=true;
+    }
+
+    auto segAfter = nluContext->GetChunks().GetFragmentAfter(advp->GetEnd());
+    if (segAfter->GetTag() == basic::SyntaxTag::Type::kNn) {
+      if (basic::Manager::Get().GetGkb().GetGkbAdj().Dingyu(theAdj.first->GetQuery(nluContext->GetQuery()))) {
+        right=true;
+      }
+    } else if (segAfter->GetQuery(nluContext->GetQuery()) == L"的") {
+      left=false;
+      right=true;
+      auto segAfterAfter = nluContext->GetChunks().GetFragmentAfter(segAfter->GetEnd());
+      if (segAfterAfter != nullptr) {
+        rightBound = segAfterAfter->GetEnd();
+      }
+    }
+
+    if (left && !right) {
+      advp->SetDescDir(basic::Chunk::kLeft);
+      nluContext->GetChunks().Add(std::make_shared<basic::Chunk>(
+              basic::SyntaxTag::Type::kV,
+              segBefore->GetOffset(),
+              segBefore->GetLen() + advp->GetLen()));
+    } else if (!left && right) {
+      advp->SetDescDir(basic::Chunk::kRight);
+      if (0!=rightBound) {
+        nluContext->GetChunks().Add(std::make_shared<basic::Chunk>(
+                basic::SyntaxTag::Type::kV,
+                advp->GetOffset(),
+                rightBound - advp->GetOffset()));
+      }
+    } else if (left && right) {
+      advp->SetDescDir(basic::Chunk::kBoth);
     }
   }
 }
