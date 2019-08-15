@@ -279,13 +279,19 @@ void Matcher::AddAdvpDescDirForChunk_(
     }
   }
 
+  bool left=false;
+  bool right=false;
   if (adjs.empty()) {
     return;
   } else if (adjs.size() == 1) {
     auto theAdj = *(adjs.begin());
     auto segBefore = nluContext->GetSegments().GetFragmentBefore(theAdj.first->GetOffset());
+    auto strSegBefore = segBefore->GetQuery(nluContext->GetQuery());
     if (nullptr != segBefore &&
-        segBefore->GetTag() == basic::PosTag::Type::kV) {
+        segBefore->GetTag() == basic::PosTag::Type::kV &&
+            (basic::Manager::Get().GetGkb().GetGkbVerb().IsDongjie(strSegBefore) ||
+            basic::Manager::Get().GetGkb().GetGkbVerb().IsDongqu(strSegBefore))) {
+      left=true;
     }
   }
 }

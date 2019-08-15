@@ -17,8 +17,8 @@ class GkbVerb : public Table<EntryVerb> {
           const std::string &dir,
           const std::string &filepath);
 
-  inline bool IsDongjie(const std::wstring &word);
-  inline bool IsDongqu(const std::wstring &word);
+  inline bool IsDongjie(const std::wstring &word) const;
+  inline bool IsDongqu(const std::wstring &word) const;
 
   virtual bool IsDongjieOrDongquPhrase(
       const std::wstring &word0,
@@ -35,11 +35,11 @@ class GkbVerb : public Table<EntryVerb> {
   GkbVerbDongqu *gkbVerbDongqu_;
 };
 
-bool GkbVerb::IsDongjie(const std::wstring &word) {
+bool GkbVerb::IsDongjie(const std::wstring &word) const {
   return dongjie_.find(word) != dongjie_.end();
 }
 
-bool GkbVerb::IsDongqu(const std::wstring &word) {
+bool GkbVerb::IsDongqu(const std::wstring &word) const {
   return dongqu_.find(word) != dongqu_.end();
 }
 

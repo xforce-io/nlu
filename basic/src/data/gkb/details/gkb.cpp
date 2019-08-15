@@ -6,12 +6,14 @@ namespace xforce { namespace nlu { namespace basic {
 Gkb::Gkb() :
   gkbGlobal_(nullptr),
   gkbVerb_(nullptr),
+  gkbAdj_(nullptr),
   gkbAdv_(nullptr),
   gkbPrep_(nullptr) {}
 
 Gkb::~Gkb() {
   XFC_DELETE(gkbPrep_)
   XFC_DELETE(gkbAdv_)
+  XFC_DELETE(gkbAdj_)
   XFC_DELETE(gkbVerb_)
   XFC_DELETE(gkbGlobal_)
 }
@@ -32,6 +34,15 @@ bool Gkb::Init(const std::string &dir) {
   ret = gkbVerb_->Init(dir, ss.str());
   if (!ret) {
     FATAL("fail_init_gkb_verb");
+    return false;
+  }
+
+  ss.str("");
+  ss << dir << "/gkb_adj";
+  gkbAdj_ = new GkbAdj();
+  ret = gkbAdj_->Init(dir, ss.str());
+  if (!ret) {
+    FATAL("fail_init_gkb_adj");
     return false;
   }
 
