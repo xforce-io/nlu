@@ -31,7 +31,7 @@ void FPCDongjieAndDongqu::Filter(
         } else {
           if (basic::Manager::Get().GetGkb().GetGkbVerb().IsDongjieOrDongquPhrase(curStr, nextStr) ||
               segment->GetTag() == basic::PosTag::Type::kA) {
-            chunkPos = segment->GetOffset() + segment->GetLen() - cur->GetOffset();
+            chunkPos = SCAST<int>(segment->GetOffset() + segment->GetLen() - cur->GetOffset());
             syntaxTag = basic::SyntaxTag::Type::kV;
             return;
           }
@@ -39,7 +39,6 @@ void FPCDongjieAndDongqu::Filter(
       }
     }
   }
-  return;
 }
 
 void FPCMid::Filter(
@@ -49,6 +48,7 @@ void FPCMid::Filter(
         int &chunkPos,
         basic::SyntaxTag::Type::Val &syntaxTag) {
   UNUSE(nluContext)
+  UNUSE(syntaxTag)
 
   if (nullptr == next) {
     return;
@@ -64,16 +64,18 @@ void FPCMid::Filter(
   if (basic::PosTag::Class::kNominal == curClassOfPosTags &&
       (basic::PosTag::Class::kPredicate == nextClassOfPosTags ||
        basic::PosTag::Class::kAdv == nextClassOfPosTags)) {
-    return ParserCommon::k1;
+    chunkPos = -2;
+    return;
   } else if ((basic::PosTag::Class::kPredicate == curClassOfPosTags ||
               basic::PosTag::Class::kAdv == curClassOfPosTags) &&
              basic::PosTag::Class::kNominal == nextClassOfPosTags) {
-    return ParserCommon::k1;
+    chunkPos = -2;
+    return;
   } else if (basic::PosTag::Class::kPredicate == curClassOfPosTags &&
              basic::PosTag::Class::kAdv == nextClassOfPosTags) {
-    return ParserCommon::k1;
+    chunkPos = -2;
+    return;
   }
-  return ParserCommon::kUndef;
 }
 
 void FPCSurround::Filter(
@@ -84,18 +86,19 @@ void FPCSurround::Filter(
         basic::SyntaxTag::Type::Val &syntaxTag) {
   UNUSE(nluContext)
   UNUSE(next)
+  UNUSE(syntaxTag)
 
   auto curClassOfPosTags = cur->GetClassOfPosTags();
   if (basic::PosTag::Class::kUndef == curClassOfPosTags) {
-    return ParserCommon::kUndef;
+    return;
   }
 
   if (basic::PosTag::Class::kFuncWord == curClassOfPosTags ||
       basic::PosTag::Class::kMood == curClassOfPosTags ||
       basic::PosTag::Class::kPunctuation == curClassOfPosTags) {
-    return ParserCommon::k01;
+    chunkPos = -1;
+    return;
   }
-  return ParserCommon::kUndef;
 }
 
 }}}
