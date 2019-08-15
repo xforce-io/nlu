@@ -9,34 +9,48 @@ class FilterParserCommon {
   FilterParserCommon() {}
   virtual ~FilterParserCommon() {}
 
-  virtual ParserCommon::ChunkPos Filter(
+  // @return :
+  //     ==0 => undef
+  //      -1 => | cur | next
+  //      -2 =>   cur | next
+  //      -3 => | cur   next |
+  //      >0 => | <-cur--offset--> |
+  virtual void Filter(
           basic::NluContext &nluContext,
           std::shared_ptr<basic::Segment> cur,
-          std::shared_ptr<basic::Segment> next) = 0;
+          std::shared_ptr<basic::Segment> next,
+          int &chunkPos,
+          basic::SyntaxTag::Type::Val &syntaxTag) = 0;
 };
 
-class FPCDongqu : public FilterParserCommon {
+class FPCDongjieAndDongqu : public FilterParserCommon {
  public:
-  ParserCommon::ChunkPos Filter(
+  void Filter(
           basic::NluContext &nluContext,
           std::shared_ptr<basic::Segment> cur,
-          std::shared_ptr<basic::Segment> next);
+          std::shared_ptr<basic::Segment> next,
+          int &chunkPos,
+          basic::SyntaxTag::Type::Val &syntaxTag);
 };
 
 class FPCMid : public FilterParserCommon {
  public:
-  ParserCommon::ChunkPos Filter(
+  void Filter(
           basic::NluContext &nluContext,
           std::shared_ptr<basic::Segment> cur,
-          std::shared_ptr<basic::Segment> next);
+          std::shared_ptr<basic::Segment> next,
+          int &chunkPos,
+          basic::SyntaxTag::Type::Val &syntaxTag);
 };
 
 class FPCSurround : public FilterParserCommon {
  public:
-  ParserCommon::ChunkPos Filter(
+  void Filter(
           basic::NluContext &nluContext,
           std::shared_ptr<basic::Segment> cur,
-          std::shared_ptr<basic::Segment> next);
+          std::shared_ptr<basic::Segment> next,
+          int &chunkPos,
+          basic::SyntaxTag::Type::Val &syntaxTag);
 };
 
 }}}

@@ -6,17 +6,42 @@ void ParserCommon::Process(
         basic::NluContext &nluContext,
         std::shared_ptr<basic::Segment> cur,
         std::shared_ptr<basic::Segment> next,
-        ChunkPos chunkPos) {
+        int chunkPos,
+        basic::SyntaxTag::Type::Val syntaxTag) {
   auto &chunkSeps = nluContext.GetChunkSeps();
-  if (ParserCommon::k01 == chunkPos) {
+  auto &chunks = nluContext.GetChunks();
+  if (-1 == chunkPos) {
     chunkSeps.Add(std::make_shared<basic::ChunkSep>(cur->GetOffset()));
     chunkSeps.Add(std::make_shared<basic::ChunkSep>(cur->GetEnd()));
-  } else if (ParserCommon::k1 == chunkPos) {
+    if (basic::SyntaxTag::Type::kUndef != syntaxTag) {
+      chunks.Add(std::make_shared<basic::Chunk>(
+              syntaxTag,
+              cur->GetOffset(),
+              cur->GetLen()));
+    }
+  } else if (-2 == chunkPos) {
     chunkSeps.Add(std::make_shared<basic::ChunkSep>(next->GetOffset()));
-  } else if (ParserCommon::k02 == chunkPos) {
+  } else if (-3 == chunkPos) {
     chunkSeps.Add(std::make_shared<basic::ChunkSep>(cur->GetOffset()));
     chunkSeps.Add(std::make_shared<basic::ChunkSep>(next->GetEnd()));
+    if (basic::SyntaxTag::Type::kUndef != syntaxTag) {
+      chunks.Add(std::make_shared<basic::Chunk>(
+              syntaxTag,
+              cur->GetOffset(),
+              cur->GetLen() + next->GetLen()));
+    }
+  } else if (chunkPos>0) {
+    chunkSeps.Add(std::make_shared<basic::ChunkSep>(cur->GetOffset()));
+    chunkSeps.Add(std::make_shared<basic::ChunkSep>(cur->GetOffset() + chunkPos));
+    if (basic::SyntaxTag::Type::kUndef != syntaxTag) {
+      chunks.Add(std::make_shared<basic::Chunk>(
+              syntaxTag,
+              cur->GetOffset(),
+              chunkPos));
+    }
   }
+
+
 }
 
 }}}

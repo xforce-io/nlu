@@ -10,9 +10,18 @@ bool GkbVerb::Init(
   }
 
   std::stringstream ss;
+  ss << dir << "/gkb_verb_dongjie";
+  gkbVerbDongjie_ = new GkbVerbDongjie();
+  bool ret = gkbVerbDongjie_->Init(dir, ss.str());
+  if (!ret) {
+    FATAL("fail_init_gkb_verb_dongjie");
+    return false;
+  }
+
+  ss.str("");
   ss << dir << "/gkb_verb_dongqu";
   gkbVerbDongqu_ = new GkbVerbDongqu();
-  bool ret = gkbVerbDongqu_->Init(dir, ss.str());
+  ret = gkbVerbDongqu_->Init(dir, ss.str());
   if (!ret) {
     FATAL("fail_init_gkb_verb_dongqu");
     return false;
@@ -20,7 +29,7 @@ bool GkbVerb::Init(
   return true;
 }
 
-bool GkbVerb::IsPhrase(
+bool GkbVerb::IsDongjieOrDongquPhrase(
     const std::wstring &word0,
     const std::wstring &word1) const {
   return gkbVerbDongqu_->IsPhrase(word0, word1);

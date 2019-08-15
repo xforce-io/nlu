@@ -269,11 +269,23 @@ void Matcher::AddAdvpDescDir_(std::shared_ptr<basic::NluContext> nluContext) {
 void Matcher::AddAdvpDescDirForChunk_(
         std::shared_ptr<basic::NluContext> nluContext,
         std::shared_ptr<basic::Chunk> advp) {
-  std::list<std::pair<std::shared_ptr<basic::Segment>, basic::Chunk::>> segments;
+  std::list<std::pair<std::shared_ptr<basic::Segment>, basic::Chunk::DescDir>> adjs;
   for (auto &segment : nluContext->GetSegments().GetAll()) {
     if (segment->GetOffset() >= advp->GetOffset() &&
         segment->GetOffset() + segment->GetLen() <= advp->GetOffset() + advp->GetLen()) {
-      segments.push_back(segment);
+      if (segment->GetTag() == basic::PosTag::Type::kA) {
+        adjs.push_back(std::make_pair(segment, basic::Chunk::kNone));
+      }
+    }
+  }
+
+  if (adjs.empty()) {
+    return;
+  } else if (adjs.size() == 1) {
+    auto theAdj = *(adjs.begin());
+    auto segBefore = nluContext->GetSegments().GetFragmentBefore(theAdj.first->GetOffset());
+    if (nullptr != segBefore &&
+        segBefore->GetTag() == basic::PosTag::Type::kV) {
     }
   }
 }

@@ -24,7 +24,7 @@ FILE(GLOB_RECURSE BASIC_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -DUNICODE=1")
 
 add_library(basic
-  ${BASIC_FILES} src/data/gkb/table/gkb_prep.h src/data/gkb/entry/entry_prep.h src/data/gkb/entry/details/entry_prep.cpp)
+  ${BASIC_FILES} src/data/gkb/table/gkb_prep.h src/data/gkb/entry/entry_prep.h src/data/gkb/entry/details/entry_prep.cpp src/data/gkb/entry/entry_verb_dongjie.h src/data/gkb/entry/details/entry_verb_dongjie.cpp src/data/gkb/table/gkb_verb_dongjie.h src/data/gkb/table/details/gkb_verb_dongjie.cpp)
 
 target_link_libraries(basic
   log4cplus
