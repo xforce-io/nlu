@@ -18,6 +18,7 @@ class SplitRuleMgr {
   void Adjust(const basic::NluContext &nluContext);
   const std::vector<Rules*> GetRules() const { return allRules_; }
   SplitRuleMgr* Clone() const;
+  void Clear();
 
  private:
   bool InitForOffset_(const basic::NluContext &nluContext);

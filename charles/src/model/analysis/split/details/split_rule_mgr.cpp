@@ -19,16 +19,7 @@ SplitRuleMgr::SplitRuleMgr() :
 }
 
 SplitRuleMgr::~SplitRuleMgr() {
-  for (auto *rules : allRules_) {
-    if (nullptr != rules) {
-      for (auto *rule : *rules) {
-        if (nullptr != rule) {
-          delete rule;
-        }
-      }
-      delete rules;
-    }
-  }
+  Clear();
 }
 
 bool SplitRuleMgr::Init(const basic::NluContext &nluContext) {
@@ -36,7 +27,8 @@ bool SplitRuleMgr::Init(const basic::NluContext &nluContext) {
 }
 
 void SplitRuleMgr::Adjust(const basic::NluContext &nluContext) {
-  InitForOffset_(nluContext);
+  Clear();
+  Init(nluContext);
 }
 
 SplitRuleMgr* SplitRuleMgr::Clone() const {
@@ -51,6 +43,20 @@ SplitRuleMgr* SplitRuleMgr::Clone() const {
   }
   result->splitRuleEngine_ = splitRuleEngine_;
   return result;
+}
+
+void SplitRuleMgr::Clear() {
+  for (auto *rules : allRules_) {
+    if (nullptr != rules) {
+      for (auto *rule : *rules) {
+        if (nullptr != rule) {
+          delete rule;
+        }
+      }
+      delete rules;
+    }
+  }
+  allRules_.clear();
 }
 
 bool SplitRuleMgr::InitForOffset_(const basic::NluContext &nluContext) {
