@@ -14,6 +14,7 @@ class Chunk : public FragmentMultitag<SyntaxTag::Type::Val> {
     kNone,
     kLeft,
     kRight,
+    kBoth,
   };
 
  public:

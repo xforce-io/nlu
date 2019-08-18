@@ -3,6 +3,7 @@
 #include "../../../public.h"
 #include "../entry/entry_verb.h"
 #include "table.hpp"
+#include "gkb_verb_dongjie.h"
 #include "gkb_verb_dongqu.h"
 
 namespace xforce { namespace nlu { namespace basic {
@@ -16,7 +17,10 @@ class GkbVerb : public Table<EntryVerb> {
           const std::string &dir,
           const std::string &filepath);
 
-  virtual bool IsPhrase(
+  inline bool IsDongjie(const std::wstring &word) const;
+  inline bool IsDongqu(const std::wstring &word) const;
+
+  virtual bool IsDongjieOrDongquPhrase(
       const std::wstring &word0,
       const std::wstring &word1) const;
 
@@ -24,7 +28,19 @@ class GkbVerb : public Table<EntryVerb> {
           const std::wstring &word) const;
 
  private:
+  std::unordered_set<std::wstring> dongjie_;
+  std::unordered_set<std::wstring> dongqu_;
+
+  GkbVerbDongjie *gkbVerbDongjie_;
   GkbVerbDongqu *gkbVerbDongqu_;
 };
+
+bool GkbVerb::IsDongjie(const std::wstring &word) const {
+  return dongjie_.find(word) != dongjie_.end();
+}
+
+bool GkbVerb::IsDongqu(const std::wstring &word) const {
+  return dongqu_.find(word) != dongqu_.end();
+}
 
 }}}

@@ -10,6 +10,14 @@ namespace xforce { namespace nlu { namespace basic {
 
 class Chunk : public FragmentMultitag<SyntaxTag::Type::Val> {
  public:
+  enum DescDir {
+    kNone,
+    kLeft,
+    kRight,
+    kBoth,
+  };
+
+ public:
   typedef FragmentMultitag<SyntaxTag::Type::Val> Super;
   typedef FragmentSet<Chunk> Set;
 
@@ -19,9 +27,15 @@ class Chunk : public FragmentMultitag<SyntaxTag::Type::Val> {
   inline Chunk(const Chunk &other);
   virtual ~Chunk() {}
 
+  inline void SetDescDir(DescDir descDir);
+  inline DescDir GetDescDir() const;
+
   virtual const std::string& GetCategory() const;
 
   virtual void Dump(JsonType &jsonType);
+
+ private:
+  DescDir descDir_;
 };
 
 Chunk::Chunk() :
@@ -32,5 +46,13 @@ Chunk::Chunk(SyntaxTag::Type::Val syntaxTag, size_t offset, size_t len) :
 
 Chunk::Chunk(const Chunk &other) :
     Super(SCAST<const Super&>(other)) {}
+
+void Chunk::SetDescDir(DescDir descDir) {
+  descDir_ = descDir;
+}
+
+Chunk::DescDir Chunk::GetDescDir() const {
+  return descDir_;
+}
 
 }}}

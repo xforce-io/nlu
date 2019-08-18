@@ -31,7 +31,7 @@ bool AnalysisClauseBranch::Process(
     if (IsFinished_(*nluContext_)) {
       end_ = true;
       return true;
-    } else if (!nluContext_->GetIsvalid()) {
+    } else if (!nluContext_->GetIsValid()) {
       end_ = true;
       return false;
     }
