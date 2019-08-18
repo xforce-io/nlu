@@ -4,6 +4,7 @@ namespace xforce { namespace nlu { namespace basic {
 
 NluContext::NluContext(const std::wstring &query) :
     query_(query),
+    isValid_(true),
     managerFragmentSet_(new ManagerFragmentSet(query)) {}
 
 NluContext::~NluContext() {
