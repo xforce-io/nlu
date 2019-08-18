@@ -33,13 +33,20 @@ SplitRuleMgr::~SplitRuleMgr() {
 }
 
 bool SplitRuleMgr::Init(const basic::NluContext &nluContext) {
-  allRules_[basic::Stage::kPosTag]->push_back(new RulePosTagMultiTag());
-  return InitSyntax_(nluContext);
+  return InitForOffset_(nluContext) && InitSyntaxFromRules_(nluContext);
 }
 
-bool SplitRuleMgr::InitSyntax_(const basic::NluContext &nluContext) {
-  return InitSyntaxForPrep_(nluContext) &&
-      InitSyntaxFromRules_(nluContext);
+bool SplitRuleMgr::InitForOffset_(const basic::NluContext &nluContext) {
+  size_t idx=0;
+  for (auto segment : nluContext.GetSegments().GetAll()) {
+    if (segment->GetTag() == basic::PosTag::Type::kP) {
+      allRules_[basic::Stage::kSyntax]->push_back(new RuleSyntaxPrep(segment->GetOffset()));
+    } else if (segment->GetTags().size() > 1) {
+      allRules_[basic::Stage::kPosTag]->push_back(new RulePosTagMultiTag(segment->GetOffset()));
+    }
+    ++idx;
+  }
+  return true;
 }
 
 bool SplitRuleMgr::InitSyntaxFromRules_(const basic::NluContext &nluContext) {
@@ -56,17 +63,6 @@ bool SplitRuleMgr::InitSyntaxFromRules_(const basic::NluContext &nluContext) {
   auto featureExtractors = splitRuleEngine_->GetManager().GetFeatureExtractors();
   for (auto kv : featureExtractors) {
     allRules_[basic::Stage::kSyntax]->push_back(new RuleSyntaxRule(kv.second));
-  }
-  return true;
-}
-
-bool SplitRuleMgr::InitSyntaxForPrep_(const basic::NluContext &nluContext) {
-  size_t idx=0;
-  for (auto segment : nluContext.GetSegments().GetAll()) {
-    if (segment->GetTag() == basic::PosTag::Type::kP) {
-      allRules_[basic::Stage::kSyntax]->push_back(new RuleSyntaxPrep(segment->GetOffset()));
-    }
-    ++idx;
   }
   return true;
 }

@@ -18,9 +18,8 @@ class SplitRuleMgr {
   const std::vector<Rules*> GetRules() const { return allRules_; }
 
  private:
-  bool InitSyntax_(const basic::NluContext &nluContext);
+  bool InitForOffset_(const basic::NluContext &nluContext);
   bool InitSyntaxFromRules_(const basic::NluContext &nluContext);
-  bool InitSyntaxForPrep_(const basic::NluContext &nluContext);
 
  private:
   std::vector<Rules*> allRules_;

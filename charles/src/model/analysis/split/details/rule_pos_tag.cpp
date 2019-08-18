@@ -2,13 +2,16 @@
 
 namespace xforce { namespace nlu { namespace charles {
 
+RulePosTagMultiTag::RulePosTagMultiTag(size_t offset) :
+  offsetMultiTag_(offset) {}
+
 bool RulePosTagMultiTag::Split(
         const std::shared_ptr<basic::NluContext> &nluContext,
         std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) {
   auto iterSeg = nluContext->GetSegments().GetAll().begin();
   size_t idx=0;
   while (iterSeg != nluContext->GetSegments().GetAll().end()) {
-    if ((*iterSeg)->GetTags().size() > 1) {
+    if ((*iterSeg)->GetOffset() == offsetMultiTag_ && (*iterSeg)->GetTags().size() > 1) {
       for (auto tag : ((*iterSeg)->GetTags())) {
         auto newNluContext = nluContext->Clone();
         AdjustSegTags_(*newNluContext, idx, tag);

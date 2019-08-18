@@ -38,6 +38,15 @@ class Matcher {
           std::shared_ptr<basic::NluContext> nluContext,
           std::shared_ptr<basic::Chunk> advp);
 
+  void AnalysisAdj_(
+          std::shared_ptr<basic::NluContext> &nluContext,
+          std::shared_ptr<basic::Chunk> advp,
+          std::shared_ptr<basic::Segment> adj,
+          int &descLeft,
+          int &descRight,
+          int &leftBound,
+          int &rightBound);
+
  private:
   milkie::Milkie *milkie_;
   std::shared_ptr<milkie::FeatureExtractor> feChunkSep_;
