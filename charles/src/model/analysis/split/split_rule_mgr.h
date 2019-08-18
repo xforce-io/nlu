@@ -15,7 +15,9 @@ class SplitRuleMgr {
   virtual ~SplitRuleMgr();
 
   bool Init(const basic::NluContext &nluContext);
+  void Adjust(const basic::NluContext &nluContext);
   const std::vector<Rules*> GetRules() const { return allRules_; }
+  SplitRuleMgr* Clone() const;
 
  private:
   bool InitForOffset_(const basic::NluContext &nluContext);
@@ -23,7 +25,7 @@ class SplitRuleMgr {
 
  private:
   std::vector<Rules*> allRules_;
-  milkie::Milkie *splitRuleEngine_;
+  std::shared_ptr<milkie::Milkie> splitRuleEngine_;
 };
 
 }}}

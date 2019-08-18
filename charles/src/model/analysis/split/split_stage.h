@@ -8,7 +8,8 @@ class SplitRuleMgr;
 
 class SplitStage {
  public:
-  SplitStage(const SplitRuleMgr &splitRuleMgr);
+  SplitStage(SplitRuleMgr &splitRuleMgr);
+  virtual ~SplitStage();
 
   void Process(std::shared_ptr<basic::NluContext> &nluContext);
   bool Split(
@@ -26,7 +27,7 @@ class SplitStage {
   basic::Stage::Val GetCurStage() const { return curStage_; }
 
  private:
-  const SplitRuleMgr *splitRuleMgr_;
+  SplitRuleMgr *splitRuleMgr_;
   basic::Stage::Val bornStage_;
   basic::Stage::Val curStage_;
   size_t ruleIdx_;

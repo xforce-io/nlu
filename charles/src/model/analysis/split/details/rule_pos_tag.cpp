@@ -25,6 +25,10 @@ bool RulePosTagMultiTag::Split(
   return false;
 }
 
+Rule* RulePosTagMultiTag::Clone() {
+  return new RulePosTagMultiTag(offsetMultiTag_);
+}
+
 void RulePosTagMultiTag::AdjustSegTags_(
         const basic::NluContext &nluContext,
         size_t i,

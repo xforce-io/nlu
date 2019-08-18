@@ -4,11 +4,15 @@
 namespace xforce { namespace nlu { namespace charles {
 
 SplitStage::SplitStage(
-        const SplitRuleMgr &splitRuleMgr) :
+        SplitRuleMgr &splitRuleMgr) :
   splitRuleMgr_(&splitRuleMgr),
   bornStage_(basic::Stage::kNone),
   curStage_(basic::Stage::kSyntax),
   ruleIdx_(0) {}
+
+SplitStage::~SplitStage() {
+  XFC_DELETE(splitRuleMgr_)
+}
 
 void SplitStage::Process(std::shared_ptr<basic::NluContext> &nluContext) {
   switch (bornStage_) {
@@ -39,6 +43,7 @@ void SplitStage::Process(std::shared_ptr<basic::NluContext> &nluContext) {
     default :
       break;
   }
+  splitRuleMgr_->Adjust(*nluContext);
 }
 
 bool SplitStage::Split(
@@ -100,6 +105,7 @@ bool SplitStage::NextStage() {
 
 SplitStage* SplitStage::Clone() const {
   auto *newStage = new SplitStage(*splitRuleMgr_);
+  newStage->splitRuleMgr_ = splitRuleMgr_->Clone();
   newStage->bornStage_ = bornStage_;
   newStage->curStage_ = curStage_;
   newStage->ruleIdx_ = ruleIdx_;

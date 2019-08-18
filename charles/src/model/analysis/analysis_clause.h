@@ -26,7 +26,6 @@ class AnalysisClause : public AnalysisComponent {
 
  private:
   std::shared_ptr<basic::NluContext> clause_;
-  SplitRuleMgr *splitRuleMgr_;
 
   std::shared_ptr<AnalysisClauseBranch> master_;
   std::queue<std::shared_ptr<AnalysisClauseBranch>> branches_;

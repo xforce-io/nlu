@@ -18,6 +18,8 @@ class RuleSyntaxRule : public Rule {
           const std::shared_ptr<basic::NluContext> &nluContext,
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
 
+  virtual Rule* Clone();
+
  private:
   std::shared_ptr<milkie::FeatureExtractor> featureExtractor_;
 };

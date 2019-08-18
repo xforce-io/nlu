@@ -19,7 +19,6 @@ SplitRuleMgr::SplitRuleMgr() :
 }
 
 SplitRuleMgr::~SplitRuleMgr() {
-  XFC_DELETE(splitRuleEngine_)
   for (auto *rules : allRules_) {
     if (nullptr != rules) {
       for (auto *rule : *rules) {
@@ -36,6 +35,24 @@ bool SplitRuleMgr::Init(const basic::NluContext &nluContext) {
   return InitForOffset_(nluContext) && InitSyntaxFromRules_(nluContext);
 }
 
+void SplitRuleMgr::Adjust(const basic::NluContext &nluContext) {
+  InitForOffset_(nluContext);
+}
+
+SplitRuleMgr* SplitRuleMgr::Clone() const {
+  auto result = new SplitRuleMgr();
+  for (size_t i=0; i < allRules_.size(); ++i) {
+    Rules *rules = allRules_[i];
+    Rules *newRules = new Rules();
+    for (auto *rule : *rules) {
+      newRules->push_back(rule->Clone());
+    }
+    result->allRules_.push_back(newRules);
+  }
+  result->splitRuleEngine_ = splitRuleEngine_;
+  return result;
+}
+
 bool SplitRuleMgr::InitForOffset_(const basic::NluContext &nluContext) {
   size_t idx=0;
   for (auto segment : nluContext.GetSegments().GetAll()) {
@@ -50,7 +67,7 @@ bool SplitRuleMgr::InitForOffset_(const basic::NluContext &nluContext) {
 }
 
 bool SplitRuleMgr::InitSyntaxFromRules_(const basic::NluContext &nluContext) {
-  splitRuleEngine_ = new milkie::Milkie();
+  splitRuleEngine_ = std::make_shared<milkie::Milkie>();
 
   bool ret = splitRuleEngine_->Init(Conf::Get().GetSplitRuleConfpath());
   if (!ret) {

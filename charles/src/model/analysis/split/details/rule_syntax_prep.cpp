@@ -54,6 +54,10 @@ bool RuleSyntaxPrep::Split(
   return touched;
 }
 
+Rule* RuleSyntaxPrep::Clone() {
+  return new RuleSyntaxPrep(offsetPrep_);
+}
+
 void RuleSyntaxPrep::AddNewChunk_(
         const std::shared_ptr<basic::NluContext> &nluContext,
         std::vector<std::shared_ptr<basic::NluContext>> &nluContexts,

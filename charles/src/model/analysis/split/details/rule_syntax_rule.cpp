@@ -82,4 +82,8 @@ bool RuleSyntaxRule::Split(
   return touched;
 }
 
+Rule* RuleSyntaxRule::Clone() {
+  return new RuleSyntaxRule(featureExtractor_);
+}
+
 }}}

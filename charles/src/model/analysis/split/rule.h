@@ -11,6 +11,8 @@ class Rule {
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) = 0;
 
   virtual ~Rule() {}
+
+  virtual Rule* Clone() = 0;
 };
 
 }}}

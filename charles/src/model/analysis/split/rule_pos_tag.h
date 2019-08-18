@@ -12,6 +12,8 @@ class RulePosTagMultiTag : public Rule {
           const std::shared_ptr<basic::NluContext> &nluContext,
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
 
+  virtual Rule* Clone();
+
  private:
   void AdjustSegTags_(
           const basic::NluContext &nluContext,

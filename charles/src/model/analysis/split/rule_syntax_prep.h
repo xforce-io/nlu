@@ -12,7 +12,9 @@ class RuleSyntaxPrep : public Rule {
           const std::shared_ptr<basic::NluContext> &nluContext,
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
 
- private:
+  virtual Rule* Clone();
+
+private:
   void AddNewChunk_(
           const std::shared_ptr<basic::NluContext> &nluContext,
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts,
