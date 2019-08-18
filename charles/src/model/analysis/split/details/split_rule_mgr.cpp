@@ -35,11 +35,15 @@ SplitRuleMgr* SplitRuleMgr::Clone() const {
   auto result = new SplitRuleMgr();
   for (size_t i=0; i < allRules_.size(); ++i) {
     Rules *rules = allRules_[i];
-    Rules *newRules = new Rules();
-    for (auto *rule : *rules) {
-      newRules->push_back(rule->Clone());
+    if (nullptr!=rules) {
+      Rules *newRules = new Rules();
+      for (auto *rule : *rules) {
+        newRules->push_back(rule->Clone());
+      }
+      result->allRules_.push_back(newRules);
+    } else {
+      result->allRules_.push_back(nullptr);
     }
-    result->allRules_.push_back(newRules);
   }
   result->splitRuleEngine_ = splitRuleEngine_;
   return result;
