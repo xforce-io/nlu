@@ -20,6 +20,9 @@ SplitRuleMgr::SplitRuleMgr() :
 
 SplitRuleMgr::~SplitRuleMgr() {
   Clear();
+  for (auto *rules : allRules_) {
+    delete rules;
+  }
 }
 
 bool SplitRuleMgr::Init(const basic::NluContext &nluContext) {
@@ -57,10 +60,9 @@ void SplitRuleMgr::Clear() {
           delete rule;
         }
       }
-      delete rules;
+      rules->clear();
     }
   }
-  allRules_.clear();
 }
 
 bool SplitRuleMgr::InitForOffset_(const basic::NluContext &nluContext) {
