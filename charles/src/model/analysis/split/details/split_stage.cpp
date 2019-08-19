@@ -53,7 +53,8 @@ bool SplitStage::Split(
     return false;
   }
 
-  auto *rule = (*(splitRuleMgr_->GetRules()[curStage_]))[ruleIdx_];
+  auto rules = *(splitRuleMgr_->GetRules()[curStage_]);
+  auto *rule = rules[ruleIdx_];
   bool ret = rule->Split(nluContext, nluContexts);
   PrevStage();
   return ret;
