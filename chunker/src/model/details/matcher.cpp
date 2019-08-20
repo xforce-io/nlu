@@ -89,7 +89,8 @@ void Matcher::ParseAccordingToRule_(std::shared_ptr<basic::NluContext> nluContex
         basic::Chunk chunk(
                 syntaxTag,
                 storageItem.GetOffset(),
-                storageItem.GetContent().length());
+                storageItem.GetContent().length(),
+                310);
         nluContext->GetChunks().Add(chunk);
         nluContext->GetChunkSeps().Add(basic::ChunkSep(storageItem.GetOffset()));
         nluContext->GetChunkSeps().Add(basic::ChunkSep(

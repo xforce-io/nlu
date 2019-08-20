@@ -17,7 +17,8 @@ void ParserCommon::Process(
       chunks.Add(std::make_shared<basic::Chunk>(
               syntaxTag,
               cur->GetOffset(),
-              cur->GetLen()));
+              cur->GetLen(),
+              320));
     }
   } else if (-2 == chunkPos) {
     chunkSeps.Add(std::make_shared<basic::ChunkSep>(next->GetOffset()));
@@ -28,7 +29,8 @@ void ParserCommon::Process(
       chunks.Add(std::make_shared<basic::Chunk>(
               syntaxTag,
               cur->GetOffset(),
-              cur->GetLen() + next->GetLen()));
+              cur->GetLen() + next->GetLen(),
+              321));
     }
   } else if (chunkPos>0) {
     chunkSeps.Add(std::make_shared<basic::ChunkSep>(cur->GetOffset()));
@@ -37,7 +39,8 @@ void ParserCommon::Process(
       chunks.Add(std::make_shared<basic::Chunk>(
               syntaxTag,
               cur->GetOffset(),
-              chunkPos));
+              chunkPos,
+              322));
     }
   }
 
