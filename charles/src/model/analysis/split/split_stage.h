@@ -26,11 +26,13 @@ class SplitStage {
 
   basic::Stage::Val GetBornStage() const { return bornStage_; }
   basic::Stage::Val GetCurStage() const { return curStage_; }
+  basic::Stage::Val GetLastStage() const { return lastStage_; }
 
  private:
   SplitRuleMgr *splitRuleMgr_;
   basic::Stage::Val bornStage_;
   basic::Stage::Val curStage_;
+  basic::Stage::Val lastStage_;
   size_t ruleIdx_;
 };
 

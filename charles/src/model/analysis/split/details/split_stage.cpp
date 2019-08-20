@@ -6,6 +6,7 @@ namespace xforce { namespace nlu { namespace charles {
 SplitStage::SplitStage(
         SplitRuleMgr &splitRuleMgr) :
   splitRuleMgr_(&splitRuleMgr),
+  lastStage_(basic::Stage::kNone),
   bornStage_(basic::Stage::kNone),
   curStage_(basic::Stage::kSyntax),
   ruleIdx_(0) {}
@@ -64,6 +65,7 @@ bool SplitStage::Split(
   auto rules = *(splitRuleMgr_->GetRules()[curStage_]);
   auto *rule = rules[ruleIdx_];
   bool ret = rule->Split(nluContext, nluContexts);
+  lastStage_ = curStage_;
   PrevStage();
   return ret;
 }

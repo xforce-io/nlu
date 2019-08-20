@@ -13,7 +13,7 @@ AnalysisClauseBranch::AnalysisClauseBranch(
     splitStage_(splitStage.Clone()),
     processed_(false),
     end_(false) {
-  nluContext_->Reset(splitStage_->GetCurStage());
+  nluContext_->Reset(splitStage_->GetLastStage());
 }
 
 AnalysisClauseBranch::~AnalysisClauseBranch() {
