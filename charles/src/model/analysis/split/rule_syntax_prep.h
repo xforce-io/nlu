@@ -18,7 +18,8 @@ private:
   void AddNewChunk_(
           const std::shared_ptr<basic::NluContext> &nluContext,
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts,
-          size_t length);
+          size_t length,
+          uint32_t strategy);
 
  private:
   size_t offsetPrep_;

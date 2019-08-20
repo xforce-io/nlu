@@ -63,7 +63,8 @@ bool RuleSyntaxRule::Split(
       basic::Chunk chunk(
               syntaxTag,
               storageItem.GetOffset(),
-              storageItem.GetContent().length());
+              storageItem.GetContent().length(),
+              930);
       if (branches[index]->GetChunks().Add(chunk)) {
         if (basic::SyntaxTag::Type::kStc == syntaxTag) {
           return true;

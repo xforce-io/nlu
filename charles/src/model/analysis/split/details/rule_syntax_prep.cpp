@@ -27,7 +27,8 @@ bool RuleSyntaxPrep::Split(
         AddNewChunk_(
                 nluContext,
                 nluContexts,
-                segment->GetOffset() - offsetPrep_ + segment->GetLen());
+                segment->GetOffset() - offsetPrep_ + segment->GetLen(),
+                910);
         touched = true;
         break;
       }
@@ -47,7 +48,8 @@ bool RuleSyntaxPrep::Split(
       AddNewChunk_(
               nluContext,
               nluContexts,
-              chunk->GetOffset() - offsetPrep_ + chunk->GetLen());
+              chunk->GetOffset() - offsetPrep_ + chunk->GetLen(),
+              911);
       touched = true;
     }
   }
@@ -61,11 +63,13 @@ Rule* RuleSyntaxPrep::Clone() {
 void RuleSyntaxPrep::AddNewChunk_(
         const std::shared_ptr<basic::NluContext> &nluContext,
         std::vector<std::shared_ptr<basic::NluContext>> &nluContexts,
-        size_t length) {
+        size_t length,
+        uint32_t strategy) {
   basic::Chunk newChunk(
           basic::SyntaxTag::Type::kPp,
           offsetPrep_,
-          length);
+          length,
+          strategy);
 
   auto newBranch = nluContext->Clone();
   newBranch->GetChunks().Add(newChunk);
