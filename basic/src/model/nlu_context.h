@@ -20,6 +20,7 @@ class NluContext {
 
   std::shared_ptr<NluContext> Build(size_t from, size_t to);
   std::shared_ptr<NluContext> Clone() const;
+  void Reset(basic::Stage::Val stage);
 
   inline bool GetIsValid() const;
   inline const typename NameEntity::Set& GetNameEntities() const;

@@ -8,11 +8,13 @@ AnalysisClauseBranch::AnalysisClauseBranch(
         size_t no,
         const basic::NluContext &nluContext,
         const SplitStage &splitStage) :
-  no_(no),
-  nluContext_(nluContext.Clone()),
-  splitStage_(splitStage.Clone()),
-  processed_(false),
-  end_(false) {}
+    no_(no),
+    nluContext_(nluContext.Clone()),
+    splitStage_(splitStage.Clone()),
+    processed_(false),
+    end_(false) {
+  nluContext_->Reset(splitStage_);
+}
 
 AnalysisClauseBranch::~AnalysisClauseBranch() {
   XFC_DELETE(splitStage_)

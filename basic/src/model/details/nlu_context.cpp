@@ -32,6 +32,32 @@ std::shared_ptr<NluContext> NluContext::Clone() const {
   return nluContext;
 }
 
+void NluContext::Reset(basic::Stage::Val stage) {
+  switch (stage) {
+    case basic::Stage::kNone :
+      GetSegments().Clear();
+      GetNameEntities().Clear();
+      GetChunkSeps().Clear();
+      GetChunks().Clear();
+      return;
+    case basic::Stage::kSegment :
+      GetChunkSeps().Clear();
+      GetChunks().Clear();
+      return;
+    case basic::Stage::kPosTag :
+      GetChunkSeps().Clear();
+      GetChunks().Clear();
+      return;
+    case basic::Stage::kChunk :
+      GetChunks().Clear();
+      return;
+    case basic::Stage::kSyntax :
+      return;
+    default:
+      return;
+  }
+}
+
 void NluContext::Dump(JsonType &jsonType) {
   jsonType["query"] = *(StrHelper::Wstr2Str(query_));
   jsonType["isValid"] = isValid_;
