@@ -14,9 +14,21 @@ class FragmentMultitag : public Fragment {
 
  public:
   inline FragmentMultitag();
-  inline FragmentMultitag(TagVal tagVal, size_t offset, size_t len);
-  inline FragmentMultitag(size_t offset, size_t len);
-  inline FragmentMultitag(size_t offset);
+  inline FragmentMultitag(
+          TagVal tagVal,
+          size_t offset,
+          size_t len,
+          uint32_t strategy=0);
+
+  inline FragmentMultitag(
+          size_t offset,
+          size_t len,
+          uint32_t strategy=0);
+
+  inline FragmentMultitag(
+          size_t offset,
+          uint32_t strategy=0);
+
   inline FragmentMultitag(const FragmentMultitag<TagVal> &other);
   virtual ~FragmentMultitag() {}
 
@@ -46,18 +58,27 @@ FragmentMultitag<TagVal>::FragmentMultitag() :
     Fragment(0, 0) {}
 
 template <typename TagVal>
-FragmentMultitag<TagVal>::FragmentMultitag(TagVal tag, size_t offset, size_t len) :
-    Fragment(offset, len) {
+FragmentMultitag<TagVal>::FragmentMultitag(
+        TagVal tag,
+        size_t offset,
+        size_t len,
+        uint32_t strategy) :
+    Fragment(offset, len, strategy) {
   SetTag(tag);
 }
 
 template <typename TagVal>
-FragmentMultitag<TagVal>::FragmentMultitag(size_t offset, size_t len) :
-    Fragment(offset, len) {}
+FragmentMultitag<TagVal>::FragmentMultitag(
+        size_t offset,
+        size_t len,
+        uint32_t strategy) :
+    Fragment(offset, len, strategy) {}
 
 template <typename TagVal>
-FragmentMultitag<TagVal>::FragmentMultitag(size_t offset) :
-    Fragment(offset, 0) {}
+FragmentMultitag<TagVal>::FragmentMultitag(
+        size_t offset,
+        uint32_t strategy) :
+    Fragment(offset, 0, strategy) {}
 
 template <typename TagVal>
 FragmentMultitag<TagVal>::FragmentMultitag(const FragmentMultitag &other) :

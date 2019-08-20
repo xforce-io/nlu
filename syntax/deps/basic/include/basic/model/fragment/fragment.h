@@ -23,7 +23,11 @@ class Fragment {
 
  public:
   inline Fragment();
-  inline Fragment(size_t offset, size_t len);
+  inline Fragment(
+          size_t offset,
+          size_t len,
+          uint32_t strategy=0);
+
   inline Fragment(const Fragment &other);
   virtual ~Fragment();
 
@@ -68,12 +72,15 @@ Fragment::Fragment() :
   len_(0),
   strategy_(0) {}
 
-Fragment::Fragment(size_t offset, size_t len) :
+Fragment::Fragment(
+        size_t offset,
+        size_t len,
+        uint32_t strategy) :
   father_(nullptr),
   str_(nullptr),
   offset_(offset),
   len_(len),
-  strategy_(0) {}
+  strategy_(strategy) {}
 
 Fragment::Fragment(const Fragment &other) {
   father_ = other.father_;

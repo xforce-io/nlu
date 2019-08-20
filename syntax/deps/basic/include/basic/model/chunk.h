@@ -23,7 +23,12 @@ class Chunk : public FragmentMultitag<SyntaxTag::Type::Val> {
 
  public:
   inline Chunk();
-  inline Chunk(SyntaxTag::Type::Val syntaxTag, size_t offset, size_t len);
+  inline Chunk(
+          SyntaxTag::Type::Val syntaxTag,
+          size_t offset,
+          size_t len,
+          uint32_t strategy=0);
+
   inline Chunk(const Chunk &other);
   virtual ~Chunk() {}
 
@@ -41,8 +46,12 @@ class Chunk : public FragmentMultitag<SyntaxTag::Type::Val> {
 Chunk::Chunk() :
   Super() {}
 
-Chunk::Chunk(SyntaxTag::Type::Val syntaxTag, size_t offset, size_t len) :
-    Super(syntaxTag, offset, len) {}
+Chunk::Chunk(
+        SyntaxTag::Type::Val syntaxTag,
+        size_t offset,
+        size_t len,
+        uint32_t strategy) :
+    Super(syntaxTag, offset, len, strategy) {}
 
 Chunk::Chunk(const Chunk &other) :
     Super(SCAST<const Super&>(other)) {}
