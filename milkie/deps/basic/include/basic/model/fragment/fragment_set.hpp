@@ -21,6 +21,7 @@ class FragmentSet {
   virtual ~FragmentSet();
 
   void Reset(const std::wstring &text);
+  void Clear();
 
   virtual bool Add(std::shared_ptr<FragmentType> fragment);
   bool Add(const FragmentType &fragment);
@@ -64,6 +65,11 @@ void FragmentSet<FragmentType>::Reset(const std::wstring &text) {
   XFC_DELETE(text_)
   fragments_.clear();
   text_ = new std::wstring(text);  
+}
+
+template <typename FragmentType>
+void FragmentSet<FragmentType>::Clear() {
+  fragments_.clear();
 }
 
 template <typename FragmentType>
