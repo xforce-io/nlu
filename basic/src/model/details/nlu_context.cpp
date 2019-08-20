@@ -34,6 +34,7 @@ std::shared_ptr<NluContext> NluContext::Clone() const {
 
 void NluContext::Dump(JsonType &jsonType) {
   jsonType["query"] = *(StrHelper::Wstr2Str(query_));
+  jsonType["isValid"] = isValid_;
   managerFragmentSet_->Dump(jsonType["fragments"]);
 }
 

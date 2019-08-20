@@ -25,9 +25,7 @@ bool AnalysisClauseBranch::Process(
   }
 
   if (!processed_) {
-    std::cout << "A " << splitStage_->IsIdentical() << std::endl;
     splitStage_->Process(nluContext_);
-    std::cout << "B " << splitStage_->IsIdentical() << std::endl;
     processed_ = true;
 
     if (IsFinished_(*nluContext_)) {
@@ -39,7 +37,6 @@ bool AnalysisClauseBranch::Process(
     }
   }
 
-  std::cout << "C " << splitStage_->IsIdentical() << std::endl;
   std::vector<std::shared_ptr<basic::NluContext>> nluContexts;
   while (!splitStage_->IsBegin()) {
     nluContexts.clear();
@@ -49,8 +46,6 @@ bool AnalysisClauseBranch::Process(
       break;
     }
   }
-
-  std::cout << "D " << splitStage_->IsIdentical() << std::endl;
 
   size_t idx=0;
   for (auto nluContext : nluContexts) {
