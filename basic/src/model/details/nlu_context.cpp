@@ -40,9 +40,7 @@ void NluContext::Dump(JsonType &jsonType) {
 
 void NluContext::Dump(std::string &json) {
   xforce::JsonType jsonToDump;
-  GetSegments().Dump(jsonToDump);
-  GetChunkSeps().Dump(jsonToDump);
-  GetChunks().Dump(jsonToDump);
+  Dump(jsonToDump);
 
   std::stringstream ss;
   jsonToDump.DumpJson(ss);
