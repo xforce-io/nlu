@@ -50,6 +50,8 @@ bool AnalysisClauseBranch::Process(
     }
   }
 
+  std::cout << "D " << splitStage_->IsIdentical() << std::endl;
+
   size_t idx=0;
   for (auto nluContext : nluContexts) {
     auto child = std::make_shared<AnalysisClauseBranch>(
