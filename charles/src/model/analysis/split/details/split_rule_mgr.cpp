@@ -39,13 +39,9 @@ SplitRuleMgr* SplitRuleMgr::Clone() const {
   for (size_t i=0; i < allRules_.size(); ++i) {
     Rules *rules = allRules_[i];
     if (nullptr!=rules) {
-      Rules *newRules = new Rules();
       for (auto *rule : *rules) {
-        newRules->push_back(rule->Clone());
+        result->allRules_[i]->push_back(rule->Clone());
       }
-      result->allRules_.push_back(newRules);
-    } else {
-      result->allRules_.push_back(nullptr);
     }
   }
   result->splitRuleEngine_ = splitRuleEngine_;
