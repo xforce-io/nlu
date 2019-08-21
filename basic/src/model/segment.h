@@ -9,7 +9,7 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
-class Segment : public FragmentMultitag<PosTag::Type::Val> {
+class Segment : public FragmentMultitag<PosTag::Type> {
  public:
   typedef FragmentMultitag<PosTag::Type::Val> Super;
   typedef FragmentSet<Segment> Set;

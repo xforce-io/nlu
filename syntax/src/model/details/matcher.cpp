@@ -418,9 +418,23 @@ void Matcher::AnalysisAdj_(
       if (segAfterAfter != nullptr) {
         rightBound = segAfterAfter->GetEnd();
       }
-    } else if (segAfter->GetTags().size() != 1) {
-      return;
-    } else if (segAfter->GetTag() == basic::SyntaxTag::Type::kNn) {
+    }
+
+    bool theRightTag=true;
+    if (segAfter->GetTags().empty()) {
+      theRightTag=false;
+    } else {
+      for (auto tag : segAfter->GetTags()) {
+        if (tag != basic::SyntaxTag::Type::kNn &&
+            tag != basic::SyntaxTag::Type::kQp &&
+            !basic::SyntaxTag::Type::IsSpecial(tag)) {
+          theRightTag=false;
+          break;
+        }
+      }
+    }
+
+    if (theRightTag) {
       if (basic::Manager::Get().GetGkb().GetGkbAdj().Dingyu(adj->GetQuery(nluContext->GetQuery()))) {
         descRight=1;
         rightBound = segAfter->GetEnd();
