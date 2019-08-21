@@ -313,7 +313,7 @@ void Matcher::AddAdvpDescDirForChunk_(
         rightBound>0) {
       advp->SetDescDir(basic::Chunk::kRight);
       nluContext->GetChunks().Add(std::make_shared<basic::Chunk>(
-              basic::SyntaxTag::Type::kV,
+              basic::SyntaxTag::Type::kNp,
               advp->GetOffset(),
               rightBound - advp->GetOffset(),
               451));
@@ -425,7 +425,7 @@ void Matcher::AnalysisAdj_(
       theRightTag=false;
     } else {
       for (auto tag : segAfter->GetTags()) {
-        if (tag != basic::SyntaxTag::Type::kNn &&
+        if (tag != basic::SyntaxTag::Type::kNp &&
             tag != basic::SyntaxTag::Type::kQp &&
             !basic::SyntaxTag::Type::IsSpecial(tag)) {
           theRightTag=false;
