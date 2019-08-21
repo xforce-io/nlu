@@ -435,7 +435,8 @@ void Matcher::AnalysisAdj_(
     }
 
     if (theRightTag) {
-      if (basic::Manager::Get().GetGkb().GetGkbAdj().Dingyu(adj->GetQuery(nluContext->GetQuery()))) {
+      int dingyu = basic::Manager::Get().GetGkb().GetGkbAdj().Dingyu(adj->GetQuery(nluContext->GetQuery()));
+      if (0==dingyu) {
         descRight=1;
         rightBound = segAfter->GetEnd();
       } else {
