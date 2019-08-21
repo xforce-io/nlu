@@ -16,6 +16,7 @@ class SplitStage {
           const std::shared_ptr<basic::NluContext> &nluContext,
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
 
+  inline void SetBornStage(basic::Stage::Val stage);
   bool PrevStage();
   bool NextStage();
   SplitStage* Clone() const;
@@ -34,6 +35,10 @@ class SplitStage {
   basic::Stage::Val lastStage_;
   size_t ruleIdx_;
 };
+
+void SplitStage::SetBornStage(basic::Stage::Val stage) {
+  bornStage_ = stage;
+}
 
 bool SplitStage::IsBegin() const {
   return basic::Stage::kNone == curStage_;

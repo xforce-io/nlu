@@ -14,6 +14,7 @@ AnalysisClauseBranch::AnalysisClauseBranch(
     processed_(false),
     end_(false) {
   nluContext_->Reset(splitStage_->GetLastStage());
+  splitStage_->SetBornStage(splitStage_->GetLastStage());
 }
 
 AnalysisClauseBranch::~AnalysisClauseBranch() {
