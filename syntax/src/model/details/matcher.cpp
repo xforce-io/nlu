@@ -213,7 +213,7 @@ bool Matcher::RuleContNp_(
 
   bool afterCond = (nullptr == segAfter ||
       (!basic::PosTag::IsPredicate(segAfter->GetTag()) &&
-      basic::PosTag::Type::kP != segBefore->GetTag()));
+      basic::PosTag::Type::kP != segAfter->GetTag()));
 
   if (beforeCond || afterCond) {
     basic::Chunk newChunk(
