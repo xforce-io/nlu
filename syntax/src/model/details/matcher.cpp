@@ -52,6 +52,7 @@ bool Matcher::Process_(std::shared_ptr<basic::NluContext> nluContext) {
     touched = true;
   }
 
+  AppendixProcess_(nluContext);
   return touched;
 }
 

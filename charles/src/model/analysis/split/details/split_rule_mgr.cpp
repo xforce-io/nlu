@@ -75,6 +75,8 @@ bool SplitRuleMgr::InitForOffset_(const basic::NluContext &nluContext) {
 }
 
 bool SplitRuleMgr::InitSyntaxFromRules_(const basic::NluContext &nluContext) {
+  UNUSE(nluContext)
+
   splitRuleEngine_ = std::make_shared<milkie::Milkie>();
 
   bool ret = splitRuleEngine_->Init(Conf::Get().GetSplitRuleConfpath());
