@@ -434,13 +434,14 @@ void Matcher::AnalysisAdj_(
       theRightTag=false;
     } else {
       for (auto tag : segAfter->GetTags()) {
-        if (tag != basic::SyntaxTag::Type::kNp &&
-            tag != basic::SyntaxTag::Type::kQp &&
-            !basic::SyntaxTag::Type::IsSpecial(tag)) {
-          theRightTag=false;
-          break;
-        } else {
-          resTag = tag;
+        if (!basic::SyntaxTag::Type::IsSpecial(tag)) {
+          if (tag != basic::SyntaxTag::Type::kNp &&
+              tag != basic::SyntaxTag::Type::kQp) {
+            theRightTag = false;
+            break;
+          } else {
+            resTag = tag;
+          }
         }
       }
     }
