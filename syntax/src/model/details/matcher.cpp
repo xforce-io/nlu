@@ -383,15 +383,7 @@ void Matcher::AnalysisAdj_(
   auto segBefore = nluContext->GetSegments().GetFragmentBefore(advp->GetOffset());
   if (nullptr!=segBefore) {
     auto strSegBefore = segBefore->GetQuery(nluContext->GetQuery());
-    if (segBefore->GetTag() == basic::PosTag::Type::kV) {
-      if (basic::Manager::Get().GetGkb().GetGkbVerb().IsDongjie(strSegBefore) ||
-          basic::Manager::Get().GetGkb().GetGkbVerb().IsDongqu(strSegBefore)) {
-        descLeft=1;
-        leftBound = segBefore->GetOffset();
-      } else {
-        descLeft=-1;
-      }
-    } else if (segBefore->GetQuery(nluContext->GetQuery()) == L"得") {
+    if (segBefore->GetQuery(nluContext->GetQuery()) == L"得") {
       descLeft=1;
       descRight=-1;
       auto segBeforeBefore = nluContext->GetSegments().GetFragmentBefore(segBefore->GetOffset());
@@ -399,6 +391,16 @@ void Matcher::AnalysisAdj_(
         leftBound = segBeforeBefore->GetOffset();
       }
       return;
+    } else if (segBefore->GetTags().size() != 1) {
+      return;
+    } else if (segBefore->GetTag() == basic::PosTag::Type::kV) {
+      if (basic::Manager::Get().GetGkb().GetGkbVerb().IsDongjie(strSegBefore) ||
+          basic::Manager::Get().GetGkb().GetGkbVerb().IsDongqu(strSegBefore)) {
+        descLeft=1;
+        leftBound = segBefore->GetOffset();
+      } else {
+        descLeft=-1;
+      }
     } else {
       descLeft=-1;
     }
@@ -409,19 +411,21 @@ void Matcher::AnalysisAdj_(
 
   auto segAfter = nluContext->GetChunks().GetFragmentAfter(advp->GetEnd());
   if (nullptr!=segAfter) {
-    if (segAfter->GetTag() == basic::SyntaxTag::Type::kNn) {
-      if (basic::Manager::Get().GetGkb().GetGkbAdj().Dingyu(adj->GetQuery(nluContext->GetQuery()))) {
-        descRight=1;
-        rightBound = segAfter->GetEnd();
-      } else {
-        descRight=-1;
-      }
-    } else if (segAfter->GetQuery(nluContext->GetQuery()) == L"的") {
+    if (segAfter->GetQuery(nluContext->GetQuery()) == L"的") {
       descLeft=-1;
       descRight=1;
       auto segAfterAfter = nluContext->GetChunks().GetFragmentAfter(segAfter->GetEnd());
       if (segAfterAfter != nullptr) {
         rightBound = segAfterAfter->GetEnd();
+      }
+    } else if (segAfter->GetTags().size() != 1) {
+      return;
+    } else if (segAfter->GetTag() == basic::SyntaxTag::Type::kNn) {
+      if (basic::Manager::Get().GetGkb().GetGkbAdj().Dingyu(adj->GetQuery(nluContext->GetQuery()))) {
+        descRight=1;
+        rightBound = segAfter->GetEnd();
+      } else {
+        descRight=-1;
       }
     } else {
       descRight=-1;
