@@ -6,9 +6,9 @@ namespace xforce { namespace nlu { namespace charles {
 SplitStage::SplitStage(
         SplitRuleMgr &splitRuleMgr) :
   splitRuleMgr_(&splitRuleMgr),
-  lastStage_(basic::Stage::kNone),
   bornStage_(basic::Stage::kNone),
   curStage_(basic::Stage::kSyntax),
+  lastStage_(basic::Stage::kNone),
   ruleIdx_(0) {}
 
 SplitStage::~SplitStage() {
