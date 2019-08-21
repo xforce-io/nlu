@@ -22,7 +22,6 @@ class SplitStage {
 
   inline bool IsBegin() const;
   inline bool IsEnd() const;
-  bool IsIdentical() const;
 
   basic::Stage::Val GetBornStage() const { return bornStage_; }
   basic::Stage::Val GetCurStage() const { return curStage_; }

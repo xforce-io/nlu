@@ -119,21 +119,9 @@ SplitStage* SplitStage::Clone() const {
   newStage->splitRuleMgr_ = splitRuleMgr_->Clone();
   newStage->bornStage_ = bornStage_;
   newStage->curStage_ = curStage_;
+  newStage->lastStage_ = lastStage_;
   newStage->ruleIdx_ = ruleIdx_;
   return newStage;
-}
-
-bool SplitStage::IsIdentical() const {
-  if (curStage_==basic::Stage::kNone) {
-    return true;
-  }
-
-  size_t curStageSize = splitRuleMgr_->GetRules()[curStage_]->size();
-  if (ruleIdx_>0 && ruleIdx_ >= curStageSize) {
-    return false;
-  } else {
-    return true;
-  }
 }
 
 }}}
