@@ -45,7 +45,8 @@ class Matcher {
           int &descLeft,
           int &descRight,
           int &leftBound,
-          int &rightBound);
+          int &rightBound,
+          basic::SyntaxTag::Type::Val &resTag);
 
  private:
   milkie::Milkie *milkie_;

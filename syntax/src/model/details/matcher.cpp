@@ -291,6 +291,7 @@ void Matcher::AddAdvpDescDirForChunk_(
     int descRight=0;
     int leftBound=-1;
     int rightBound=-1;
+    basic::SyntaxTag::Type::Val resTag;
     AnalysisAdj_(
             nluContext,
             advp,
@@ -298,13 +299,14 @@ void Matcher::AddAdvpDescDirForChunk_(
             descLeft,
             descRight,
             leftBound,
-            rightBound);
+            rightBound,
+            resTag);
     if (descLeft>0 &&
         descRight<0 &&
         leftBound>0) {
       advp->SetDescDir(basic::Chunk::kLeft);
       nluContext->GetChunks().Add(std::make_shared<basic::Chunk>(
-              basic::SyntaxTag::Type::kV,
+              resTag,
               leftBound,
               advp->GetEnd() - leftBound,
               450));
@@ -313,7 +315,7 @@ void Matcher::AddAdvpDescDirForChunk_(
         rightBound>0) {
       advp->SetDescDir(basic::Chunk::kRight);
       nluContext->GetChunks().Add(std::make_shared<basic::Chunk>(
-              basic::SyntaxTag::Type::kNp,
+              resTag,
               advp->GetOffset(),
               rightBound - advp->GetOffset(),
               451));
@@ -325,6 +327,7 @@ void Matcher::AddAdvpDescDirForChunk_(
     int descRight[2] = {0, 0};
     int leftBound[2] = {-1, -1};
     int rightBound[2] = {-1, -1};
+    basic::SyntaxTag::Type::Val resTag[2];
     AnalysisAdj_(
             nluContext,
             advp,
@@ -332,7 +335,8 @@ void Matcher::AddAdvpDescDirForChunk_(
             descLeft[0],
             descRight[0],
             leftBound[0],
-            rightBound[0]);
+            rightBound[0],
+            resTag[0]);
     AnalysisAdj_(
             nluContext,
             advp,
@@ -340,14 +344,15 @@ void Matcher::AddAdvpDescDirForChunk_(
             descLeft[1],
             descRight[1],
             leftBound[1],
-            rightBound[1]);
+            rightBound[1],
+            resTag[1]);
     if (descLeft[0] > 0 &&
         descLeft[1] > 0 &&
         descRight[0] < 0 &&
         descRight[1] < 0) {
       advp->SetDescDir(basic::Chunk::kLeft);
       nluContext->GetChunks().Add(std::make_shared<basic::Chunk>(
-              basic::SyntaxTag::Type::kV,
+              resTag[0],
               leftBound[0],
               advp->GetEnd() - leftBound[0],
               452));
@@ -357,7 +362,7 @@ void Matcher::AddAdvpDescDirForChunk_(
         descRight[1] > 0) {
       advp->SetDescDir(basic::Chunk::kRight);
       nluContext->GetChunks().Add(std::make_shared<basic::Chunk>(
-              basic::SyntaxTag::Type::kV,
+              resTag[1],
               advp->GetOffset(),
               rightBound[1] - advp->GetOffset(),
               453));
@@ -375,7 +380,8 @@ void Matcher::AnalysisAdj_(
         int &descLeft,
         int &descRight,
         int &leftBound,
-        int &rightBound) {
+        int &rightBound,
+        basic::SyntaxTag::Type::Val &resTag) {
   descLeft=0;
   descRight=0;
   rightBound=0;
@@ -390,6 +396,7 @@ void Matcher::AnalysisAdj_(
       if (segBeforeBefore != nullptr) {
         leftBound = segBeforeBefore->GetOffset();
       }
+      resTag = basic::SyntaxTag::Type::kVp;
       return;
     } else if (segBefore->GetTags().size() != 1) {
       return;
@@ -398,6 +405,7 @@ void Matcher::AnalysisAdj_(
           basic::Manager::Get().GetGkb().GetGkbVerb().IsDongqu(strSegBefore)) {
         descLeft=1;
         leftBound = segBefore->GetOffset();
+        resTag = basic::SyntaxTag::Type::kVp;
       } else {
         descLeft=-1;
       }
@@ -418,6 +426,7 @@ void Matcher::AnalysisAdj_(
       if (segAfterAfter != nullptr) {
         rightBound = segAfterAfter->GetEnd();
       }
+      resTag = basic::SyntaxTag::Type::kNp;
     }
 
     bool theRightTag=true;
@@ -430,6 +439,8 @@ void Matcher::AnalysisAdj_(
             !basic::SyntaxTag::Type::IsSpecial(tag)) {
           theRightTag=false;
           break;
+        } else {
+          resTag = tag;
         }
       }
     }
