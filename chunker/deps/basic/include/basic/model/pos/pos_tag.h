@@ -71,6 +71,8 @@ class PosTag {
        */
       kUndef,
     };
+
+    inline static bool IsSpecial(PosTag::Type::Val tagVal);
   };
 
   struct Class {
@@ -142,6 +144,10 @@ class SingleOrCompound {
   inline static SingleOrCompound::Type GetSingleOrCompound(
       const std::string &singleOrCompound); 
 };
+
+bool PosTag::Type::IsSpecial(PosTag::Type::Val tagVal) {
+  return tagVal == PosTag::Type::kUndef;
+}
 
 bool PosTag::IsNominal(PosTag::Type::Val posTag) {
   return PosTag::Type::kN == posTag ||

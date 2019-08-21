@@ -8,10 +8,10 @@ namespace xforce { namespace nlu { namespace basic {
 
 class GkbAdj : public Table<EntryAdj> {
  public:
-  inline bool Dingyu(const std::wstring &word) const;
+  inline int Dingyu(const std::wstring &word) const;
 };
 
-bool GkbAdj::Dingyu(const std::wstring &word) const {
+int GkbAdj::Dingyu(const std::wstring &word) const {
   auto *entries = GetEntries(word);
   if (nullptr == entries) {
     return -1;

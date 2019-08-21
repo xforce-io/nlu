@@ -8,7 +8,7 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
-class Chunk : public FragmentMultitag<SyntaxTag::Type::Val> {
+class Chunk : public FragmentMultitag<SyntaxTag::Type> {
  public:
   enum DescDir {
     kNone,
@@ -18,7 +18,7 @@ class Chunk : public FragmentMultitag<SyntaxTag::Type::Val> {
   };
 
  public:
-  typedef FragmentMultitag<SyntaxTag::Type::Val> Super;
+  typedef FragmentMultitag<SyntaxTag::Type> Super;
   typedef FragmentSet<Chunk> Set;
 
  public:
