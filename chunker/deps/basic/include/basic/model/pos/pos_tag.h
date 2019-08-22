@@ -151,6 +151,7 @@ bool PosTag::Type::IsSpecial(PosTag::Type::Val tagVal) {
 
 bool PosTag::IsNominal(PosTag::Type::Val posTag) {
   return PosTag::Type::kN == posTag ||
+    PosTag::Type::kVn == posTag ||
     PosTag::Type::kT == posTag ||
     PosTag::Type::kS == posTag ||
     PosTag::Type::kF == posTag ||
