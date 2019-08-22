@@ -33,7 +33,7 @@ class FragmentMultitag : public Fragment {
   virtual ~FragmentMultitag() {}
 
   inline void SetTag(typename Tag::Val tagVal);
-  inline void AddTag(typename Tag::Val tagVal);
+  virtual void AddTag(typename Tag::Val tagVal);
   inline void RemoveTag(typename Tag::Val tagVal);
   inline bool Merge(const Self &other);
   inline Self& operator=(const Self &other);

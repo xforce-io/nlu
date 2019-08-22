@@ -22,6 +22,8 @@ class Segment : public FragmentMultitag<PosTag::Type> {
   inline Segment(const Segment &other);
   virtual ~Segment() {}
 
+  inline void AddTag(typename PosTag::Type::Val tag);
+
   const std::string& GetCategory() const;
   inline PosTag::Class::Val GetClassOfPosTags() const;
 
@@ -42,6 +44,17 @@ Segment::Segment(size_t offset) :
 
 Segment::Segment(const Segment &other) :
     Super(SCAST<const Super&>(other)) {}
+
+void Segment::AddTag(typename PosTag::Type::Val tag) {
+  for (auto &singleTag : tags_) {
+    if (singleTag == tag ||
+        (singleTag == PosTag::Type::kN && tag == PosTag::Type::kVn) ||
+        (singleTag == PosTag::Type::kVn && tag == PosTag::Type::kN)) {
+      return;
+    }
+  }
+  tags_.push_back(tag);
+}
 
 PosTag::Class::Val Segment::GetClassOfPosTags() const {
   PosTag::Class::Val result = PosTag::Class::kUndef;

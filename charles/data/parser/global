@@ -16,6 +16,7 @@ FEATURE_EXTRACTOR_END
 FEATURE_EXTRACTOR_BEGIN(syntax)
     { { #Chk(vp) #Chk(np) -> syntactic.np } #Chk(vp) -> syntactic._stc_ }
     { #Chk(np) #Chk(v) -> syntactic._stc_ }
+    { #Chk(np) #Chk(vp) -> syntactic._stc_ }
     { #Chk(v) #Chk(np) -> syntactic._stc_ }
     { #Chk(v) #Chk(np) #Chk(np) -> syntactic._stc_ }
     { #Chk(np) #Chk(pp) -> syntactic._stc_ }
@@ -33,6 +34,7 @@ FEATURE_EXTRACTOR_BEGIN(syntax)
     ~{ #Chk(v) "的" #Chk(np) -> syntactic.np }
     ~{ #Chk(v) #Chk(np) % -> syntactic.vp }
     ~{ #Chk(qp) #Chk(v) % -> syntactic.vp }
+    ~{ #Chk(v) #Chk(v) % -> syntactic.vp }
     ~{ #Chk(vp) "的" #Chk(np) -> syntactic.np }
     ~{ #Chk(qp) "的" #Chk(np) -> syntactic.np }
     ~{ #Chk(qp) #Chk(np) -> syntactic.np }
