@@ -2,8 +2,9 @@
 
 namespace xforce { namespace nlu { namespace charles {
 
-RuleSyntaxPrep::RuleSyntaxPrep(size_t offset) :
-  offsetPrep_(offset) {
+RuleSyntaxPrep::RuleSyntaxPrep(size_t offset, size_t len) :
+  offsetPrep_(offset),
+  lenPrep_(len) {
 }
 
 bool RuleSyntaxPrep::Split(
@@ -16,7 +17,7 @@ bool RuleSyntaxPrep::Split(
 
   bool touched=false;
   for (auto &segment : nluContext->GetSegments().GetAll()) {
-    if (segment->GetOffset() < offsetPrep_) {
+    if (segment->GetOffset() < offsetPrep_+lenPrep_) {
       continue;
     }
 
@@ -27,7 +28,7 @@ bool RuleSyntaxPrep::Split(
         AddNewChunk_(
                 nluContext,
                 nluContexts,
-                segment->GetOffset() - offsetPrep_ + segment->GetLen(),
+                segment->GetEnd() - offsetPrep_,
                 910);
         touched = true;
         break;
@@ -36,7 +37,7 @@ bool RuleSyntaxPrep::Split(
   }
 
   for (auto &chunk : nluContext->GetChunks().GetAll()) {
-    if (chunk->GetOffset() <= offsetPrep_) {
+    if (chunk->GetOffset() < offsetPrep_+lenPrep_) {
       continue;
     }
 
@@ -44,11 +45,12 @@ bool RuleSyntaxPrep::Split(
     if (chunk->GetTag() == basic::SyntaxTag::Type::kAdvp ||
         chunk->GetTag() == basic::SyntaxTag::Type::kU) {
       continue;
-    } else if (chunk->GetTag() == basic::SyntaxTag::Type::kNp) {
+    } else if (chunk->GetTag() == basic::SyntaxTag::Type::kNp ||
+        chunk->GetTag() == basic::SyntaxTag::Type::kContNp) {
       AddNewChunk_(
               nluContext,
               nluContexts,
-              chunk->GetOffset() - offsetPrep_ + chunk->GetLen(),
+              chunk->GetEnd() - offsetPrep_,
               911);
       touched = true;
     }
@@ -57,7 +59,7 @@ bool RuleSyntaxPrep::Split(
 }
 
 Rule* RuleSyntaxPrep::Clone() {
-  return new RuleSyntaxPrep(offsetPrep_);
+  return new RuleSyntaxPrep(offsetPrep_, lenPrep_);
 }
 
 void RuleSyntaxPrep::AddNewChunk_(

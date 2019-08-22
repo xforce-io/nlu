@@ -63,10 +63,17 @@ void SplitRuleMgr::Clear() {
 
 bool SplitRuleMgr::InitForOffset_(const basic::NluContext &nluContext) {
   size_t idx=0;
-  for (auto segment : nluContext.GetSegments().GetAll()) {
-    if (segment->GetTag() == basic::PosTag::Type::kP) {
-      allRules_[basic::Stage::kSyntax]->push_back(new RuleSyntaxPrep(segment->GetOffset()));
-    } else if (segment->GetTags().size() > 1) {
+  for (auto &chunk : nluContext.GetChunks().GetAll()) {
+    if (chunk->GetTag() == basic::SyntaxTag::Type::kP) {
+      allRules_[basic::Stage::kSyntax]->push_back(
+              new RuleSyntaxPrep(
+                      chunk->GetOffset(),
+                      chunk->GetLen()));
+    }
+  }
+
+  for (auto &segment : nluContext.GetSegments().GetAll()) {
+    if (segment->GetTags().size() > 1) {
       allRules_[basic::Stage::kPosTag]->push_back(new RulePosTagMultiTag(segment->GetOffset()));
     }
     ++idx;
