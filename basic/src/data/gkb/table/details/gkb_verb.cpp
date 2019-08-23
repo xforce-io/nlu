@@ -46,6 +46,20 @@ bool GkbVerb::IsDongjieOrDongquPhrase(
       gkbVerbDongqu_->IsPhrase(word0, word1);
 }
 
+bool GkbVerb::isZhu(const std::wstring &word) const {
+  auto entries = GetEntries(word);
+  if (nullptr == entries || entries->empty()) {
+    return false;
+  }
+
+  for (auto *entry : *entries) {
+    if (entry->isZhu()) {
+      return true;
+    }
+  }
+  return false;
+}
+
 EntryVerb::TiWeiZhun::Val GkbVerb::TiWeiZhun(
     const std::wstring &word) const {
   auto entries = GetEntries(word);

@@ -15,6 +15,7 @@ void ParserCommon::Process(
     chunkSeps.Add(std::make_shared<basic::ChunkSep>(cur->GetEnd()));
     if (basic::SyntaxTag::Type::kUndef != syntaxTag) {
       chunks.Add(std::make_shared<basic::Chunk>(
+              nluContext,
               syntaxTag,
               cur->GetOffset(),
               cur->GetLen(),
@@ -27,6 +28,7 @@ void ParserCommon::Process(
     chunkSeps.Add(std::make_shared<basic::ChunkSep>(next->GetEnd()));
     if (basic::SyntaxTag::Type::kUndef != syntaxTag) {
       chunks.Add(std::make_shared<basic::Chunk>(
+              nluContext,
               syntaxTag,
               cur->GetOffset(),
               cur->GetLen() + next->GetLen(),
@@ -37,6 +39,7 @@ void ParserCommon::Process(
     chunkSeps.Add(std::make_shared<basic::ChunkSep>(cur->GetOffset() + chunkPos));
     if (basic::SyntaxTag::Type::kUndef != syntaxTag) {
       chunks.Add(std::make_shared<basic::Chunk>(
+              nluContext,
               syntaxTag,
               cur->GetOffset(),
               chunkPos,
