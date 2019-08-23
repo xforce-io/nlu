@@ -68,6 +68,7 @@ void RuleSyntaxPrep::AddNewChunk_(
         size_t length,
         uint32_t strategy) {
   basic::Chunk newChunk(
+          *nluContext,
           basic::SyntaxTag::Type::kPp,
           offsetPrep_,
           length,

@@ -61,6 +61,7 @@ bool RuleSyntaxRule::Split(
     auto storageItems = storageKv.second->Get();
     for (auto &storageItem : storageItems) {
       basic::Chunk chunk(
+              *nluContext,
               syntaxTag,
               storageItem.GetOffset(),
               storageItem.GetContent().length(),
