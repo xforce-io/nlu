@@ -45,6 +45,7 @@ class SyntaxTag {
       kVc,
       kVe,
       kVv,
+      kVw,  //助动词
 
       //syntax tags
       kAdjp, //Adjective phrase / 形容词短语

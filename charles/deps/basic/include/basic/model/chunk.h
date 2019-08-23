@@ -8,6 +8,8 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
+class NluContext;
+
 class Chunk : public FragmentMultitag<SyntaxTag::Type> {
  public:
   enum DescDir {
@@ -24,6 +26,7 @@ class Chunk : public FragmentMultitag<SyntaxTag::Type> {
  public:
   inline Chunk();
   inline Chunk(
+          const NluContext &nluContext,
           SyntaxTag::Type::Val syntaxTag,
           size_t offset,
           size_t len,
@@ -39,6 +42,12 @@ class Chunk : public FragmentMultitag<SyntaxTag::Type> {
 
   virtual void Dump(JsonType &jsonType);
 
+ public:
+  static void AddTagForCtx(
+          const NluContext &nluContext,
+          Chunk &chunk,
+          SyntaxTag::Type::Val tag);
+
  private:
   DescDir descDir_;
 };
@@ -47,11 +56,14 @@ Chunk::Chunk() :
   Super() {}
 
 Chunk::Chunk(
+        const NluContext &nluContext,
         SyntaxTag::Type::Val syntaxTag,
         size_t offset,
         size_t len,
         uint32_t strategy) :
-    Super(syntaxTag, offset, len, strategy) {}
+    Super(syntaxTag, offset, len, strategy) {
+  AddTagForCtx(nluContext, *this, syntaxTag);
+}
 
 Chunk::Chunk(const Chunk &other) :
     Super(SCAST<const Super&>(other)) {}

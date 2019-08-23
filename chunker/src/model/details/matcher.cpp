@@ -87,6 +87,7 @@ void Matcher::ParseAccordingToRule_(std::shared_ptr<basic::NluContext> nluContex
       auto storageItems = storageKv.second->Get();
       for (auto &storageItem : storageItems) {
         basic::Chunk chunk(
+                *nluContext,
                 syntaxTag,
                 storageItem.GetOffset(),
                 storageItem.GetContent().length(),
