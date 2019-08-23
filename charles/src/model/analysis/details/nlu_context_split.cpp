@@ -3,9 +3,9 @@
 
 namespace xforce { namespace nlu { namespace charles {
 
-const std::wstring NluContextSplit::kBranch0SyntaxStoragePrefix = L"/branch0-syntactic";
-const std::wstring NluContextSplit::kBranch1SyntaxStoragePrefix = L"/branch1-syntactic";
-const std::wstring NluContextSplit::kBranch2SyntaxStoragePrefix = L"/branch2-syntactic";
+const std::wstring NluContextSplit::kBranch0SyntaxStoragePrefix = L"/branch0_syntactic";
+const std::wstring NluContextSplit::kBranch1SyntaxStoragePrefix = L"/branch1_syntactic";
+const std::wstring NluContextSplit::kBranch2SyntaxStoragePrefix = L"/branch2_syntactic";
 
 NluContextSplit::NluContextSplit() :
   splitRuleEngine_(nullptr) {}
@@ -125,7 +125,8 @@ bool NluContextSplit::SplitBySyntax_(
               *nluContext,
               syntaxTag,
               storageItem.GetOffset(),
-              storageItem.GetContent().length());
+              storageItem.GetContent().length(),
+              970);
       if (branches[index]->GetChunks().Add(chunk)) {
         if (basic::SyntaxTag::Type::kStc == syntaxTag) {
           return true;
