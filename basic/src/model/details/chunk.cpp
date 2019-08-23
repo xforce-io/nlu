@@ -24,7 +24,7 @@ void Chunk::AddTagForCtx(
   if (SyntaxTag::Type::kV == tag) {
     std::wstring word = chunk.GetStrFromSentence(nluContext.GetQuery());
     bool isZhu = Manager::Get().GetGkb().GetGkbVerb().isZhu(word);
-    if (!isZhu) {
+    if (isZhu) {
       chunk.AddTag(SyntaxTag::Type::kVw);
     }
     chunk.AddTag(tag);
