@@ -46,13 +46,17 @@ void SplitStage::Process(std::shared_ptr<basic::NluContext> &nluContext) {
   }
 
   splitRuleMgr_->Adjust(*nluContext);
-  ruleIdx_ = 0;
   while (!IsBegin()) {
     size_t curStageSize = splitRuleMgr_->GetRules()[curStage_]->size();
-    if (curStageSize != 0) {
+    if (ruleIdx_ < curStageSize) {
       return;
+    } else if (curStageSize != 0) {
+      ruleIdx_ = curStageSize-1;
+      return;
+    } else {
+      curStage_ = basic::Stage::GetPrev(curStage_);
+      ruleIdx_=0;
     }
-    curStage_ = basic::Stage::GetPrev(curStage_);
   }
 }
 
