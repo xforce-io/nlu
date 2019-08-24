@@ -66,8 +66,15 @@ bool PatternSet::MatchPattern(Context &context) {
       return false;
     }
   } else {
+    /*
     for (auto patternExpr : *patternExprs_) {
       if (patternExpr->PrefixMatch(context, false)) {
+        return true;
+      }
+    }
+     */
+    for (size_t i=0; i < patternExprs_->size(); ++i) {
+      if (patternExprs_->at(i)->PrefixMatch(context, false)) {
         return true;
       }
     }
