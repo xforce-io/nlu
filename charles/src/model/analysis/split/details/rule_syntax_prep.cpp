@@ -2,7 +2,11 @@
 
 namespace xforce { namespace nlu { namespace charles {
 
-RuleSyntaxPrep::RuleSyntaxPrep(size_t offset, size_t len) :
+RuleSyntaxPrep::RuleSyntaxPrep(
+        const std::wstring &prep,
+        size_t offset,
+        size_t len) :
+  prep_(prep),
   offsetPrep_(offset),
   lenPrep_(len) {
 }
@@ -10,9 +14,8 @@ RuleSyntaxPrep::RuleSyntaxPrep(size_t offset, size_t len) :
 bool RuleSyntaxPrep::Split(
         const std::shared_ptr<basic::NluContext> &nluContext,
         std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) {
-  std::wstring prep = nluContext->GetQuery().substr(offsetPrep_, lenPrep_);
   std::vector<const basic::EntryPrep*> entriesPrep;
-  basic::Manager::Get().GetGkb().GetGkbPrep().GetEntriesPrep(prep, entriesPrep);
+  basic::Manager::Get().GetGkb().GetGkbPrep().GetEntriesPrep(prep_, entriesPrep);
 
   bool touched=false;
   for (auto &segment : nluContext->GetSegments().GetAll()) {

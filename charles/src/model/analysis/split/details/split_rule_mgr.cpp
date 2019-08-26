@@ -71,10 +71,20 @@ bool SplitRuleMgr::InitForOffset_(const basic::NluContext &nluContext) {
 
   for (auto &chunk : nluContext.GetChunks().GetAll()) {
     if (chunk->GetTag() == basic::SyntaxTag::Type::kP) {
-      allRules_[basic::Stage::kPosTag]->push_back(
-              new RuleSyntaxPrep(
-                      chunk->GetOffset(),
-                      chunk->GetLen()));
+      std::wstring prep;
+      for (auto &segment : nluContext.GetSegments().GetAll()) {
+        if (segment->GetEnd() == chunk->GetEnd()) {
+          prep = segment->GetStrFromSentence(nluContext.GetQuery());
+        }
+      }
+
+      if (!prep.empty()) {
+        allRules_[basic::Stage::kPosTag]->push_back(
+                new RuleSyntaxPrep(
+                        prep,
+                        chunk->GetOffset(),
+                        chunk->GetLen()));
+      }
     }
   }
   return true;

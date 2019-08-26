@@ -6,7 +6,10 @@ namespace xforce { namespace nlu { namespace charles {
 
 class RuleSyntaxPrep : public Rule {
  public:
-  explicit RuleSyntaxPrep(size_t offset, size_t len);
+  explicit RuleSyntaxPrep(
+          const std::wstring &prep,
+          size_t offset,
+          size_t len);
 
   virtual bool Split(
           const std::shared_ptr<basic::NluContext> &nluContext,
@@ -22,6 +25,7 @@ private:
           uint32_t strategy);
 
  private:
+  std::wstring prep_;
   size_t offsetPrep_;
   size_t lenPrep_;
 };
