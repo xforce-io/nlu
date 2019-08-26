@@ -10,10 +10,9 @@ RuleSyntaxPrep::RuleSyntaxPrep(size_t offset, size_t len) :
 bool RuleSyntaxPrep::Split(
         const std::shared_ptr<basic::NluContext> &nluContext,
         std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) {
+  std::wstring prep = nluContext->GetQuery().substr(offsetPrep_, lenPrep_);
   std::vector<const basic::EntryPrep*> entriesPrep;
-  basic::Manager::Get().GetGkb().GetGkbPrep().GetEntriesPrep(
-          nluContext->GetQuery(),
-          entriesPrep);
+  basic::Manager::Get().GetGkb().GetGkbPrep().GetEntriesPrep(prep, entriesPrep);
 
   bool touched=false;
   for (auto &segment : nluContext->GetSegments().GetAll()) {
