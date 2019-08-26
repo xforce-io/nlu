@@ -23,6 +23,7 @@ bool RuleSyntaxRule::Split(
   }
 
   const milkie::Storage &storage = context->GetStorage();
+  bool touched = false;
   for (auto &storageKv : storage.Get()) {
     const milkie::StorageKey &key = storageKv.first;
     std::wstring repr;
@@ -70,11 +71,16 @@ bool RuleSyntaxRule::Split(
         if (basic::SyntaxTag::Type::kStc == syntaxTag) {
           return true;
         }
+        touched = true;
       }
     }
   }
 
-  bool touched = false;
+  if (!touched) {
+    return false;
+  }
+
+  touched = false;
   for (size_t i=0; i<kMaxNumBranches; ++i) {
     if (nullptr != branches[i]) {
       nluContexts.push_back(branches[i]);
