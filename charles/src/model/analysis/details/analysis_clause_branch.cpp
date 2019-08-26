@@ -51,7 +51,7 @@ bool AnalysisClauseBranch::Process(
   }
 
   size_t idx=0;
-  for (auto nluContext : nluContexts) {
+  for (auto const &nluContext : nluContexts) {
     auto child = std::make_shared<AnalysisClauseBranch>(
             no_ * 10 + idx,
             *nluContext,

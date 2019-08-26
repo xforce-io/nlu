@@ -32,8 +32,10 @@ class SplitStage {
   SplitRuleMgr *splitRuleMgr_;
   basic::Stage::Val bornStage_;
   basic::Stage::Val curStage_;
-  basic::Stage::Val lastStage_;
   size_t ruleIdx_;
+
+  basic::Stage::Val lastStage_;
+  size_t lastRuleIdx_;
 };
 
 void SplitStage::SetBornStage(basic::Stage::Val stage) {

@@ -8,8 +8,9 @@ SplitStage::SplitStage(
   splitRuleMgr_(&splitRuleMgr),
   bornStage_(basic::Stage::kNone),
   curStage_(basic::Stage::kSyntax),
+  ruleIdx_(0),
   lastStage_(basic::Stage::kNone),
-  ruleIdx_(0) {}
+  lastRuleIdx_(0) {}
 
 SplitStage::~SplitStage() {
   XFC_DELETE(splitRuleMgr_)
@@ -68,9 +69,11 @@ bool SplitStage::Split(
   }
 
   auto rules = *(splitRuleMgr_->GetRules()[curStage_]);
-  auto *rule = rules[ruleIdx_];
-  bool ret = rule->Split(nluContext, nluContexts);
+  bool ret = rules[ruleIdx_]->Split(nluContext, nluContexts);
+
   lastStage_ = curStage_;
+  lastRuleIdx_ = ruleIdx_;
+
   PrevStage();
   return ret;
 }
@@ -124,8 +127,9 @@ SplitStage* SplitStage::Clone() const {
   newStage->splitRuleMgr_ = splitRuleMgr_->Clone();
   newStage->bornStage_ = bornStage_;
   newStage->curStage_ = curStage_;
-  newStage->lastStage_ = lastStage_;
   newStage->ruleIdx_ = ruleIdx_;
+  newStage->lastStage_ = lastStage_;
+  newStage->lastRuleIdx_ = lastRuleIdx_;
   return newStage;
 }
 

@@ -25,12 +25,13 @@ bool RuleSyntaxPrep::Split(
     for (auto *entryPrep : entriesPrep) {
       if (entryPrep->IsAfterWord(segment->GetQuery(nluContext->GetQuery())) ||
           entryPrep->IsAfterPos(segment->GetTag())) {
-        AddNewChunk_(
+        if (AddNewChunk_(
                 nluContext,
                 nluContexts,
                 segment->GetEnd() - offsetPrep_,
-                910);
-        touched = true;
+                910)) {
+          touched = true;
+        }
         break;
       }
     }
@@ -47,12 +48,13 @@ bool RuleSyntaxPrep::Split(
       continue;
     } else if (chunk->GetTag() == basic::SyntaxTag::Type::kNp ||
         chunk->GetTag() == basic::SyntaxTag::Type::kContNp) {
-      AddNewChunk_(
+      if (AddNewChunk_(
               nluContext,
               nluContexts,
               chunk->GetEnd() - offsetPrep_,
-              911);
-      touched = true;
+              911)) {
+        touched = true;
+      }
     }
   }
   return touched;
@@ -62,7 +64,7 @@ Rule* RuleSyntaxPrep::Clone() {
   return new RuleSyntaxPrep(offsetPrep_, lenPrep_);
 }
 
-void RuleSyntaxPrep::AddNewChunk_(
+bool RuleSyntaxPrep::AddNewChunk_(
         const std::shared_ptr<basic::NluContext> &nluContext,
         std::vector<std::shared_ptr<basic::NluContext>> &nluContexts,
         size_t length,
@@ -75,8 +77,9 @@ void RuleSyntaxPrep::AddNewChunk_(
           strategy);
 
   auto newBranch = nluContext->Clone();
-  newBranch->GetChunks().Add(newChunk);
+  bool ret = newBranch->GetChunks().Add(newChunk);
   nluContexts.push_back(newBranch);
+  return ret;
 }
 
 }}}
