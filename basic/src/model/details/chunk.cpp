@@ -27,8 +27,8 @@ void Chunk::AddTagForCtx(
     if (isZhu) {
       chunk.AddTag(SyntaxTag::Type::kVw);
     }
-    chunk.AddTag(tag);
   }
+  chunk.AddTag(tag);
 }
 
 }}}
