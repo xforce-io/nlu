@@ -24,6 +24,8 @@ TEST(testAll, all) {
   ASSERT_TRUE(Charles::Init(*conf));
 
   std::wstring wStrQuery[] = {
+          L"2018年世界女排锦标赛展开第四轮的争夺",
+          L"位于B组的中国女排迎战保加利亚队",
           L"我们自己有太多无谓的失误",
           L"自己的节奏还没有踩上",
           L"面对下一个对手意大利队",
@@ -34,6 +36,9 @@ TEST(testAll, all) {
           L"第一局比赛失利原因主要在我们自己",
           L"队员的心态还有些急躁",
           L"车可以连续多少天不开",
+          L"中国队会以平常心对待",
+          L"作为小组赛第四个对手",
+          L"谈到第一局的失利",
   };
 
   for (auto &query : wStrQuery) {

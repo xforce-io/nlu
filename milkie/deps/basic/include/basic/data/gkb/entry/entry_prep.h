@@ -8,9 +8,9 @@ namespace xforce { namespace nlu { namespace basic {
 
 class EntryPrep : public Entry {
  public:
-  const static size_t kColTiWei = 1;
-  const static size_t kColAfterWords = 2;
-  const static size_t kColAfterPoses = 3;
+  const static size_t kColTiWei = 11;
+  const static size_t kColAfterWords = 25;
+  const static size_t kColAfterPoses = 26;
 
   struct TiWei {
     enum Val {

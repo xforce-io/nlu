@@ -16,12 +16,12 @@ FEATURE_EXTRACTOR_BEGIN(syntaxFromChunk)
 FEATURE_EXTRACTOR_END
 
 FEATURE_EXTRACTOR_BEGIN(syntax)
-    { [$v, $vp] -> syntactic._stc_ }
+    { $V -> syntactic._stc_ }
     { { $vp #Chk(np) -> syntactic.np } $vp -> syntactic._stc_ }
     { $v #Chk(np) #Chk(np) -> syntactic._stc_ }
-    { #Chk(np) [$v, $vp] -> syntactic._stc_ }
+    { #Chk(np) $V -> syntactic._stc_ }
     { #Chk(np) $vp -> syntactic._stc_ }
-    { #Chk(np) { #Chk(vw) ?} #Chk(pp) { [$v, $vp] ?} -> syntactic._stc_ }
+    { #Chk(np) { #Chk(vw) ?} #Chk(pp) { $V ?} -> syntactic._stc_ }
     { #Chk(np) #Chk(advp) #Chk(np) #Chk(advp) -> syntactic._stc_ }
     { #Chk(np) $v $vp -> syntactic._stc_ }
     { #Chk(np) $v #Chk(advp) -> syntactic._stc_ }

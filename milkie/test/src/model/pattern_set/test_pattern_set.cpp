@@ -47,10 +47,15 @@ TEST(testAll, build) {
 
   context = std::make_shared<Context>(L"就是说吗");
   ASSERT_TRUE(!ret.first->MatchPattern(*(context.get())));
+}
 
-  /*
-   * TODO: add global refer
-  context = std::make_shared<Context>(L"您好吗");
-  ASSERT_TRUE(ret.first->MatchPattern(*(context.get()));
-   */
+TEST(testAll, build1) {
+  auto ret = PatternSet::Build(milkie->GetReferManager(), L"global", L"[$a, $b]");
+  ASSERT_TRUE(ret.first->GetPatternExprs()->size() == 2);
+
+  auto context = std::make_shared<Context>(L"0");
+  ASSERT_TRUE(ret.first->MatchPattern(*(context.get())));
+
+  context = std::make_shared<Context>(L"2");
+  ASSERT_TRUE(!ret.first->MatchPattern(*(context.get())));
 }

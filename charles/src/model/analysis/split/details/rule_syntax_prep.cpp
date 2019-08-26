@@ -63,7 +63,7 @@ bool RuleSyntaxPrep::Split(
 }
 
 Rule* RuleSyntaxPrep::Clone() {
-  return new RuleSyntaxPrep(offsetPrep_, lenPrep_);
+  return new RuleSyntaxPrep(prep_, offsetPrep_, lenPrep_);
 }
 
 bool RuleSyntaxPrep::AddNewChunk_(
