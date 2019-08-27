@@ -4,6 +4,8 @@
 
 namespace xforce { namespace nlu { namespace charles {
 
+class SplitStage;
+
 class RuleSyntaxPrep : public Rule {
  public:
   explicit RuleSyntaxPrep(
@@ -12,6 +14,7 @@ class RuleSyntaxPrep : public Rule {
           size_t len);
 
   virtual bool Split(
+          const SplitStage &splitStage,
           const std::shared_ptr<basic::NluContext> &nluContext,
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
 
@@ -19,6 +22,7 @@ class RuleSyntaxPrep : public Rule {
 
 private:
   bool AddNewChunk_(
+          const SplitStage &splitStage,
           const std::shared_ptr<basic::NluContext> &nluContext,
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts,
           size_t length,

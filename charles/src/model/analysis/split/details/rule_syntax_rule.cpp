@@ -1,4 +1,5 @@
 #include "../rule_syntax_rule.h"
+#include "../split_stage.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
@@ -11,6 +12,7 @@ RuleSyntaxRule::RuleSyntaxRule(
   featureExtractor_(featureExtractor) {}
 
 bool RuleSyntaxRule::Split(
+        const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,
         std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) {
   std::vector<std::shared_ptr<basic::NluContext>> branches;
@@ -50,7 +52,7 @@ bool RuleSyntaxRule::Split(
     }
 
     if (nullptr == branches[index]) {
-      branches[index] = nluContext->Clone();
+      branches[index] = Rule::Clone(splitStage, nluContext);
     }
 
     auto syntaxTag = basic::SyntaxTag::GetSyntaxTag(vals[1]);

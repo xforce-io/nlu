@@ -1,4 +1,5 @@
 #include "../rule_pos_tag.h"
+#include "../split_stage.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
@@ -6,6 +7,7 @@ RulePosTagMultiTag::RulePosTagMultiTag(size_t offset) :
   offsetMultiTag_(offset) {}
 
 bool RulePosTagMultiTag::Split(
+        const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,
         std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) {
   auto iterSeg = nluContext->GetSegments().GetAll().begin();
@@ -13,7 +15,7 @@ bool RulePosTagMultiTag::Split(
   while (iterSeg != nluContext->GetSegments().GetAll().end()) {
     if ((*iterSeg)->GetOffset() == offsetMultiTag_ && (*iterSeg)->GetTags().size() > 1) {
       for (auto tag : ((*iterSeg)->GetTags())) {
-        auto newNluContext = nluContext->Clone();
+        auto newNluContext = Rule::Clone(splitStage, nluContext);
         AdjustSegTags_(*newNluContext, idx, tag);
         nluContexts.push_back(newNluContext);
       }
