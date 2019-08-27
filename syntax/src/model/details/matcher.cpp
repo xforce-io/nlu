@@ -246,6 +246,11 @@ bool Matcher::RuleIntransitiveVerb_(
     return false;
   }
 
+  auto npAfter = nluContext->GetChunks().GetFragmentAfter(chunk->GetEnd());
+  if (nullptr != npAfter || !npAfter->ContainTag(basic::SyntaxTag::Type::kNp)) {
+    return false;
+  }
+
   while (true) {
     auto chunkBefore = nluContext->GetChunks().GetFragmentBefore(npBefore->GetOffset());
     if (nullptr != chunkBefore && chunkBefore->ContainTag(basic::SyntaxTag::Type::kNp)) {
