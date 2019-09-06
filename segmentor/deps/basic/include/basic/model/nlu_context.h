@@ -5,6 +5,8 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
+class Phrase;
+
 class NluContext {
  public:
   explicit NluContext(const std::wstring &query);
@@ -17,6 +19,10 @@ class NluContext {
   inline void SetSegments(const Segment::Set &segments);
   inline void SetChunkSeps(const ChunkSep::Set &chunkSeps);
   inline void SetChunks(const Chunk::Set &chunks);
+  void AddPhrase(
+          size_t from,
+          size_t to,
+          std::shared_ptr<NluContext> &nluContext);
 
   std::shared_ptr<NluContext> Build(size_t from, size_t to);
   std::shared_ptr<NluContext> Clone() const;
@@ -41,6 +47,8 @@ class NluContext {
   std::wstring query_;
   bool isValid_;
   ManagerFragmentSet *managerFragmentSet_;
+
+  std::vector<Phrase> phrases_;
 };
 
 void NluContext::SetIsValid(bool isValid) {
