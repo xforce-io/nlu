@@ -1,4 +1,5 @@
 #include "../nlu_context.h"
+#include "../phrase.h"
 
 namespace xforce { namespace nlu { namespace basic {
 
@@ -9,6 +10,13 @@ NluContext::NluContext(const std::wstring &query) :
 
 NluContext::~NluContext() {
   XFC_DELETE(managerFragmentSet_)
+}
+
+void NluContext::AddPhrase(
+        size_t from,
+        size_t to,
+        std::shared_ptr<NluContext> &nluContext) {
+  phrases_.push_back(Phrase(from, to, nluContext));
 }
 
 std::shared_ptr<NluContext> NluContext::Build(

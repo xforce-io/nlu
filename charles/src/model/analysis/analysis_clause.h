@@ -24,6 +24,9 @@ class AnalysisClause : public AnalysisComponent {
   inline bool IsAnalysised() const;
   void Dump(JsonType &jsonType);
 
+ public:
+  static bool Validation(const std::wstring &clause);
+
  private:
   std::shared_ptr<basic::NluContext> clause_;
 
