@@ -30,6 +30,7 @@ bool RuleSyntaxPrep::Split(
       if (entryPrep->IsAfterWord(segment->GetQuery(nluContext->GetQuery())) ||
           entryPrep->IsAfterPos(segment->GetTag())) {
         if (AddNewChunk_(
+                splitStage,
                 nluContext,
                 nluContexts,
                 segment->GetEnd() - offsetPrep_,
@@ -53,6 +54,7 @@ bool RuleSyntaxPrep::Split(
     } else if (chunk->GetTag() == basic::SyntaxTag::Type::kNp ||
         chunk->GetTag() == basic::SyntaxTag::Type::kContNp) {
       if (AddNewChunk_(
+              splitStage,
               nluContext,
               nluContexts,
               chunk->GetEnd() - offsetPrep_,

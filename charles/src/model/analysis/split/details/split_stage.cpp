@@ -67,7 +67,7 @@ bool SplitStage::Split(
   }
 
   auto rules = *(splitRuleMgr_->GetRules()[curStage_]);
-  bool ret = rules[ruleIdx_]->Split(nluContext, nluContexts);
+  bool ret = rules[ruleIdx_]->Split(*this, nluContext, nluContexts);
 
   lastStage_ = curStage_;
   lastRuleIdx_ = ruleIdx_;
