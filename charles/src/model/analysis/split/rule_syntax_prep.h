@@ -26,6 +26,9 @@ private:
           const std::shared_ptr<basic::NluContext> &nluContext,
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts,
           size_t length,
+          size_t subChunkFrom,
+          size_t subChunkTo,
+          basic::SyntaxTag::Type::Val subChunkTag,
           uint32_t strategy);
 
  private:
