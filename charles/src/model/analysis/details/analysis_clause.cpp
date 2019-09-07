@@ -57,8 +57,4 @@ void AnalysisClause::Dump(JsonType &jsonType) {
   UNUSE(jsonType)
 }
 
-bool AnalysisClause::Validation(const std::wstring &clause) {
-  AnalysisClause analysisClause(clause);
-}
-
 }}}
