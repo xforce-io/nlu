@@ -402,7 +402,7 @@ void Matcher::AnalysisAdj_(
   auto segBefore = nluContext->GetSegments().GetFragmentBefore(advp->GetOffset());
   if (nullptr!=segBefore) {
     auto strSegBefore = segBefore->GetQuery(nluContext->GetQuery());
-    if (segBefore->GetQuery(nluContext->GetQuery()) == L"得") {
+    if (L"得"==strSegBefore || L"不"==strSegBefore) {
       descLeft=1;
       descRight=-1;
       auto segBeforeBefore = nluContext->GetSegments().GetFragmentBefore(segBefore->GetOffset());
