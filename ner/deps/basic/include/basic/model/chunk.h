@@ -8,29 +8,72 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
-class Chunk : public FragmentMultitag<SyntaxTag::Type::Val> {
+class NluContext;
+
+class Chunk : public FragmentMultitag<SyntaxTag::Type> {
  public:
-  typedef FragmentMultitag<SyntaxTag::Type::Val> Super;
+  enum DescDir {
+    kNone,
+    kLeft,
+    kRight,
+    kBoth,
+  };
+
+ public:
+  typedef FragmentMultitag<SyntaxTag::Type> Super;
   typedef FragmentSet<Chunk> Set;
 
  public:
   inline Chunk();
-  inline Chunk(SyntaxTag::Type::Val syntaxTag, size_t offset, size_t len);
+  inline Chunk(
+          const NluContext &nluContext,
+          SyntaxTag::Type::Val syntaxTag,
+          size_t offset,
+          size_t len,
+          uint32_t strategy=0);
+
   inline Chunk(const Chunk &other);
   virtual ~Chunk() {}
+
+  inline void SetDescDir(DescDir descDir);
+  inline DescDir GetDescDir() const;
 
   virtual const std::string& GetCategory() const;
 
   virtual void Dump(JsonType &jsonType);
+
+ public:
+  static void AddTagForCtx(
+          const NluContext &nluContext,
+          Chunk &chunk,
+          SyntaxTag::Type::Val tag);
+
+ private:
+  DescDir descDir_;
 };
 
 Chunk::Chunk() :
   Super() {}
 
-Chunk::Chunk(SyntaxTag::Type::Val syntaxTag, size_t offset, size_t len) :
-    Super(syntaxTag, offset, len) {}
+Chunk::Chunk(
+        const NluContext &nluContext,
+        SyntaxTag::Type::Val syntaxTag,
+        size_t offset,
+        size_t len,
+        uint32_t strategy) :
+    Super(syntaxTag, offset, len, strategy) {
+  AddTagForCtx(nluContext, *this, syntaxTag);
+}
 
 Chunk::Chunk(const Chunk &other) :
     Super(SCAST<const Super&>(other)) {}
+
+void Chunk::SetDescDir(DescDir descDir) {
+  descDir_ = descDir;
+}
+
+Chunk::DescDir Chunk::GetDescDir() const {
+  return descDir_;
+}
 
 }}}

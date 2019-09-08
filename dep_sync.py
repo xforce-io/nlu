@@ -138,41 +138,58 @@ if __name__ == "__main__" :
         print("invalid syntax, no args")
         sys.exit(1)
 
-    buildPublicCpp()
-    if sys.argv[1] == "pub" :
-        sys.exit(0)
+    if len(sys.argv) == 2 :
+        buildPublicCpp()
+        if sys.argv[1] == "pub" :
+            sys.exit(0)
 
-    buildBasic()
-    if sys.argv[1] == "bas" :
-        sys.exit(0)
+        buildBasic()
+        if sys.argv[1] == "bas" :
+            sys.exit(0)
 
-    buildMilkie()
-    if sys.argv[1] == "mki" :
-        sys.exit(0)
+        buildMilkie()
+        if sys.argv[1] == "mki" :
+            sys.exit(0)
 
-    buildNer()
-    if sys.argv[1] == "ner" :
-        sys.exit(0)
+        buildNer()
+        if sys.argv[1] == "ner" :
+            sys.exit(0)
 
-    buildSegmentor()
-    if sys.argv[1] == "seg" :
-        sys.exit(0)
+        buildSegmentor()
+        if sys.argv[1] == "seg" :
+            sys.exit(0)
 
-    buildPosTagging()
-    if sys.argv[1] == "pos" :
-        sys.exit(0)
+        buildPosTagging()
+        if sys.argv[1] == "pos" :
+            sys.exit(0)
 
-    buildChunker()
-    if sys.argv[1] == "chk" :
-        sys.exit(0)
+        buildChunker()
+        if sys.argv[1] == "chk" :
+            sys.exit(0)
 
-    buildSyntax()
-    if sys.argv[1] == "syn" :
-        sys.exit(0)
+        buildSyntax()
+        if sys.argv[1] == "syn" :
+            sys.exit(0)
 
-    buildCharles()
-    if sys.argv[1] == "chr" :
-        sys.exit(0)
-    else :
-        print("unknown mod[%s]" % sys.argv[1])
-        sys.exit(2)
+        buildCharles()
+        if sys.argv[1] == "chr" :
+            sys.exit(0)
+        else :
+            print("unknown mod[%s]" % sys.argv[1])
+            sys.exit(2)
+    elif len(sys.argv) == 3 and sys.argv[2] == "f" :
+        if sys.argv[1] == "pos" :
+            buildPosTagging()
+            buildChunker()
+            buildSyntax()
+            buildCharles()
+        elif sys.argv[1] == "chk" :    
+            buildChunker()
+            buildSyntax()
+            buildCharles()
+        elif sys.argv[1] == "syn" :
+            buildSyntax()
+            buildCharles()
+        else :    
+            print("unknown mod[%s]" % sys.argv[1])
+            sys.exit(3)

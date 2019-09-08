@@ -7,6 +7,8 @@ SyntaxTag::Type::Val SyntaxTag::GetSyntaxTag(const std::wstring &syntaxTag) {
     return SyntaxTag::Type::kP;
   } else if (L"v" == syntaxTag) {
     return SyntaxTag::Type::kV;
+  } else if (L"vw" == syntaxTag) {
+    return SyntaxTag::Type::kVw;
   } else if (L"adjp" == syntaxTag) {
     return SyntaxTag::Type::kAdjp;
   } else if (L"advp" == syntaxTag) {
@@ -37,6 +39,8 @@ SyntaxTag::Type::Val SyntaxTag::GetSyntaxTag(const std::wstring &syntaxTag) {
     return SyntaxTag::Type::kPrn;
   } else if (L"qp" == syntaxTag) {
     return SyntaxTag::Type::kQp;
+  } else if (L"u" == syntaxTag) {
+    return SyntaxTag::Type::kU;
   } else if (L"ucp" == syntaxTag) {
     return SyntaxTag::Type::kUcp;
   } else if (L"vp" == syntaxTag) {
@@ -53,6 +57,7 @@ SyntaxTag::Type::Val SyntaxTag::GetSyntaxTag(const std::wstring &syntaxTag) {
 const std::wstring& SyntaxTag::Str(SyntaxTag::Type::Val syntaxTag) {
   static const std::wstring kP = L"p";
   static const std::wstring kV = L"v";
+  static const std::wstring kVw = L"vw";
   static const std::wstring kAdjp = L"adjp";
   static const std::wstring kAdvp = L"advp";
   static const std::wstring kClp = L"clp";
@@ -68,6 +73,7 @@ const std::wstring& SyntaxTag::Str(SyntaxTag::Type::Val syntaxTag) {
   static const std::wstring kPp = L"pp";
   static const std::wstring kPrn = L"prn";
   static const std::wstring kQp = L"qp";
+  static const std::wstring kU = L"u";
   static const std::wstring kUcp = L"ucp";
   static const std::wstring kVp = L"vp";
   static const std::wstring kStc = L"_stc_";
@@ -78,6 +84,8 @@ const std::wstring& SyntaxTag::Str(SyntaxTag::Type::Val syntaxTag) {
       return kP;
     case SyntaxTag::Type::kV :
       return kV;
+    case SyntaxTag::Type::kVw :
+      return kVw;
     case SyntaxTag::Type::kAdjp :
       return kAdjp;
     case SyntaxTag::Type::kAdvp :
@@ -108,6 +116,8 @@ const std::wstring& SyntaxTag::Str(SyntaxTag::Type::Val syntaxTag) {
       return kPrn;
     case SyntaxTag::Type::kQp :
       return kQp;
+    case SyntaxTag::Type::kU :
+      return kU;
     case SyntaxTag::Type::kUcp :
       return kUcp;
     case SyntaxTag::Type::kVp :

@@ -9,9 +9,7 @@ class Variable {
   static std::shared_ptr<std::wstring> GetVariableName(const std::wstring &statement, ssize_t startingIdx);
   inline static bool IsVariableName(const std::wstring &statement);
   inline static bool IsValidChar(wchar_t c, ssize_t idx);
-
- private:
-};  
+};
 
 bool Variable::IsStartingChar(wchar_t c) {
   return L'$' == c;
@@ -41,7 +39,6 @@ bool Variable::IsValidChar(wchar_t c, ssize_t idx) {
     (c >= L'0' && c <= L'9') ||
     (c >= L'*' && 0==idx) ||
     L'_' == c ||
-    L'-' == c ||
     L'.' == c;
 }
 

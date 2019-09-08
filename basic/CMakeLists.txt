@@ -24,7 +24,7 @@ FILE(GLOB_RECURSE BASIC_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -DUNICODE=1")
 
 add_library(basic
-  ${BASIC_FILES})
+  ${BASIC_FILES} src/model/phrase.h src/model/details/phrase.cpp)
 
 target_link_libraries(basic
   log4cplus
@@ -56,14 +56,20 @@ add_custom_command(TARGET basic
   COMMAND cp ${BASIC_SRC_DIR}/data/gkb/gkb.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/
   COMMAND cp ${BASIC_SRC_DIR}/data/gkb/table/table.hpp ${BASIC_INC_OUTPUT_PATH}/data/gkb/table/
   COMMAND cp ${BASIC_SRC_DIR}/data/gkb/table/gkb_global.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/table/
+  COMMAND cp ${BASIC_SRC_DIR}/data/gkb/table/gkb_adj.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/table/
   COMMAND cp ${BASIC_SRC_DIR}/data/gkb/table/gkb_adv.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/table/
   COMMAND cp ${BASIC_SRC_DIR}/data/gkb/table/gkb_verb.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/table/
+  COMMAND cp ${BASIC_SRC_DIR}/data/gkb/table/gkb_verb_dongjie.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/table/
   COMMAND cp ${BASIC_SRC_DIR}/data/gkb/table/gkb_verb_dongqu.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/table/
+  COMMAND cp ${BASIC_SRC_DIR}/data/gkb/table/gkb_prep.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/table/
   COMMAND cp ${BASIC_SRC_DIR}/data/gkb/entry/entry.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/entry/
   COMMAND cp ${BASIC_SRC_DIR}/data/gkb/entry/entry_global.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/entry/
+  COMMAND cp ${BASIC_SRC_DIR}/data/gkb/entry/entry_adj.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/entry/
   COMMAND cp ${BASIC_SRC_DIR}/data/gkb/entry/entry_adv.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/entry/
   COMMAND cp ${BASIC_SRC_DIR}/data/gkb/entry/entry_verb.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/entry/
+  COMMAND cp ${BASIC_SRC_DIR}/data/gkb/entry/entry_verb_dongjie.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/entry/
   COMMAND cp ${BASIC_SRC_DIR}/data/gkb/entry/entry_verb_dongqu.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/entry/
+  COMMAND cp ${BASIC_SRC_DIR}/data/gkb/entry/entry_prep.h ${BASIC_INC_OUTPUT_PATH}/data/gkb/entry/
   COMMAND cp ${BASIC_SRC_DIR}/data/word_dict.h ${BASIC_INC_OUTPUT_PATH}/data/
   COMMAND cp ${BASIC_SRC_DIR}/data/dict_item.h ${BASIC_INC_OUTPUT_PATH}/data/
   COMMAND cp ${BASIC_SRC_DIR}/model/nlu_context.h ${BASIC_INC_OUTPUT_PATH}/model/

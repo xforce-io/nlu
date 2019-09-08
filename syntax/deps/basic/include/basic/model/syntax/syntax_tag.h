@@ -39,11 +39,13 @@ class SyntaxTag {
       kPu,
       kSb,
       kSp,
+      kU,
       kV,
       kVa,
       kVc,
       kVe,
       kVv,
+      kVw,  //助动词
 
       //syntax tags
       kAdjp, //Adjective phrase / 形容词短语
@@ -70,11 +72,19 @@ class SyntaxTag {
 
       kUndef,
     };
+
+    inline static bool IsSpecial(SyntaxTag::Type::Val tagVal);
   };
 
  public:
   static SyntaxTag::Type::Val GetSyntaxTag(const std::wstring &syntaxTag);
   static const std::wstring& Str(SyntaxTag::Type::Val syntaxtTag);
 };
+
+bool SyntaxTag::Type::IsSpecial(SyntaxTag::Type::Val tagVal) {
+  return tagVal == SyntaxTag::Type::kStc ||
+      tagVal == SyntaxTag::Type::kContNp ||
+      tagVal == SyntaxTag::Type::kUndef;
+}
 
 }}}

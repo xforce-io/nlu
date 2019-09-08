@@ -15,6 +15,7 @@ struct Stage {
   };
 
   inline static Stage::Val GetPrev(Stage::Val stage);
+  inline static Stage::Val GetNext(Stage::Val stage);
 };
 
 Stage::Val Stage::GetPrev(Stage::Val stage) {
@@ -27,6 +28,23 @@ Stage::Val Stage::GetPrev(Stage::Val stage) {
       return kChunk;
     case kEnd :
       return kSyntax;
+    default :
+      return kNone;
+  }
+}
+
+Stage::Val Stage::GetNext(Stage::Val stage) {
+  switch (stage) {
+    case kNone :
+      return kSegment;
+    case kSegment :
+      return kPosTag;
+    case kPosTag :
+      return kChunk;
+    case kChunk :
+      return kSyntax;
+    case kSyntax :
+      return kEnd;
     default :
       return kNone;
   }

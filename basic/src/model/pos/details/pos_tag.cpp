@@ -3,66 +3,68 @@
 namespace xforce { namespace nlu { namespace basic {
 
 PosTag::Type::Val PosTag::GetPosTag(const std::wstring &posTag) {
-  switch (posTag[0]) {
+  if (posTag.length() == 1) {
+    return GetPosTag(posTag[0]);
+  } else if (L"vn" == posTag) {
+    return PosTag::Type::kVn;
+  } else {
+    return PosTag::Type::kUndef;
+  }
+}
+
+PosTag::Type::Val PosTag::GetPosTag(wchar_t pos) {
+  switch (pos) {
     case L'n' :
       return PosTag::Type::kN;
-    case L't' :  
+    case L't' :
       return PosTag::Type::kT;
-    case L's' :  
+    case L's' :
       return PosTag::Type::kS;
-    case L'f' :  
+    case L'f' :
       return PosTag::Type::kF;
-    case L'm' :  
+    case L'm' :
       return PosTag::Type::kM;
-    case L'q' :  
+    case L'q' :
       return PosTag::Type::kQ;
-    case L'r' :  
+    case L'r' :
       return PosTag::Type::kR;
-    case L'v' :  
-      if (posTag.length() == 2) {
-        if (posTag[1] == L'n') {
-          return PosTag::Type::kVn;
-        }
-      }
+    case L'v' :
       return PosTag::Type::kV;
-    case L'a' :  
+    case L'a' :
       return PosTag::Type::kA;
-    case L'z' :  
+    case L'z' :
       return PosTag::Type::kZ;
-    case L'b' :  
+    case L'b' :
       return PosTag::Type::kB;
-    case L'd' :  
+    case L'd' :
       return PosTag::Type::kD;
-    case L'p' :  
+    case L'p' :
       return PosTag::Type::kP;
-    case L'c' :  
+    case L'c' :
       return PosTag::Type::kC;
     case L'u' :
-      if (L"undef" == posTag) {
-        return PosTag::Type::kUndef;
-      }
       return PosTag::Type::kU;
-    case L'y' :  
+    case L'y' :
       return PosTag::Type::kY;
-    case L'o' :  
+    case L'o' :
       return PosTag::Type::kO;
-    case L'e' :  
+    case L'e' :
       return PosTag::Type::kE;
-    case L'h' :  
+    case L'h' :
       return PosTag::Type::kH;
-    case L'k' :  
+    case L'k' :
       return PosTag::Type::kK;
     case L'x' :
       return PosTag::Type::kX;
-    case L'i' :  
+    case L'i' :
       return PosTag::Type::kI;
-    case L'l' :  
+    case L'l' :
       return PosTag::Type::kL;
-    case L'j' :  
+    case L'j' :
       return PosTag::Type::kJ;
-    case L'w' :  
+    case L'w' :
       return PosTag::Type::kW;
-    default :  
+    default :
       return PosTag::Type::kUndef;
   };
 }

@@ -12,7 +12,7 @@ class GkbGlobal : public Table<EntryGlobal> {
 };
 
 std::shared_ptr<std::vector<PosTag::Type::Val>> GkbGlobal::GetPosTags(const std::wstring &word) const {
-  const std::vector<EntryGlobal*> *entries = GetEntries(word);
+  const std::vector<const EntryGlobal*> *entries = GetEntries(word);
   if (nullptr == entries) {
     return nullptr;
   }

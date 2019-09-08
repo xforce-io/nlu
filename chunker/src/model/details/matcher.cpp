@@ -9,7 +9,7 @@ const std::wstring Matcher::kSyntacticStoragePrefix = L"/syntactic";
 
 Matcher::Matcher() :
     parser_(new milkie::Milkie()) {
-  filterParserCommons_.push_back(new FPCDongqu());
+  filterParserCommons_.push_back(new FPCDongjieAndDongqu());
   filterParserCommons_.push_back(new FPCMid());
   filterParserCommons_.push_back(new FPCSurround());
 }
@@ -87,9 +87,11 @@ void Matcher::ParseAccordingToRule_(std::shared_ptr<basic::NluContext> nluContex
       auto storageItems = storageKv.second->Get();
       for (auto &storageItem : storageItems) {
         basic::Chunk chunk(
+                *nluContext,
                 syntaxTag,
                 storageItem.GetOffset(),
-                storageItem.GetContent().length());
+                storageItem.GetContent().length(),
+                310);
         nluContext->GetChunks().Add(chunk);
         nluContext->GetChunkSeps().Add(basic::ChunkSep(storageItem.GetOffset()));
         nluContext->GetChunkSeps().Add(basic::ChunkSep(
@@ -110,33 +112,43 @@ void Matcher::ParseCommon_(basic::NluContext &nluContext) {
 
     if (segments.end() != next) {
       for (auto *fpc : filterParserCommons_) {
-        ParserCommon::ChunkPos chunkPos = fpc->Filter(
+        int chunkPos = 0;
+        auto syntaxTag = basic::SyntaxTag::Type::kUndef;
+        fpc->Filter(
                 nluContext,
                 *cur,
-                *next);
+                *next,
+                chunkPos,
+                syntaxTag);
 
         ParserCommon::Process(
                 nluContext,
                 *cur,
                 *next,
-                chunkPos);
-        if (ParserCommon::kUndef != chunkPos) {
+                chunkPos,
+                syntaxTag);
+        if (0!=chunkPos) {
           break;
         }
       }
     } else {
       for (auto *fpc : filterParserCommons_) {
-        ParserCommon::ChunkPos chunkPos = fpc->Filter(
+        int chunkPos = 0;
+        auto syntaxTag = basic::SyntaxTag::Type::kUndef;
+        fpc->Filter(
                 nluContext,
                 *cur,
-                nullptr);
+                nullptr,
+                chunkPos,
+                syntaxTag);
 
         ParserCommon::Process(
                 nluContext,
                 *cur,
                 nullptr,
-                chunkPos);
-        if (ParserCommon::kUndef != chunkPos) {
+                chunkPos,
+                syntaxTag);
+        if (0!=chunkPos) {
           break;
         }
       }

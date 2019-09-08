@@ -9,10 +9,29 @@ bool GkbVerb::Init(
     return false;
   }
 
+  for (auto *entry : entries_) {
+    if (entry->isDongjie()) {
+      dongjie_.insert(entry->GetWord());
+    }
+
+    if (entry->isDongqu()) {
+      dongqu_.insert(entry->GetWord());
+    }
+  }
+
   std::stringstream ss;
+  ss << dir << "/gkb_verb_dongjie";
+  gkbVerbDongjie_ = new GkbVerbDongjie();
+  bool ret = gkbVerbDongjie_->Init(dir, ss.str());
+  if (!ret) {
+    FATAL("fail_init_gkb_verb_dongjie");
+    return false;
+  }
+
+  ss.str("");
   ss << dir << "/gkb_verb_dongqu";
   gkbVerbDongqu_ = new GkbVerbDongqu();
-  bool ret = gkbVerbDongqu_->Init(dir, ss.str());
+  ret = gkbVerbDongqu_->Init(dir, ss.str());
   if (!ret) {
     FATAL("fail_init_gkb_verb_dongqu");
     return false;
@@ -20,10 +39,25 @@ bool GkbVerb::Init(
   return true;
 }
 
-bool GkbVerb::IsPhrase(
+bool GkbVerb::IsDongjieOrDongquPhrase(
     const std::wstring &word0,
     const std::wstring &word1) const {
-  return gkbVerbDongqu_->IsPhrase(word0, word1);
+  return gkbVerbDongjie_->IsPhrase(word0, word1) ||
+      gkbVerbDongqu_->IsPhrase(word0, word1);
+}
+
+bool GkbVerb::isZhu(const std::wstring &word) const {
+  auto entries = GetEntries(word);
+  if (nullptr == entries || entries->empty()) {
+    return false;
+  }
+
+  for (auto *entry : *entries) {
+    if (entry->isZhu()) {
+      return true;
+    }
+  }
+  return false;
 }
 
 EntryVerb::TiWeiZhun::Val GkbVerb::TiWeiZhun(

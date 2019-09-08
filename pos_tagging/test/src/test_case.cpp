@@ -29,15 +29,13 @@ TEST(test_case, all) {
     ASSERT_TRUE(Segmentor::Init((*conf)["segmentor"], (*conf)["ner"]));
     ASSERT_TRUE(PosTagging::Init((*conf)["pos"]));
 
-    std::wstring wStrQuery = L"谈到第一局的失利";
+    std::wstring wStrQuery = L"中国队主教练郎平表示";
+    auto nluContext = std::make_shared<NluContext>(wStrQuery);
+
     Segment::Set segments(wStrQuery);
     NameEntity::Set nameEntities(wStrQuery);
 
-    Segmentor::Parse(wStrQuery, segments, nameEntities);
-
-    auto nluContext = std::make_shared<NluContext>(wStrQuery);
-    nluContext->SetSegments(segments);
-
+    Segmentor::Parse(nluContext);
     PosTagging::Tagging(nluContext);
 
     xforce::JsonType jsonToDump;

@@ -10,6 +10,8 @@
 #include "basic/data/manager.h"
 #include "basic/data/word_dict.h"
 #include "basic/data/dict_item.h"
+#include "basic/data/gkb/gkb.h"
+#include "basic/data/gkb/entry/entry_prep.h"
 
 #include "milkie/milkie.h"
 #include "milkie/manager/manager.h"
@@ -18,6 +20,8 @@
 #include "milkie/core/model/context/storage_val.h"
 #include "milkie/core/model/context/storage_item.h"
 #include "milkie/core/model/feature_extractor/feature_extractor.h"
+
+#include "segmentor/segmentor.h"
 
 #include "ner/person_name.h"
 #include "ner/data/manager.h"

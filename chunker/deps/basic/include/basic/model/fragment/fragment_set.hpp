@@ -21,6 +21,7 @@ class FragmentSet {
   virtual ~FragmentSet();
 
   void Reset(const std::wstring &text);
+  void Clear();
 
   virtual bool Add(std::shared_ptr<FragmentType> fragment);
   bool Add(const FragmentType &fragment);
@@ -64,6 +65,11 @@ void FragmentSet<FragmentType>::Reset(const std::wstring &text) {
   XFC_DELETE(text_)
   fragments_.clear();
   text_ = new std::wstring(text);  
+}
+
+template <typename FragmentType>
+void FragmentSet<FragmentType>::Clear() {
+  fragments_.clear();
 }
 
 template <typename FragmentType>
@@ -154,7 +160,6 @@ size_t FragmentSet<FragmentType>::Size() const {
 
 template <typename FragmentType>
 void FragmentSet<FragmentType>::Dump(JsonType &jsonType) {
-  jsonType["text"] = *StrHelper::Wstr2Str(*text_);
   size_t i=0;
   for (auto &fragment : fragments_) {
     fragment->Dump(jsonType[fragment->GetCategory().c_str()][i]);

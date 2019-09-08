@@ -2,10 +2,10 @@
 
 #include "public.h"
 #include "analysis_component.h"
-#include "nlu_context_split.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
+class SplitRuleMgr;
 class AnalysisClauseBranch;
 
 class AnalysisClause : public AnalysisComponent {
@@ -19,20 +19,24 @@ class AnalysisClause : public AnalysisComponent {
 
   bool Init();
   bool Process();
+  inline std::shared_ptr<basic::NluContext>& GetClause();
   inline const Branches& GetFinished() const { return finished_; }
   inline const Branches& GetResults() const { return results_; }
   inline bool IsAnalysised() const;
   void Dump(JsonType &jsonType);
 
  private:
-  NluContextSplit *nluContextSplit_;
+  std::shared_ptr<basic::NluContext> clause_;
 
-  std::wstring clause_;
   std::shared_ptr<AnalysisClauseBranch> master_;
   std::queue<std::shared_ptr<AnalysisClauseBranch>> branches_;
   Branches finished_;
   Branches results_;
 };
+
+std::shared_ptr<basic::NluContext>& AnalysisClause::GetClause() {
+  return clause_;
+}
 
 bool AnalysisClause::IsAnalysised() const {
   return results_.size() == 1;

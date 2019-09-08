@@ -8,6 +8,8 @@ int EntryVerb::Parse(const std::vector<std::wstring> &items) {
     return ret;
   }
 
+  zhu_ = !items[kColZhu].empty();
+
   if (L"体" == items[kColTiWeiZhun]) {
     tiWeiZhun_ = TiWeiZhun::kTi;
   } else if (L"谓" == items[kColTiWeiZhun]) {
@@ -17,6 +19,9 @@ int EntryVerb::Parse(const std::vector<std::wstring> &items) {
   } else {
     tiWeiZhun_ = TiWeiZhun::kNone;
   }
+
+  dongjie_ = !items[kColDongjie].empty();
+  dongqu_ = !items[kColDongqu].empty();
   return 0;
 }
 

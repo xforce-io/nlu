@@ -5,6 +5,8 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
+class Phrase;
+
 class NluContext {
  public:
   explicit NluContext(const std::wstring &query);
@@ -12,14 +14,21 @@ class NluContext {
 
   const std::wstring& GetQuery() const { return query_; }
 
+  inline void SetIsValid(bool isValid);
   inline void SetNameEntities(const NameEntity::Set &nameEntities);
   inline void SetSegments(const Segment::Set &segments);
   inline void SetChunkSeps(const ChunkSep::Set &chunkSeps);
   inline void SetChunks(const Chunk::Set &chunks);
+  void AddPhrase(
+          size_t from,
+          size_t to,
+          std::shared_ptr<NluContext> &nluContext);
 
   std::shared_ptr<NluContext> Build(size_t from, size_t to);
   std::shared_ptr<NluContext> Clone() const;
+  void Reset(basic::Stage::Val stage);
 
+  inline bool GetIsValid() const;
   inline const typename NameEntity::Set& GetNameEntities() const;
   inline typename NameEntity::Set& GetNameEntities();
   inline const typename Segment::Set& GetSegments() const;
@@ -36,8 +45,15 @@ class NluContext {
 
  private:
   std::wstring query_;
+  bool isValid_;
   ManagerFragmentSet *managerFragmentSet_;
+
+  std::vector<Phrase> phrases_;
 };
+
+void NluContext::SetIsValid(bool isValid) {
+  isValid_ = isValid;
+}
 
 void NluContext::SetNameEntities(const NameEntity::Set &nameEntities) {
   managerFragmentSet_->SetNameEntities(nameEntities);
@@ -53,6 +69,10 @@ void NluContext::SetChunkSeps(const ChunkSep::Set &chunkSeps) {
 
 void NluContext::SetChunks(const typename Chunk::Set &chunks) {
   managerFragmentSet_->SetChunks(chunks);
+}
+
+bool NluContext::GetIsValid() const {
+  return isValid_;
 }
 
 const typename NameEntity::Set& NluContext::GetNameEntities() const {

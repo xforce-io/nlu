@@ -6,73 +6,94 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
-template <typename TagVal>
+template <typename Tag>
 class FragmentMultitag : public Fragment {
  public:
   typedef Fragment Super;
-  typedef FragmentMultitag<TagVal> Self;
+  typedef FragmentMultitag<Tag> Self;
 
  public:
   inline FragmentMultitag();
-  inline FragmentMultitag(TagVal tagVal, size_t offset, size_t len);
-  inline FragmentMultitag(size_t offset, size_t len);
-  inline FragmentMultitag(size_t offset);
-  inline FragmentMultitag(const FragmentMultitag<TagVal> &other);
+  inline FragmentMultitag(
+          typename Tag::Val tagVal,
+          size_t offset,
+          size_t len,
+          uint32_t strategy=0);
+
+  inline FragmentMultitag(
+          size_t offset,
+          size_t len,
+          uint32_t strategy=0);
+
+  inline FragmentMultitag(
+          size_t offset,
+          uint32_t strategy=0);
+
+  inline FragmentMultitag(const FragmentMultitag<Tag> &other);
   virtual ~FragmentMultitag() {}
 
-  inline void SetTag(TagVal tagVal);
-  inline void AddTag(TagVal tagVal);
-  inline void RemoveTag(TagVal tagVal);
+  inline void SetTag(typename Tag::Val tagVal);
+  virtual void AddTag(typename Tag::Val tagVal);
+  inline void RemoveTag(typename Tag::Val tagVal);
   inline bool Merge(const Self &other);
   inline Self& operator=(const Self &other);
 
   virtual const std::string& GetCategory() const = 0;
   size_t SizeTags() const { return tags_.size(); }
-  const std::vector<TagVal>& GetTags() const { return tags_; }
-  std::vector<TagVal>& GetTags() { return tags_; }
-  inline TagVal GetTag() const;
-  inline bool ContainTag(TagVal tagVal);
+  const std::vector<typename Tag::Val>& GetTags() const { return tags_; }
+  std::vector<typename Tag::Val>& GetTags() { return tags_; }
+  inline typename Tag::Val GetTag() const;
+  inline bool ContainTag(typename Tag::Val tagVal);
 
   inline std::wstring GetQuery(const std::wstring &sentence) const;
 
   virtual void Dump(JsonType &jsonType);
 
  protected:
-  std::vector<TagVal> tags_;
+  std::vector<typename Tag::Val> tags_;
 };
 
-template <typename TagVal>
-FragmentMultitag<TagVal>::FragmentMultitag() :
+template <typename Tag>
+FragmentMultitag<Tag>::FragmentMultitag() :
     Fragment(0, 0) {}
 
-template <typename TagVal>
-FragmentMultitag<TagVal>::FragmentMultitag(TagVal tag, size_t offset, size_t len) :
-    Fragment(offset, len) {
+template <typename Tag>
+FragmentMultitag<Tag>::FragmentMultitag(
+        typename Tag::Val tag,
+        size_t offset,
+        size_t len,
+        uint32_t strategy) :
+    Fragment(offset, len, strategy) {
   SetTag(tag);
 }
 
-template <typename TagVal>
-FragmentMultitag<TagVal>::FragmentMultitag(size_t offset, size_t len) :
-    Fragment(offset, len) {}
+template <typename Tag>
+FragmentMultitag<Tag>::FragmentMultitag(
+        size_t offset,
+        size_t len,
+        uint32_t strategy) :
+    Fragment(offset, len, strategy) {}
 
-template <typename TagVal>
-FragmentMultitag<TagVal>::FragmentMultitag(size_t offset) :
-    Fragment(offset, 0) {}
+template <typename Tag>
+FragmentMultitag<Tag>::FragmentMultitag(
+        size_t offset,
+        uint32_t strategy) :
+    Fragment(offset, 0, strategy) {}
 
-template <typename TagVal>
-FragmentMultitag<TagVal>::FragmentMultitag(const FragmentMultitag &other) :
+template <typename Tag>
+FragmentMultitag<Tag>::FragmentMultitag(const FragmentMultitag &other) :
     Super(other) {
   tags_ = other.tags_;
 }
 
-template <typename TagVal>
-void FragmentMultitag<TagVal>::SetTag(TagVal tag) {
+template <typename Tag>
+void FragmentMultitag<Tag>::SetTag(typename Tag::Val tag) {
   tags_.clear();
   tags_.push_back(tag);
 }
 
-template <typename TagVal>
-void FragmentMultitag<TagVal>::AddTag(TagVal tag) {
+template <typename Tag>
+void FragmentMultitag<Tag>::AddTag(typename Tag::Val tag) {
   for (auto &singleTag : tags_) {
     if (singleTag == tag) {
       return;
@@ -81,8 +102,8 @@ void FragmentMultitag<TagVal>::AddTag(TagVal tag) {
   tags_.push_back(tag);
 }
 
-template <typename TagVal>
-void FragmentMultitag<TagVal>::RemoveTag(TagVal tag) {
+template <typename Tag>
+void FragmentMultitag<Tag>::RemoveTag(typename Tag::Val tag) {
   for (auto iter = tags_.begin(); iter != tags_.end(); ++iter) {
     if (*iter == tag) {
       tags_.erase(iter);
@@ -91,8 +112,8 @@ void FragmentMultitag<TagVal>::RemoveTag(TagVal tag) {
   }
 }
 
-template <typename TagVal>
-bool FragmentMultitag<TagVal>::Merge(const Self &other) {
+template <typename Tag>
+bool FragmentMultitag<Tag>::Merge(const Self &other) {
   bool touched = false;
   for (auto &tag : other.GetTags()) {
     if (!ContainTag(tag)) {
@@ -103,8 +124,8 @@ bool FragmentMultitag<TagVal>::Merge(const Self &other) {
   return touched;
 }
 
-template <typename TagVal>
-FragmentMultitag<TagVal>& FragmentMultitag<TagVal>::operator=(const FragmentMultitag &other) {
+template <typename Tag>
+FragmentMultitag<Tag>& FragmentMultitag<Tag>::operator=(const FragmentMultitag<Tag> &other) {
   if (this == &other) {
     return *this;
   }
@@ -114,13 +135,13 @@ FragmentMultitag<TagVal>& FragmentMultitag<TagVal>::operator=(const FragmentMult
   return *this;
 }
 
-template <typename TagVal>
-TagVal FragmentMultitag<TagVal>::GetTag() const {
-  return tags_.size() == 1 ? tags_[0] : TagVal::kUndef;
+template <typename Tag>
+typename Tag::Val FragmentMultitag<Tag>::GetTag() const {
+  return tags_.size() == 1 ? tags_[0] : Tag::kUndef;
 }
 
-template <typename TagVal>
-bool FragmentMultitag<TagVal>::ContainTag(TagVal tag) {
+template <typename Tag>
+bool FragmentMultitag<Tag>::ContainTag(typename Tag::Val tag) {
   for (auto &singleTag : tags_) {
     if (singleTag == tag) {
       return true;
@@ -129,13 +150,13 @@ bool FragmentMultitag<TagVal>::ContainTag(TagVal tag) {
   return false;
 }
 
-template <typename TagVal>
-std::wstring FragmentMultitag<TagVal>::GetQuery(const std::wstring &sentence) const {
+template <typename Tag>
+std::wstring FragmentMultitag<Tag>::GetQuery(const std::wstring &sentence) const {
   return sentence.substr(offset_, len_);
 }
 
-template <typename TagVal>
-void FragmentMultitag<TagVal>::Dump(JsonType &jsonType) {
+template <typename Tag>
+void FragmentMultitag<Tag>::Dump(JsonType &jsonType) {
   Super::Dump(jsonType);
 }
 

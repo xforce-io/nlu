@@ -4,7 +4,9 @@
 
 #include "../../../src/charles.h"
 #include "../../../src/model/base_modules.h"
+#include "../../../src/model/analysis/split/split_stage.h"
 #include "../../../src/model/analysis/analysis_clause.h"
+#include "../../../src/model/analysis/analysis_clause_branch.h"
 
 LOGGER_IMPL(xforce::xforce_logger, L"charles")
 
@@ -23,7 +25,7 @@ TEST(testAll, all) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/charles.conf");
 
   ASSERT_TRUE(Charles::Init(*conf));
-  AnalysisClause analysisClause(L"对方对我们的拦防也是做得很好");
+  AnalysisClause analysisClause(L"我们一板打不死对方");
   ASSERT_TRUE(analysisClause.Init());
   analysisClause.Process();
 
@@ -32,7 +34,7 @@ TEST(testAll, all) {
   std::string repr;
   for (auto result : analysisClause.GetFinished()) {
     std::cout << "no[" << result->GetNo() << "] ";
-    std::cout << "born[" << result->GetBornStage() << "] ";
+    std::cout << "born[" << result->GetSplitStage().GetBornStage() << "] ";
     result->GetNluContext()->Dump(repr);
     std::cout << "result[" << repr << "]" << std::endl;
   }
