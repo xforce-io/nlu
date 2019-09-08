@@ -12,7 +12,9 @@ AnalysisClauseBranch::AnalysisClauseBranch(
     nluContext_(nluContext.Clone()),
     splitStage_(splitStage.Clone()),
     processed_(false),
-    end_(false) {
+    end_(false),
+    childrenIdx_(0) {
+  std::cout << "start of [" << no_ << "]" << std::endl;
   splitStage_->SetBornStage(splitStage_->GetLastStage());
 }
 
@@ -22,19 +24,17 @@ AnalysisClauseBranch::~AnalysisClauseBranch() {
 
 bool AnalysisClauseBranch::Process(
         std::queue<std::shared_ptr<AnalysisClauseBranch>> &branches) {
-  if (!AllChildrenEnd_()) {
-    return false;
-  }
-
   if (!processed_) {
     splitStage_->Process(nluContext_);
     processed_ = true;
 
     if (IsFinished_(*nluContext_)) {
       end_ = true;
+      std::cout << "end of [" << no_ << "|1]" << std::endl;
       return true;
     } else if (!nluContext_->GetIsValid()) {
       end_ = true;
+      std::cout << "end of [" << no_ << "|2]" << std::endl;
       return false;
     }
   }
@@ -49,23 +49,25 @@ bool AnalysisClauseBranch::Process(
     }
   }
 
-  size_t idx=0;
   for (auto const &nluContext : nluContexts) {
     auto child = std::make_shared<AnalysisClauseBranch>(
-            no_ * 10 + idx,
+            no_ * 100 + childrenIdx_,
             *nluContext,
             *splitStage_);
     branches.push(child);
     children_.push_back(child);
-    ++idx;
+    ++childrenIdx_;
+  }
+  ++childrenIdx_;
+
+  if (!nluContexts.empty()) {
+    end_ = true;
+    return false;
   }
 
-  if (!splitStage_->IsBegin()) {
-    auto copy = std::make_shared<AnalysisClauseBranch>(no_, *nluContext_, *splitStage_);
-    copy->processed_ = processed_;
-    branches.push(copy);
-  } else {
+  if (splitStage_->IsBegin()) {
     end_ = true;
+    std::cout << "end of [" << no_ << "|3]" << std::endl;
   }
   return false;
 }

@@ -46,8 +46,12 @@ bool AnalysisClause::Process() {
       succ = true;
       finished_.push_back(branch);
       results_.push_back(branch);
-    } else if (branch->GetEnd()) {
-      finished_.push_back(branch);
+    } else {
+      if (branch->GetEnd()) {
+        finished_.push_back(branch);
+      } else {
+        branches_.push(branch);
+      }
     }
   }
   return succ;

@@ -25,7 +25,7 @@ TEST(testAll, all) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/charles.conf");
 
   ASSERT_TRUE(Charles::Init(*conf));
-  AnalysisClause analysisClause(L"当我们一板打不死对方的时候");
+  AnalysisClause analysisClause(L"我们一板打不死对方");
   ASSERT_TRUE(analysisClause.Init());
   analysisClause.Process();
 

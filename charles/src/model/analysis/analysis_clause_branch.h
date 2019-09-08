@@ -37,6 +37,7 @@ class AnalysisClauseBranch {
   SplitStage *splitStage_;
   bool processed_;
   bool end_;
+  size_t childrenIdx_;
 };
 
 }}}
