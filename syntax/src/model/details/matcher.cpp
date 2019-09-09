@@ -185,10 +185,6 @@ bool Matcher::SyntaxProcessForChunk_(std::shared_ptr<basic::NluContext> nluConte
 bool Matcher::PostProcess_(std::shared_ptr<basic::NluContext> nluContext) {
   bool touched = false;
   for (auto &chunk : nluContext->GetChunks().GetAll()) {
-    if (RuleContNp_(nluContext, chunk)) {
-      touched = true;
-    }
-
     if (RuleIntransitiveVerb_(nluContext, chunk)) {
       touched = true;
     }
@@ -198,37 +194,6 @@ bool Matcher::PostProcess_(std::shared_ptr<basic::NluContext> nluContext) {
 
 void Matcher::AppendixProcess_(std::shared_ptr<basic::NluContext> nluContext) {
   AddAdvpDescDir_(nluContext);
-}
-
-bool Matcher::RuleContNp_(
-        std::shared_ptr<basic::NluContext> nluContext,
-        const std::shared_ptr<basic::Chunk> &chunk) {
-  if (chunk->GetTag() != basic::SyntaxTag::Type::kContNp) {
-    return false;
-  }
-
-  auto segBefore = nluContext->GetSegments().GetFragmentBefore(chunk->GetOffset());
-  auto segAfter = nluContext->GetSegments().GetFragmentAfter(chunk->GetOffset() + chunk->GetLen());
-  bool beforeCond = (nullptr == segBefore ||
-      (basic::PosTag::Type::kV != segBefore->GetTag() &&
-          basic::PosTag::Type::kP != segBefore->GetTag()));
-
-  bool afterCond = (nullptr == segAfter ||
-      (!basic::PosTag::IsPredicate(segAfter->GetTag()) &&
-      basic::PosTag::Type::kP != segAfter->GetTag()));
-
-  if (beforeCond || afterCond) {
-    basic::Chunk newChunk(
-            *nluContext,
-            basic::SyntaxTag::Type::kNp,
-            chunk->GetOffset(),
-            chunk->GetLen(),
-            430);
-    if (nluContext->GetChunks().Add(newChunk)) {
-      return true;
-    }
-  }
-  return false;
 }
 
 bool Matcher::RuleIntransitiveVerb_(

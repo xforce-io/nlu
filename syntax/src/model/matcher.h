@@ -25,10 +25,6 @@ class Matcher {
   void AppendixProcess_(std::shared_ptr<basic::NluContext> nluContext);
 
  private:
-  bool RuleContNp_(
-          std::shared_ptr<basic::NluContext> nluContext,
-          const std::shared_ptr<basic::Chunk> &chunk);
-
   bool RuleIntransitiveVerb_(
           std::shared_ptr<basic::NluContext> nluContext,
           const std::shared_ptr<basic::Chunk> &chunk);

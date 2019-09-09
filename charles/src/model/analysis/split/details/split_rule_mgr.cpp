@@ -2,6 +2,7 @@
 #include "../rule_pos_tag.h"
 #include "../rule_syntax_rule.h"
 #include "../rule_syntax_prep.h"
+#include "../rule_syntax_cont_np.h"
 #include "../../../../conf/conf.h"
 
 namespace xforce { namespace nlu { namespace charles {
@@ -26,7 +27,9 @@ SplitRuleMgr::~SplitRuleMgr() {
 }
 
 bool SplitRuleMgr::Init(const basic::NluContext &nluContext) {
-  return InitForOffset_(nluContext) && InitSyntaxFromRules_(nluContext);
+  return InitForOffset_(nluContext) &&
+    InitSyntaxContNp_(nluContext) &&
+    InitSyntaxFromRules_(nluContext);
 }
 
 void SplitRuleMgr::Adjust(const basic::NluContext &nluContext) {
@@ -88,6 +91,30 @@ bool SplitRuleMgr::InitForOffset_(const basic::NluContext &nluContext) {
     }
   }
   return true;
+}
+
+bool SplitRuleMgr::InitSyntaxContNp_(const basic::NluContext &nluContext) {
+  std::shared_ptr<basic::Chunk> tmpChunk = nullptr;
+  for (auto &chunk : nluContext.GetChunks().GetAll()) {
+    if (chunk->GetTag() == basic::SyntaxTag::Type::kContNp) {
+      if (nullptr!=tmpChunk &&
+          tmpChunk->GetOffset() == chunk->GetOffset()) {
+        tmpChunk = chunk;
+      } else {
+        allRules_[basic::Stage::kSyntax]->push_back(
+                new RuleSyntaxContNp(
+                        chunk->GetOffset(),
+                        chunk->GetLen()));
+      }
+    }
+  }
+
+  if (nullptr != tmpChunk) {
+     allRules_[basic::Stage::kSyntax]->push_back(
+            new RuleSyntaxContNp(
+                    tmpChunk->GetOffset(),
+                    tmpChunk->GetLen()));
+  }
 }
 
 bool SplitRuleMgr::InitSyntaxFromRules_(const basic::NluContext &nluContext) {
