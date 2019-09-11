@@ -69,7 +69,7 @@ bool AnalysisClauseBranch::Process(
     return false;
   }
 
-  if (splitStage_->IsBegin()) {
+  if (splitStage_->IsEnd()) {
     end_ = true;
     std::cout << "end of [" << no_ << "|3]" << std::endl;
   }

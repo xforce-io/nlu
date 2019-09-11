@@ -7,7 +7,7 @@ SplitStage::SplitStage(
         SplitRuleMgr &splitRuleMgr) :
   splitRuleMgr_(&splitRuleMgr),
   bornStage_(basic::Stage::kNone),
-  curStage_(basic::Stage::kSyntax),
+  curStage_(basic::Stage::kSegment),
   ruleIdx_(0),
   lastStage_(basic::Stage::kNone),
   lastRuleIdx_(0) {}
@@ -47,7 +47,6 @@ void SplitStage::Process(std::shared_ptr<basic::NluContext> &nluContext) {
   }
 
   splitRuleMgr_->Adjust(*nluContext);
-  ruleIdx_=0;
   while (!IsEnd()) {
     size_t curStageSize = splitRuleMgr_->GetRules()[curStage_]->size();
     if (ruleIdx_ < curStageSize) {
