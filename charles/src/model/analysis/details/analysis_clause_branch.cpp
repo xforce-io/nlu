@@ -44,7 +44,7 @@ bool AnalysisClauseBranch::Process(
   }
 
   std::vector<std::shared_ptr<basic::NluContext>> nluContexts;
-  while (!splitStage_->IsBegin()) {
+  while (!splitStage_->IsEnd()) {
     nluContexts.clear();
 
     bool ret = splitStage_->Split(nluContext_, nluContexts);
