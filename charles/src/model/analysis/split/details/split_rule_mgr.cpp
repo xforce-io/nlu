@@ -115,6 +115,7 @@ bool SplitRuleMgr::InitSyntaxContNp_(const basic::NluContext &nluContext) {
                     tmpChunk->GetOffset(),
                     tmpChunk->GetLen()));
   }
+  return true;
 }
 
 bool SplitRuleMgr::InitSyntaxFromRules_(const basic::NluContext &nluContext) {
