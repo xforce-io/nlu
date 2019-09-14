@@ -131,6 +131,7 @@ bool PatternExpr::PartlyMatch(Context &context, bool singleton) const {
   size_t curPos = 0;
   while (curPos < context.GetSentence().GetSentence().length()) {
     context.Reset();
+    context.SetStartPos(curPos);
     context.SetCurPos(curPos);
     if (MatchPattern_(context, singleton)) {
       curPos = context.GetCurPos();

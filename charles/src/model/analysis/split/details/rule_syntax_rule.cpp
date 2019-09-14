@@ -61,6 +61,7 @@ bool RuleSyntaxRule::Split(
       return false;
     }
 
+    bool curTouched = false;
     auto storageItems = storageKv.second->Get();
     for (auto &storageItem : storageItems) {
       basic::Chunk chunk(
@@ -70,23 +71,20 @@ bool RuleSyntaxRule::Split(
               storageItem.GetContent().length(),
               930);
       if (branches[index]->GetChunks().Add(chunk)) {
-        if (basic::SyntaxTag::Type::kStc == syntaxTag) {
-          return true;
-        }
-        touched = true;
+        curTouched = true;
       }
+    }
+
+    if (curTouched) {
+      touched = true;
+    } else {
+      branches[index] = nullptr;
     }
   }
 
-  if (!touched) {
-    return false;
-  }
-
-  touched = false;
   for (size_t i=0; i<kMaxNumBranches; ++i) {
     if (nullptr != branches[i]) {
       nluContexts.push_back(branches[i]);
-      touched = true;
     }
   }
   return touched;
