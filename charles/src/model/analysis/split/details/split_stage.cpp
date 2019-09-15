@@ -1,11 +1,13 @@
 #include "../split_stage.h"
 #include "../split_rule_mgr.h"
+#include "../forbid_mgr.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
 SplitStage::SplitStage(
         SplitRuleMgr &splitRuleMgr) :
   splitRuleMgr_(&splitRuleMgr),
+  forbidMgr_(new ForbidMgr()),
   bornStage_(basic::Stage::kNone),
   curStage_(basic::Stage::kSegment),
   ruleIdx_(0),
@@ -13,6 +15,7 @@ SplitStage::SplitStage(
   lastRuleIdx_(0) {}
 
 SplitStage::~SplitStage() {
+  XFC_DELETE(forbidMgr_)
   XFC_DELETE(splitRuleMgr_)
 }
 
@@ -66,8 +69,18 @@ bool SplitStage::Split(
     return false;
   }
 
-  auto rules = *(splitRuleMgr_->GetRules()[curStage_]);
-  bool ret = rules[ruleIdx_]->Split(*this, nluContext, nluContexts);
+  auto &rule = *((*(splitRuleMgr_->GetRules()[curStage_]))[ruleIdx_]);
+  bool ret;
+  if (!forbidMgr_->PreCheckRule(rule)) { //pre check
+    ret = false;
+  } else {
+    ret = rule.Split(*this, nluContext, nluContexts);
+    if (!forbidMgr_->PostCheckRule(rule)) { // post check
+      ret = false;
+    } else {
+      forbidMgr_->AddRule(rule);
+    }
+  }
 
   lastStage_ = curStage_;
   lastRuleIdx_ = ruleIdx_;
@@ -123,6 +136,7 @@ bool SplitStage::NextStage() {
 SplitStage* SplitStage::Clone() const {
   auto *newStage = new SplitStage(*splitRuleMgr_);
   newStage->splitRuleMgr_ = splitRuleMgr_->Clone();
+  newStage->forbidMgr_ = forbidMgr_->Clone();
   newStage->bornStage_ = bornStage_;
   newStage->curStage_ = curStage_;
   newStage->ruleIdx_ = ruleIdx_;

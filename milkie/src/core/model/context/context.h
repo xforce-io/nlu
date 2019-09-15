@@ -22,6 +22,7 @@ class Context {
   inline void Pass(ssize_t n);
   inline void SetStartPos(ssize_t startPos);
   inline void SetCurPos(ssize_t curPos);
+  ssize_t GetStartPos() const { return startPos_; }
   ssize_t GetCurPos() const { return curPos_; }
   inline std::shared_ptr<StorageVal> GetCurPattern() const;
   inline void StartMatch();

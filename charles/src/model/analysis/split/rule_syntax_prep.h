@@ -13,10 +13,16 @@ class RuleSyntaxPrep : public Rule {
           size_t offset,
           size_t len);
 
-  virtual bool Split(
+  size_t GetCategory() const { return Rule::kCategoryRuleSyntaxPrep; }
+
+  bool Split(
           const SplitStage &splitStage,
           const std::shared_ptr<basic::NluContext> &nluContext,
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
+
+  bool GenForbid(ForbidItem &forbidItem) const;
+  bool PreCheckForbid(const ForbidItem &forbidItem) const;
+  bool PostCheckForbid(const ForbidItem &forbidItem) const { return false; }
 
   virtual Rule* Clone();
 

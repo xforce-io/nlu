@@ -1,4 +1,5 @@
 #include "../rule_syntax_cont_np.h"
+#include "../forbid_item.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
@@ -40,6 +41,19 @@ bool RuleSyntaxContNp::Split(
     touched = true;
   }
   return touched;
+}
+
+bool RuleSyntaxContNp::GenForbid(ForbidItem &forbidItem) const {
+  forbidItem.SetCategoryRule(Rule::kCategoryRuleSyntaxContNp);
+  forbidItem.SetOffset(offset_);
+  forbidItem.SetLen(len_);
+  return true;
+}
+
+bool RuleSyntaxContNp::PreCheckForbid(const ForbidItem &forbidItem) const {
+  return forbidItem.GetCategoryRule() == Rule::kCategoryRuleSyntaxContNp &&
+      forbidItem.GetOffset() == offset_ &&
+      forbidItem.GetLen() == len_;
 }
 
 Rule* RuleSyntaxContNp::Clone() {

@@ -5,6 +5,7 @@
 namespace xforce { namespace nlu { namespace charles {
 
 class SplitRuleMgr;
+class ForbidMgr;
 
 class SplitStage {
  public:
@@ -30,6 +31,8 @@ class SplitStage {
 
  private:
   SplitRuleMgr *splitRuleMgr_;
+  ForbidMgr *forbidMgr_;
+
   basic::Stage::Val bornStage_;
   basic::Stage::Val curStage_;
   size_t ruleIdx_;

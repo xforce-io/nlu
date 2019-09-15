@@ -1,6 +1,7 @@
 #include "../rule_syntax_prep.h"
 #include "../split_stage.h"
 #include "../../analysis_clause.h"
+#include "../forbid_item.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
@@ -71,6 +72,19 @@ bool RuleSyntaxPrep::Split(
     }
   }
   return touched;
+}
+
+bool RuleSyntaxPrep::GenForbid(ForbidItem &forbidItem) const {
+  forbidItem.SetCategoryRule(Rule::kCategoryRuleSyntaxPrep);
+  forbidItem.SetOffset(forbidItem.GetOffset());
+  forbidItem.SetLen(forbidItem.GetLen());
+  return true;
+}
+
+bool RuleSyntaxPrep::PreCheckForbid(const ForbidItem &forbidItem) const {
+  return forbidItem.GetCategoryRule() == Rule::kCategoryRuleSyntaxPrep &&
+      forbidItem.GetOffset() == offsetPrep_ &&
+      forbidItem.GetLen() == lenPrep_;
 }
 
 Rule* RuleSyntaxPrep::Clone() {
