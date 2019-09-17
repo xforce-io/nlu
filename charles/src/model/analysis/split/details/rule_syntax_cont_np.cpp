@@ -14,6 +14,7 @@ bool RuleSyntaxContNp::Split(
   bool touched = false;
   for (auto &segment : nluContext->GetSegments().GetAll()) {
     if (segment->GetEnd() <= offset_ ||
+        segment->GetEnd() == offset_+len_ ||
         segment->GetOffset() >= offset_+len_) {
       continue;
     }

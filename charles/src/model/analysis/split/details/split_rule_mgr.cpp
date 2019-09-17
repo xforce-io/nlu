@@ -98,14 +98,13 @@ bool SplitRuleMgr::InitSyntaxContNp_(const basic::NluContext &nluContext) {
   for (auto &chunk : nluContext.GetChunks().GetAll()) {
     if (chunk->GetTag() == basic::SyntaxTag::Type::kContNp) {
       if (nullptr!=tmpChunk &&
-          tmpChunk->GetOffset() == chunk->GetOffset()) {
-        tmpChunk = chunk;
-      } else {
+          tmpChunk->GetOffset() != chunk->GetOffset()) {
         allRules_[basic::Stage::kSyntax]->push_back(
                 new RuleSyntaxContNp(
-                        chunk->GetOffset(),
-                        chunk->GetLen()));
+                        tmpChunk->GetOffset(),
+                        tmpChunk->GetLen()));
       }
+      tmpChunk = chunk;
     }
   }
 
