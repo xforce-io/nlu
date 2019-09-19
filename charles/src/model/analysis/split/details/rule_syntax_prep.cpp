@@ -69,6 +69,8 @@ bool RuleSyntaxPrep::Split(
               911)) {
         touched = true;
       }
+    } else {
+      break;
     }
   }
   return touched;

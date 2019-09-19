@@ -76,7 +76,11 @@ bool RuleSyntaxContNp::AddNewChunk_(
             strategy);
 
     auto newBranch = Rule::Clone(splitStage, nluContext);
-    return newBranch->GetChunks().Add(newChunk);
+    if (newBranch->GetChunks().Add(newChunk)) {
+      nluContexts.push_back(newBranch);
+      return true;
+    }
+    return false;
   } else {
     basic::Chunk leftChunk(
             *nluContext,
