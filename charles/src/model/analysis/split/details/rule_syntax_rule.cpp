@@ -4,9 +4,9 @@
 
 namespace xforce { namespace nlu { namespace charles {
 
-const std::wstring RuleSyntaxRule::kBranch0SyntaxStoragePrefix = L"/branch0-syntactic";
-const std::wstring RuleSyntaxRule::kBranch1SyntaxStoragePrefix = L"/branch1-syntactic";
-const std::wstring RuleSyntaxRule::kBranch2SyntaxStoragePrefix = L"/branch2-syntactic";
+const std::wstring RuleSyntaxRule::kBranch0SyntaxStoragePrefix = L"/branch0_syntactic";
+const std::wstring RuleSyntaxRule::kBranch1SyntaxStoragePrefix = L"/branch1_syntactic";
+const std::wstring RuleSyntaxRule::kBranch2SyntaxStoragePrefix = L"/branch2_syntactic";
 
 RuleSyntaxRule::RuleSyntaxRule(
         std::shared_ptr<milkie::FeatureExtractor> &featureExtractor) :

@@ -22,7 +22,7 @@ class RuleSyntaxPrep : public Rule {
 
   bool GenForbid(ForbidItem &forbidItem) const;
   bool PreCheckForbid(const ForbidItem &forbidItem) const;
-  bool PostCheckForbid(const ForbidItem &forbidItem) const { return false; }
+  bool PostCheckForbid(const ForbidItem&) const { return false; }
 
   virtual Rule* Clone();
 
