@@ -189,6 +189,10 @@ bool Matcher::PostProcess_(std::shared_ptr<basic::NluContext> nluContext) {
       touched = true;
     }
   }
+
+  if (RuleContNp_(nluContext)) {
+    touched = true;
+  }
   return touched;
 }
 
@@ -225,14 +229,58 @@ bool Matcher::RuleIntransitiveVerb_(
     }
   }
 
-  basic::Chunk newChunk(
+  basic::Chunk newNp(
           *nluContext,
           basic::SyntaxTag::Type::kNp,
           npBefore->GetOffset(),
           chunk->GetEnd() - npBefore->GetOffset(),
           440);
-  if (nluContext->GetChunks().Add(newChunk)) {
+
+  basic::Chunk newContNp(
+          *nluContext,
+          basic::SyntaxTag::Type::kContNp,
+          npBefore->GetOffset(),
+          chunk->GetEnd() - npBefore->GetOffset(),
+          441);
+  if (nluContext->GetChunks().Add(newNp) ||
+      nluContext->GetChunks().Add(newContNp)) {
     return true;
+  }
+  return false;
+}
+
+bool Matcher::RuleContNp_(std::shared_ptr<basic::NluContext> nluContext) {
+  std::shared_ptr<basic::Chunk> tmpChunk = nullptr;
+  size_t maxLen = 0;
+  for (auto &chunk : nluContext->GetChunks().GetAll()) {
+    if (chunk->GetOffset() == 0) {
+      if (chunk->GetTag() == basic::SyntaxTag::Type::kContNp &&
+          chunk->GetLen() > maxLen) {
+        tmpChunk = chunk;
+        maxLen = chunk->GetLen();
+      }
+    } else {
+      break;
+    }
+  }
+
+  if (nullptr==tmpChunk) {
+    return false;
+  }
+
+  auto segment = nluContext->GetSegments().GetFragmentAfter(tmpChunk->GetEnd());
+  if (nullptr==segment ||
+      (segment->GetTag() != basic::PosTag::Type::kUndef &&
+      segment->GetTag() != basic::PosTag::Type::kV) ) {
+    basic::Chunk newNp(
+            *nluContext,
+            basic::SyntaxTag::Type::kNp,
+            0,
+            tmpChunk->GetEnd(),
+            442);
+    if (nluContext->GetChunks().Add(newNp)) {
+      return true;
+    }
   }
   return false;
 }
