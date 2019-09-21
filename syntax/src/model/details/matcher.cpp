@@ -300,7 +300,8 @@ void Matcher::AddAdvpDescDirForChunk_(
   for (auto &segment : nluContext->GetSegments().GetAll()) {
     if (segment->GetOffset() >= advp->GetOffset() &&
         segment->GetOffset() + segment->GetLen() <= advp->GetOffset() + advp->GetLen()) {
-      if (segment->GetTag() == basic::PosTag::Type::kA) {
+      if (segment->GetTag() == basic::PosTag::Type::kA ||
+          segment->GetTag() == basic::PosTag::Type::kB) {
         adjs.push_back(std::make_pair(segment, basic::Chunk::kNone));
       }
     }
