@@ -454,35 +454,35 @@ void Matcher::AnalysisAdj_(
         rightBound = segAfterAfter->GetEnd();
       }
       resTag = basic::SyntaxTag::Type::kNp;
-    }
-
-    bool theRightTag=true;
-    if (segAfter->GetTags().empty()) {
-      theRightTag=false;
     } else {
-      for (auto tag : segAfter->GetTags()) {
-        if (!basic::SyntaxTag::Type::IsSpecial(tag)) {
-          if (tag != basic::SyntaxTag::Type::kNp &&
-              tag != basic::SyntaxTag::Type::kQp) {
-            theRightTag = false;
-            break;
-          } else {
-            resTag = tag;
+      bool theRightTag = true;
+      if (segAfter->GetTags().empty()) {
+        theRightTag = false;
+      } else {
+        for (auto tag : segAfter->GetTags()) {
+          if (!basic::SyntaxTag::Type::IsSpecial(tag)) {
+            if (tag != basic::SyntaxTag::Type::kNp &&
+                tag != basic::SyntaxTag::Type::kQp) {
+              theRightTag = false;
+              break;
+            } else {
+              resTag = tag;
+            }
           }
         }
       }
-    }
 
-    if (theRightTag) {
-      int dingyu = basic::Manager::Get().GetGkb().GetGkbAdj().Dingyu(adj->GetQuery(nluContext->GetQuery()));
-      if (0==dingyu) {
-        descRight=1;
-        rightBound = segAfter->GetEnd();
+      if (theRightTag) {
+        int dingyu = basic::Manager::Get().GetGkb().GetGkbAdj().Dingyu(adj->GetQuery(nluContext->GetQuery()));
+        if (0 == dingyu) {
+          descRight = 1;
+          rightBound = segAfter->GetEnd();
+        } else {
+          descRight = -1;
+        }
       } else {
-        descRight=-1;
+        descRight = -1;
       }
-    } else {
-      descRight=-1;
     }
   }
 }
