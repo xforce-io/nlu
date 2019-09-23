@@ -301,7 +301,8 @@ void Matcher::AddAdvpDescDirForChunk_(
     if (segment->GetOffset() >= advp->GetOffset() &&
         segment->GetOffset() + segment->GetLen() <= advp->GetOffset() + advp->GetLen()) {
       if (segment->GetTag() == basic::PosTag::Type::kA ||
-          segment->GetTag() == basic::PosTag::Type::kB) {
+          segment->GetTag() == basic::PosTag::Type::kB ||
+          segment->GetTag() == basic::PosTag::Type::kZ) {
         adjs.push_back(std::make_pair(segment, basic::Chunk::kNone));
       }
     }
