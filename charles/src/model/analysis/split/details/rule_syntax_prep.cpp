@@ -37,7 +37,7 @@ bool RuleSyntaxPrep::Split(
                 nluContexts,
                 segment->GetEnd() - offsetPrep_,
                 offsetPrep_+lenPrep_,
-                segment->GetBegin(),
+                segment->GetEnd(),
                 basic::SyntaxTag::Type::kUndef,
                 910)) {
           touched = true;
