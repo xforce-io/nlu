@@ -31,13 +31,17 @@ bool RuleSyntaxPrep::Split(
     for (auto *entryPrep : entriesPrep) {
       if (entryPrep->IsAfterWord(segment->GetQuery(nluContext->GetQuery())) ||
           entryPrep->IsAfterPos(segment->GetTag())) {
+        if (offsetPrep_+lenPrep_ == segment->GetBegin()) {
+          continue;
+        }
+
         if (AddNewChunk_(
                 splitStage,
                 nluContext,
                 nluContexts,
                 segment->GetEnd() - offsetPrep_,
                 offsetPrep_+lenPrep_,
-                segment->GetEnd(),
+                segment->GetBegin(),
                 basic::SyntaxTag::Type::kUndef,
                 910)) {
           touched = true;
