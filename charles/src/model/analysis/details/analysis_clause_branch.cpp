@@ -14,7 +14,6 @@ AnalysisClauseBranch::AnalysisClauseBranch(
     processed_(false),
     end_(false),
     childrenIdx_(0) {
-  std::cout << "start of [" << no_ << "]" << std::endl;
   splitStage_->SetBornStage(splitStage_->GetLastStage());
 }
 
@@ -34,11 +33,9 @@ bool AnalysisClauseBranch::Process(
 
     if (IsFinished_(*nluContext_)) {
       end_ = true;
-      std::cout << "end of [" << no_ << "|1]" << std::endl;
       return true;
     } else if (!nluContext_->GetIsValid()) {
       end_ = true;
-      std::cout << "end of [" << no_ << "|2]" << std::endl;
       return false;
     }
   }
@@ -71,7 +68,6 @@ bool AnalysisClauseBranch::Process(
 
   if (splitStage_->IsEnd()) {
     end_ = true;
-    std::cout << "end of [" << no_ << "|3]" << std::endl;
   }
   return false;
 }
