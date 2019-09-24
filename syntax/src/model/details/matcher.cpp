@@ -456,6 +456,8 @@ void Matcher::AnalysisAdj_(
       }
       resTag = basic::SyntaxTag::Type::kNp;
     } else {
+      std::wstring adjStr = adj->GetQuery(nluContext->GetQuery());
+
       bool theRightTag = true;
       if (segAfter->GetTags().empty()) {
         theRightTag = false;
@@ -463,7 +465,9 @@ void Matcher::AnalysisAdj_(
         for (auto tag : segAfter->GetTags()) {
           if (!basic::SyntaxTag::Type::IsSpecial(tag)) {
             if (tag != basic::SyntaxTag::Type::kNp &&
-                tag != basic::SyntaxTag::Type::kQp) {
+                tag != basic::SyntaxTag::Type::kQp &&
+                (tag != basic::SyntaxTag::Type::kV ||
+                    0 != basic::Manager::Get().GetGkb().GetGkbAdj().Zhuangyu(adjStr))) {
               theRightTag = false;
               break;
             } else {
@@ -474,7 +478,7 @@ void Matcher::AnalysisAdj_(
       }
 
       if (theRightTag) {
-        int dingyu = basic::Manager::Get().GetGkb().GetGkbAdj().Dingyu(adj->GetQuery(nluContext->GetQuery()));
+        int dingyu = basic::Manager::Get().GetGkb().GetGkbAdj().Dingyu(adjStr);
         if (0 == dingyu) {
           descRight = 1;
           rightBound = segAfter->GetEnd();

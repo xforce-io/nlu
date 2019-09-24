@@ -9,6 +9,7 @@ int EntryAdj::Parse(const std::vector<std::wstring> &items) {
   }
 
   dingyu_ = !items[kColDingyu].empty();
+  zhuangyu_ = !items[kColZhuangyu].empty();
   return 0;
 }
 
