@@ -466,8 +466,8 @@ void Matcher::AnalysisAdj_(
           if (!basic::SyntaxTag::Type::IsSpecial(tag)) {
             if (tag != basic::SyntaxTag::Type::kNp &&
                 tag != basic::SyntaxTag::Type::kQp &&
-                (tag != basic::SyntaxTag::Type::kV ||
-                    0 != basic::Manager::Get().GetGkb().GetGkbAdj().Zhuangyu(adjStr))) {
+                tag != basic::SyntaxTag::Type::kV &&
+                tag != basic::SyntaxTag::Type::kVp) {
               theRightTag = false;
               break;
             } else {
@@ -478,8 +478,18 @@ void Matcher::AnalysisAdj_(
       }
 
       if (theRightTag) {
-        int dingyu = basic::Manager::Get().GetGkb().GetGkbAdj().Dingyu(adjStr);
-        if (0 == dingyu) {
+        int ret;
+        if (basic::SyntaxTag::Type::kNp == resTag ||
+            basic::SyntaxTag::Type::kQp == resTag) {
+          ret = basic::Manager::Get().GetGkb().GetGkbAdj().Dingyu(adjStr);
+        } else if (basic::SyntaxTag::Type::kV == resTag ||
+            basic::SyntaxTag::Type::kVp == resTag) {
+          ret = basic::Manager::Get().GetGkb().GetGkbAdj().Zhuangyu(adjStr);
+        } else {
+          ret = -1;
+        }
+
+        if (0==ret) {
           descRight = 1;
           rightBound = segAfter->GetEnd();
         } else {
