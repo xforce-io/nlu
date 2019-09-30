@@ -27,6 +27,12 @@ void Chunk::AddTagForCtx(
     if (isZhu) {
       chunk.AddTag(SyntaxTag::Type::kVw);
     }
+
+    if (chunk.tags_.empty()) {
+      chunk.verbArgInfo_ = true;
+    } else {
+      chunk.verbArgInfo_ = false;
+    }
   }
   chunk.AddTag(tag);
 }

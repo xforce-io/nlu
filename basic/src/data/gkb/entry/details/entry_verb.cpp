@@ -2,6 +2,15 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
+EntryVerb::EntryVerb() :
+    zhu_(false),
+    argTi_(false),
+    argWei_(false),
+    argZhun_(false),
+    doubleArgs_(false),
+    dongjie_(false),
+    dongqu_(false) {}
+
 int EntryVerb::Parse(const std::vector<std::wstring> &items) {
   int ret = Entry::Parse(items);
   if (ret!=0) {
@@ -10,15 +19,14 @@ int EntryVerb::Parse(const std::vector<std::wstring> &items) {
 
   zhu_ = !items[kColZhu].empty();
 
-  if (L"体" == items[kColTiWeiZhun]) {
-    tiWeiZhun_ = TiWeiZhun::kTi;
-  } else if (L"谓" == items[kColTiWeiZhun]) {
-    tiWeiZhun_ = TiWeiZhun::kWei;
-  } else if (L"准" == items[kColTiWeiZhun]) {
-    tiWeiZhun_ = TiWeiZhun::kZhun;
-  } else {
-    tiWeiZhun_ = TiWeiZhun::kNone;
+  if (items[kColTiWeiZhun].find(L'体') != std::wstring::npos) {
+    argTi_ = true;
+  } else if (items[kColTiWeiZhun].find(L'谓') != std::wstring::npos) {
+    argWei_ = true;
+  } else if (items[kColTiWeiZhun].find(L'准') != std::wstring::npos) {
+    argZhun_ = true;
   }
+  doubleArgs_ = !items[kColDoubleArgs].empty();
 
   dongjie_ = !items[kColDongjie].empty();
   dongqu_ = !items[kColDongqu].empty();
