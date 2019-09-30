@@ -157,7 +157,9 @@ bool PosTag::IsNominal(PosTag::Type::Val posTag) {
     PosTag::Type::kF == posTag ||
     PosTag::Type::kM == posTag ||
     PosTag::Type::kQ == posTag ||
-    PosTag::Type::kR == posTag;
+    PosTag::Type::kR == posTag ||
+    PosTag::Type::kH == posTag ||
+    PosTag::Type::kK == posTag;
 }
 
 bool PosTag::IsPredicate(PosTag::Type::Val posTag) {

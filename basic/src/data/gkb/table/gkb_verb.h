@@ -24,9 +24,12 @@ class GkbVerb : public Table<EntryVerb> {
       const std::wstring &word0,
       const std::wstring &word1) const;
 
-  bool isZhu(const std::wstring &word) const;
-  EntryVerb::TiWeiZhun::Val TiWeiZhun(
-          const std::wstring &word) const;
+  bool IsZhu(const std::wstring &word) const;
+  bool TiWeiZhun(
+      const std::wstring &word,
+      bool &isArgTi,
+      bool &isArgWei,
+      bool &isArgZhun) const;
 
  private:
   std::unordered_set<std::wstring> dongjie_;

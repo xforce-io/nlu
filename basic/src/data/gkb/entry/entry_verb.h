@@ -18,15 +18,15 @@ class EntryVerb : public Entry {
 
   int Parse(const std::vector<std::wstring> &items);
 
-  bool isZhu() const { return zhu_; }
+  bool IsZhu() const { return zhu_; }
 
-  bool isArgTi() const { return argTi_; }
-  bool isArgWei() const { return argWei_; }
-  bool isArgZhun() const { return argZhun_; }
-  bool isDoubleArgs() const { return doubleArgs_; }
+  bool IsArgTi() const { return argTi_; }
+  bool IsArgWei() const { return argWei_; }
+  bool IsArgZhun() const { return argZhun_; }
+  bool IsDoubleArgs() const { return doubleArgs_; }
 
-  bool isDongjie() const { return dongjie_; }
-  bool isDongqu() const { return dongqu_; }
+  bool IsDongjie() const { return dongjie_; }
+  bool IsDongqu() const { return dongqu_; }
 
  private:
   bool zhu_;

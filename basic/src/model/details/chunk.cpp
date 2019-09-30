@@ -17,13 +17,26 @@ void Chunk::Dump(JsonType &jsonType) {
   }
 }
 
+std::shared_ptr<Segment> Chunk::FindSeg_(
+        const NluContext &nluContext,
+        basic::PosTag::Type::Val posTag) {
+  for (auto &seg : nluContext.GetSegments().GetAll()) {
+    if (seg->GetBegin() >= GetBegin() &&
+        seg->GetEnd() <= GetEnd() &&
+        seg->GetTag() == posTag) {
+      return seg;
+    }
+  }
+  return nullptr;
+}
+
 void Chunk::AddTagForCtx(
       const NluContext &nluContext,
       Chunk &chunk,
       SyntaxTag::Type::Val tag) {
   if (SyntaxTag::Type::kV == tag) {
     std::wstring word = chunk.GetStrFromSentence(nluContext.GetQuery());
-    bool isZhu = Manager::Get().GetGkb().GetGkbVerb().isZhu(word);
+    bool isZhu = Manager::Get().GetGkb().GetGkbVerb().IsZhu(word);
     if (isZhu) {
       chunk.AddTag(SyntaxTag::Type::kVw);
     }
