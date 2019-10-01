@@ -24,6 +24,7 @@ class SplitRuleMgr {
   bool InitForOffset_(const basic::NluContext &nluContext);
   bool InitSyntaxContNp_(const basic::NluContext &nluContext);
   bool InitSyntaxFromRules_(const basic::NluContext &nluContext);
+  bool InitSyntaxVerbArg_(const basic::NluContext &nluContext);
 
  private:
   std::vector<Rules*> allRules_;

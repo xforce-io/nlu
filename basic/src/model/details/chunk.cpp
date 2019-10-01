@@ -42,7 +42,18 @@ void Chunk::AddTagForCtx(
     }
 
     if (chunk.tags_.empty()) {
-      chunk.verbArgInfo_ = true;
+      auto segment = chunk.FindSeg_(nluContext, PosTag::Type::kV);
+      if (nullptr != segment) {
+        auto seg = segment->GetQuery(nluContext.GetQuery());
+        bool ret = Manager::Get().GetGkb().GetGkbVerb().TiWeiZhun(
+                seg,
+                chunk.isArgTi_,
+                chunk.isArgWei_,
+                chunk.isArgZhun_);
+        if (ret) {
+          chunk.verbArgInfo_ = true;
+        }
+      }
     } else {
       chunk.verbArgInfo_ = false;
     }

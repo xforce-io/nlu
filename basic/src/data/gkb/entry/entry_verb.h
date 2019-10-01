@@ -23,6 +23,7 @@ class EntryVerb : public Entry {
   bool IsArgTi() const { return argTi_; }
   bool IsArgWei() const { return argWei_; }
   bool IsArgZhun() const { return argZhun_; }
+  inline bool IsArgNone() const;
   bool IsDoubleArgs() const { return doubleArgs_; }
 
   bool IsDongjie() const { return dongjie_; }
@@ -39,5 +40,9 @@ class EntryVerb : public Entry {
   bool dongjie_;
   bool dongqu_;
 };
+
+bool EntryVerb::IsArgNone() const {
+  return !(argTi_ || argWei_ || argZhun_);
+}
 
 }}}

@@ -23,10 +23,6 @@ AnalysisClauseBranch::~AnalysisClauseBranch() {
 
 bool AnalysisClauseBranch::Process(
         std::queue<std::shared_ptr<AnalysisClauseBranch>> &branches) {
-  if (no_ == 10000000101) {
-    int a = 0;
-  }
-
   if (!processed_) {
     splitStage_->Process(nluContext_);
     processed_ = true;

@@ -13,6 +13,7 @@ class Rule {
   static const size_t kCategoryRuleSyntaxContNp = 2;
   static const size_t kCategoryRuleSyntaxPrep = 3;
   static const size_t kCategoryRuleSyntaxRule = 4;
+  static const size_t kCategoryRuleSyntaxVerbArg = 5;
 
 public:
   virtual size_t GetCategory() const = 0;

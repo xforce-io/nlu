@@ -3,6 +3,7 @@
 #include "../rule_syntax_rule.h"
 #include "../rule_syntax_prep.h"
 #include "../rule_syntax_cont_np.h"
+#include "../rule_syntax_verb_arg.h"
 #include "../../../../conf/conf.h"
 
 namespace xforce { namespace nlu { namespace charles {
@@ -29,7 +30,8 @@ SplitRuleMgr::~SplitRuleMgr() {
 bool SplitRuleMgr::Init(const basic::NluContext &nluContext) {
   return InitForOffset_(nluContext) &&
     InitSyntaxContNp_(nluContext) &&
-    InitSyntaxFromRules_(nluContext);
+    InitSyntaxFromRules_(nluContext) &&
+    InitSyntaxVerbArg_(nluContext);
 }
 
 void SplitRuleMgr::Adjust(const basic::NluContext &nluContext) {
@@ -133,6 +135,15 @@ bool SplitRuleMgr::InitSyntaxFromRules_(const basic::NluContext &nluContext) {
   auto featureExtractors = splitRuleEngine_->GetManager().GetFeatureExtractors();
   for (auto kv : featureExtractors) {
     allRules_[basic::Stage::kSyntax]->push_back(new RuleSyntaxRule(kv.second));
+  }
+  return true;
+}
+
+bool SplitRuleMgr::InitSyntaxVerbArg_(const basic::NluContext &nluContext) {
+  for (auto &chunk : nluContext.GetChunks().GetAll()) {
+    allRules_[basic::Stage::kSyntax]->push_back(new RuleSyntaxVerbArg(
+            chunk->GetBegin(),
+            chunk->GetLen()));
   }
   return true;
 }

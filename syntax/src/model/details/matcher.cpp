@@ -204,12 +204,21 @@ bool Matcher::RuleIntransitiveVerb_(
     std::shared_ptr<basic::NluContext> nluContext,
     const std::shared_ptr<basic::Chunk> &chunk) {
   if (chunk->GetTag() != basic::SyntaxTag::Type::kV ||
-      basic::Manager::Get().GetGkb().GetGkbVerb().TiWeiZhun(
-              chunk->GetStrFromSentence(nluContext->GetQuery())) !=
-              basic::EntryVerb::TiWeiZhun::kNone) {
+      basic::Manager::Get().GetGkb().GetGkbVerb().IsArgNone(
+              chunk->GetStrFromSentence(nluContext->GetQuery()))) {
     return false;
   }
 
+  //strategy 0 : add VP flag to intransitive verb chunk
+  basic::Chunk newVp(
+          *nluContext,
+          basic::SyntaxTag::Type::kVp,
+          chunk->GetBegin(),
+          chunk->GetLen(),
+          440);
+  nluContext->GetChunks().Add(newVp);
+
+  //strategy 1
   auto npBefore = nluContext->GetChunks().GetFragmentBefore(chunk->GetOffset());
   if (nullptr == npBefore || !npBefore->ContainTag(basic::SyntaxTag::Type::kNp)) {
     return false;
@@ -234,14 +243,14 @@ bool Matcher::RuleIntransitiveVerb_(
           basic::SyntaxTag::Type::kNp,
           npBefore->GetOffset(),
           chunk->GetEnd() - npBefore->GetOffset(),
-          440);
+          441);
 
   basic::Chunk newContNp(
           *nluContext,
           basic::SyntaxTag::Type::kContNp,
           npBefore->GetOffset(),
           chunk->GetEnd() - npBefore->GetOffset(),
-          441);
+          442);
   if (nluContext->GetChunks().Add(newNp) ||
       nluContext->GetChunks().Add(newContNp)) {
     return true;
