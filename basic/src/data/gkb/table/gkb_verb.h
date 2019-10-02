@@ -31,7 +31,7 @@ class GkbVerb : public Table<EntryVerb> {
       bool &isArgWei,
       bool &isArgZhun) const;
 
-  inline bool IsArgNone(const std::wstring &word);
+  inline bool IsArgNone(const std::wstring &word) const;
 
  private:
   std::unordered_set<std::wstring> dongjie_;
@@ -49,7 +49,7 @@ bool GkbVerb::IsDongqu(const std::wstring &word) const {
   return dongqu_.find(word) != dongqu_.end();
 }
 
-bool GkbVerb::IsArgNone(const std::wstring &word) {
+bool GkbVerb::IsArgNone(const std::wstring &word) const {
   bool isArgTi, isArgWei, isArgZhun;
   bool ret = TiWeiZhun(word, isArgTi, isArgWei, isArgZhun);
   return ret && !(isArgTi || isArgWei || isArgZhun);
