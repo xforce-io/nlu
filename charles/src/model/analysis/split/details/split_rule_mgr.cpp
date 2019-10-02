@@ -141,9 +141,24 @@ bool SplitRuleMgr::InitSyntaxFromRules_(const basic::NluContext &nluContext) {
 
 bool SplitRuleMgr::InitSyntaxVerbArg_(const basic::NluContext &nluContext) {
   for (auto &chunk : nluContext.GetChunks().GetAll()) {
-    allRules_[basic::Stage::kSyntax]->push_back(new RuleSyntaxVerbArg(
-            chunk->GetBegin(),
-            chunk->GetLen()));
+    if (chunk->GetTag() == basic::SyntaxTag::Type::kV) {
+      std::shared_ptr<basic::Segment> verb = nullptr;
+      for (auto &segment : nluContext.GetSegments().GetAll()) {
+        if (!segment->IsIn(chunk->GetOffset(), chunk->GetLen())) {
+          continue;
+        }
+
+        if (segment->GetTag() == basic::PosTag::Type::kV) {
+          verb = segment;
+          break;
+        }
+      }
+
+      allRules_[basic::Stage::kSyntax]->push_back(new RuleSyntaxVerbArg(
+              chunk->GetBegin(),
+              chunk->GetLen(),
+              *verb));
+    }
   }
   return true;
 }

@@ -10,7 +10,8 @@ class RuleSyntaxVerbArg : public Rule {
  public:
   explicit RuleSyntaxVerbArg(
           size_t offset,
-          size_t len);
+          size_t len,
+          const basic::Segment &segment);
 
   size_t GetCategory() const { return Rule::kCategoryRuleSyntaxVerbArg; }
 
@@ -28,6 +29,7 @@ class RuleSyntaxVerbArg : public Rule {
  private:
   size_t offset_;
   size_t len_;
+  const basic::Segment &segment_;
 };
 
 }}}
