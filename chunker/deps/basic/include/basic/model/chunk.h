@@ -1,10 +1,12 @@
 #pragma once
 
 #include "../public.h"
+#include "pos/pos_tag.h"
 #include "syntax/syntax_tag.h"
 #include "fragment/fragment.h"
 #include "fragment/fragment_set.hpp"
 #include "fragment/fragment_multitag.hpp"
+#include "segment.h"
 
 namespace xforce { namespace nlu { namespace basic {
 
@@ -42,18 +44,29 @@ class Chunk : public FragmentMultitag<SyntaxTag::Type> {
 
   virtual void Dump(JsonType &jsonType);
 
- public:
+ private:
+  std::shared_ptr<Segment> FindSeg_(
+          const NluContext &nluContext,
+          basic::PosTag::Type::Val posTag);
+
+ private:
   static void AddTagForCtx(
           const NluContext &nluContext,
           Chunk &chunk,
           SyntaxTag::Type::Val tag);
-
  private:
   DescDir descDir_;
+
+  bool verbArgInfo_;
+  bool isArgTi_;
+  bool isArgWei_;
+  bool isArgZhun_;
+  bool isDoubleArgs_;
 };
 
 Chunk::Chunk() :
-  Super() {}
+  Super(),
+  verbArgInfo_(false) {}
 
 Chunk::Chunk(
         const NluContext &nluContext,
@@ -61,12 +74,19 @@ Chunk::Chunk(
         size_t offset,
         size_t len,
         uint32_t strategy) :
-    Super(syntaxTag, offset, len, strategy) {
+    Super(syntaxTag, offset, len, strategy),
+    verbArgInfo_(false) {
   AddTagForCtx(nluContext, *this, syntaxTag);
 }
 
 Chunk::Chunk(const Chunk &other) :
-    Super(SCAST<const Super&>(other)) {}
+    Super(SCAST<const Super&>(other)),
+    descDir_(other.descDir_),
+    verbArgInfo_(other.verbArgInfo_),
+    isArgTi_(other.isArgTi_),
+    isArgWei_(other.isArgWei_),
+    isArgZhun_(other.isArgZhun_),
+    isDoubleArgs_(other.isDoubleArgs_) {}
 
 void Chunk::SetDescDir(DescDir descDir) {
   descDir_ = descDir;

@@ -39,5 +39,4 @@ int GkbAdj::Zhuangyu(const std::wstring &word) const {
   }
   return 1;
 }
-
 }}}

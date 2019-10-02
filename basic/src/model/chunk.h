@@ -45,15 +45,15 @@ class Chunk : public FragmentMultitag<SyntaxTag::Type> {
   virtual void Dump(JsonType &jsonType);
 
  private:
+  std::shared_ptr<Segment> FindSeg_(
+          const NluContext &nluContext,
+          basic::PosTag::Type::Val posTag);
+
+ private:
   static void AddTagForCtx(
           const NluContext &nluContext,
           Chunk &chunk,
           SyntaxTag::Type::Val tag);
-
-  static std::shared_ptr<Segment> FindSeg_(
-          const NluContext &nluContext,
-          basic::PosTag::Type::Val posTag);
-
  private:
   DescDir descDir_;
 

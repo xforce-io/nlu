@@ -50,6 +50,7 @@ class Fragment {
   inline size_t GetEnd() const;
   Confidence GetConfidence() const { return confidence_; }
   inline uint32_t GetStrategy() const { return strategy_; }
+  inline bool IsIn(size_t offset, size_t len) const;
 
   inline bool Intersect(const Fragment &fragment) const;
 
@@ -153,6 +154,10 @@ const std::wstring Fragment::GetStrFromSentence(const std::wstring &sentence) {
 
 size_t Fragment::GetEnd() const {
   return offset_ + len_;
+}
+
+bool Fragment::IsIn(size_t offset, size_t len) const {
+  return offset_ >= offset && GetEnd() <= offset+len;
 }
 
 bool Fragment::Intersect(const Fragment &fragment) const {
