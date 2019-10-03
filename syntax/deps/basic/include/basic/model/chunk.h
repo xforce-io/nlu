@@ -37,6 +37,7 @@ class Chunk : public FragmentMultitag<SyntaxTag::Type> {
   inline Chunk(const Chunk &other);
   virtual ~Chunk() {}
 
+  inline void SetNeedToVerify(bool needToVerify);
   inline void SetDescDir(DescDir descDir);
   inline DescDir GetDescDir() const;
 
@@ -55,6 +56,8 @@ class Chunk : public FragmentMultitag<SyntaxTag::Type> {
           Chunk &chunk,
           SyntaxTag::Type::Val tag);
  private:
+  bool needToVerify_;
+
   DescDir descDir_;
 
   bool verbArgInfo_;
@@ -66,6 +69,7 @@ class Chunk : public FragmentMultitag<SyntaxTag::Type> {
 
 Chunk::Chunk() :
   Super(),
+  needToVerify_(false),
   verbArgInfo_(false) {}
 
 Chunk::Chunk(
@@ -81,12 +85,17 @@ Chunk::Chunk(
 
 Chunk::Chunk(const Chunk &other) :
     Super(SCAST<const Super&>(other)),
+    needToVerify_(false),
     descDir_(other.descDir_),
     verbArgInfo_(other.verbArgInfo_),
     isArgTi_(other.isArgTi_),
     isArgWei_(other.isArgWei_),
     isArgZhun_(other.isArgZhun_),
     isDoubleArgs_(other.isDoubleArgs_) {}
+
+void Chunk::SetNeedToVerify(bool needToVerify) {
+  needToVerify_ = needToVerify;
+}
 
 void Chunk::SetDescDir(DescDir descDir) {
   descDir_ = descDir;

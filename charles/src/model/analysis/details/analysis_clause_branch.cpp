@@ -110,11 +110,14 @@ bool AnalysisClauseBranch::VerifySubBranches_() {
     auto clauseToVerify = std::make_shared<AnalysisClause>(subQuery);
     if (clauseToVerify->Process()) {
       auto subBranch = new SubBranch(
-              chunk,
+              *chunk,
               clauseToVerify);
       subBranches_.push_back(subBranch);
+    } else {
+      return false;
     }
   }
+  return true;
 }
 
 }}}
