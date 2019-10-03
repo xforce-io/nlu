@@ -17,7 +17,7 @@ PosTagging::PosTagging() {
   strategies_.push_back(new StrategyWindowStatistics());
   strategies_.push_back(new StrategyComplement());
   strategies_.push_back(new StrategyPosDeduction());
-  strategies_.push_back(new StrategyOnlyPredOrPrep());
+  //strategies_.push_back(new StrategyOnlyPredOrPrep()); // 如果句子就是名词短语
   strategies_.push_back(new StrategySpecialToken());
 }
 
