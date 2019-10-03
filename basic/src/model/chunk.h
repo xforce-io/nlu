@@ -81,13 +81,14 @@ Chunk::Chunk(
         size_t len,
         uint32_t strategy) :
     Super(syntaxTag, offset, len, strategy),
+    needToVerify_(false),
     verbArgInfo_(false) {
   AddTagForCtx(nluContext, *this, syntaxTag);
 }
 
 Chunk::Chunk(const Chunk &other) :
     Super(SCAST<const Super&>(other)),
-    needToVerify_(false),
+    needToVerify_(other.needToVerify_),
     descDir_(other.descDir_),
     verbArgInfo_(other.verbArgInfo_),
     isArgTi_(other.isArgTi_),
