@@ -89,4 +89,18 @@ bool GkbVerb::TiWeiZhun(
   return true;
 }
 
+bool GkbVerb::IsDoubleArgs(const std::wstring &word) const {
+  auto entries = GetEntries(word);
+  if (nullptr == entries || entries->empty()) {
+    return false;
+  }
+
+  for (size_t i = 0; i < entries->size(); ++i) {
+    if ((*entries)[i]->IsDoubleArgs()) {
+      return true;
+    }
+  }
+  return false;
+}
+
 }}}

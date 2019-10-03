@@ -4,8 +4,11 @@
 
 namespace xforce { namespace nlu { namespace charles {
 
-AnalysisClause::AnalysisClause(const std::wstring &clause) :
+AnalysisClause::AnalysisClause(
+        const std::wstring &clause,
+        basic::SyntaxTag::Type::Val endTag) :
     clause_(std::make_shared<basic::NluContext>(clause)),
+    endTag_(endTag),
     master_(nullptr) {}
 
 AnalysisClause::~AnalysisClause() {
@@ -20,7 +23,11 @@ bool AnalysisClause::Init() {
   }
 
   auto splitStage = new SplitStage(*splitRuleMgr);
-  master_ = std::make_shared<AnalysisClauseBranch>(1, *clause_, *splitStage);
+  master_ = std::make_shared<AnalysisClauseBranch>(
+          1,
+          *clause_,
+          *splitStage,
+          endTag_);
   XFC_DELETE(splitStage);
   return ret;
 }

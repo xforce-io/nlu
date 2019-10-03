@@ -14,7 +14,9 @@ class AnalysisClause : public AnalysisComponent {
 
  public:
   AnalysisClause(
-          const std::wstring &clause);
+          const std::wstring &clause,
+          basic::SyntaxTag::Type::Val endTag = basic::SyntaxTag::Type::kStc);
+
   virtual ~AnalysisClause();
 
   bool Init();
@@ -27,6 +29,7 @@ class AnalysisClause : public AnalysisComponent {
 
  private:
   std::shared_ptr<basic::NluContext> clause_;
+  basic::SyntaxTag::Type::Val endTag_;
 
   std::shared_ptr<AnalysisClauseBranch> master_;
   std::queue<std::shared_ptr<AnalysisClauseBranch>> branches_;

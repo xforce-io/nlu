@@ -1,16 +1,20 @@
 #include <segmentor/segmentor.h>
 #include "../analysis_clause_branch.h"
 #include "../split/split_stage.h"
+#include "../analysis_clause.h"
+#include "../sub_branch.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
 AnalysisClauseBranch::AnalysisClauseBranch(
         size_t no,
         const basic::NluContext &nluContext,
-        const SplitStage &splitStage) :
+        const SplitStage &splitStage,
+        basic::SyntaxTag::Type::Val endTag) :
     no_(no),
     nluContext_(nluContext.Clone()),
     splitStage_(splitStage.Clone()),
+    endTag_(endTag),
     processed_(false),
     end_(false),
     childrenIdx_(0) {
@@ -18,12 +22,20 @@ AnalysisClauseBranch::AnalysisClauseBranch(
 }
 
 AnalysisClauseBranch::~AnalysisClauseBranch() {
+  for (SubBranch *subBranch : subBranches_) {
+    delete subBranch;
+  }
   XFC_DELETE(splitStage_)
 }
 
 bool AnalysisClauseBranch::Process(
         std::queue<std::shared_ptr<AnalysisClauseBranch>> &branches) {
   if (!processed_) {
+    if (!VerifySubBranches_()) {
+      end_ = false;
+      return false;
+    }
+
     splitStage_->Process(nluContext_);
     processed_ = true;
 
@@ -84,12 +96,25 @@ bool AnalysisClauseBranch::AllChildrenEnd_() {
 bool AnalysisClauseBranch::IsFinished_(basic::NluContext &nluContext) {
   for (auto &chunk : nluContext.GetChunks().GetAll()) {
     for (auto &tag : chunk->GetTags()) {
-      if (tag == basic::SyntaxTag::Type::kStc) {
+      if (tag == endTag_) {
         return true;
       }
     }
   }
   return false;
+}
+
+bool AnalysisClauseBranch::VerifySubBranches_() {
+  for (auto &chunk : nluContext_->GetChunks().GetAll()) {
+    std::wstring subQuery = chunk->GetQuery(nluContext_->GetQuery());
+    auto clauseToVerify = std::make_shared<AnalysisClause>(subQuery);
+    if (clauseToVerify->Process()) {
+      auto subBranch = new SubBranch(
+              chunk,
+              clauseToVerify);
+      subBranches_.push_back(subBranch);
+    }
+  }
 }
 
 }}}
