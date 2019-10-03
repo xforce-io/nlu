@@ -39,6 +39,8 @@ class Chunk : public FragmentMultitag<SyntaxTag::Type> {
 
   inline void SetNeedToVerify(bool needToVerify);
   inline void SetDescDir(DescDir descDir);
+
+  bool GetNeedToVerify() const { return needToVerify_; }
   inline DescDir GetDescDir() const;
 
   virtual const std::string& GetCategory() const;

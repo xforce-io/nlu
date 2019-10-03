@@ -106,6 +106,10 @@ bool AnalysisClauseBranch::IsFinished_(basic::NluContext &nluContext) {
 
 bool AnalysisClauseBranch::VerifySubBranches_() {
   for (auto &chunk : nluContext_->GetChunks().GetAll()) {
+    if (!chunk->GetNeedToVerify()) {
+      continue;
+    }
+
     std::wstring subQuery = chunk->GetQuery(nluContext_->GetQuery());
     auto clauseToVerify = std::make_shared<AnalysisClause>(subQuery);
     bool ret = clauseToVerify->Init();
