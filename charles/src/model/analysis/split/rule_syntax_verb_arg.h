@@ -20,8 +20,8 @@ class RuleSyntaxVerbArg : public Rule {
           const std::shared_ptr<basic::NluContext> &nluContext,
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
 
-  bool GenForbid(ForbidItem&) const { return false; }
-  bool PreCheckForbid(const ForbidItem&) const { return false; }
+  bool GenForbid(ForbidItem& forbidItem) const;
+  bool PreCheckForbid(const ForbidItem& forbidItem) const;
   bool PostCheckForbid(const ForbidItem&) const { return false; }
 
   virtual Rule* Clone();

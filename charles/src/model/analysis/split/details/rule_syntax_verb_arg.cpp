@@ -1,5 +1,6 @@
 #include "../rule_syntax_verb_arg.h"
 #include "../../public.h"
+#include "../forbid_item.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
@@ -51,6 +52,20 @@ bool RuleSyntaxVerbArg::Split(
   }
   return true;
 }
+
+bool RuleSyntaxVerbArg::GenForbid(ForbidItem& forbidItem) const {
+  forbidItem.SetCategoryRule(Rule::kCategoryRuleSyntaxVerbArg);
+  forbidItem.SetOffset(forbidItem.GetOffset());
+  forbidItem.SetLen(forbidItem.GetLen());
+  return true;
+}
+
+bool RuleSyntaxVerbArg::PreCheckForbid(const ForbidItem& forbidItem) const {
+  return forbidItem.GetCategoryRule() == Rule::kCategoryRuleSyntaxVerbArg &&
+      forbidItem.GetOffset() == offset_ &&
+      forbidItem.GetLen() == len_;
+}
+
 
 Rule* RuleSyntaxVerbArg::Clone() {
   return new RuleSyntaxVerbArg(offset_, len_, segment_);
