@@ -108,6 +108,12 @@ bool AnalysisClauseBranch::VerifySubBranches_() {
   for (auto &chunk : nluContext_->GetChunks().GetAll()) {
     std::wstring subQuery = chunk->GetQuery(nluContext_->GetQuery());
     auto clauseToVerify = std::make_shared<AnalysisClause>(subQuery);
+    bool ret = clauseToVerify->Init();
+    if (!ret) {
+      FATAL("fail_init_sub_query[" << subQuery << "]");
+      return false;
+    }
+
     if (clauseToVerify->Process()) {
       auto subBranch = new SubBranch(
               *chunk,
