@@ -30,7 +30,8 @@ bool PatternItemWordpos::MatchPattern(Context &context) {
 
   std::wcmatch wcm;
   std::wstring patternToMatch;
-  if (0 == numMulti) {
+  std::wstring matched;
+  if (0==numMulti) {
     std::wstringstream ss;
     for (auto &segment : featureWordposes->GetAll()) {
       ss << basic::PosTag::Str(segment->GetTag()) << kSep;
@@ -40,7 +41,13 @@ bool PatternItemWordpos::MatchPattern(Context &context) {
     if (!std::regex_search(patternToMatch.c_str(), wcm, *regex_)) {
       return false;
     }
-  } else if (numMulti<=1) {
+
+    const std::wstring &tmpMatched = wcm[0].str();
+    if (patternToMatch.substr(0, tmpMatched.length()) != tmpMatched) {
+      return false;
+    }
+    matched = tmpMatched;
+  } else if (1==numMulti) {
     std::vector<std::wstringstream> multiSs;
     multiSs.resize(sizeMulti);
     for (auto &segment : featureWordposes->GetAll()) {
@@ -60,31 +67,36 @@ bool PatternItemWordpos::MatchPattern(Context &context) {
       if (!std::regex_search(patternToMatch.c_str(), wcm, *regex_)) {
         return false;
       }
+
+      const std::wstring &tmpMatched = wcm[0].str();
+      if (patternToMatch.substr(0, tmpMatched.length()) != tmpMatched) {
+        return false;
+      }
+
+      if (matched.empty() || tmpMatched.length() < matched.length()) {
+        matched = tmpMatched;
+      }
     }
   } else {
     return false;
   }
 
-  const std::wstring &matched = wcm[0].str();
-  if (patternToMatch.substr(0, matched.length()) == matched) {
-    Wstrings items;
-    StrHelper::SplitStr(matched, kSep, items);
-    contentMatched_ = L"";
+  Wstrings items;
+  StrHelper::SplitStr(matched, kSep, items);
+  contentMatched_ = L"";
 
-    size_t i=0;
-    for (auto &segment : featureWordposes->GetAll()) {
-      if (!items[i].empty()) {
-        contentMatched_ += segment->GetQuery(
-            context.GetSentence().GetSentence());
-      }
-
-      if (++i >= items.size()) {
-        break;
-      }
+  size_t i=0;
+  for (auto &segment : featureWordposes->GetAll()) {
+    if (!items[i].empty()) {
+      contentMatched_ += segment->GetQuery(
+          context.GetSentence().GetSentence());
     }
-    return true;
+
+    if (++i >= items.size()) {
+      break;
+    }
   }
-  return false;
+  return true;
 }
 
 std::wregex* PatternItemWordpos::CreatePattern_(const std::wstring &patternStr) {
