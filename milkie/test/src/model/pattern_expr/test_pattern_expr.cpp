@@ -262,5 +262,19 @@ void testBugfix() {
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
   ASSERT_TRUE(*(context->GetCurStorageAsStr(L"target")) == L"强有力的");
 
+  expr = Helper::PreprocessExprLine(L"{ #Pos(((n|r|t|m|q|f|j|h|k)P-)+) -> target }");
+  ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, expr);
+  ASSERT_TRUE(ret.first != nullptr);
 
+  query = L"战术调整";
+  context = std::make_shared<Context>(query);
+  segments.Reset(query);
+  segments.Add(Segment(PosTag::Type::kN, 0, 2));
+
+  Segment segment(PosTag::Type::kV, 2, 2);
+  segment.AddTag(PosTag::Type::kV);
+  segments.Add(segment);
+
+  context->GetSentence().GetNluContext()->SetSegments(segments);
+  ASSERT_TRUE(!ret.first->ExactMatch(*(context.get())));
 }

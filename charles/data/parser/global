@@ -25,6 +25,7 @@ FEATURE_EXTRACTOR_BEGIN(syntax)
     { #Chk(np) #Chk(advp) #Chk(np) #Chk(advp) -> syntactic._stc_ }
     { { #Chk(advp) ?} { #Chk(pp) ?} { #Chk(np) ?} $V -> syntactic._stc_ }
     { { #Chk(advp) ?} #Chk(pp) $v #Chk(np) #Chk(np) -> syntactic._stc_ }
+    { { #Chk(_cont_np_) #Pos(c) #Chk(_cont_np_) -> syntactic.np } -> syntactic._stc_ }
 
     ~{ #Chk(advp) {"的" ?} #Chk(np) % -> syntactic.np }
     ~{ $v "的" #Chk(np) -> syntactic.np }

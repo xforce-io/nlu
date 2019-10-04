@@ -127,7 +127,6 @@ bool PatternExpr::PartlyMatch(Context &context) const {
 }
 
 bool PatternExpr::PartlyMatch(Context &context, bool singleton) const {
-  bool ret = false;
   size_t curPos = 0;
   while (curPos < context.GetSentence().GetSentence().length()) {
     context.Reset();
@@ -136,12 +135,12 @@ bool PatternExpr::PartlyMatch(Context &context, bool singleton) const {
     if (MatchPattern_(context, singleton)) {
       curPos = context.GetCurPos();
       context.Store();
-      ret = true;
+      return true;
     } else {
       ++curPos;
     }
   }
-  return ret;
+  return false;
 }
 
 bool PatternExpr::PrefixMatch(Context &context, bool singleton) const {
