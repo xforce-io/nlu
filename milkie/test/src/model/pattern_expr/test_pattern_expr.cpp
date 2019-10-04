@@ -248,6 +248,25 @@ void testcaseMultimatch() {
   ASSERT_TRUE(!ret.first->ExactMatch(*(context.get())));
 }
 
+void testPartlyMultimatch() {
+  std::wstring expr = Helper::PreprocessExprLine(L"{ #Pos((dP-)*(vP-)) -> syntactic.v }");
+  auto ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, expr);
+  ASSERT_TRUE(ret.first != nullptr);
+
+  std::wstring query = L"他是会舞蹈";
+  auto context = std::make_shared<Context>(query);
+  FragmentSet<Segment> segments(query);
+  segments.Add(Segment(PosTag::Type::kR, 0, 1));
+  segments.Add(Segment(PosTag::Type::kV, 1, 1));
+  segments.Add(Segment(PosTag::Type::kV, 2, 1));
+  segments.Add(Segment(PosTag::Type::kA, 3, 2));
+  context->GetSentence().GetNluContext()->SetSegments(segments);
+  ASSERT_TRUE(ret.first->PartlyMatch(*(context.get())));
+
+  size_t numVs = context->GetCurStorage(L"syntactic.v")->Size();
+  ASSERT_TRUE(numVs==2);
+}
+
 void testBugfix() {
   std::wstring expr = Helper::PreprocessExprLine(L"{ #Pos(lP) \"的\" -> target }");
   auto ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, expr);
