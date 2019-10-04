@@ -35,6 +35,7 @@ void testcase1();
 void testcase2();
 void testcaseWildcard();
 void testcaseMultimatch();
+void testPartlyMultimatch();
 void testBugfix();
 
 TEST(testAll, all) {
@@ -44,6 +45,7 @@ TEST(testAll, all) {
   testcase2();
   testcaseWildcard();
   testcaseMultimatch();
+  testPartlyMultimatch();
   testBugfix();
 }
 
