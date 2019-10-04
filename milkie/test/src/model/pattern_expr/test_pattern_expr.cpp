@@ -272,7 +272,7 @@ void testBugfix() {
   segments.Add(Segment(PosTag::Type::kN, 0, 2));
 
   Segment segment(PosTag::Type::kV, 2, 2);
-  segment.AddTag(PosTag::Type::kV);
+  segment.AddTag(PosTag::Type::kN);
   segments.Add(segment);
 
   context->GetSentence().GetNluContext()->SetSegments(segments);
