@@ -127,6 +127,41 @@ bool PatternExpr::PartlyMatch(Context &context) const {
 }
 
 bool PatternExpr::PartlyMatch(Context &context, bool singleton) const {
+  bool ret = false;
+  size_t curPos = 0;
+  Context *tmpContext = nullptr;
+  while (curPos < context.GetSentence().GetSentence().length()) {
+    if (nullptr==tmpContext) {
+      tmpContext = &context;
+      tmpContext->Reset();
+      tmpContext->SetStartPos(curPos);
+    } else {
+      tmpContext = new Context(context.GetSentence().GetSentence());
+    }
+
+    tmpContext->SetCurPos(curPos);
+    if (MatchPattern_(context, singleton)) {
+      curPos = tmpContext->GetCurPos();
+      tmpContext->Store();
+      ret = true;
+
+      if (tmpContext != &context) {
+        context.GetStorage().Merge(tmpContext->GetStorage());
+      }
+    } else {
+      ++curPos;
+    }
+
+    if (tmpContext != &context) {
+      XFC_DELETE(tmpContext)
+    }
+  }
+  return ret;
+}
+
+/*
+
+   bool ret = false;
   size_t curPos = 0;
   while (curPos < context.GetSentence().GetSentence().length()) {
     context.Reset();
@@ -135,13 +170,14 @@ bool PatternExpr::PartlyMatch(Context &context, bool singleton) const {
     if (MatchPattern_(context, singleton)) {
       curPos = context.GetCurPos();
       context.Store();
-      return true;
+      ret = true;
     } else {
       ++curPos;
     }
   }
-  return false;
-}
+  return ret;
+
+ */
 
 bool PatternExpr::PrefixMatch(Context &context, bool singleton) const {
   bool ret = MatchPattern_(context, singleton);

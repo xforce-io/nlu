@@ -55,6 +55,7 @@ class Context {
    * mark : str env supported only now
    */
   const Storage& GetStorage() const { return storage_; }
+  Storage& GetStorage() { return storage_; }
 
   inline void SetCurStoragePattern(StorageVal &storageItem);
   inline std::shared_ptr<StorageVal> GetCurStoragePattern();
