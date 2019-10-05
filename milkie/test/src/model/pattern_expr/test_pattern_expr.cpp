@@ -265,7 +265,7 @@ void testPartlyMultimatch() {
   context->GetSentence().GetNluContext()->SetSegments(segments);
   ASSERT_TRUE(ret.first->PartlyMatch(*(context.get())));
 
-  size_t numVs = context->GetCurStorage(L"syntactic.v")->Size();
+  size_t numVs = context->GetStorage(nullptr, L"syntactic.v")->Size();
 
   JsonType jsonType;
   context->Dump(jsonType);
