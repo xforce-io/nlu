@@ -7,6 +7,7 @@
 #include "basic/model/name_entity.h"
 #include "basic/model/segment.h"
 #include "basic/model/fragment/fragment_set.hpp"
+#include "basic/model/analysis_tracer/analysis_tracer.h"
 #include "basic/data/manager.h"
 #include "basic/data/word_dict.h"
 #include "basic/data/dict_item.h"

@@ -9,6 +9,7 @@ class AnalysisTracer : public Tracer {
   static const size_t kNoAnalysisTracer = 1;
 
  public:
+  void AddEvent(const std::string &event);
   void AddEvent(const std::wstring &event);
 
  public:

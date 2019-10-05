@@ -53,7 +53,15 @@ bool AnalysisClause::Process() {
       succ = true;
       finished_.push_back(branch);
       results_.push_back(branch);
+    } else {
+      if (branch->GetEnd()) {
+        finished_.push_back(branch);
+      } else {
+        branches_.push(branch);
+      }
+    }
 
+    if (branch->GetEnd()) {
       std::string repr;
       branch->GetNluContext()->Dump(repr);
 
@@ -64,18 +72,6 @@ bool AnalysisClause::Process() {
          << repr
          << "]";
       basic::AnalysisTracer::Get()->AddEvent(ss.str());
-    } else {
-      if (branch->GetEnd()) {
-        finished_.push_back(branch);
-
-        std::wstringstream ss;
-        ss << "branch_end no["
-            << branch->GetNo()
-            << "]";
-        basic::AnalysisTracer::Get()->AddEvent(ss.str());
-      } else {
-        branches_.push(branch);
-      }
     }
   }
   return succ;

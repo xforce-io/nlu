@@ -11,6 +11,7 @@
 LOGGER_IMPL(xforce::xforce_logger, L"charles")
 
 using namespace xforce;
+using namespace xforce::nlu;
 using namespace xforce::nlu::charles;
 
 int main(int argc, char **argv) {
