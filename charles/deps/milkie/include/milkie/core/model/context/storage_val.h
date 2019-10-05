@@ -19,6 +19,8 @@ class StorageVal {
   inline const std::wstring* GetAsString() const;
   inline size_t Size() const;
 
+  inline void Dump(JsonType &jsonType) const;
+
  private:   
    std::vector<StorageItem> items_;
 };  
@@ -51,6 +53,12 @@ const std::wstring* StorageVal::GetAsString() const {
 
 size_t StorageVal::Size() const {
   return items_.size();
+}
+
+void StorageVal::Dump(JsonType &jsonType) const {
+  for (size_t i=0; i < items_.size(); ++i) {
+    items_[i].Dump(jsonType[i]);
+  }
 }
 
 }}}

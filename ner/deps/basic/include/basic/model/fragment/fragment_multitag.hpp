@@ -118,6 +118,7 @@ bool FragmentMultitag<Tag>::Merge(const Self &other) {
   for (auto &tag : other.GetTags()) {
     if (!ContainTag(tag)) {
       tags_.push_back(tag);
+      strategy_ = other.strategy_;
       touched = true;
     }
   }
