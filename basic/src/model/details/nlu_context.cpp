@@ -75,7 +75,7 @@ void NluContext::Dump(JsonType &jsonType) {
   for (auto &phrase : phrases_) {
     jsonType["phrase"][i]["query"] = query_.substr(
             phrase.GetFrom(),
-            phrase.GetTo()-phrase.GetFrom()));
+            phrase.GetTo()-phrase.GetFrom());
     phrase.GetNluContext()->Dump(jsonType["phrase"][i]["analysis"]);
     ++i;
   }

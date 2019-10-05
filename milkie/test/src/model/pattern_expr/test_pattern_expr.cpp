@@ -8,6 +8,7 @@
 
 LOGGER_IMPL(xforce::xforce_logger, L"milkie")
 
+using namespace xforce;
 using namespace xforce::nlu::milkie;
 using namespace xforce::nlu::basic;
 
@@ -265,14 +266,13 @@ void testPartlyMultimatch() {
   context->GetSentence().GetNluContext()->SetSegments(segments);
   ASSERT_TRUE(ret.first->PartlyMatch(*(context.get())));
 
-  size_t numVs = context->GetCurStorage(L"syntactic.v")->Size();
-
   JsonType jsonType;
   context->Dump(jsonType);
   std::stringstream ss;
   jsonType.DumpJson(ss);
   std::cout << ss.str() << std::endl;
 
+  size_t numVs = context->GetCurStorage(L"syntactic.v")->Size();
   ASSERT_TRUE(numVs==2);
 }
 
