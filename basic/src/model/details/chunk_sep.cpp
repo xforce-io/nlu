@@ -7,4 +7,9 @@ const std::string& ChunkSep::GetCategory() const {
   return kCategory;
 }
 
+void ChunkSep::Dump(JsonType &jsonType) {
+  Super::Dump(jsonType);
+  jsonType["type"] = "chunkSep";
+}
+
 }}}

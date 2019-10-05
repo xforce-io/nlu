@@ -12,6 +12,7 @@ const std::string& Chunk::GetCategory() const {
 
 void Chunk::Dump(JsonType &jsonType) {
   Super::Dump(jsonType);
+  jsonType["type"] = "chunk";
   for (auto &syntaxTag : tags_) {
     jsonType["syn"].Append(*(StrHelper::Wstr2Str(SyntaxTag::Str(syntaxTag))));
   }

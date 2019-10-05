@@ -9,6 +9,7 @@ const std::string& Segment::GetCategory() const {
 
 void Segment::Dump(JsonType &jsonType) {
   Super::Dump(jsonType);
+  jsonType["type"] = "segment";
   for (auto &posTag : tags_) {
     jsonType["pos"].Append(*(StrHelper::Wstr2Str(PosTag::Str(posTag))));
   }
