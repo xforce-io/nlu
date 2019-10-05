@@ -29,13 +29,13 @@ TEST(testAll, all) {
   ASSERT_TRUE(analysisClause.Init());
   analysisClause.Process();
 
-  std::cout << analysisClause.GetFinished().size() << std::endl;
-
+  std::cout << basic::AnalysisTracer::Get()->GetReport() << std::endl;
+/*
   std::string repr;
   for (auto result : analysisClause.GetFinished()) {
     std::cout << "no[" << result->GetNo() << "] ";
     std::cout << "born[" << result->GetSplitStage().GetBornStage() << "] ";
     result->GetNluContext()->Dump(repr);
     std::cout << "result[" << repr << "]" << std::endl;
-  }
+  }*/
 }

@@ -2,6 +2,10 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
+void AnalysisTracer::AddEvent(const std::string &event) {
+  Get()->Add("event", event);
+}
+
 void AnalysisTracer::AddEvent(const std::wstring &event) {
   Get()->Add("event", event);
 }

@@ -19,6 +19,14 @@ AnalysisClauseBranch::AnalysisClauseBranch(
     end_(false),
     childrenIdx_(0) {
   splitStage_->SetBornStage(splitStage_->GetLastStage());
+
+  std::stringstream ss;
+  ss << "branch_init no["
+      << no_
+      << "] born["
+      << splitStage_->GetBornStage()
+      << "]";
+  basic::AnalysisTracer::Get()->AddEvent(ss.str());
 }
 
 AnalysisClauseBranch::~AnalysisClauseBranch() {
