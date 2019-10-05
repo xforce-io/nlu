@@ -44,7 +44,7 @@ void TriggerPrefix::Process(
       const CoreDictItem &coreDictItem = **iter;
       TriggeredNodes *triggeredNodes = new TriggeredNodes(offset, coreDictItem.GetName().length());
       results.push_back(triggeredNodes);
-      AnalysisTracer::Get().Add(
+      basic::AnalysisTracer::Get()->Add(
           "triggerPrefixStr", 
           query.substr(
             triggeredNodes->GetEndOffset() - triggeredNodes->GetLen(), 

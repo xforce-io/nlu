@@ -24,7 +24,7 @@ FILE(GLOB_RECURSE BASIC_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -DUNICODE=1")
 
 add_library(basic
-  ${BASIC_FILES} src/model/phrase.h src/model/details/phrase.cpp src/model/analysis_tracer/analysis_tracer.h src/model/analysis_tracer/details/analysis_tracer.cpp)
+  ${BASIC_FILES})
 
 target_link_libraries(basic
   log4cplus
@@ -47,6 +47,7 @@ add_custom_command(TARGET basic
   COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/model/pos_ctb
   COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/model/syntax
   COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/model/fragment
+  COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/model/analysis_tracer
 
   COMMAND cp ${BASIC_SRC_DIR}/basic.h ${BASIC_INC_OUTPUT_PATH}/
   COMMAND cp ${BASIC_SRC_DIR}/public.h ${BASIC_INC_OUTPUT_PATH}/
@@ -90,6 +91,7 @@ add_custom_command(TARGET basic
   COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set_non_multi.hpp ${BASIC_INC_OUTPUT_PATH}/model/fragment/
   COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set_tree.hpp ${BASIC_INC_OUTPUT_PATH}/model/fragment/
   COMMAND cp ${BASIC_SRC_DIR}/model/fragment/manager_fragment_set.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
+  COMMAND cp ${BASIC_SRC_DIR}/model/analysis_tracer/analysis_tracer.h ${BASIC_INC_OUTPUT_PATH}/model/analysis_tracer/
   COMMAND git log | head -n 1 > ${BASIC_OUTPUT_PATH}/version
 )
 
