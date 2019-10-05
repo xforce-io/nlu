@@ -10,6 +10,10 @@ void AnalysisTracer::AddEvent(const std::wstring &event) {
   Get()->Add("event", event);
 }
 
+void AnalysisTracer::AddEvent(const JsonType &event) {
+  Get()->Add("event", event);
+}
+
 AnalysisTracer* AnalysisTracer::Get() {
   auto analysisTracer = (AnalysisTracer*)Tracer::threadPrivacy_->Get(kNoAnalysisTracer);
   if (nullptr == analysisTracer) {

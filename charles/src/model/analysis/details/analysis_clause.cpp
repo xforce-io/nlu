@@ -62,16 +62,11 @@ bool AnalysisClause::Process() {
     }
 
     if (branch->GetEnd()) {
-      std::string repr;
-      branch->GetNluContext()->Dump(repr);
-
-      std::stringstream ss;
-      ss << "branch_end no["
-         << branch->GetNo()
-         << "] context["
-         << repr
-         << "]";
-      basic::AnalysisTracer::Get()->AddEvent(ss.str());
+      JsonType jsonType;
+      jsonType["name"] = "branch_end";
+      jsonType["no"] = branch->GetNo();
+      branch->GetNluContext()->Dump(jsonType["context"]);
+      basic::AnalysisTracer::Get()->AddEvent(jsonType);
     }
   }
   return succ;

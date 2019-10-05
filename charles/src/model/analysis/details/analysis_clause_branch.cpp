@@ -20,13 +20,11 @@ AnalysisClauseBranch::AnalysisClauseBranch(
     childrenIdx_(0) {
   splitStage_->SetBornStage(splitStage_->GetLastStage());
 
-  std::stringstream ss;
-  ss << "branch_init no["
-      << no_
-      << "] born["
-      << splitStage_->GetBornStage()
-      << "]";
-  basic::AnalysisTracer::Get()->AddEvent(ss.str());
+  JsonType jsonType;
+  jsonType["name"] = "branch_init";
+  jsonType["no"] = no_;
+  jsonType["born"] = splitStage_->GetBornStage();
+  basic::AnalysisTracer::Get()->AddEvent(jsonType);
 }
 
 AnalysisClauseBranch::~AnalysisClauseBranch() {
