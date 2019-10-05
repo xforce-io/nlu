@@ -67,15 +67,15 @@ void NluContext::Reset(basic::Stage::Val stage) {
 }
 
 void NluContext::Dump(JsonType &jsonType) {
-  jsonType["query"] = *(StrHelper::Wstr2Str(query_));
+  jsonType["query"] = query_;
   jsonType["isValid"] = isValid_;
   managerFragmentSet_->Dump(jsonType["fragments"]);
 
   size_t i=0;
   for (auto &phrase : phrases_) {
-    jsonType["phrase"][i]["query"] = *(StrHelper::Wstr2Str(query_.substr(
+    jsonType["phrase"][i]["query"] = query_.substr(
             phrase.GetFrom(),
-            phrase.GetTo()-phrase.GetFrom())));
+            phrase.GetTo()-phrase.GetFrom()));
     phrase.GetNluContext()->Dump(jsonType["phrase"][i]["analysis"]);
     ++i;
   }

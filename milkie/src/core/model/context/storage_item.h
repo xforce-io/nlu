@@ -15,6 +15,8 @@ class StorageItem {
   size_t GetOffset() const { return offset_; }
   inline size_t GetLen() const;
 
+  inline void Dump(JsonType &jsonType) const;
+
  private:
   std::wstring content_;
   size_t offset_;
@@ -34,6 +36,11 @@ void StorageItem::SetOffset(size_t offset) {
 
 size_t StorageItem::GetLen() const {
   return content_.length();
+}
+
+void StorageItem::Dump(JsonType &jsonType) const {
+  jsonType["content"] = content_;
+  jsonType["offset"] = offset_;
 }
 
 }}}

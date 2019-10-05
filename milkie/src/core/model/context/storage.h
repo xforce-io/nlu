@@ -40,6 +40,8 @@ class Storage {
 
   inline void Clear();
 
+  inline void Dump(JsonType &jsonType);
+
  private:
   Container container_;
 };
@@ -128,6 +130,15 @@ void Storage::Merge(const Storage &storage) {
 
 void Storage::Clear() {
   container_.clear();
+}
+
+void Storage::Dump(JsonType &jsonType) {
+  size_t i=0;
+  for (auto iter = container_.begin(); iter != container_.end(); ++iter) {
+    iter->first.Dump(jsonType[i]["key"]);
+    iter->second->Dump(jsonType[i]["val"]);
+    ++i;
+  }
 }
 
 }}}

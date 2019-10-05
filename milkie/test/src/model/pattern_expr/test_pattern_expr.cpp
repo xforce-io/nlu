@@ -266,6 +266,13 @@ void testPartlyMultimatch() {
   ASSERT_TRUE(ret.first->PartlyMatch(*(context.get())));
 
   size_t numVs = context->GetCurStorage(L"syntactic.v")->Size();
+
+  JsonType jsonType;
+  context->Dump(jsonType);
+  std::stringstream ss;
+  jsonType.DumpJson(ss);
+  std::cout << ss.str() << std::endl;
+
   ASSERT_TRUE(numVs==2);
 }
 

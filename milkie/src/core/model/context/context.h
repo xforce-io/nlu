@@ -62,6 +62,8 @@ class Context {
   inline bool End() const;
   inline size_t Length() const;
 
+  void Dump(JsonType &jsonType);
+
  private:
   Sentence *sentence_;
   ssize_t startPos_;
