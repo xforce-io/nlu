@@ -24,7 +24,7 @@ FILE(GLOB_RECURSE BASIC_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -DUNICODE=1")
 
 add_library(basic
-  ${BASIC_FILES} src/model/phrase.h src/model/details/phrase.cpp src/model/analysis_tracer/analysis_tracer.h)
+  ${BASIC_FILES} src/model/phrase.h src/model/details/phrase.cpp src/model/analysis_tracer/analysis_tracer.h src/model/analysis_tracer/details/analysis_tracer.cpp)
 
 target_link_libraries(basic
   log4cplus
