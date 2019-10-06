@@ -84,11 +84,6 @@ bool FragmentSet<FragmentType>::Add(std::shared_ptr<FragmentType> fragment) {
       ret = fragments_.insert(fragment).second;
     }
 
-    JsonType jsonType;
-    jsonType["name"] = "add";
-    fragment->Dump(jsonType);
-    AnalysisTracer::Get()->AddEvent(jsonType);
-    return ret;
   }
   return false;
 }

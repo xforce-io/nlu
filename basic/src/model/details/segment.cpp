@@ -7,7 +7,7 @@ const std::string& Segment::GetCategory() const {
   return kCategory;
 }
 
-void Segment::Dump(JsonType &jsonType) {
+void Segment::Dump(JsonType &jsonType) const {
   Super::Dump(jsonType);
   jsonType["type"] = "segment";
   for (auto &posTag : tags_) {

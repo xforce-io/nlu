@@ -7,7 +7,7 @@ const std::string& NameEntity::GetCategory() const {
   return kCategory;
 }
 
-void NameEntity::Dump(JsonType &jsonType) {
+void NameEntity::Dump(JsonType &jsonType) const {
   Super::Dump(jsonType);
 }
 

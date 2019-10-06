@@ -8,7 +8,7 @@ Fragment::~Fragment() {
   }
 }
 
-void Fragment::Dump(JsonType &jsonType) {
+void Fragment::Dump(JsonType &jsonType) const {
   jsonType["offset"] = offset_;
   jsonType["len"] = len_;
   jsonType["conf"] = confidence_.GetScore();

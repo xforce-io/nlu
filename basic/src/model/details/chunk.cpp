@@ -10,7 +10,7 @@ const std::string& Chunk::GetCategory() const {
   return kCategory;
 }
 
-void Chunk::Dump(JsonType &jsonType) {
+void Chunk::Dump(JsonType &jsonType) const {
   Super::Dump(jsonType);
   jsonType["type"] = "chunk";
   for (auto &syntaxTag : tags_) {

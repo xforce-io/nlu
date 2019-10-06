@@ -20,7 +20,7 @@ class ChunkSep : public Fragment {
 
   const std::string& GetCategory() const;
 
-  void Dump(JsonType &jsonType);
+  void Dump(JsonType &jsonType) const;
 };
 
 ChunkSep::ChunkSep() :
