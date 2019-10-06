@@ -74,12 +74,12 @@ add_custom_command(TARGET basic
   COMMAND cp ${BASIC_SRC_DIR}/data/word_dict.h ${BASIC_INC_OUTPUT_PATH}/data/
   COMMAND cp ${BASIC_SRC_DIR}/data/dict_item.h ${BASIC_INC_OUTPUT_PATH}/data/
   COMMAND cp ${BASIC_SRC_DIR}/model/nlu_context.h ${BASIC_INC_OUTPUT_PATH}/model/
-  COMMAND cp ${BASIC_SRC_DIR}/model/segment.h ${BASIC_INC_OUTPUT_PATH}/model/
-  COMMAND cp ${BASIC_SRC_DIR}/model/name_entity.h ${BASIC_INC_OUTPUT_PATH}/model/
+  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/segment.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
+  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/name_entity.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
   COMMAND cp ${BASIC_SRC_DIR}/model/confidence.h ${BASIC_INC_OUTPUT_PATH}/model/
   COMMAND cp ${BASIC_SRC_DIR}/model/context.h ${BASIC_INC_OUTPUT_PATH}/model/
-  COMMAND cp ${BASIC_SRC_DIR}/model/chunk_sep.h ${BASIC_INC_OUTPUT_PATH}/model/
-  COMMAND cp ${BASIC_SRC_DIR}/model/chunk.h ${BASIC_INC_OUTPUT_PATH}/model/
+  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/chunk_sep.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
+  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/chunk.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
   COMMAND cp ${BASIC_SRC_DIR}/model/pos/pos_tag.h ${BASIC_INC_OUTPUT_PATH}/model/pos/
   COMMAND cp ${BASIC_SRC_DIR}/model/pos_ctb/pos_ctb_tag.h ${BASIC_INC_OUTPUT_PATH}/model/pos_ctb/
   COMMAND cp ${BASIC_SRC_DIR}/model/syntax/syntax_tag.h ${BASIC_INC_OUTPUT_PATH}/model/syntax/

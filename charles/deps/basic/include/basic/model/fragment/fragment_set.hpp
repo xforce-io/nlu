@@ -33,6 +33,10 @@ class FragmentSet {
   inline std::shared_ptr<FragmentType> GetFragmentBefore(size_t offset);
   inline std::shared_ptr<FragmentType> GetFragmentAfter(size_t offset);
 
+  template <class OtherFragmentType>
+  inline std::shared_ptr<FragmentType> Find(
+          const std::shared_ptr<OtherFragmentType> &otherFragmentType) const;
+
   inline const typename FragmentSet<FragmentType>::Container::iterator Erase(
           const typename Container::iterator iter);
 
@@ -44,7 +48,7 @@ class FragmentSet {
   inline typename Container::iterator End();
   inline size_t Size() const;
 
-  void Dump(JsonType &jsonType);
+  void Dump(JsonType &jsonType, const FragmentSet<FragmentType> *diff);
 
  protected:
   std::wstring *text_;
@@ -132,6 +136,18 @@ std::shared_ptr<FragmentType> FragmentSet<FragmentType>::GetFragmentAfter(size_t
 }
 
 template <typename FragmentType>
+template <typename OtherFragmentType>
+std::shared_ptr<FragmentType> FragmentSet<FragmentType>::Find(
+        const std::shared_ptr<OtherFragmentType> &otherFragmentType) const {
+  if (!xforce::SameType<FragmentType, OtherFragmentType>::R) {
+    return nullptr;
+  }
+
+  auto iter = fragments_.find(otherFragmentType);
+  return iter != fragments_.end() ? *iter : nullptr;
+}
+
+template <typename FragmentType>
 const typename FragmentSet<FragmentType>::Container::iterator FragmentSet<FragmentType>::Erase(
         const typename Container::iterator iter) {
   return fragments_.erase(iter);
@@ -162,11 +178,23 @@ size_t FragmentSet<FragmentType>::Size() const {
 }
 
 template <typename FragmentType>
-void FragmentSet<FragmentType>::Dump(JsonType &jsonType) {
+void FragmentSet<FragmentType>::Dump(
+        JsonType &jsonType,
+        const FragmentSet<FragmentType> *diff) {
   size_t i=0;
-  for (auto &fragment : fragments_) {
-    fragment->Dump(jsonType[fragment->GetCategory().c_str()][i]);
-    ++i;
+  if (nullptr==diff) {
+    for (auto &fragment : fragments_) {
+      fragment->Dump(jsonType[fragment->GetCategory().c_str()][i]);
+      ++i;
+    }
+  } else {
+    for (auto &fragment : fragments_) {
+      auto res = diff->Find(fragment);
+      if (nullptr==res || !fragment->Same(*res)) {
+        fragment->Dump(jsonType[fragment->GetCategory().c_str()][i]);
+      }
+      ++i;
+    }
   }
 }
 

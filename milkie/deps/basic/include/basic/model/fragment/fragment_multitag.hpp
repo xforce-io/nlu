@@ -44,6 +44,7 @@ class FragmentMultitag : public Fragment {
   std::vector<typename Tag::Val>& GetTags() { return tags_; }
   inline typename Tag::Val GetTag() const;
   inline bool ContainTag(typename Tag::Val tagVal);
+  virtual bool Same(const Fragment &other) const;
 
   inline std::wstring GetQuery(const std::wstring &sentence) const;
 
@@ -149,6 +150,29 @@ bool FragmentMultitag<Tag>::ContainTag(typename Tag::Val tag) {
     }
   }
   return false;
+}
+
+template <typename Tag>
+bool FragmentMultitag<Tag>::Same(const Fragment &fragment) const {
+  auto &other = SCAST<const FragmentMultitag<Tag>&>(fragment);
+  if (!Fragment::Same(other) || tags_.size() != other.tags_.size()) {
+    return false;
+  }
+
+  for (auto &tag : tags_) {
+    bool ret = false;
+    for (auto &otherTag : other.tags_) {
+      if (tag == otherTag) {
+        ret = true;
+        break;
+      }
+    }
+
+    if (!ret) {
+      return false;
+    }
+  }
+  return true;
 }
 
 template <typename Tag>

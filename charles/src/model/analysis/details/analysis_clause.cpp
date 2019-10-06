@@ -70,7 +70,7 @@ bool AnalysisClause::Process() {
       auto father = GetFather(branch);
       branch->GetNluContext()->Dump(
               jsonType["context"],
-              nullptr!=father ? father->GetNluContext() : nullptr);
+              nullptr!=father ? &(*father->GetNluContext()) : nullptr);
       basic::AnalysisTracer::Get()->AddEvent(jsonType);
     }
   }

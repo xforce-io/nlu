@@ -51,6 +51,7 @@ class Fragment {
   Confidence GetConfidence() const { return confidence_; }
   inline uint32_t GetStrategy() const { return strategy_; }
   inline bool IsIn(size_t offset, size_t len) const;
+  virtual bool Same(const Fragment &other) const;
 
   inline bool Intersect(const Fragment &fragment) const;
 
