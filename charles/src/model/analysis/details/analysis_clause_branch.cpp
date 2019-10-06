@@ -19,12 +19,6 @@ AnalysisClauseBranch::AnalysisClauseBranch(
     end_(false),
     childrenIdx_(0) {
   splitStage_->SetBornStage(splitStage_->GetLastStage());
-
-  JsonType jsonType;
-  jsonType["name"] = "branch_init";
-  jsonType["no"] = no_;
-  jsonType["born"] = splitStage_->GetBornStage();
-  basic::AnalysisTracer::Get()->AddEvent(jsonType);
 }
 
 AnalysisClauseBranch::~AnalysisClauseBranch() {
@@ -37,6 +31,12 @@ AnalysisClauseBranch::~AnalysisClauseBranch() {
 bool AnalysisClauseBranch::Process(
         std::queue<std::shared_ptr<AnalysisClauseBranch>> &branches) {
   if (!processed_) {
+    JsonType jsonType;
+    jsonType["name"] = "branch_init";
+    jsonType["no"] = no_;
+    jsonType["born"] = splitStage_->GetBornStage();
+    basic::AnalysisTracer::Get()->AddEvent(jsonType);
+
     if (!VerifySubBranches_()) {
       end_ = false;
       return false;
