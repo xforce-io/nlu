@@ -4,8 +4,8 @@
 #include "public-cpp/str_helper.hpp"
 
 #include "basic/model/nlu_context.h"
-#include "basic/model/name_entity.h"
-#include "basic/model/segment.h"
+#include "basic/model/fragment/name_entity.h"
+#include "basic/model/fragment/segment.h"
 #include "basic/model/fragment/fragment_set.hpp"
 #include "basic/model/analysis_tracer/analysis_tracer.h"
 #include "basic/data/manager.h"

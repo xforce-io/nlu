@@ -3,9 +3,9 @@
 #include "public-cpp/public.h"
 
 #include "basic/model/fragment/fragment_set.hpp"
-#include "basic/model/segment.h"
-#include "basic/model/name_entity.h"
-#include "basic/model/chunk.h"
+#include "basic/model/fragment/segment.h"
+#include "basic/model/fragment/name_entity.h"
+#include "basic/model/fragment/chunk.h"
 #include "basic/model/nlu_context.h"
 #include "basic/data/manager.h"
 #include "basic/data/gkb/gkb.h"
