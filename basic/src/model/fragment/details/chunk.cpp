@@ -1,7 +1,7 @@
 #include "../chunk.h"
-#include "../../data/manager.h"
-#include "../../data/gkb/gkb.h"
-#include "../nlu_context.h"
+#include "../../../data/manager.h"
+#include "../../../data/gkb/gkb.h"
+#include "../../nlu_context.h"
 
 namespace xforce { namespace nlu { namespace basic {
 

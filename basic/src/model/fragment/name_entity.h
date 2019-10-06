@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../public.h"
-#include "fragment/fragment.h"
-#include "fragment/fragment_set.hpp"
+#include "../../public.h"
+#include "fragment.h"
+#include "fragment_set.hpp"
 
 namespace xforce { namespace nlu { namespace basic {
 
-class NameEntity : public basic::Fragment {
+class NameEntity : public Fragment {
  public:
   typedef Fragment Super;
   typedef FragmentSet<NameEntity> Set;

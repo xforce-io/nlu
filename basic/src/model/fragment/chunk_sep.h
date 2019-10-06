@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../public.h"
+#include "../../public.h"
 
-#include "fragment/fragment.h"
-#include "fragment/fragment_set.hpp"
+#include "fragment.h"
+#include "fragment_set.hpp"
 
 namespace xforce { namespace nlu { namespace basic {
 

@@ -48,6 +48,8 @@ bool AnalysisClause::Process() {
     auto branch = branches_.front();
     branches_.pop();
 
+    allBranches_.insert(std::make_pair(branch->GetNo(), branch));
+
     ret = branch->Process(branches_);
     if (ret) {
       succ = true;
@@ -65,11 +67,22 @@ bool AnalysisClause::Process() {
       JsonType jsonType;
       jsonType["name"] = "branch_end";
       jsonType["no"] = branch->GetNo();
-      branch->GetNluContext()->Dump(jsonType["context"]);
+      auto father = GetFather(branch);
+      branch->GetNluContext()->Dump(
+              jsonType["context"],
+              nullptr!=father ? father->GetNluContext() : nullptr);
       basic::AnalysisTracer::Get()->AddEvent(jsonType);
     }
   }
   return succ;
+}
+
+AnalysisClause::Branch AnalysisClause::GetFather(Branch &branch) {
+  if (branch->GetNo() <= 1) {
+    return nullptr;
+  }
+  auto iter = allBranches_.find(branch->GetNoFather());
+  return allBranches_.end() != iter ? iter->second : nullptr;
 }
 
 void AnalysisClause::Dump(JsonType &jsonType) {

@@ -22,6 +22,7 @@ class AnalysisClauseBranch {
   bool Process(std::queue<std::shared_ptr<AnalysisClauseBranch>> &children);
 
   size_t GetNo() const { return no_; }
+  size_t GetNoFather() const { return no_/100; }
   const std::shared_ptr<basic::NluContext>& GetNluContext() const { return nluContext_; }
   const SplitStage& GetSplitStage() const { return *splitStage_; }
   bool GetEnd() const { return end_; }

@@ -66,10 +66,12 @@ void NluContext::Reset(basic::Stage::Val stage) {
   }
 }
 
-void NluContext::Dump(JsonType &jsonType) {
+void NluContext::Dump(JsonType &jsonType, const NluContext *diff) {
   jsonType["query"] = query_;
   jsonType["isValid"] = isValid_;
-  managerFragmentSet_->Dump(jsonType["fragments"]);
+  managerFragmentSet_->Dump(
+          jsonType["fragments"],
+          nullptr != diff ? diff->managerFragmentSet_ : nullptr);
 
   size_t i=0;
   for (auto &phrase : phrases_) {

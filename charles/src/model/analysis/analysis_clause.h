@@ -10,7 +10,8 @@ class AnalysisClauseBranch;
 
 class AnalysisClause : public AnalysisComponent {
  public:
-  typedef std::list<std::shared_ptr<AnalysisClauseBranch>> Branches;
+  typedef std::shared_ptr<AnalysisClauseBranch> Branch;
+  typedef std::list<Branch> Branches;
 
  public:
   AnalysisClause(
@@ -24,6 +25,7 @@ class AnalysisClause : public AnalysisComponent {
   inline std::shared_ptr<basic::NluContext>& GetClause();
   inline const Branches& GetFinished() const { return finished_; }
   inline const Branches& GetResults() const { return results_; }
+  inline Branch GetFather(Branch &branch);
   inline bool IsAnalysised() const;
   void Dump(JsonType &jsonType);
 
@@ -35,6 +37,7 @@ class AnalysisClause : public AnalysisComponent {
   std::queue<std::shared_ptr<AnalysisClauseBranch>> branches_;
   Branches finished_;
   Branches results_;
+  std::unordered_map<size_t, std::shared_ptr<AnalysisClauseBranch>> allBranches_;
 };
 
 std::shared_ptr<basic::NluContext>& AnalysisClause::GetClause() {

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../public.h"
-#include "pos/pos_tag.h"
-#include "syntax/syntax_tag.h"
-#include "fragment/fragment.h"
-#include "fragment/fragment_set.hpp"
-#include "fragment/fragment_multitag.hpp"
+#include "../../public.h"
+#include "../pos/pos_tag.h"
+#include "../syntax/syntax_tag.h"
+#include "fragment.h"
+#include "fragment_set.hpp"
+#include "fragment_multitag.hpp"
 #include "segment.h"
 
 namespace xforce { namespace nlu { namespace basic {
