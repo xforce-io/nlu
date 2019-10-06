@@ -83,7 +83,7 @@ bool FragmentSet<FragmentType>::Add(std::shared_ptr<FragmentType> fragment) {
     } else {
       ret = fragments_.insert(fragment).second;
     }
-
+    return ret;
   }
   return false;
 }

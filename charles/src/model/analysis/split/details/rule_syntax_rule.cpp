@@ -74,7 +74,7 @@ bool RuleSyntaxRule::Split(
               storageItem.GetOffset(),
               storageItem.GetContent().length(),
               930);
-      if (branches[index]->GetChunks().Add(chunk)) {
+      if (branches[index]->Add(chunk)) {
         curTouched = true;
       }
     }

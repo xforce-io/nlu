@@ -2,6 +2,7 @@
 
 #include "../../public.h"
 #include "fragment.h"
+#include "../analysis_tracer/analysis_tracer.h"
 
 namespace xforce { namespace nlu { namespace basic {
 
@@ -75,12 +76,14 @@ void FragmentSet<FragmentType>::Clear() {
 template <typename FragmentType>
 bool FragmentSet<FragmentType>::Add(std::shared_ptr<FragmentType> fragment) {
   if (fragment->GetOffset() < text_->length()) {
+    bool ret;
     auto iter = fragments_.find(fragment);
     if (iter != fragments_.end()) {
-      return (*iter)->Merge(*fragment);
+      ret = (*iter)->Merge(*fragment);
     } else {
-      return fragments_.insert(fragment).second;
+      ret = fragments_.insert(fragment).second;
     }
+    return ret;
   }
   return false;
 }

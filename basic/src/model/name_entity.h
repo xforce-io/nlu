@@ -30,7 +30,7 @@ class NameEntity : public basic::Fragment {
   int GetNECategory() const { return kCategoryOther; }
   const std::string& GetCategory() const;
 
-  void Dump(JsonType &jsonType);
+  void Dump(JsonType &jsonType) const;
 };
 
 NameEntity::NameEntity() :

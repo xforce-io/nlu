@@ -43,7 +43,7 @@ bool RuleSyntaxVerbArg::Split(
       newChunk.SetNeedToVerify(true);
 
       auto newNluContext = Rule::Clone(splitStage, nluContext);
-      if (newNluContext->GetChunks().Add(newChunk)) {
+      if (newNluContext->Add(newChunk)) {
         nluContexts.push_back(newNluContext);
         return true;
       }

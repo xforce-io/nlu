@@ -24,6 +24,13 @@ class NluContext {
           size_t to,
           std::shared_ptr<NluContext> &nluContext);
 
+  inline bool Add(const NameEntity &nameEntity);
+  inline bool Add(const Segment &segment);
+  inline bool Add(const ChunkSep &chunkSep);
+  inline bool Add(const Chunk &chunk);
+
+  inline void Clear();
+
   std::shared_ptr<NluContext> Build(size_t from, size_t to);
   std::shared_ptr<NluContext> Clone() const;
   void Reset(basic::Stage::Val stage);
@@ -69,6 +76,36 @@ void NluContext::SetChunkSeps(const ChunkSep::Set &chunkSeps) {
 
 void NluContext::SetChunks(const typename Chunk::Set &chunks) {
   managerFragmentSet_->SetChunks(chunks);
+}
+
+bool NluContext::Add(const NameEntity &nameEntity) {
+  return managerFragmentSet_->GetNameEntities().Add(nameEntity);
+}
+
+bool NluContext::Add(const Segment &segment) {
+  return managerFragmentSet_->GetSegments().Add(segment);
+}
+
+bool NluContext::Add(const ChunkSep &chunkSep) {
+  bool ret = managerFragmentSet_->GetChunkSeps().Add(chunkSep);
+  if (ret) {
+    JsonType jsonType;
+    jsonType["name"] = "add";
+    chunkSep.Dump(jsonType);
+    AnalysisTracer::Get()->AddEvent(jsonType);
+  }
+  return ret;
+}
+
+bool NluContext::Add(const Chunk &chunk) {
+  bool ret = managerFragmentSet_->GetChunks().Add(chunk);
+  if (ret) {
+    JsonType jsonType;
+    jsonType["name"] = "add";
+    chunk.Dump(jsonType);
+    AnalysisTracer::Get()->AddEvent(jsonType);
+  }
+  return ret;
 }
 
 bool NluContext::GetIsValid() const {

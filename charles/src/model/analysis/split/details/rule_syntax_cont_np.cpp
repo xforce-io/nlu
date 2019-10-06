@@ -76,7 +76,7 @@ bool RuleSyntaxContNp::AddNewChunk_(
             strategy);
 
     auto newBranch = Rule::Clone(splitStage, nluContext);
-    if (newBranch->GetChunks().Add(newChunk)) {
+    if (newBranch->Add(newChunk)) {
       nluContexts.push_back(newBranch);
       return true;
     }
@@ -90,7 +90,7 @@ bool RuleSyntaxContNp::AddNewChunk_(
             strategy);
 
     auto newBranch = Rule::Clone(splitStage, nluContext);
-    bool ret0 = newBranch->GetChunks().Add(leftChunk);
+    bool ret0 = newBranch->Add(leftChunk);
 
     basic::Chunk rightChunk(
             *nluContext,
@@ -100,7 +100,7 @@ bool RuleSyntaxContNp::AddNewChunk_(
             strategy);
 
 
-    bool ret1 = newBranch->GetChunks().Add(rightChunk);
+    bool ret1 = newBranch->Add(rightChunk);
     if (ret0 || ret1) {
       nluContexts.push_back(newBranch);
     }

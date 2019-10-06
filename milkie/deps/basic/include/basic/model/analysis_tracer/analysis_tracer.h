@@ -11,6 +11,7 @@ class AnalysisTracer : public Tracer {
  public:
   void AddEvent(const std::string &event);
   void AddEvent(const std::wstring &event);
+  void AddEvent(const JsonType &event);
 
  public:
   static AnalysisTracer* Get();

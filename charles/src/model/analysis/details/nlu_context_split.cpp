@@ -127,7 +127,7 @@ bool NluContextSplit::SplitBySyntax_(
               storageItem.GetOffset(),
               storageItem.GetContent().length(),
               970);
-      if (branches[index]->GetChunks().Add(chunk)) {
+      if (branches[index]->Add(chunk)) {
         if (basic::SyntaxTag::Type::kStc == syntaxTag) {
           return true;
         }

@@ -47,7 +47,7 @@ class FragmentMultitag : public Fragment {
 
   inline std::wstring GetQuery(const std::wstring &sentence) const;
 
-  virtual void Dump(JsonType &jsonType);
+  virtual void Dump(JsonType &jsonType) const;
 
  protected:
   std::vector<typename Tag::Val> tags_;
@@ -157,7 +157,7 @@ std::wstring FragmentMultitag<Tag>::GetQuery(const std::wstring &sentence) const
 }
 
 template <typename Tag>
-void FragmentMultitag<Tag>::Dump(JsonType &jsonType) {
+void FragmentMultitag<Tag>::Dump(JsonType &jsonType) const {
   Super::Dump(jsonType);
 }
 

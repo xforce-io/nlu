@@ -114,7 +114,7 @@ bool RuleSyntaxPrep::AddNewChunk_(
           strategy);
 
   auto newBranch = Rule::Clone(splitStage, nluContext);
-  bool ret = newBranch->GetChunks().Add(newChunk);
+  bool ret = newBranch->Add(newChunk);
   if (!ret) {
     return false;
   }
@@ -126,7 +126,7 @@ bool RuleSyntaxPrep::AddNewChunk_(
             subChunkFrom,
             subChunkTo-subChunkFrom,
             strategy);
-    newBranch->GetChunks().Add(subChunk);
+    newBranch->Add(subChunk);
   } else {
     std::wstring subStr = nluContext->GetQuery().substr(
                     subChunkFrom,

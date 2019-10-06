@@ -37,7 +37,7 @@ bool Matcher::Init() {
 }
 
 void Matcher::Match(std::shared_ptr<basic::NluContext> nluContext) {
-  nluContext->GetChunkSeps().Add(std::make_shared<basic::ChunkSep>(0));
+  nluContext->Add(basic::ChunkSep(0));
 
   ParseAccordingToRule_(nluContext);
   ParseCommon_(*nluContext);
@@ -92,9 +92,9 @@ void Matcher::ParseAccordingToRule_(std::shared_ptr<basic::NluContext> nluContex
                 storageItem.GetOffset(),
                 storageItem.GetContent().length(),
                 310);
-        nluContext->AddChunks(chunk);
-        nluContext->AddChunkSeps(basic::ChunkSep(storageItem.GetOffset()));
-        nluContext->AddChunkSeps(basic::ChunkSep(
+        nluContext->Add(chunk);
+        nluContext->Add(basic::ChunkSep(storageItem.GetOffset()));
+        nluContext->Add(basic::ChunkSep(
                 storageItem.GetOffset() + storageItem.GetContent().length()));
       }
     } else {

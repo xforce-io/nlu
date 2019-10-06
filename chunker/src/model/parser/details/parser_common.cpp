@@ -8,13 +8,11 @@ void ParserCommon::Process(
         std::shared_ptr<basic::Segment> next,
         int chunkPos,
         basic::SyntaxTag::Type::Val syntaxTag) {
-  auto &chunkSeps = nluContext.GetChunkSeps();
-  auto &chunks = nluContext.GetChunks();
   if (-1 == chunkPos) {
-    chunkSeps.Add(std::make_shared<basic::ChunkSep>(cur->GetOffset()));
-    chunkSeps.Add(std::make_shared<basic::ChunkSep>(cur->GetEnd()));
+    nluContext.Add(basic::ChunkSep(cur->GetOffset()));
+    nluContext.Add(basic::ChunkSep(cur->GetEnd()));
     if (basic::SyntaxTag::Type::kUndef != syntaxTag) {
-      chunks.Add(std::make_shared<basic::Chunk>(
+      nluContext.Add(basic::Chunk(
               nluContext,
               syntaxTag,
               cur->GetOffset(),
@@ -22,12 +20,12 @@ void ParserCommon::Process(
               320));
     }
   } else if (-2 == chunkPos) {
-    chunkSeps.Add(std::make_shared<basic::ChunkSep>(next->GetOffset()));
+    nluContext.Add(basic::ChunkSep(next->GetOffset()));
   } else if (-3 == chunkPos) {
-    chunkSeps.Add(std::make_shared<basic::ChunkSep>(cur->GetOffset()));
-    chunkSeps.Add(std::make_shared<basic::ChunkSep>(next->GetEnd()));
+    nluContext.Add(basic::ChunkSep(cur->GetOffset()));
+    nluContext.Add(basic::ChunkSep(next->GetEnd()));
     if (basic::SyntaxTag::Type::kUndef != syntaxTag) {
-      chunks.Add(std::make_shared<basic::Chunk>(
+      nluContext.Add(basic::Chunk(
               nluContext,
               syntaxTag,
               cur->GetOffset(),
@@ -35,10 +33,10 @@ void ParserCommon::Process(
               321));
     }
   } else if (chunkPos>0) {
-    chunkSeps.Add(std::make_shared<basic::ChunkSep>(cur->GetOffset()));
-    chunkSeps.Add(std::make_shared<basic::ChunkSep>(cur->GetOffset() + chunkPos));
+    nluContext.Add(basic::ChunkSep(cur->GetOffset()));
+    nluContext.Add(basic::ChunkSep(cur->GetOffset() + chunkPos));
     if (basic::SyntaxTag::Type::kUndef != syntaxTag) {
-      chunks.Add(std::make_shared<basic::Chunk>(
+      nluContext.Add(basic::Chunk(
               nluContext,
               syntaxTag,
               cur->GetOffset(),

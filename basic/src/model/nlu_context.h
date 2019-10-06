@@ -29,15 +29,21 @@ class NluContext {
   inline bool Add(const ChunkSep &chunkSep);
   inline bool Add(const Chunk &chunk);
 
+  inline void Clear();
+
   std::shared_ptr<NluContext> Build(size_t from, size_t to);
   std::shared_ptr<NluContext> Clone() const;
   void Reset(basic::Stage::Val stage);
 
   inline bool GetIsValid() const;
   inline const typename NameEntity::Set& GetNameEntities() const;
+  inline typename NameEntity::Set& GetNameEntities();
   inline const typename Segment::Set& GetSegments() const;
+  inline typename Segment::Set& GetSegments();
   inline const typename ChunkSep::Set& GetChunkSeps() const;
+  inline typename ChunkSep::Set& GetChunkSeps();
   inline const typename Chunk::Set& GetChunks() const;
+  inline typename Chunk::Set& GetChunks();
 
   inline bool HasPredPosBefore(size_t offset) const;
 
@@ -73,11 +79,11 @@ void NluContext::SetChunks(const typename Chunk::Set &chunks) {
 }
 
 bool NluContext::Add(const NameEntity &nameEntity) {
-  managerFragmentSet_->GetNameEntities().Add(nameEntity);
+  return managerFragmentSet_->GetNameEntities().Add(nameEntity);
 }
 
 bool NluContext::Add(const Segment &segment) {
-  managerFragmentSet_->GetSegments().Add(segment);
+  return managerFragmentSet_->GetSegments().Add(segment);
 }
 
 bool NluContext::Add(const ChunkSep &chunkSep) {
@@ -96,7 +102,7 @@ bool NluContext::Add(const Chunk &chunk) {
   if (ret) {
     JsonType jsonType;
     jsonType["name"] = "add";
-    chunkSep.Dump(jsonType);
+    chunk.Dump(jsonType);
     AnalysisTracer::Get()->AddEvent(jsonType);
   }
   return ret;
@@ -110,7 +116,15 @@ const typename NameEntity::Set& NluContext::GetNameEntities() const {
   return managerFragmentSet_->GetNameEntities();
 }
 
+typename NameEntity::Set& NluContext::GetNameEntities() {
+  return managerFragmentSet_->GetNameEntities();
+}
+
 const typename Segment::Set& NluContext::GetSegments() const {
+  return managerFragmentSet_->GetSegments();
+}
+
+typename Segment::Set& NluContext::GetSegments() {
   return managerFragmentSet_->GetSegments();
 }
 
@@ -118,7 +132,15 @@ const typename ChunkSep::Set& NluContext::GetChunkSeps() const {
   return managerFragmentSet_->GetChunkSeps();
 }
 
+typename ChunkSep::Set& NluContext::GetChunkSeps() {
+  return managerFragmentSet_->GetChunkSeps();
+}
+
 const typename Chunk::Set& NluContext::GetChunks() const {
+  return managerFragmentSet_->GetChunks();
+}
+
+typename Chunk::Set& NluContext::GetChunks() {
   return managerFragmentSet_->GetChunks();
 }
 

@@ -96,7 +96,7 @@ void PosTagging::PostProcess_(basic::NluContext &nluContext) {
           auto afterNext = next;
           ++afterNext;
           nluContext.GetSegments().Erase(cur, afterNext);
-          nluContext.GetSegments().Add(newSegment);
+          nluContext.Add(newSegment);
           touched = true;
           break;
         }

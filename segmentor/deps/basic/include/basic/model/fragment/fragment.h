@@ -54,7 +54,7 @@ class Fragment {
 
   inline bool Intersect(const Fragment &fragment) const;
 
-  virtual void Dump(JsonType &jsonType);
+  virtual void Dump(JsonType &jsonType) const;
 
  protected:
   Fragment *father_;

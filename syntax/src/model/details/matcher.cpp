@@ -119,7 +119,7 @@ bool Matcher::SyntaxProcessForChunkSep_(std::shared_ptr<basic::NluContext> nluCo
                   storageItem.GetOffset() + (*cur)->GetOffset(),
                   storageItem.GetContent().length(),
                   410);
-          if (nluContext->GetChunks().Add(chunk)) {
+          if (nluContext->Add(chunk)) {
             touched = true;
           }
         }
@@ -168,7 +168,7 @@ bool Matcher::SyntaxProcessForChunk_(std::shared_ptr<basic::NluContext> nluConte
                 storageItem.GetOffset(),
                 storageItem.GetContent().length(),
                 420);
-        if (nluContext->GetChunks().Add(chunk)) {
+        if (nluContext->Add(chunk)) {
           if (basic::SyntaxTag::Type::kStc == syntaxTag) {
             return true;
           }
@@ -216,7 +216,7 @@ bool Matcher::RuleIntransitiveVerb_(
           chunk->GetBegin(),
           chunk->GetLen(),
           440);
-  nluContext->GetChunks().Add(newVp);
+  nluContext->Add(newVp);
 
   //strategy 1
   auto npBefore = nluContext->GetChunks().GetFragmentBefore(chunk->GetOffset());
@@ -251,8 +251,8 @@ bool Matcher::RuleIntransitiveVerb_(
           npBefore->GetOffset(),
           chunk->GetEnd() - npBefore->GetOffset(),
           442);
-  if (nluContext->GetChunks().Add(newNp) ||
-      nluContext->GetChunks().Add(newContNp)) {
+  if (nluContext->Add(newNp) ||
+      nluContext->Add(newContNp)) {
     return true;
   }
   return false;
@@ -287,7 +287,7 @@ bool Matcher::RuleContNp_(std::shared_ptr<basic::NluContext> nluContext) {
             0,
             tmpChunk->GetEnd(),
             442);
-    if (nluContext->GetChunks().Add(newNp)) {
+    if (nluContext->Add(newNp)) {
       return true;
     }
   }
@@ -338,7 +338,7 @@ void Matcher::AddAdvpDescDirForChunk_(
         descRight<0 &&
         leftBound>0) {
       advp->SetDescDir(basic::Chunk::kLeft);
-      nluContext->GetChunks().Add(std::make_shared<basic::Chunk>(
+      nluContext->Add(basic::Chunk(
               *nluContext,
               resTag,
               leftBound,
@@ -348,7 +348,7 @@ void Matcher::AddAdvpDescDirForChunk_(
         descRight>0 &&
         rightBound>0) {
       advp->SetDescDir(basic::Chunk::kRight);
-      nluContext->GetChunks().Add(std::make_shared<basic::Chunk>(
+      nluContext->Add(basic::Chunk(
               *nluContext,
               resTag,
               advp->GetOffset(),
@@ -386,7 +386,7 @@ void Matcher::AddAdvpDescDirForChunk_(
         descRight[0] < 0 &&
         descRight[1] < 0) {
       advp->SetDescDir(basic::Chunk::kLeft);
-      nluContext->GetChunks().Add(std::make_shared<basic::Chunk>(
+      nluContext->Add(basic::Chunk(
               *nluContext,
               resTag[0],
               leftBound[0],
@@ -397,7 +397,7 @@ void Matcher::AddAdvpDescDirForChunk_(
         descRight[0] > 0 &&
         descRight[1] > 0) {
       advp->SetDescDir(basic::Chunk::kRight);
-      nluContext->GetChunks().Add(std::make_shared<basic::Chunk>(
+      nluContext->Add(basic::Chunk(
               *nluContext,
               resTag[1],
               advp->GetOffset(),
