@@ -44,6 +44,17 @@ bool AnalysisClause::Process() {
     return false;
   }
 
+  if (master_->GetEnd()) {
+    JsonType jsonType;
+    jsonType["name"] = "branch_end";
+    jsonType["no"] = master_->GetNo();
+    auto father = GetFather(master_);
+    master_->GetNluContext()->Dump(
+            jsonType["context"],
+            nullptr!=father ? &(*father->GetNluContext()) : nullptr);
+    basic::AnalysisTracer::Get()->AddEvent(jsonType);
+  }
+
   bool succ = false;
   while (!branches_.empty()) {
     auto branch = branches_.front();
