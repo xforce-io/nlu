@@ -145,4 +145,8 @@ SplitStage* SplitStage::Clone() const {
   return newStage;
 }
 
+const Rule& SplitStage::GetLastRule() const {
+  return *((*(splitRuleMgr_->GetRules()[curStage_]))[ruleIdx_]);
+}
+
 }}}

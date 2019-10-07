@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../public.h"
+#include "rule.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
@@ -28,6 +29,8 @@ class SplitStage {
   basic::Stage::Val GetBornStage() const { return bornStage_; }
   basic::Stage::Val GetCurStage() const { return curStage_; }
   basic::Stage::Val GetLastStage() const { return lastStage_; }
+
+  const Rule& GetLastRule() const;
 
  private:
   SplitRuleMgr *splitRuleMgr_;
