@@ -13,19 +13,19 @@ void ManagerFragmentSet::Dump(
         JsonType &jsonType,
         const ManagerFragmentSet *managerFragmentSet) {
   nameEntities_.Dump(
-          jsonType["nameEntities"],
+          jsonType,
           nullptr != managerFragmentSet ? &(managerFragmentSet->nameEntities_) : nullptr);
 
   segments_.Dump(
-          jsonType["seg"],
+          jsonType,
           nullptr != managerFragmentSet ? &(managerFragmentSet->segments_) : nullptr);
 
   chunkSeps_.Dump(
-          jsonType["chunkSep"],
+          jsonType,
           nullptr != managerFragmentSet ? &(managerFragmentSet->chunkSeps_) : nullptr);
 
   chunks_.Dump(
-          jsonType["chunk"],
+          jsonType,
           nullptr != managerFragmentSet ? &(managerFragmentSet->chunks_) : nullptr);
 }
 
