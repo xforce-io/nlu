@@ -29,6 +29,7 @@ bool AnalysisClause::Init() {
           *splitStage,
           endTag_);
   XFC_DELETE(splitStage);
+  allBranches_.insert(std::make_pair(master_->GetNo(), master_));
   return ret;
 }
 
