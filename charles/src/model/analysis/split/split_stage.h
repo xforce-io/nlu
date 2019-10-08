@@ -28,7 +28,9 @@ class SplitStage {
 
   basic::Stage::Val GetBornStage() const { return bornStage_; }
   basic::Stage::Val GetCurStage() const { return curStage_; }
+  size_t GetRuleIdx() const { return ruleIdx_ };
   basic::Stage::Val GetLastStage() const { return lastStage_; }
+  size_t GetLastRuleIdx() const { return lastRuleIdx_; }
 
   const Rule* GetLastRule() const;
 
