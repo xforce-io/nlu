@@ -35,7 +35,9 @@ bool AnalysisClauseBranch::Process(
     jsonType["name"] = "branch_init";
     jsonType["no"] = no_;
     jsonType["born"] = splitStage_->GetBornStage();
-    jsonType["rule"] = splitStage_->GetLastRule().GetCategory();
+    if (splitStage_->GetLastRule() != nullptr) {
+      jsonType["rule"] = splitStage_->GetLastRule()->GetCategory();
+    }
     basic::AnalysisTracer::Get()->AddEvent(jsonType);
 
     if (!VerifySubBranches_()) {

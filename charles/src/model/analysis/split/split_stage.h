@@ -30,7 +30,7 @@ class SplitStage {
   basic::Stage::Val GetCurStage() const { return curStage_; }
   basic::Stage::Val GetLastStage() const { return lastStage_; }
 
-  const Rule& GetLastRule() const;
+  const Rule* GetLastRule() const;
 
  private:
   SplitRuleMgr *splitRuleMgr_;
