@@ -14,6 +14,11 @@ RuleSyntaxPrep::RuleSyntaxPrep(
   lenPrep_(len) {
 }
 
+const char* RuleSyntaxPrep::GetRepr() const {
+  std::sprintf(repr_, "ruleSyntaxPrep(%ld|%ld)", offsetPrep_, lenPrep_);
+  return repr_;
+}
+
 bool RuleSyntaxPrep::Split(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,

@@ -17,6 +17,7 @@ class RuleSyntaxRule : public Rule {
   explicit RuleSyntaxRule(std::shared_ptr<milkie::FeatureExtractor> &featureExtractor);
 
   size_t GetCategory() const { return Rule::kCategoryRuleSyntaxRule; }
+  const char* GetRepr() const;
 
   virtual bool Split(
           const SplitStage &splitStage,

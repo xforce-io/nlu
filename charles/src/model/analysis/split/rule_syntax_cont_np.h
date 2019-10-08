@@ -11,6 +11,7 @@ class RuleSyntaxContNp : public Rule {
   RuleSyntaxContNp(size_t offset, size_t len);
 
   size_t GetCategory() const { return Rule::kCategoryRuleSyntaxContNp; }
+  const char* GetRepr() const;
 
   bool Split(
           const SplitStage &splitStage,

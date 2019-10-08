@@ -11,6 +11,7 @@ class RulePosTagMultiTag : public Rule {
   explicit RulePosTagMultiTag(size_t offset);
 
   size_t GetCategory() const { return Rule::kCategoryRulePosTag; }
+  const char* GetRepr() const;
 
   bool Split(
           const SplitStage &splitStage,

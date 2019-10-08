@@ -14,6 +14,7 @@ class RuleSyntaxPrep : public Rule {
           size_t len);
 
   size_t GetCategory() const { return Rule::kCategoryRuleSyntaxPrep; }
+  const char* GetRepr() const;
 
   bool Split(
           const SplitStage &splitStage,

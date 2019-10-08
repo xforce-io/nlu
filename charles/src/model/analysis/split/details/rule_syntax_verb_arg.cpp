@@ -12,6 +12,11 @@ RuleSyntaxVerbArg::RuleSyntaxVerbArg(
     len_(len),
     segment_(segment) {}
 
+const char* RuleSyntaxVerbArg::GetRepr() const {
+  std::sprintf(repr_, "ruleSyntaxVerbArg(%ld|%ld)", offset_, len_);
+  return repr_;
+}
+
 bool RuleSyntaxVerbArg::Split(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,

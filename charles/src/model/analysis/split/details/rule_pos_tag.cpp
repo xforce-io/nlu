@@ -6,6 +6,11 @@ namespace xforce { namespace nlu { namespace charles {
 RulePosTagMultiTag::RulePosTagMultiTag(size_t offset) :
   offsetMultiTag_(offset) {}
 
+const char* RulePosTagMultiTag::GetRepr() const {
+  std::sprintf(repr_, "rulePosTagMultiTag(%ld)", offsetMultiTag_);
+  return repr_;
+}
+
 bool RulePosTagMultiTag::Split(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,

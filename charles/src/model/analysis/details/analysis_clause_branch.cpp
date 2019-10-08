@@ -36,8 +36,7 @@ bool AnalysisClauseBranch::Process(
     jsonType["no"] = no_;
     jsonType["born"] = splitStage_->GetBornStage();
     if (splitStage_->GetLastRule() != nullptr) {
-      jsonType["ruleCat"] = splitStage_->GetLastRule()->GetCategory();
-      jsonType["ruleIdx"] = splitStage_->GetLastRuleIdx();
+      jsonType["rule"] = splitStage_->GetLastRule()->GetRepr();
     }
     basic::AnalysisTracer::Get()->AddEvent(jsonType);
 

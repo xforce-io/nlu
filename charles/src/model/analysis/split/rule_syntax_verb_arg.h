@@ -14,6 +14,7 @@ class RuleSyntaxVerbArg : public Rule {
           const basic::Segment &segment);
 
   size_t GetCategory() const { return Rule::kCategoryRuleSyntaxVerbArg; }
+  const char* GetRepr() const;
 
   bool Split(
           const SplitStage &splitStage,

@@ -15,8 +15,11 @@ class Rule {
   static const size_t kCategoryRuleSyntaxRule = 4;
   static const size_t kCategoryRuleSyntaxVerbArg = 5;
 
+  static const size_t kMaxLenRepr = 1024;
+
 public:
   virtual size_t GetCategory() const = 0;
+  virtual const char* GetRepr() const = 0;
 
   virtual bool Split(
           const SplitStage &splitStage,
@@ -35,6 +38,9 @@ public:
   static std::shared_ptr<basic::NluContext> Clone(
           const SplitStage &splitStage,
           const std::shared_ptr<basic::NluContext> &nluContext);
+
+ protected:
+  mutable char repr_[kMaxLenRepr];
 };
 
 }}}

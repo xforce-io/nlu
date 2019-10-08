@@ -13,6 +13,11 @@ RuleSyntaxRule::RuleSyntaxRule(
   featureExtractor_(featureExtractor),
   context_(nullptr) {}
 
+const char* RuleSyntaxRule::GetRepr() const {
+  std::sprintf(repr_, "ruleSyntaxRule");
+  return repr_;
+}
+
 bool RuleSyntaxRule::Split(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,

@@ -7,6 +7,11 @@ RuleSyntaxContNp::RuleSyntaxContNp(size_t offset, size_t len) :
   offset_(offset),
   len_(len) {}
 
+const char* RuleSyntaxContNp::GetRepr() const {
+  std::sprintf(repr_, "ruleSyntaxContNp(%ld|%ld)", offset_, len_);
+  return repr_;
+}
+
 bool RuleSyntaxContNp::Split(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,
