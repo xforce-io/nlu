@@ -192,8 +192,8 @@ void FragmentSet<FragmentType>::Dump(
       auto res = diff->Find(fragment);
       if (nullptr==res || !fragment->Same(*res)) {
         fragment->Dump(jsonType[fragment->GetCategory().c_str()][i]);
+        ++i;
       }
-      ++i;
     }
   }
 }

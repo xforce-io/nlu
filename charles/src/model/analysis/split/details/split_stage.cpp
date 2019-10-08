@@ -146,8 +146,8 @@ SplitStage* SplitStage::Clone() const {
 }
 
 const Rule* SplitStage::GetLastRule() const {
-  if (basic::Stage::kNone != curStage_) {
-    return *((*(splitRuleMgr_->GetRules()[curStage_]))[ruleIdx_]);
+  if (basic::Stage::kNone != lastStage_) {
+    return (*(splitRuleMgr_->GetRules()[lastStage_]))[lastRuleIdx_];
   } else {
     return nullptr;
   }
