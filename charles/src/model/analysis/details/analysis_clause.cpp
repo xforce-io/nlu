@@ -48,10 +48,7 @@ bool AnalysisClause::Process() {
     JsonType jsonType;
     jsonType["name"] = "branch_end";
     jsonType["no"] = master_->GetNo();
-    auto father = GetFather(master_);
-    master_->GetNluContext()->Dump(
-            jsonType["diff"],
-            nullptr!=father ? &(*father->GetNluContext()) : nullptr);
+    master_->GetNluContext()->Dump(jsonType["ctx"], nullptr);
     basic::AnalysisTracer::Get()->AddEvent(jsonType);
   }
 
