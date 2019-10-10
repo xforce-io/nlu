@@ -9,6 +9,7 @@ FEATURE_EXTRACTOR_END
 
 FEATURE_EXTRACTOR_BEGIN(syntaxFromChunk)
     { #Pos(((n|r|t|m|q|f|j|h|k)P-)+) -> syntactic._cont_np_ }
+    { #Pos(nP) -> syntactic._cont_np_ }
     { #Pos((m|q)P-) -> syntactic.qp }
     { #Pos((dP-)*((a|b|z)P-)+) -> syntactic.advp }
     { #Pos(u) -> syntactic.u }
