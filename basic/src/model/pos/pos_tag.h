@@ -18,6 +18,8 @@ class PosTag {
       kM, //数词
       kQ, //量词
       kR, //代词
+      kRn, //体词性代词
+      kRp, //谓词性代词
 
       /*
        * 实词/谓词
@@ -90,6 +92,7 @@ class PosTag {
   };
 
  public:
+  static PosTag::Type::Val GetPosTagNaive(const std::wstring &pos);
   static PosTag::Type::Val GetPosTag(const std::wstring &pos);
   static PosTag::Type::Val GetPosTag(wchar_t pos);
   static const std::wstring& Str(PosTag::Type::Val posTag);
@@ -157,13 +160,14 @@ bool PosTag::IsNominal(PosTag::Type::Val posTag) {
     PosTag::Type::kF == posTag ||
     PosTag::Type::kM == posTag ||
     PosTag::Type::kQ == posTag ||
-    PosTag::Type::kR == posTag ||
+    PosTag::Type::kRn == posTag ||
     PosTag::Type::kH == posTag ||
     PosTag::Type::kK == posTag;
 }
 
 bool PosTag::IsPredicate(PosTag::Type::Val posTag) {
-  return PosTag::Type::kV == posTag ||
+  return PosTag::Type::kRp == posTag ||
+    PosTag::Type::kV == posTag ||
     PosTag::Type::kA == posTag ||
     PosTag::Type::kZ == posTag ||
     PosTag::Type::kB == posTag;

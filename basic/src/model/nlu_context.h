@@ -88,30 +88,10 @@ bool NluContext::Add(const Segment &segment) {
 
 bool NluContext::Add(const ChunkSep &chunkSep) {
   return managerFragmentSet_->GetChunkSeps().Add(chunkSep);
-  /*
-  bool ret = managerFragmentSet_->GetChunkSeps().Add(chunkSep);
-  if (ret) {
-    JsonType jsonType;
-    jsonType["name"] = "add";
-    chunkSep.Dump(jsonType);
-    AnalysisTracer::Get()->AddEvent(jsonType);
-  }
-  return ret;
-   */
 }
 
 bool NluContext::Add(const Chunk &chunk) {
   return managerFragmentSet_->GetChunks().Add(chunk);
-  /*
-  bool ret = managerFragmentSet_->GetChunks().Add(chunk);
-  if (ret) {
-    JsonType jsonType;
-    jsonType["name"] = "add";
-    chunk.Dump(jsonType);
-    AnalysisTracer::Get()->AddEvent(jsonType);
-  }
-  return ret;
-   */
 }
 
 bool NluContext::GetIsValid() const {

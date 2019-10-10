@@ -1,10 +1,28 @@
 #include "../pos_tag.h"
+#include "../../../data/manager.h"
+#include "../../../data/gkb/gkb.h"
 
 namespace xforce { namespace nlu { namespace basic {
 
-PosTag::Type::Val PosTag::GetPosTag(const std::wstring &posTag) {
+PosTag::Type::Val PosTag::GetPosTagNaive(const std::wstring &posTag) {
   if (posTag.length() == 1) {
     return GetPosTag(posTag[0]);
+  } else if (L"vn" == posTag) {
+    return PosTag::Type::kVn;
+  } else {
+    return PosTag::Type::kUndef;
+  }
+}
+
+PosTag::Type::Val PosTag::GetPosTag(const std::wstring &posTag) {
+  if (posTag.length() == 1) {
+    auto tag = GetPosTag(posTag[0]);
+    if (PosTag::Type::kR != tag) {
+      return tag;
+    }
+
+    //TODO :: HERE!!!
+    if (Manager::Get().GetGkb().GetGkbGlobal().GetPosTags())
   } else if (L"vn" == posTag) {
     return PosTag::Type::kVn;
   } else {
@@ -77,6 +95,8 @@ const std::wstring& PosTag::Str(PosTag::Type::Val posTag) {
   static const std::wstring kM = L"m";
   static const std::wstring kQ = L"q";
   static const std::wstring kR = L"r";
+  static const std::wstring kRn = L"rn";
+  static const std::wstring kRp = L"rp";
   static const std::wstring kV = L"v";
   static const std::wstring kVn = L"nv";
   static const std::wstring kA = L"a";
@@ -111,9 +131,13 @@ const std::wstring& PosTag::Str(PosTag::Type::Val posTag) {
     case PosTag::Type::kM :
       return kM;  
     case PosTag::Type::kQ :
-      return kQ;  
+      return kQ;
     case PosTag::Type::kR :
-      return kR;  
+      return kR;
+    case PosTag::Type::kRn :
+      return kRn;
+    case PosTag::Type::kRp :
+      return kRp;
     case PosTag::Type::kV :
       return kV;  
     case PosTag::Type::kVn :

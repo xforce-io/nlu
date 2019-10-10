@@ -50,7 +50,7 @@ bool AnalysisClause::Process() {
     jsonType["no"] = master_->GetNo();
     auto father = GetFather(master_);
     master_->GetNluContext()->Dump(
-            jsonType["context"],
+            jsonType["diff"],
             nullptr!=father ? &(*father->GetNluContext()) : nullptr);
     basic::AnalysisTracer::Get()->AddEvent(jsonType);
   }
@@ -81,8 +81,9 @@ bool AnalysisClause::Process() {
       jsonType["no"] = branch->GetNo();
       auto father = GetFather(branch);
       branch->GetNluContext()->Dump(
-              jsonType["context"],
+              jsonType["diff"],
               nullptr!=father ? &(*father->GetNluContext()) : nullptr);
+      branch->GetNluContext()->Dump(jsonType["ctx"], nullptr);
       basic::AnalysisTracer::Get()->AddEvent(jsonType);
     }
   }
