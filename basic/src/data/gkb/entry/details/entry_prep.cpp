@@ -21,7 +21,7 @@ int EntryPrep::Parse(const std::vector<std::wstring> &items) {
   StrHelper::SplitStr(items[kColAfterWords], L',', afterWords_);
 
   for (size_t i=0; i < items[kColAfterPoses].length(); ++i) {
-    auto posTag = PosTag::GetPosTag(items[kColAfterPoses][i]);
+    auto posTag = PosTag::GetPosTagFromChar(items[kColAfterPoses][i]);
     if (PosTag::Type::kUndef != posTag) {
       afterPoses_.push_back(posTag);
     }

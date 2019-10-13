@@ -6,7 +6,7 @@ namespace xforce { namespace nlu { namespace basic {
 
 PosTag::Type::Val PosTag::GetPosTagNaive(const std::wstring &posTag) {
   if (posTag.length() == 1) {
-    return GetPosTag(posTag[0]);
+    return GetPosTagFromChar(posTag[0]);
   } else if (L"vn" == posTag) {
     return PosTag::Type::kVn;
   } else {
@@ -16,21 +16,27 @@ PosTag::Type::Val PosTag::GetPosTagNaive(const std::wstring &posTag) {
 
 PosTag::Type::Val PosTag::GetPosTag(const std::wstring &posTag) {
   if (posTag.length() == 1) {
-    auto tag = GetPosTag(posTag[0]);
+    auto tag = GetPosTagFromChar(posTag[0]);
     if (PosTag::Type::kR != tag) {
       return tag;
     }
 
-    //TODO :: HERE!!!
-    if (Manager::Get().GetGkb().GetGkbGlobal().GetPosTags())
+    auto entries = Manager::Get().GetGkb().GetGkbGlobal().GetEntries(posTag);
+    if (entries->size() == 1) {
+      auto tiWei = (*entries)[0]->GetTiWei();
+      if (EntryGlobal::TiWei::kTi == tiWei) {
+        return PosTag::Type::kRn;
+      } else if (EntryGlobal::TiWei::kWei == tiWei) {
+        return PosTag::Type::kRp;
+      }
+    }
   } else if (L"vn" == posTag) {
     return PosTag::Type::kVn;
-  } else {
-    return PosTag::Type::kUndef;
   }
+  return PosTag::Type::kUndef;
 }
 
-PosTag::Type::Val PosTag::GetPosTag(wchar_t pos) {
+PosTag::Type::Val PosTag::GetPosTagFromChar(wchar_t pos) {
   switch (pos) {
     case L'n' :
       return PosTag::Type::kN;

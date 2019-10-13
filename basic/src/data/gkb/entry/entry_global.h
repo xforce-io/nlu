@@ -23,7 +23,7 @@ class EntryGlobal : public Entry {
   int Parse(const std::vector<std::wstring> &items);
 
   PosTag::Type::Val GetPosTag() const { return posTag_; }
-  TiWei::Val GetTiWei() { return tiWei_; }
+  TiWei::Val GetTiWei() const { return tiWei_; }
 
  private:
   PosTag::Type::Val posTag_;
