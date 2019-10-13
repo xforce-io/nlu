@@ -8,7 +8,7 @@ int EntryGlobal::Parse(const std::vector<std::wstring> &items) {
     return ret;
   }
 
-  posTag_ = PosTag::GetPosTagNaive(items[kColPos]);
+  posTag_ = PosTag::GetPosTag(items[kColPos]);
   if (PosTag::Type::kUndef == posTag_) {
     return 1;
   }

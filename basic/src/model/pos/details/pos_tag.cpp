@@ -4,7 +4,7 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
-PosTag::Type::Val PosTag::GetPosTagNaive(const std::wstring &posTag) {
+PosTag::Type::Val PosTag::GetPosTag(const std::wstring &posTag) {
   if (posTag.length() == 1) {
     return GetPosTagFromChar(posTag[0]);
   } else if (L"vn" == posTag) {
@@ -14,14 +14,16 @@ PosTag::Type::Val PosTag::GetPosTagNaive(const std::wstring &posTag) {
   }
 }
 
-PosTag::Type::Val PosTag::GetPosTag(const std::wstring &posTag) {
+PosTag::Type::Val PosTag::GetPosTag(
+        const std::wstring &posTag,
+        const std::wstring &word) {
   if (posTag.length() == 1) {
     auto tag = GetPosTagFromChar(posTag[0]);
     if (PosTag::Type::kR != tag) {
       return tag;
     }
 
-    auto entries = Manager::Get().GetGkb().GetGkbGlobal().GetEntries(posTag);
+    auto entries = Manager::Get().GetGkb().GetGkbGlobal().GetEntries(word);
     if (entries->size() == 1) {
       auto tiWei = (*entries)[0]->GetTiWei();
       if (EntryGlobal::TiWei::kTi == tiWei) {

@@ -92,8 +92,10 @@ class PosTag {
   };
 
  public:
-  static PosTag::Type::Val GetPosTagNaive(const std::wstring &pos);
   static PosTag::Type::Val GetPosTag(const std::wstring &pos);
+  static PosTag::Type::Val GetPosTag(
+          const std::wstring &pos,
+          const std::wstring &word);
   static PosTag::Type::Val GetPosTagFromChar(wchar_t pos);
   static const std::wstring& Str(PosTag::Type::Val posTag);
 
