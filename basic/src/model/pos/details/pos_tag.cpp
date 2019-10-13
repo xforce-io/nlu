@@ -24,7 +24,7 @@ PosTag::Type::Val PosTag::GetPosTag(
     }
 
     auto entries = Manager::Get().GetGkb().GetGkbGlobal().GetEntries(word);
-    if (entries->size() == 1) {
+    if (nullptr!=entries && entries->size() == 1) {
       auto tiWei = (*entries)[0]->GetTiWei();
       if (EntryGlobal::TiWei::kTi == tiWei) {
         return PosTag::Type::kRn;
@@ -32,6 +32,7 @@ PosTag::Type::Val PosTag::GetPosTag(
         return PosTag::Type::kRp;
       }
     }
+    return PosTag::Type::kR;
   } else if (L"vn" == posTag) {
     return PosTag::Type::kVn;
   }
