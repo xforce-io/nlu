@@ -8,7 +8,7 @@ namespace xforce { namespace nlu { namespace basic {
 
 class GkbGlobal : public Table<EntryGlobal> {
  public:
-  inline std::shared_ptr<std::vector<PosTag::Type::Val>> GetPosTags(const std::wstring &word) const;
+  std::shared_ptr<std::vector<PosTag::Type::Val>> GetPosTags(const std::wstring &word) const;
 };
 
 
