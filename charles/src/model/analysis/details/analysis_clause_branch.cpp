@@ -45,7 +45,7 @@ bool AnalysisClauseBranch::Process(
       return false;
     }
 
-    if (no_ == 1010000000000) {
+    if (no_ == 10101) {
       int a = 0;
     }
 
