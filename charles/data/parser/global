@@ -8,9 +8,9 @@ FEATURE_EXTRACTOR_BEGIN(chunker)
 FEATURE_EXTRACTOR_END
 
 FEATURE_EXTRACTOR_BEGIN(syntaxFromChunk)
-    { #Pos(((n|r|t|m|q|f|j|h|k)P-)+) -> syntactic._cont_np_ }
-    { #Pos(nP) -> syntactic._cont_np_ }
-    { #Pos((m|q)P-) -> syntactic.qp }
+    { #Pos(((n|rn|t|m|q|f|j|h|k)P-)*((n|rn)P-)) -> syntactic._cont_np_ }
+    { #Pos((n|rn)P) -> syntactic.np }
+    { #Pos((m|q)P) -> syntactic.qp }
     { #Pos((dP-)*((a|b|z)P-)+) -> syntactic.advp }
     { #Pos(u) -> syntactic.u }
 FEATURE_EXTRACTOR_END
