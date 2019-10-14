@@ -41,7 +41,7 @@ bool AnalysisClauseBranch::Process(
     basic::AnalysisTracer::Get()->AddEvent(jsonType);
 
     if (!VerifySubBranches_()) {
-      end_ = false;
+      end_ = true;
       return false;
     }
 
