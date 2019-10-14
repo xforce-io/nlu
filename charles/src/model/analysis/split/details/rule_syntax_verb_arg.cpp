@@ -37,8 +37,8 @@ bool RuleSyntaxVerbArg::Split(
       continue;
     }
 
-    if (chunk->GetTag() == basic::SyntaxTag::Type::kNp ||
-        chunk->GetTag() == basic::SyntaxTag::Type::kContNp) {
+    if (chunk->ContainTag(basic::SyntaxTag::Type::kNp) ||
+        chunk->ContainTag(basic::SyntaxTag::Type::kContNp)) {
       basic::Chunk newChunk(
               *nluContext,
               basic::SyntaxTag::Type::kNp,
@@ -53,7 +53,6 @@ bool RuleSyntaxVerbArg::Split(
         return true;
       }
     }
-    return false;
   }
   return true;
 }
