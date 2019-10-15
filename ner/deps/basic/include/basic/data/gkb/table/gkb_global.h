@@ -11,6 +11,4 @@ class GkbGlobal : public Table<EntryGlobal> {
   std::shared_ptr<std::vector<PosTag::Type::Val>> GetPosTags(const std::wstring &word) const;
 };
 
-
-
 }}}

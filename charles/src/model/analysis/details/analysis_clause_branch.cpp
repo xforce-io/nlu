@@ -83,6 +83,7 @@ bool AnalysisClauseBranch::Process(
             no_ * 100 + childrenIdx_,
             *nluContext,
             *splitStage_,
+            basic::SyntaxTag::Type::kStc,
             false);
     branches.push(child);
     children_.push_back(child);

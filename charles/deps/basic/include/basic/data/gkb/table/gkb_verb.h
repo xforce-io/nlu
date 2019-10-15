@@ -5,6 +5,7 @@
 #include "table.hpp"
 #include "gkb_verb_dongjie.h"
 #include "gkb_verb_dongqu.h"
+#include "../../../model/pos/pos_tag.h"
 
 namespace xforce { namespace nlu { namespace basic {
 
