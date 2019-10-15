@@ -82,7 +82,8 @@ bool AnalysisClauseBranch::Process(
     auto child = std::make_shared<AnalysisClauseBranch>(
             no_ * 100 + childrenIdx_,
             *nluContext,
-            *splitStage_);
+            *splitStage_,
+            false);
     branches.push(child);
     children_.push_back(child);
     ++childrenIdx_;
