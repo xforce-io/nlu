@@ -55,8 +55,9 @@ bool RuleSyntaxVerbArg::Split(
               950);
 
       auto newNluContext = Rule::Clone(splitStage, nluContext);
-      ret = newNluContext->Add(newNp) || newNluContext->Add(newVp);
-      if (ret) {
+      bool ret0 = newNluContext->Add(newNp);
+      bool ret1 = newNluContext->Add(newVp);
+      if (ret0 || ret1) {
         nluContexts.push_back(newNluContext);
         return true;
       }

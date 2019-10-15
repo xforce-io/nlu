@@ -135,7 +135,7 @@ bool AnalysisClauseBranch::VerifySubBranches_() {
     std::wstring subQuery = chunk->GetQuery(nluContext_->GetQuery());
     auto clauseToVerify = std::make_shared<AnalysisClause>(
             subQuery,
-            basic::SyntaxTag::Type::kStc,
+            chunk->GetTag(),
             false);
     bool ret = clauseToVerify->Init();
     if (!ret) {
