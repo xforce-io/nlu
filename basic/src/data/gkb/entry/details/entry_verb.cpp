@@ -21,11 +21,16 @@ int EntryVerb::Parse(const std::vector<std::wstring> &items) {
 
   if (items[kColTiWeiZhun].find(L'体') != std::wstring::npos) {
     argTi_ = true;
-  } else if (items[kColTiWeiZhun].find(L'谓') != std::wstring::npos) {
+  }
+
+  if (items[kColTiWeiZhun].find(L'谓') != std::wstring::npos) {
     argWei_ = true;
-  } else if (items[kColTiWeiZhun].find(L'准') != std::wstring::npos) {
+  }
+
+  if (items[kColTiWeiZhun].find(L'准') != std::wstring::npos) {
     argZhun_ = true;
   }
+
   doubleArgs_ = !items[kColDoubleArgs].empty();
 
   dongjie_ = !items[kColDongjie].empty();
