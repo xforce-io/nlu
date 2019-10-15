@@ -39,16 +39,24 @@ bool RuleSyntaxVerbArg::Split(
 
     if (chunk->ContainTag(basic::SyntaxTag::Type::kNp) ||
         chunk->ContainTag(basic::SyntaxTag::Type::kContNp)) {
-      basic::Chunk newChunk(
+      basic::Chunk newNp(
               *nluContext,
               basic::SyntaxTag::Type::kNp,
               offset_+len_,
               chunk->GetEnd() - offset_ - len_,
               950);
-      newChunk.SetNeedToVerify(true);
+      newNp.SetNeedToVerify(true);
+
+      basic::Chunk newVp(
+              *nluContext,
+              basic::SyntaxTag::Type::kVp,
+              offset_,
+              chunk->GetEnd() - offset_,
+              950);
 
       auto newNluContext = Rule::Clone(splitStage, nluContext);
-      if (newNluContext->Add(newChunk)) {
+      ret = newNluContext->Add(newNp) || newNluContext->Add(newVp);
+      if (ret) {
         nluContexts.push_back(newNluContext);
         return true;
       }
