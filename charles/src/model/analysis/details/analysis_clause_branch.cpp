@@ -10,11 +10,13 @@ AnalysisClauseBranch::AnalysisClauseBranch(
         size_t no,
         const basic::NluContext &nluContext,
         const SplitStage &splitStage,
-        basic::SyntaxTag::Type::Val endTag) :
+        basic::SyntaxTag::Type::Val endTag,
+        bool traceEvent) :
     no_(no),
     nluContext_(nluContext.Clone()),
     splitStage_(splitStage.Clone()),
     endTag_(endTag),
+    traceEvent_(traceEvent),
     processed_(false),
     end_(false),
     childrenIdx_(0) {
@@ -31,22 +33,27 @@ AnalysisClauseBranch::~AnalysisClauseBranch() {
 bool AnalysisClauseBranch::Process(
         std::queue<std::shared_ptr<AnalysisClauseBranch>> &branches) {
   if (!processed_) {
-    JsonType jsonType;
-    jsonType["name"] = "branch_init";
-    jsonType["no"] = no_;
-    jsonType["born"] = splitStage_->GetBornStage();
-    if (splitStage_->GetLastRule() != nullptr) {
-      jsonType["rule"] = splitStage_->GetLastRule()->GetRepr();
-    }
-    basic::AnalysisTracer::Get()->AddEvent(jsonType);
+    bool verifySubBranch = VerifySubBranches_();
 
-    if (!VerifySubBranches_()) {
+    if (traceEvent_) {
+      JsonType jsonType;
+      jsonType["name"] = "branch_init";
+      jsonType["no"] = no_;
+      jsonType["born"] = splitStage_->GetBornStage();
+      if (splitStage_->GetLastRule() != nullptr) {
+        jsonType["rule"] = splitStage_->GetLastRule()->GetRepr();
+      }
+
+      if (!verifySubBranch) {
+        jsonType["verifySubBranch"] = false;
+      }
+      basic::AnalysisTracer::Get()->AddEvent(jsonType);
+    }
+
+    if (!verifySubBranch) {
+      nluContext_->SetIsValid(false);
       end_ = true;
       return false;
-    }
-
-    if (no_ == 10101) {
-      int a = 0;
     }
 
     splitStage_->Process(nluContext_);
@@ -124,7 +131,10 @@ bool AnalysisClauseBranch::VerifySubBranches_() {
     }
 
     std::wstring subQuery = chunk->GetQuery(nluContext_->GetQuery());
-    auto clauseToVerify = std::make_shared<AnalysisClause>(subQuery);
+    auto clauseToVerify = std::make_shared<AnalysisClause>(
+            subQuery,
+            basic::SyntaxTag::Type::kStc,
+            false);
     bool ret = clauseToVerify->Init();
     if (!ret) {
       FATAL("fail_init_sub_query[" << subQuery << "]");

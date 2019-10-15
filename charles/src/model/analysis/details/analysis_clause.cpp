@@ -6,9 +6,11 @@ namespace xforce { namespace nlu { namespace charles {
 
 AnalysisClause::AnalysisClause(
         const std::wstring &clause,
-        basic::SyntaxTag::Type::Val endTag) :
+        basic::SyntaxTag::Type::Val endTag,
+        bool traceEvent) :
     clause_(std::make_shared<basic::NluContext>(clause)),
     endTag_(endTag),
+    traceEvent_(traceEvent),
     master_(nullptr) {}
 
 AnalysisClause::~AnalysisClause() {
@@ -27,7 +29,8 @@ bool AnalysisClause::Init() {
           1,
           *clause_,
           *splitStage,
-          endTag_);
+          endTag_,
+          traceEvent_);
   XFC_DELETE(splitStage);
   allBranches_.insert(std::make_pair(master_->GetNo(), master_));
   return ret;
@@ -44,7 +47,7 @@ bool AnalysisClause::Process() {
     return false;
   }
 
-  if (master_->GetEnd()) {
+  if (master_->GetEnd() && traceEvent_) {
     JsonType jsonType;
     jsonType["name"] = "branch_end";
     jsonType["no"] = master_->GetNo();
@@ -72,7 +75,7 @@ bool AnalysisClause::Process() {
       }
     }
 
-    if (branch->GetEnd()) {
+    if (branch->GetEnd() && traceEvent_) {
       JsonType jsonType;
       jsonType["name"] = "branch_end";
       jsonType["no"] = branch->GetNo();
@@ -81,6 +84,7 @@ bool AnalysisClause::Process() {
               jsonType["diff"],
               nullptr!=father ? &(*father->GetNluContext()) : nullptr);
       branch->GetNluContext()->Dump(jsonType["ctx"], nullptr);
+      jsonType["isValid"] = branch->GetNluContext()->GetIsValid();
       basic::AnalysisTracer::Get()->AddEvent(jsonType);
     }
   }
