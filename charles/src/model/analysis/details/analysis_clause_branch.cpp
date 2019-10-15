@@ -83,7 +83,8 @@ bool AnalysisClauseBranch::Process(
             no_ * 100 + childrenIdx_,
             *nluContext,
             *splitStage_,
-            false);
+            endTag_,
+            traceEvent_);
     branches.push(child);
     children_.push_back(child);
     ++childrenIdx_;
