@@ -59,7 +59,7 @@ bool RuleSyntaxVerbArg::Split(
       bool ret1 = newNluContext->Add(newVp);
       if (ret0 || ret1) {
         nluContexts.push_back(newNluContext);
-        return true;
+        continue;
       }
     }
   }
