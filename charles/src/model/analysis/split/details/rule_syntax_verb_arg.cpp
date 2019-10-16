@@ -68,8 +68,8 @@ bool RuleSyntaxVerbArg::Split(
 
 bool RuleSyntaxVerbArg::GenForbid(ForbidItem& forbidItem) const {
   forbidItem.SetCategoryRule(Rule::kCategoryRuleSyntaxVerbArg);
-  forbidItem.SetOffset(forbidItem.GetOffset());
-  forbidItem.SetLen(forbidItem.GetLen());
+  forbidItem.SetOffset(offset_);
+  forbidItem.SetLen(len_);
   return true;
 }
 
@@ -79,10 +79,8 @@ bool RuleSyntaxVerbArg::PreCheckForbid(const ForbidItem& forbidItem) const {
       forbidItem.GetLen() == len_;
 }
 
-
 Rule* RuleSyntaxVerbArg::Clone() {
   return new RuleSyntaxVerbArg(offset_, len_, segment_);
 }
-
 
 }}}
