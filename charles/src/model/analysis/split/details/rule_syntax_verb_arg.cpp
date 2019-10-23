@@ -52,7 +52,7 @@ bool RuleSyntaxVerbArg::Split(
               basic::SyntaxTag::Type::kVp,
               offset_,
               chunk->GetEnd() - offset_,
-              950);
+              951);
 
       auto newNluContext = Rule::Clone(splitStage, nluContext);
       bool ret0 = newNluContext->Add(newNp);

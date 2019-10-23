@@ -7,10 +7,19 @@ namespace xforce { namespace nlu { namespace charles {
 
 class RuleSyntaxArg : public Rule {
  public:
+  explicit RuleSyntaxArg(
+          size_t offset,
+          size_t len,
+          const basic::Segment &segment);
+
   virtual bool Split(
-          const SplitStage &splitStage,
-          const std::shared_ptr<basic::NluContext> &nluContext,
-          std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
+        const SplitStage &splitStage,
+        const std::shared_ptr<basic::NluContext> &nluContext,
+        std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
+
+  virtual bool GenForbid(ForbidItem &forbidItem) const;
+  virtual bool PreCheckForbid(const ForbidItem &forbidItem) const;
+  virtual bool PostCheckForbid(const ForbidItem&) const { return false; }
 
  protected:
   virtual bool Filter_(const std::shared_ptr<basic::NluContext> &nluContext) = 0;

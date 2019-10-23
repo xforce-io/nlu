@@ -31,7 +31,8 @@ bool SplitRuleMgr::Init(const basic::NluContext &nluContext) {
   return InitForOffset_(nluContext) &&
     InitSyntaxContNp_(nluContext) &&
     InitSyntaxFromRules_(nluContext) &&
-    InitSyntaxVerbArg_(nluContext);
+    InitSyntaxVerbArg_(nluContext) &&
+    InitSyntaxRpArg_(nluContext);
 }
 
 void SplitRuleMgr::Adjust(const basic::NluContext &nluContext) {
@@ -158,6 +159,30 @@ bool SplitRuleMgr::InitSyntaxVerbArg_(const basic::NluContext &nluContext) {
               chunk->GetBegin(),
               chunk->GetLen(),
               *verb));
+    }
+  }
+  return true;
+}
+
+bool SplitRuleMgr::InitSyntaxRpArg_(const basic::NluContext &nluContext) {
+  for (auto &chunk : nluContext.GetChunks().GetAll()) {
+    if (chunk->GetTag() == basic::SyntaxTag::Type::kV) {
+      std::shared_ptr<basic::Segment> rp = nullptr;
+      for (auto &segment : nluContext.GetSegments().GetAll()) {
+        if (!segment->IsOverlap(chunk->GetOffset(), chunk->GetLen())) {
+          continue;
+        }
+
+        if (segment->GetTag() == basic::PosTag::Type::kRp) {
+          rp = segment;
+          break;
+        }
+      }
+
+      allRules_[basic::Stage::kSyntax]->push_back(new RuleSyntaxRpArg(
+              chunk->GetBegin(),
+              chunk->GetLen(),
+              *rp));
     }
   }
   return true;

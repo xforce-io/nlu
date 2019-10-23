@@ -14,6 +14,7 @@ class Rule {
   static const size_t kCategoryRuleSyntaxPrep = 3;
   static const size_t kCategoryRuleSyntaxRule = 4;
   static const size_t kCategoryRuleSyntaxVerbArg = 5;
+  static const size_t kCategoryRuleSyntaxRpArg = 6;
 
   static const size_t kMaxLenRepr = 1024;
 
