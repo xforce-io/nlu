@@ -18,6 +18,7 @@ Rule* RuleSyntaxRpArg::Clone() {
 }
 
 bool RuleSyntaxRpArg::Filter_(const std::shared_ptr<basic::NluContext> &nluContext) {
+  UNUSE(nluContext)
   return segment_.GetTag() == basic::PosTag::Type::kRp;
 }
 

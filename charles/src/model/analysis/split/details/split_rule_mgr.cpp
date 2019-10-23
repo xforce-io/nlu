@@ -4,6 +4,7 @@
 #include "../rule_syntax_prep.h"
 #include "../rule_syntax_cont_np.h"
 #include "../rule_syntax_verb_arg.h"
+#include "../rule_syntax_rp_arg.h"
 #include "../../../../conf/conf.h"
 
 namespace xforce { namespace nlu { namespace charles {

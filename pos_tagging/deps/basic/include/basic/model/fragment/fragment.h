@@ -51,6 +51,7 @@ class Fragment {
   Confidence GetConfidence() const { return confidence_; }
   inline uint32_t GetStrategy() const { return strategy_; }
   inline bool IsIn(size_t offset, size_t len) const;
+  inline bool IsOverlap(size_t offset, size_t len) const;
   virtual bool Same(const Fragment &other) const;
 
   inline bool Intersect(const Fragment &fragment) const;
@@ -160,6 +161,11 @@ size_t Fragment::GetEnd() const {
 bool Fragment::IsIn(size_t offset, size_t len) const {
   return offset_ >= offset && GetEnd() <= offset+len;
 }
+
+bool Fragment::IsOverlap(size_t offset, size_t len) const {
+  return offset_ == offset && len_ == len;
+}
+
 
 bool Fragment::Intersect(const Fragment &fragment) const {
   return father_ == fragment.GetFather() &&
