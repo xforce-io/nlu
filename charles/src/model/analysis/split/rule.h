@@ -28,6 +28,7 @@ public:
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) = 0;
 
   virtual bool GenForbid(ForbidItem &forbidItem) const = 0;
+  virtual size_t GenGlobalForbid(ForbidItem &forbidItem) const = 0;
   virtual bool PreCheckForbid(const ForbidItem &forbidItem) const = 0;
   virtual bool PostCheckForbid(const ForbidItem &forbidItem) const = 0;
 

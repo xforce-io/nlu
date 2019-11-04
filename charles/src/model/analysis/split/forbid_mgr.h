@@ -11,6 +11,9 @@ class ForbidMgr {
  private:
   typedef std::vector<ForbidItem> ForbidItems;
 
+ private:
+  static const size_t kCategoryGlobalRuleInterval = 100;
+
  public:
   ForbidMgr() {}
   virtual ~ForbidMgr();
@@ -22,10 +25,14 @@ class ForbidMgr {
   ForbidMgr* Clone() const;
 
  private:
-  void AddForbidItem_(size_t category, const ForbidItem &forbidItem);
+  void AddForbidItem_(
+          bool isLocal,
+          size_t category,
+          const ForbidItem &forbidItem);
 
  private:
-  std::unordered_map<size_t, ForbidItems*> forbidItems_;
+  std::unordered_map<size_t, ForbidItems*> localForbidItems_;
+  std::unordered_map<size_t, ForbidItems*> globalForbidItems_;
 };
 
 }}}

@@ -19,6 +19,7 @@ class SplitStage {
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
 
   inline void SetBornStage(basic::Stage::Val stage);
+  inline void AddForbidInterval(size_t offset, size_t len);
   bool PrevStage();
   bool NextStage();
   SplitStage* Clone() const;
@@ -44,10 +45,16 @@ class SplitStage {
 
   basic::Stage::Val lastStage_;
   size_t lastRuleIdx_;
+
+  std::vector<std::pair<size_t, size_t>> forbidIntervals_;
 };
 
 void SplitStage::SetBornStage(basic::Stage::Val stage) {
   bornStage_ = stage;
+}
+
+void SplitStage::AddForbidInterval(size_t offset, size_t len) {
+  forbidIntervals_.push_back(std::make_pair(offset, len));
 }
 
 bool SplitStage::IsBegin() const {
