@@ -18,7 +18,8 @@ class RuleSyntaxContNp : public Rule {
           const std::shared_ptr<basic::NluContext> &nluContext,
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
 
-  bool GenForbid(ForbidItem &forbidItem) const;
+  void GenForbid(std::vector<ForbidItem> &forbidItems) const;
+  bool GlobalCheckForbid(const ForbidItem&) const;
   bool PreCheckForbid(const ForbidItem &forbidItem) const;
   bool PostCheckForbid(const ForbidItem&) const { return false; }
 
@@ -31,10 +32,6 @@ class RuleSyntaxContNp : public Rule {
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts,
           size_t offset,
           uint32_t strategy);
-
- private:
-  size_t offset_;
-  size_t len_;
 };
 
 }}}

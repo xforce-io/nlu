@@ -19,6 +19,9 @@ class Rule {
   static const size_t kMaxLenRepr = 1024;
 
 public:
+  Rule();
+  Rule(size_t offset, size_t len);
+
   virtual size_t GetCategory() const = 0;
   virtual const char* GetRepr() const = 0;
 
@@ -27,8 +30,9 @@ public:
           const std::shared_ptr<basic::NluContext> &nluContext,
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) = 0;
 
-  virtual bool GenForbid(ForbidItem &forbidItem) const = 0;
-  virtual size_t GenGlobalForbid(ForbidItem &forbidItem) const = 0;
+  virtual void GenForbid(std::vector<ForbidItem> &forbidItems) const = 0;
+  virtual void GenGlobalForbid(std::vector<ForbidItem>&) const {}
+  virtual bool GlobalCheckForbid(const ForbidItem&) const { return false; }
   virtual bool PreCheckForbid(const ForbidItem &forbidItem) const = 0;
   virtual bool PostCheckForbid(const ForbidItem &forbidItem) const = 0;
 
@@ -43,6 +47,8 @@ public:
 
  protected:
   mutable char repr_[kMaxLenRepr];
+  size_t offset_;
+  size_t len_;
 };
 
 }}}

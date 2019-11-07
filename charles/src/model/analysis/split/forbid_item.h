@@ -6,6 +6,9 @@ namespace xforce { namespace nlu { namespace charles {
 
 class ForbidItem {
  public:
+  static const size_t kCategoryGlobalRuleInterval = 100;
+
+ public:
   ForbidItem() {}
   inline ForbidItem(
           size_t categoryRule,
@@ -19,6 +22,8 @@ class ForbidItem {
   size_t GetCategoryRule() const { return categoryRule_; }
   size_t GetOffset() const { return offset_; }
   size_t GetLen() const { return len_; }
+  size_t GetEnd() const { return offset_+len_; }
+  inline bool Overlap(size_t offset, size_t len) const;
 
  private:
   size_t categoryRule_;
@@ -44,6 +49,10 @@ void ForbidItem::SetOffset(size_t offset) {
 
 void ForbidItem::SetLen(size_t len) {
   len_ = len;
+}
+
+bool ForbidItem::Overlap(size_t offset, size_t len) const {
+  return !(offset_ >= offset+len || GetEnd() <= offset);
 }
 
 }}}

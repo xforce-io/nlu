@@ -9,13 +9,12 @@ RuleSyntaxPrep::RuleSyntaxPrep(
         const std::wstring &prep,
         size_t offset,
         size_t len) :
-  prep_(prep),
-  offsetPrep_(offset),
-  lenPrep_(len) {
+    Rule(offset, len),
+    prep_(prep) {
 }
 
 const char* RuleSyntaxPrep::GetRepr() const {
-  std::sprintf(repr_, "ruleSyntaxPrep(%ld|%ld)", offsetPrep_, lenPrep_);
+  std::sprintf(repr_, "ruleSyntaxPrep(%ld|%ld)", offset_, len_);
   return repr_;
 }
 
@@ -28,7 +27,7 @@ bool RuleSyntaxPrep::Split(
 
   bool touched=false;
   for (auto &segment : nluContext->GetSegments().GetAll()) {
-    if (segment->GetOffset() < offsetPrep_+lenPrep_) {
+    if (segment->GetOffset() < offset_ + len_) {
       continue;
     }
 
@@ -36,7 +35,7 @@ bool RuleSyntaxPrep::Split(
     for (auto *entryPrep : entriesPrep) {
       if (entryPrep->IsAfterWord(segment->GetQuery(nluContext->GetQuery())) ||
           entryPrep->IsAfterPos(segment->GetTag())) {
-        if (offsetPrep_+lenPrep_ == segment->GetBegin()) {
+        if (offset_ + len_ == segment->GetBegin()) {
           continue;
         }
 
@@ -44,8 +43,8 @@ bool RuleSyntaxPrep::Split(
                 splitStage,
                 nluContext,
                 nluContexts,
-                segment->GetEnd() - offsetPrep_,
-                offsetPrep_+lenPrep_,
+                segment->GetEnd() - offset_,
+                offset_ + len_,
                 segment->GetBegin(),
                 basic::SyntaxTag::Type::kUndef,
                 910)) {
@@ -57,7 +56,7 @@ bool RuleSyntaxPrep::Split(
   }
 
   for (auto &chunk : nluContext->GetChunks().GetAll()) {
-    if (chunk->GetOffset() < offsetPrep_+lenPrep_) {
+    if (chunk->GetOffset() < offset_ + len_) {
       continue;
     }
 
@@ -71,8 +70,8 @@ bool RuleSyntaxPrep::Split(
               splitStage,
               nluContext,
               nluContexts,
-              chunk->GetEnd() - offsetPrep_,
-              offsetPrep_+lenPrep_,
+              chunk->GetEnd() - offset_,
+              offset_ + len_,
               chunk->GetEnd(),
               basic::SyntaxTag::Type::kNp,
               911)) {
@@ -85,21 +84,22 @@ bool RuleSyntaxPrep::Split(
   return touched;
 }
 
-bool RuleSyntaxPrep::GenForbid(ForbidItem &forbidItem) const {
+void RuleSyntaxPrep::GenForbid(std::vector<ForbidItem> &forbidItems) const {
+  ForbidItem forbidItem;
   forbidItem.SetCategoryRule(Rule::kCategoryRuleSyntaxPrep);
   forbidItem.SetOffset(forbidItem.GetOffset());
   forbidItem.SetLen(forbidItem.GetLen());
-  return true;
+  forbidItems.push_back(forbidItem);
 }
 
 bool RuleSyntaxPrep::PreCheckForbid(const ForbidItem &forbidItem) const {
   return forbidItem.GetCategoryRule() == Rule::kCategoryRuleSyntaxPrep &&
-      forbidItem.GetOffset() == offsetPrep_ &&
-      forbidItem.GetLen() == lenPrep_;
+         forbidItem.GetOffset() == offset_ &&
+         forbidItem.GetLen() == len_;
 }
 
 Rule* RuleSyntaxPrep::Clone() {
-  return new RuleSyntaxPrep(prep_, offsetPrep_, lenPrep_);
+  return new RuleSyntaxPrep(prep_, offset_, len_);
 }
 
 bool RuleSyntaxPrep::AddNewChunk_(
@@ -114,7 +114,7 @@ bool RuleSyntaxPrep::AddNewChunk_(
   basic::Chunk newChunk(
           *nluContext,
           basic::SyntaxTag::Type::kPp,
-          offsetPrep_,
+          offset_,
           length,
           strategy);
 

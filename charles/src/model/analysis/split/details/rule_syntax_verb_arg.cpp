@@ -8,8 +8,7 @@ RuleSyntaxVerbArg::RuleSyntaxVerbArg(
         size_t offset,
         size_t len,
         const basic::Segment &segment) :
-    offset_(offset),
-    len_(len),
+    Rule(offset, len),
     segment_(segment) {}
 
 const char* RuleSyntaxVerbArg::GetRepr() const {
@@ -66,11 +65,12 @@ bool RuleSyntaxVerbArg::Split(
   return true;
 }
 
-bool RuleSyntaxVerbArg::GenForbid(ForbidItem& forbidItem) const {
+void RuleSyntaxVerbArg::GenForbid(std::vector<ForbidItem> &forbidItems) const {
+  ForbidItem forbidItem;
   forbidItem.SetCategoryRule(Rule::kCategoryRuleSyntaxVerbArg);
   forbidItem.SetOffset(offset_);
   forbidItem.SetLen(len_);
-  return true;
+  forbidItems.push_back(forbidItem);
 }
 
 bool RuleSyntaxVerbArg::PreCheckForbid(const ForbidItem& forbidItem) const {

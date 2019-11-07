@@ -12,16 +12,29 @@ ForbidMgr::~ForbidMgr() {
 
 void ForbidMgr::AddRule(const Rule &rule) {
   //gen forbid item for local category
-  ForbidItem forbidItem;
-  if (rule.GenForbid(forbidItem)) {
+  std::vector<ForbidItem> forbidItems;
+  rule.GenForbid(forbidItems);
+  for (auto &forbidItem : forbidItems) {
     AddForbidItem_(true, rule.GetCategory(), forbidItem);
   }
 
   //gen forbid item for global category
-  size_t category = rule.GenGlobalForbid(forbidItem);
-  if (0!=category) {
-    AddForbidItem_(false, category, forbidItem);
+  forbidItems.clear();
+  rule.GenGlobalForbid(forbidItems);
+  for (auto &forbidItem : forbidItems) {
+    AddForbidItem_(false, forbidItem.GetCategoryRule(), forbidItem);
   }
+}
+
+bool ForbidMgr::GlobalCheckRule(const Rule &rule) {
+  for (auto kv : globalForbidItems_) {
+    for (auto &item : *(kv.second)) {
+      if (rule.GlobalCheckForbid(item)) {
+        return false;
+      }
+    }
+  }
+  return true;
 }
 
 bool ForbidMgr::PreCheckRule(const Rule &rule) {
@@ -51,10 +64,16 @@ bool ForbidMgr::PostCheckRule(const Rule &rule) {
 }
 
 ForbidMgr* ForbidMgr::Clone() const {
-  ForbidMgr *forbidMgr = new ForbidMgr();
+  auto forbidMgr = new ForbidMgr();
   for (auto &kv : localForbidItems_) {
     for (auto &item : *(kv.second)) {
-      forbidMgr->AddForbidItem_(kv.first, item);
+      forbidMgr->AddForbidItem_(true, kv.first, item);
+    }
+  }
+
+  for (auto &kv : globalForbidItems_) {
+    for (auto &item : *(kv.second)) {
+      forbidMgr->AddForbidItem_(false, kv.first, item);
     }
   }
   return forbidMgr;

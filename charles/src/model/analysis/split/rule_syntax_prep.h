@@ -21,7 +21,8 @@ class RuleSyntaxPrep : public Rule {
           const std::shared_ptr<basic::NluContext> &nluContext,
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
 
-  bool GenForbid(ForbidItem &forbidItem) const;
+  void GenForbid(std::vector<ForbidItem> &forbidItems) const;
+  bool GlobalCheckForbid(const ForbidItem&) const { return false; }
   bool PreCheckForbid(const ForbidItem &forbidItem) const;
   bool PostCheckForbid(const ForbidItem&) const { return false; }
 
@@ -40,8 +41,6 @@ private:
 
  private:
   std::wstring prep_;
-  size_t offsetPrep_;
-  size_t lenPrep_;
 };
 
 }}}

@@ -17,7 +17,7 @@ class RuleSyntaxArg : public Rule {
         const std::shared_ptr<basic::NluContext> &nluContext,
         std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
 
-  virtual bool GenForbid(ForbidItem &forbidItem) const;
+  virtual void GenForbid(std::vector<ForbidItem> &forbidItems) const;
   virtual bool PreCheckForbid(const ForbidItem &forbidItem) const;
   virtual bool PostCheckForbid(const ForbidItem&) const { return false; }
 
@@ -31,8 +31,6 @@ class RuleSyntaxArg : public Rule {
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) = 0;
 
  protected:
-  size_t offset_;
-  size_t len_;
   const basic::Segment &segment_;
 };
 

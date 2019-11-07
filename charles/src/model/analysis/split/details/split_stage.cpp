@@ -71,7 +71,8 @@ bool SplitStage::Split(
 
   auto &rule = *((*(splitRuleMgr_->GetRules()[curStage_]))[ruleIdx_]);
   bool ret;
-  if (!forbidMgr_->PreCheckRule(rule)) { //pre check
+  if (!forbidMgr_->GlobalCheckRule(rule) ||
+      !forbidMgr_->PreCheckRule(rule)) { //pre check
     ret = false;
   } else {
     ret = rule.Split(*this, nluContext, nluContexts);

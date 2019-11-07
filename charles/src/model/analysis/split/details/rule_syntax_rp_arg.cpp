@@ -1,4 +1,5 @@
 #include "../rule_syntax_rp_arg.h"
+#include "../forbid_item.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
@@ -11,6 +12,16 @@ RuleSyntaxRpArg::RuleSyntaxRpArg(
 const char* RuleSyntaxRpArg::GetRepr() const {
   std::sprintf(repr_, "ruleSyntaxRpArg(%ld|%ld)", offset_, len_);
   return repr_;
+}
+
+void RuleSyntaxRpArg::GenGlobalForbid(std::vector<ForbidItem> &forbidItems) const {
+  for (auto &chunk : chunksToVerify_) {
+    ForbidItem forbidItem;
+    forbidItem.SetCategoryRule(ForbidItem::kCategoryGlobalRuleInterval);
+    forbidItem.SetOffset(chunk->GetOffset());
+    forbidItem.SetLen(chunk->GetLen());
+    forbidItems.push_back(forbidItem);
+  }
 }
 
 Rule* RuleSyntaxRpArg::Clone() {
@@ -32,13 +43,14 @@ void RuleSyntaxRpArg::AddChunks_(
         const std::shared_ptr<basic::NluContext> &nluContext,
         const std::shared_ptr<basic::Chunk> &chunk,
         std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) {
-  basic::Chunk argVp(
+  auto argVp = std::make_shared<basic::Chunk>(
           *nluContext,
           basic::SyntaxTag::Type::kVp,
           offset_+len_,
           chunk->GetEnd() - offset_ - len_,
           960);
-  argVp.SetNeedToVerify(true);
+  argVp->SetNeedToVerify(true);
+  chunksToVerify_.push_back(argVp);
 
   basic::Chunk newVp(
           *nluContext,

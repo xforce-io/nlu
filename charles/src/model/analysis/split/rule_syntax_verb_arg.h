@@ -21,15 +21,13 @@ class RuleSyntaxVerbArg : public Rule {
           const std::shared_ptr<basic::NluContext> &nluContext,
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
 
-  bool GenForbid(ForbidItem& forbidItem) const;
+  void GenForbid(std::vector<ForbidItem>& forbidItems) const;
   bool PreCheckForbid(const ForbidItem& forbidItem) const;
   bool PostCheckForbid(const ForbidItem&) const { return false; }
 
   virtual Rule* Clone();
 
  private:
-  size_t offset_;
-  size_t len_;
   const basic::Segment &segment_;
 };
 

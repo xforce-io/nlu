@@ -4,6 +4,7 @@
 namespace xforce { namespace nlu { namespace charles {
 
 RulePosTagMultiTag::RulePosTagMultiTag(size_t offset) :
+  Rule(),
   offsetMultiTag_(offset) {}
 
 const char* RulePosTagMultiTag::GetRepr() const {

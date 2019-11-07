@@ -24,7 +24,7 @@ class RuleSyntaxRule : public Rule {
           const std::shared_ptr<basic::NluContext> &nluContext,
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
 
-  bool GenForbid(ForbidItem &forbidItem) const;
+  void GenForbid(std::vector<ForbidItem> &forbidItems) const;
   bool PreCheckForbid(const ForbidItem&) const { return false; }
   bool PostCheckForbid(const ForbidItem &forbidItem) const;
 

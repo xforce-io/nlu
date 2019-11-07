@@ -1,11 +1,11 @@
 #include "../rule_syntax_cont_np.h"
 #include "../forbid_item.h"
+#include "../forbid_mgr.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
 RuleSyntaxContNp::RuleSyntaxContNp(size_t offset, size_t len) :
-  offset_(offset),
-  len_(len) {}
+  Rule(offset, len) {}
 
 const char* RuleSyntaxContNp::GetRepr() const {
   std::sprintf(repr_, "ruleSyntaxContNp(%ld|%ld)", offset_, len_);
@@ -49,11 +49,19 @@ bool RuleSyntaxContNp::Split(
   return touched;
 }
 
-bool RuleSyntaxContNp::GenForbid(ForbidItem &forbidItem) const {
+void RuleSyntaxContNp::GenForbid(std::vector<ForbidItem> &forbidItems) const {
+  ForbidItem forbidItem;
   forbidItem.SetCategoryRule(Rule::kCategoryRuleSyntaxContNp);
   forbidItem.SetOffset(offset_);
   forbidItem.SetLen(len_);
-  return true;
+  forbidItems.push_back(forbidItem);
+}
+
+bool RuleSyntaxContNp::GlobalCheckForbid(const ForbidItem &forbidItem) const {
+  if (forbidItem.GetCategoryRule() == ForbidItem::kCategoryGlobalRuleInterval) {
+    return forbidItem.Overlap(offset_, len_);
+  }
+  return false;
 }
 
 bool RuleSyntaxContNp::PreCheckForbid(const ForbidItem &forbidItem) const {

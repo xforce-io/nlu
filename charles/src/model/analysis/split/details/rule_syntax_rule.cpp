@@ -10,6 +10,7 @@ const std::wstring RuleSyntaxRule::kBranch2SyntaxStoragePrefix = L"/branch2_synt
 
 RuleSyntaxRule::RuleSyntaxRule(
         std::shared_ptr<milkie::FeatureExtractor> &featureExtractor) :
+  Rule(),
   featureExtractor_(featureExtractor),
   context_(nullptr) {}
 
@@ -103,15 +104,16 @@ bool RuleSyntaxRule::Split(
   return touched;
 }
 
-bool RuleSyntaxRule::GenForbid(ForbidItem &forbidItem) const {
+void RuleSyntaxRule::GenForbid(std::vector<ForbidItem> &forbidItems) const {
   if (context_ == nullptr) {
-    return false;
+    return;
   }
 
+  ForbidItem forbidItem;
   forbidItem.SetCategoryRule(Rule::kCategoryRuleSyntaxRule);
   forbidItem.SetOffset(context_->GetStartPos());
   forbidItem.SetLen(context_->GetCurPos() - context_->GetStartPos());
-  return true;
+  forbidItems.push_back(forbidItem);
 }
 
 bool RuleSyntaxRule::PostCheckForbid(const ForbidItem &forbidItem) const {

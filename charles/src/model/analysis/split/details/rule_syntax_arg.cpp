@@ -1,5 +1,6 @@
 #include "../rule_syntax_arg.h"
 #include "../forbid_item.h"
+#include "../forbid_mgr.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
@@ -7,8 +8,7 @@ RuleSyntaxArg::RuleSyntaxArg(
         size_t offset,
         size_t len,
         const basic::Segment &segment) :
-    offset_(offset),
-    len_(len),
+    Rule(offset, len),
     segment_(segment) {}
 
 bool RuleSyntaxArg::Split(
@@ -32,11 +32,12 @@ bool RuleSyntaxArg::Split(
   return true;
 }
 
-bool RuleSyntaxArg::GenForbid(ForbidItem &forbidItem) const {
+void RuleSyntaxArg::GenForbid(std::vector<ForbidItem> &forbidItems) const {
+  ForbidItem forbidItem;
   forbidItem.SetCategoryRule(GetCategory());
   forbidItem.SetOffset(offset_);
   forbidItem.SetLen(len_);
-  return true;
+  forbidItems.push_back(forbidItem);
 }
 
 bool RuleSyntaxArg::PreCheckForbid(const ForbidItem &forbidItem) const {

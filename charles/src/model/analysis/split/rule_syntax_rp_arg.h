@@ -17,9 +17,11 @@ class RuleSyntaxRpArg : public RuleSyntaxArg {
   size_t GetCategory() const { return Rule::kCategoryRuleSyntaxRpArg; }
   const char* GetRepr() const;
 
+  virtual void GenGlobalForbid(std::vector<ForbidItem>&) const;
+
   Rule* Clone();
 
-protected:
+ protected:
   virtual bool Filter_(const std::shared_ptr<basic::NluContext> &nluContext);
   virtual bool ChunkFilter_(const std::shared_ptr<basic::Chunk> &chunk);
   virtual void AddChunks_(
@@ -27,6 +29,9 @@ protected:
           const std::shared_ptr<basic::NluContext> &nluContext,
           const std::shared_ptr<basic::Chunk> &chunk,
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
+
+ private:
+  std::vector<std::shared_ptr<basic::Chunk>> chunksToVerify_;
 };
 
 }}}

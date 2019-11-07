@@ -11,14 +11,12 @@ class ForbidMgr {
  private:
   typedef std::vector<ForbidItem> ForbidItems;
 
- private:
-  static const size_t kCategoryGlobalRuleInterval = 100;
-
  public:
   ForbidMgr() {}
   virtual ~ForbidMgr();
 
   void AddRule(const Rule &rule);
+  bool GlobalCheckRule(const Rule &rule);
   bool PreCheckRule(const Rule &rule);
   bool PostCheckRule(const Rule &rule);
 
