@@ -30,11 +30,11 @@ public:
           const std::shared_ptr<basic::NluContext> &nluContext,
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) = 0;
 
-  virtual void GenForbid(std::vector<ForbidItem> &forbidItems) const = 0;
+  virtual void GenForbid(std::vector<ForbidItem> &forbidItems) const {}
   virtual void GenGlobalForbid(std::vector<ForbidItem>&) const {}
   virtual bool GlobalCheckForbid(const ForbidItem&) const { return false; }
-  virtual bool PreCheckForbid(const ForbidItem &forbidItem) const = 0;
-  virtual bool PostCheckForbid(const ForbidItem &forbidItem) const = 0;
+  virtual bool PreCheckForbid(const ForbidItem &forbidItem) const { return false; }
+  virtual bool PostCheckForbid(const ForbidItem &forbidItem) const { return false; }
 
   virtual ~Rule() {}
 

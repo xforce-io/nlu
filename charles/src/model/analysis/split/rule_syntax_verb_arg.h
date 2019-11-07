@@ -23,7 +23,6 @@ class RuleSyntaxVerbArg : public Rule {
 
   void GenForbid(std::vector<ForbidItem>& forbidItems) const;
   bool PreCheckForbid(const ForbidItem& forbidItem) const;
-  bool PostCheckForbid(const ForbidItem&) const { return false; }
 
   virtual Rule* Clone();
 

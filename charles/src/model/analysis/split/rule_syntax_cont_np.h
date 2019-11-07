@@ -21,7 +21,6 @@ class RuleSyntaxContNp : public Rule {
   void GenForbid(std::vector<ForbidItem> &forbidItems) const;
   bool GlobalCheckForbid(const ForbidItem&) const;
   bool PreCheckForbid(const ForbidItem &forbidItem) const;
-  bool PostCheckForbid(const ForbidItem&) const { return false; }
 
   Rule* Clone();
 

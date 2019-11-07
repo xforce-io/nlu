@@ -19,7 +19,6 @@ class RuleSyntaxArg : public Rule {
 
   virtual void GenForbid(std::vector<ForbidItem> &forbidItems) const;
   virtual bool PreCheckForbid(const ForbidItem &forbidItem) const;
-  virtual bool PostCheckForbid(const ForbidItem&) const { return false; }
 
  protected:
   virtual bool Filter_(const std::shared_ptr<basic::NluContext> &nluContext) = 0;
