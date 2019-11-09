@@ -117,6 +117,11 @@ bool AnalysisClauseBranch::AllChildrenEnd_() {
 
 bool AnalysisClauseBranch::IsFinished_(basic::NluContext &nluContext) {
   for (auto &chunk : nluContext.GetChunks().GetAll()) {
+    if (chunk->GetOffset() != 0 ||
+        chunk->GetLen() != nluContext.GetQuery().length()) {
+      continue;
+    }
+
     for (auto &tag : chunk->GetTags()) {
       if (tag == endTag_) {
         return true;
