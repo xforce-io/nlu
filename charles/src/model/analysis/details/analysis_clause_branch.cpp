@@ -33,8 +33,7 @@ AnalysisClauseBranch::~AnalysisClauseBranch() {
 bool AnalysisClauseBranch::Process(
         std::queue<std::shared_ptr<AnalysisClauseBranch>> &branches) {
   if (!processed_) {
-    bool verifySubBranch = VerifySubBranches_();
-
+    int verifySubBranch = VerifySubBranches_();
     if (traceEvent_) {
       JsonType jsonType;
       jsonType["name"] = "branch_init";
@@ -43,14 +42,11 @@ bool AnalysisClauseBranch::Process(
       if (splitStage_->GetLastRule() != nullptr) {
         jsonType["rule"] = splitStage_->GetLastRule()->GetRepr();
       }
-
-      if (!verifySubBranch) {
-        jsonType["verifySubBranch"] = false;
-      }
+      jsonType["verifySubBranch"] = verifySubBranch;
       basic::AnalysisTracer::Get()->AddEvent(jsonType);
     }
 
-    if (!verifySubBranch) {
+    if (1==verifySubBranch) {
       nluContext_->SetIsValid(false);
       end_ = true;
       return false;
@@ -131,11 +127,14 @@ bool AnalysisClauseBranch::IsFinished_(basic::NluContext &nluContext) {
   return false;
 }
 
-bool AnalysisClauseBranch::VerifySubBranches_() {
+int AnalysisClauseBranch::VerifySubBranches_() {
+  bool touched = false;
   for (auto &chunk : nluContext_->GetChunks().GetAll()) {
     if (!chunk->GetNeedToVerify()) {
       continue;
     }
+
+    touched = true;
 
     std::wstring subQuery = chunk->GetQuery(nluContext_->GetQuery());
     auto clauseToVerify = std::make_shared<AnalysisClause>(
@@ -145,7 +144,7 @@ bool AnalysisClauseBranch::VerifySubBranches_() {
     bool ret = clauseToVerify->Init();
     if (!ret) {
       FATAL("fail_init_sub_query[" << subQuery << "]");
-      return false;
+      return 1;
     }
 
     if (clauseToVerify->Process()) {
@@ -154,10 +153,10 @@ bool AnalysisClauseBranch::VerifySubBranches_() {
               clauseToVerify);
       subBranches_.push_back(subBranch);
     } else {
-      return false;
+      return 1;
     }
   }
-  return true;
+  return touched ? 0 : -1;
 }
 
 }}}

@@ -33,7 +33,7 @@ class AnalysisClauseBranch {
  private:
   bool AllChildrenEnd_();
   bool IsFinished_(basic::NluContext &nluContext);
-  bool VerifySubBranches_();
+  int VerifySubBranches_();
 
  private:
   size_t no_;
