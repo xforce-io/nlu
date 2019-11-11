@@ -52,12 +52,28 @@ void RuleSyntaxRpArg::AddChunks_(
   argVp->SetNeedToVerify(true);
   chunksToVerify_.push_back(argVp);
 
-  basic::Chunk newVp(
-          *nluContext,
-          basic::SyntaxTag::Type::kVp,
-          offset_,
-          chunk->GetEnd() - offset_,
-          961);
+  std::shared_ptr<basic::Chunk> newVp = nullptr;
+  auto segAfter = nluContext->GetSegments().GetFragmentAfter(chunk->GetEnd());
+  if (nullptr!=segAfter) {
+    auto segQuery = segAfter->GetQuery(nluContext->GetQuery());
+    if (L"的" == segQuery) {
+      newVp = std::make_shared<basic::Chunk>(
+              *nluContext,
+              basic::SyntaxTag::Type::kVp,
+              offset_,
+              chunk->GetEnd() - offset_ + segQuery.length(),
+              961);
+    }
+  }
+
+  if (nullptr != newVp) {
+    newVp = std::make_shared<basic::Chunk>(
+            *nluContext,
+            basic::SyntaxTag::Type::kVp,
+            offset_,
+            chunk->GetEnd() - offset_,
+            961);
+  }
 
   auto newNluContext = Rule::Clone(splitStage, nluContext);
   bool ret0 = newNluContext->Add(argVp);
