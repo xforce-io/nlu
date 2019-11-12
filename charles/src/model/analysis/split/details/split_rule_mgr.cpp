@@ -156,11 +156,16 @@ bool SplitRuleMgr::InitSyntaxVerbArg_(const basic::NluContext &nluContext) {
         }
       }
 
+      size_t lenAux = 0;
       auto segAfterChunk = nluContext.GetSegments().GetFragmentAfter(chunk->GetEnd());
+      if (nullptr != segAfterChunk && segAfterChunk->GetTag() == basic::PosTag::Type::kU) {
+        lenAux = segAfterChunk->GetLen();
+      }
+
       if (nullptr != verb) {
         allRules_[basic::Stage::kSyntax]->push_back(new RuleSyntaxVerbArg(
                 chunk->GetBegin(),
-                chunk->GetLen(),
+                chunk->GetLen() + lenAux,
                 *verb));
       }
     }
