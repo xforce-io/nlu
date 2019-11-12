@@ -66,7 +66,7 @@ void RuleSyntaxRpArg::AddChunks_(
     }
   }
 
-  if (nullptr != newVp) {
+  if (nullptr == newVp) {
     newVp = std::make_shared<basic::Chunk>(
             *nluContext,
             basic::SyntaxTag::Type::kVp,

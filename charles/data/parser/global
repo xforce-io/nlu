@@ -16,17 +16,20 @@ FEATURE_EXTRACTOR_BEGIN(syntaxFromChunk)
 FEATURE_EXTRACTOR_END
 
 FEATURE_EXTRACTOR_BEGIN(syntax)
-    { { $vp #Chk(np) -> syntactic.np } $vp -> syntactic._stc_ }
-    { $v #Chk(np) #Chk(np) -> syntactic._stc_ }
-    { #Chk(np) { #Chk(vw) ?} #Chk(pp) { $V ?} -> syntactic._stc_ }
-    { #Chk(np) #Chk(v) #Chk(np) #Chk(advp) -> syntactic._stc_ }
-    { #Chk(np) $v $vp -> syntactic._stc_ }
-    { #Chk(np) $v #Chk(advp) -> syntactic._stc_ }
-    { #Chk(np) #Chk(advp) #Chk(vp) -> syntactic._stc_ }
-    { #Chk(np) #Chk(advp) #Chk(np) #Chk(advp) -> syntactic._stc_ }
-    { { #Chk(advp) ?} { #Chk(pp) ?} { #Chk(np) ?} $V -> syntactic._stc_ }
-    { { #Chk(advp) ?} #Chk(pp) $v #Chk(np) #Chk(np) -> syntactic._stc_ }
-    { { #Chk(_cont_np_) #Pos(c) #Chk(_cont_np_) -> syntactic.np } -> syntactic._stc_ }
+    { { $vp #Chk(np) -> syntactic.np } $vp $MPP -> syntactic._stc_ }
+    { $v #Chk(np) #Chk(np) $MPP -> syntactic._stc_ }
+    { #Chk(np) { #Chk(vw) ?} #Chk(pp) { $V ?} $MPP -> syntactic._stc_ }
+    { #Chk(np) #Chk(v) #Chk(np) #Chk(advp) $MPP -> syntactic._stc_ }
+    { #Chk(np) $v $vp $MPP -> syntactic._stc_ }
+    { #Chk(np) #Chk(np) $V $MPP -> syntactic._stc_ }
+    { #Chk(np) $v #Chk(advp) $MPP -> syntactic._stc_ }
+    { #Chk(np) #Chk(advp) #Chk(vp) $MPP -> syntactic._stc_ }
+    { #Chk(np) #Chk(advp) #Chk(np) #Chk(advp) $MPP -> syntactic._stc_ }
+    { { #Chk(advp) ?} { #Chk(pp) ?} { #Chk(np) ?} $V $MPP -> syntactic._stc_ }
+    { { #Chk(advp) ?} #Chk(pp) $v #Chk(np) #Chk(np) $MPP -> syntactic._stc_ }
+    { { #Chk(_cont_np_) #Pos(c) #Chk(_cont_np_) -> syntactic.np } $MPP -> syntactic._stc_ }
+
+    { $V #Pos(c) $V -> syntactic.vp }
 
     ~{ #Chk(advp) {"的" ?} #Chk(np) % -> syntactic.np }
     ~{ $v "的" #Chk(np) -> syntactic.np }
