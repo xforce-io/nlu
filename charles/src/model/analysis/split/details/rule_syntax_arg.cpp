@@ -29,7 +29,7 @@ bool RuleSyntaxArg::Split(
     }
     AddChunks_(splitStage, nluContext, chunk, nluContexts);
   }
-  return true;
+  return !nluContexts.empty();
 }
 
 void RuleSyntaxArg::GenForbid(std::vector<ForbidItem> &forbidItems) const {

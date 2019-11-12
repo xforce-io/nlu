@@ -62,7 +62,7 @@ bool RuleSyntaxVerbArg::Split(
       }
     }
   }
-  return true;
+  return !nluContexts.empty();
 }
 
 void RuleSyntaxVerbArg::GenForbid(std::vector<ForbidItem> &forbidItems) const {
