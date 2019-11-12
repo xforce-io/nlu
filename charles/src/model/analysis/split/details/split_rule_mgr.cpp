@@ -157,11 +157,12 @@ bool SplitRuleMgr::InitSyntaxVerbArg_(const basic::NluContext &nluContext) {
       }
 
       auto segAfterChunk = nluContext.GetSegments().GetFragmentAfter(chunk->GetEnd());
-
-      allRules_[basic::Stage::kSyntax]->push_back(new RuleSyntaxVerbArg(
-              chunk->GetBegin(),
-              chunk->GetLen(),
-              *verb));
+      if (nullptr != verb) {
+        allRules_[basic::Stage::kSyntax]->push_back(new RuleSyntaxVerbArg(
+                chunk->GetBegin(),
+                chunk->GetLen(),
+                *verb));
+      }
     }
   }
   return true;
@@ -182,10 +183,12 @@ bool SplitRuleMgr::InitSyntaxRpArg_(const basic::NluContext &nluContext) {
         }
       }
 
-      allRules_[basic::Stage::kSyntax]->push_back(new RuleSyntaxRpArg(
-              chunk->GetBegin(),
-              chunk->GetLen(),
-              *rp));
+      if (nullptr != rp) {
+        allRules_[basic::Stage::kSyntax]->push_back(new RuleSyntaxRpArg(
+                chunk->GetBegin(),
+                chunk->GetLen(),
+                *rp));
+      }
     }
   }
   return true;

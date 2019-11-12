@@ -24,6 +24,11 @@ class NluContext {
           size_t to,
           std::shared_ptr<NluContext> &nluContext);
 
+  inline bool Add(const std::shared_ptr<NameEntity> &nameEntity);
+  inline bool Add(const std::shared_ptr<Segment> &segment);
+  inline bool Add(const std::shared_ptr<ChunkSep> &chunkSep);
+  inline bool Add(const std::shared_ptr<Chunk> &chunk);
+
   inline bool Add(const NameEntity &nameEntity);
   inline bool Add(const Segment &segment);
   inline bool Add(const ChunkSep &chunkSep);
@@ -76,6 +81,22 @@ void NluContext::SetChunkSeps(const ChunkSep::Set &chunkSeps) {
 
 void NluContext::SetChunks(const typename Chunk::Set &chunks) {
   managerFragmentSet_->SetChunks(chunks);
+}
+
+bool NluContext::Add(const std::shared_ptr<NameEntity> &nameEntity) {
+  return managerFragmentSet_->GetNameEntities().Add(nameEntity);
+}
+
+bool NluContext::Add(const std::shared_ptr<Segment> &segment) {
+  return managerFragmentSet_->GetSegments().Add(segment);
+}
+
+bool NluContext::Add(const std::shared_ptr<ChunkSep> &chunkSep) {
+  return managerFragmentSet_->GetChunkSeps().Add(chunkSep);
+}
+
+bool NluContext::Add(const std::shared_ptr<Chunk> &chunk) {
+  return managerFragmentSet_->GetChunks().Add(chunk);
 }
 
 bool NluContext::Add(const NameEntity &nameEntity) {
