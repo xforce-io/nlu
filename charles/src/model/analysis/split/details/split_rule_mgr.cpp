@@ -156,6 +156,8 @@ bool SplitRuleMgr::InitSyntaxVerbArg_(const basic::NluContext &nluContext) {
         }
       }
 
+      auto segAfterChunk = nluContext.GetSegments().GetFragmentAfter(chunk->GetEnd());
+
       allRules_[basic::Stage::kSyntax]->push_back(new RuleSyntaxVerbArg(
               chunk->GetBegin(),
               chunk->GetLen(),
