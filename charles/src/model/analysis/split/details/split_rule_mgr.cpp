@@ -29,11 +29,12 @@ SplitRuleMgr::~SplitRuleMgr() {
 }
 
 bool SplitRuleMgr::Init(const basic::NluContext &nluContext) {
-  return InitForOffset_(nluContext) &&
-    InitSyntaxContNp_(nluContext) &&
-    InitSyntaxFromRules_(nluContext) &&
-    InitSyntaxVerbArg_(nluContext) &&
-    InitSyntaxRpArg_(nluContext);
+  return InitPosForOffset_(nluContext) &&
+         InitSyntaxPrep_(nluContext) &&
+         InitSyntaxContNp_(nluContext) &&
+         InitSyntaxFromRules_(nluContext) &&
+         InitSyntaxVerbArg_(nluContext) &&
+         InitSyntaxRpArg_(nluContext);
 }
 
 void SplitRuleMgr::Adjust(const basic::NluContext &nluContext) {
@@ -68,14 +69,17 @@ void SplitRuleMgr::Clear() {
   }
 }
 
-bool SplitRuleMgr::InitForOffset_(const basic::NluContext &nluContext) {
+bool SplitRuleMgr::InitPosForOffset_(const basic::NluContext &nluContext) {
   for (auto &segment : nluContext.GetSegments().GetAll()) {
     if (segment->GetTags().size() > 1) {
       allRules_[basic::Stage::kPosTag]->push_back(
               new RulePosTagMultiTag(segment->GetOffset()));
     }
   }
+  return true;
+}
 
+bool SplitRuleMgr::InitSyntaxPrep_(const basic::NluContext &nluContext) {
   for (auto &chunk : nluContext.GetChunks().GetAll()) {
     if (chunk->GetTag() == basic::SyntaxTag::Type::kP) {
       std::wstring prep;
@@ -86,7 +90,7 @@ bool SplitRuleMgr::InitForOffset_(const basic::NluContext &nluContext) {
       }
 
       if (!prep.empty()) {
-        allRules_[basic::Stage::kPosTag]->push_back(
+        allRules_[basic::Stage::kSyntax]->push_back(
                 new RuleSyntaxPrep(
                         prep,
                         chunk->GetOffset(),
