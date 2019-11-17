@@ -136,7 +136,9 @@ bool RuleSyntaxPrep::AddNewChunk_(
     std::wstring subStr = nluContext->GetQuery().substr(
                     subChunkFrom,
                     subChunkTo-subChunkFrom);
-    AnalysisClause analysisClause(subStr);
+    AnalysisClause analysisClause(
+            subStr,
+            basic::SyntaxTag::Type::kNp);
     ret = analysisClause.Init();
     if (!ret) {
       ERROR("fail_init_analysis_clause[" << subStr << "]");
