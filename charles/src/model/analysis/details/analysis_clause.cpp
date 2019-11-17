@@ -38,6 +38,14 @@ bool AnalysisClause::Init() {
 
 bool AnalysisClause::Process() {
   bool ret = master_->Process(branches_);
+  if (master_->GetEnd() && traceEvent_) {
+    JsonType jsonType;
+    jsonType["name"] = "branch_end";
+    jsonType["no"] = master_->GetNo();
+    master_->GetNluContext()->Dump(jsonType["ctx"], nullptr);
+    basic::AnalysisTracer::Get()->AddEvent(jsonType);
+  }
+
   if (ret) {
     finished_.push_back(master_);
     results_.push_back(master_);
@@ -45,14 +53,6 @@ bool AnalysisClause::Process() {
   } else if (master_->GetEnd() && branches_.empty()) {
     finished_.push_back(master_);
     return false;
-  }
-
-  if (master_->GetEnd() && traceEvent_) {
-    JsonType jsonType;
-    jsonType["name"] = "branch_end";
-    jsonType["no"] = master_->GetNo();
-    master_->GetNluContext()->Dump(jsonType["ctx"], nullptr);
-    basic::AnalysisTracer::Get()->AddEvent(jsonType);
   }
 
   bool succ = false;
