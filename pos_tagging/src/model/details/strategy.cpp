@@ -12,8 +12,9 @@ void Strategy::SetPos(
         uint32_t strategy) {
   if (segment.GetTag() == basic::PosTag::Type::kUndef) {
     segment.SetTag(
-            basic::PosTag::EnhancePosTag(posTag),
-            segment.GetQuery(nluContext_->GetQuery()));
+            basic::PosTag::EnhancePosTag(
+                    posTag,
+                    segment.GetQuery(nluContext_->GetQuery())));
     segment.SetStrategy(strategy);
   }
 }
