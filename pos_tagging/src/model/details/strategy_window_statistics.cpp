@@ -26,6 +26,8 @@ bool StrategyWindowStatistics::Init() {
 }
 
 void StrategyWindowStatistics::Process(basic::NluContext &nluContext) {
+  Strategy::Process(nluContext);
+
   auto &segments = nluContext.GetSegments().GetAll();
 
   auto segIter0 = segments.begin();

@@ -39,6 +39,25 @@ PosTag::Type::Val PosTag::GetPosTag(
   return PosTag::Type::kUndef;
 }
 
+PosTag::Type::Val PosTag::EnhancePosTag(
+        PosTag::Type::Val posTag,
+        const std::wstring &word) {
+  if (PosTag::Type::kR != posTag) {
+    return posTag;
+  }
+
+  auto entries = Manager::Get().GetGkb().GetGkbGlobal().GetEntries(word);
+  if (nullptr!=entries && entries->size() == 1) {
+    auto tiWei = (*entries)[0]->GetTiWei();
+    if (EntryGlobal::TiWei::kTi == tiWei) {
+      return PosTag::Type::kRn;
+    } else if (EntryGlobal::TiWei::kWei == tiWei) {
+      return PosTag::Type::kRp;
+    }
+  }
+  return PosTag::Type::kR;
+}
+
 PosTag::Type::Val PosTag::GetPosTagFromChar(wchar_t pos) {
   switch (pos) {
     case L'n' :

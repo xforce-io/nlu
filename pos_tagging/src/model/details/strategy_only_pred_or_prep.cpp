@@ -3,6 +3,8 @@
 namespace xforce { namespace nlu { namespace pos {
 
 void StrategyOnlyPredOrPrep::Process(basic::NluContext &nluContext) {
+  Strategy::Process(nluContext);
+
   auto segments = nluContext.GetSegments().GetAll();
   auto theIter = segments.end();
   for (auto segIter = segments.begin(); segIter != segments.end(); ++segIter) {

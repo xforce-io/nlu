@@ -3,6 +3,8 @@
 namespace xforce { namespace nlu { namespace pos {
 
 void StrategyComplement::Process(basic::NluContext &nluContext) {
+  Strategy::Process(nluContext);
+
   auto &clause = nluContext.GetQuery();
   typename basic::Segment::Set &segments = nluContext.GetSegments();
   for (auto segment : segments.GetAll()) {

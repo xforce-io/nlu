@@ -16,7 +16,7 @@ class Strategy {
   virtual ~Strategy() {}
 
   virtual bool Init() { return true; }
-  virtual void Process(basic::NluContext &nluContext) = 0;
+  virtual void Process(basic::NluContext &nluContext);
 
  protected:
   virtual void SetPos(
@@ -27,6 +27,9 @@ class Strategy {
   virtual void AddPos(
           basic::Segment &segment,
           basic::PosTag::Type::Val posTag);
+
+ protected:
+  basic::NluContext *nluContext_;
 };
 
 }}}
