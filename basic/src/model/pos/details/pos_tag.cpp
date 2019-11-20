@@ -18,21 +18,9 @@ PosTag::Type::Val PosTag::GetPosTag(
         const std::wstring &posTag,
         const std::wstring &word) {
   if (posTag.length() == 1) {
-    auto tag = GetPosTagFromChar(posTag[0]);
-    if (PosTag::Type::kR != tag) {
-      return tag;
-    }
-
-    auto entries = Manager::Get().GetGkb().GetGkbGlobal().GetEntries(word);
-    if (nullptr!=entries && entries->size() == 1) {
-      auto tiWei = (*entries)[0]->GetTiWei();
-      if (EntryGlobal::TiWei::kTi == tiWei) {
-        return PosTag::Type::kRn;
-      } else if (EntryGlobal::TiWei::kWei == tiWei) {
-        return PosTag::Type::kRp;
-      }
-    }
-    return PosTag::Type::kR;
+    return EnhancePosTag(
+            GetPosTagFromChar(posTag[0]),
+            word);
   } else if (L"vn" == posTag) {
     return PosTag::Type::kVn;
   }
@@ -49,13 +37,11 @@ PosTag::Type::Val PosTag::EnhancePosTag(
   auto entries = Manager::Get().GetGkb().GetGkbGlobal().GetEntries(word);
   if (nullptr!=entries && entries->size() == 1) {
     auto tiWei = (*entries)[0]->GetTiWei();
-    if (EntryGlobal::TiWei::kTi == tiWei) {
-      return PosTag::Type::kRn;
-    } else if (EntryGlobal::TiWei::kWei == tiWei) {
+    if (EntryGlobal::TiWei::kWei == tiWei) {
       return PosTag::Type::kRp;
     }
   }
-  return PosTag::Type::kR;
+  return PosTag::Type::kRn;
 }
 
 PosTag::Type::Val PosTag::GetPosTagFromChar(wchar_t pos) {
