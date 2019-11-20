@@ -157,12 +157,4 @@ void StrategyWindowStatistics::Process(basic::NluContext &nluContext) {
   }
 }
 
-void StrategyWindowStatistics::SetPos(
-        basic::Segment &segment,
-        basic::PosTag::Type::Val posTag,
-        uint32_t strategy) {
-  segment.SetTag(posTag);
-  segment.SetStrategy(strategy);
-}
-
 }}}
