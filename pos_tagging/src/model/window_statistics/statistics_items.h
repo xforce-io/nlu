@@ -31,7 +31,7 @@ class StatisticsItems {
   void Add(const StatisticsUnit &newItem);
   size_t Size() const { return statisticsItems_.size(); }
   size_t GetCount() const { return count_; }
-  const StatisticsUnit* GetDominator() const;
+  const StatisticsUnit* GetDominator();
   bool operator==(const StatisticsItems &other) const;
 
   static StatisticsItems* Load(const std::string &str);

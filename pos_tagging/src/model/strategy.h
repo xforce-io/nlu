@@ -22,6 +22,7 @@ class Strategy {
   virtual void SetPos(
           basic::Segment &segment,
           basic::PosTag::Type::Val posTag,
+          basic::Confidence confidence,
           uint32_t strategy);
 
   virtual void AddPos(

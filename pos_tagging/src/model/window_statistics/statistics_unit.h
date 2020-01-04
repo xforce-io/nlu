@@ -23,6 +23,8 @@ struct StatisticsUnit {
   inline bool SameType(const StatisticsUnit &other) const;
   inline bool operator==(const StatisticsUnit &other) const;
 
+  void CalcConfidence(size_t totalCnt);
+
   int Load(const std::string &str);
   void Dump(std::stringstream &ss) const;
 
@@ -31,6 +33,7 @@ struct StatisticsUnit {
   basic::PosTag::Type::Val type1;
   basic::PosTag::Type::Val type2;
   size_t count;
+  basic::Confidence confidence;
 };
 
 StatisticsUnit::StatisticsUnit() :
