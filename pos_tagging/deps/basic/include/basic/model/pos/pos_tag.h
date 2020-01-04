@@ -96,6 +96,9 @@ class PosTag {
   static PosTag::Type::Val GetPosTag(
           const std::wstring &pos,
           const std::wstring &word);
+  static PosTag::Type::Val EnhancePosTag(
+          PosTag::Type::Val posTag,
+          const std::wstring &word);
   static PosTag::Type::Val GetPosTagFromChar(wchar_t pos);
   static const std::wstring& Str(PosTag::Type::Val posTag);
 

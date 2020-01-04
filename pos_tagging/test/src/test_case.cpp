@@ -3,8 +3,8 @@
 #include "gtest/gtest.h"
 #include "../../src/pos_tagging.h"
 #include "../../src/conf/conf.h"
-#include "basic/model/segment.h"
-#include "basic/model/name_entity.h"
+#include "basic/model/fragment/segment.h"
+#include "basic/model/fragment/name_entity.h"
 #include "segmentor/segmentor.h"
 
 LOGGER_IMPL(xforce::xforce_logger, L"pos_tagging")
@@ -29,7 +29,7 @@ TEST(test_case, all) {
     ASSERT_TRUE(Segmentor::Init((*conf)["segmentor"], (*conf)["ner"]));
     ASSERT_TRUE(PosTagging::Init((*conf)["pos"]));
 
-    std::wstring wStrQuery = L"中国队主教练郎平表示";
+    std::wstring wStrQuery = L"但却在本场比赛给了中国队强有力的冲击";
     auto nluContext = std::make_shared<NluContext>(wStrQuery);
 
     Segment::Set segments(wStrQuery);
@@ -39,7 +39,7 @@ TEST(test_case, all) {
     PosTagging::Tagging(nluContext);
 
     xforce::JsonType jsonToDump;
-    nluContext->GetSegments().Dump(jsonToDump);
+    nluContext->GetSegments().Dump(jsonToDump, nullptr);
 
     std::stringstream ss;
     jsonToDump.DumpJson(ss);

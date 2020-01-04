@@ -2,7 +2,7 @@
 
 #include "gtest/gtest.h"
 #include "../../../../src/model/window_statistics/window_statistics.h"
-#include "basic/model/segment.h"
+#include "basic/model/fragment/segment.h"
 #include "segmentor/segmentor.h"
 
 LOGGER_IMPL(xforce::xforce_logger, L"pos_tagging")
@@ -60,4 +60,5 @@ TEST(test_case, bugfix) {
 
   std::stringstream ss;
   windowStatistics->Dump(ss);
+  std::cout << ss.str() << std::endl;
 }
