@@ -5,11 +5,13 @@ namespace xforce { namespace nlu { namespace basic {
 class Confidence {
  public:
   static const Confidence kFull;
+  static const Confidence kAlmost;
   static const Confidence kHighlyConvinced;
   static const Confidence kConvinced;
   static const Confidence kProbable;
   static const Confidence kLikely;
   static const Confidence kPossible;
+  static const Confidence kMaybe;
   static const Confidence kImpossible;
   static const Confidence kUninit;
 

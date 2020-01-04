@@ -11,8 +11,12 @@ void StrategyComplement::Process(basic::NluContext &nluContext) {
     if (segment->GetTags().empty()) {
       auto segmentStr = segment->GetStrFromSentence(clause);
       auto poses = basic::Manager::Get().GetGkb().GetGkbGlobal().GetPosTags(segmentStr);
-      if (poses != nullptr && poses->size() >= 1) {
-        SetPos(*segment, (*poses)[0], kStrategyOther);
+      if (poses != nullptr && poses->size() > 1) {
+        SetPos(
+                *segment,
+                (*poses)[0],
+                basic::Confidence::kFull,
+                kStrategyOther);
         if ((*poses)[0] == basic::PosTag::Type::kV) {
           AddPos(*segment, basic::PosTag::Type::kVn);
         }

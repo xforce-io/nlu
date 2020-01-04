@@ -26,6 +26,11 @@ void Strategy::AddPos(
         basic::Segment &segment,
         basic::PosTag::Type::Val posTag) {
   segment.AddTag(posTag);
+  if (segment.GetTags().size() > 1) {
+    segment.SetConfidence(basic::Confidence(basic::Confidence::kFull));
+  } else {
+    segment.SetConfidence(basic::Confidence::kMaybe);
+  }
 }
 
 }}}

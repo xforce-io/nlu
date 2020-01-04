@@ -9,6 +9,7 @@ class Strategy {
   static const uint32_t kStrategyUniq = 1; 
   static const uint32_t kStrategyWindowStatistics = 2; 
   static const uint32_t kStrategyContextInfer = 3;
+  static const uint32_t kStrategyComlement = 4;
   static const uint32_t kStrategyOther = 0;
 
  public:
