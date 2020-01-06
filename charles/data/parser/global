@@ -8,7 +8,7 @@ FEATURE_EXTRACTOR_BEGIN(chunker)
 FEATURE_EXTRACTOR_END
 
 FEATURE_EXTRACTOR_BEGIN(syntaxFromChunk)
-    { #Pos(((n|rn|t|m|q|f|j|h|k)P-)*((n|rn|j)P-)) -> syntactic._cont_np_ }
+    { #Pos(((n|rn|t|m|q|f|j|h|k)P-)*((n|rn|j|k)P-)) -> syntactic._cont_np_ }
     { #Pos((n|rn)P) -> syntactic.np }
     { #Pos((m|q)P) -> syntactic.qp }
     { #Pos((dP-)*((a|b|z)P-)+) -> syntactic.advp }
@@ -44,6 +44,7 @@ FEATURE_EXTRACTOR_BEGIN(syntax)
     ~{ "一" #Pos(nP) -> syntactic.advp }
 
     ~{ #Chk(p) #Chk(np) -> syntactic.pp }
+    ~{ { #Chk(p) #Chk(dp) -> syntactic.pp } $V }
     ~{ $v "了" -> syntactic.v }
     ~{ $v #Chk(np) % -> syntactic.vp }
     ~{ #Chk(dp) $v % -> syntactic.vp }
