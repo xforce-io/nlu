@@ -123,6 +123,7 @@ bool RuleSyntaxPrep::AddNewChunk_(
   if (!ret) {
     return false;
   }
+  newBranch->Add(basic::ChunkSep(offset_+length));
 
   if (basic::SyntaxTag::Type::kUndef != subChunkTag) {
     basic::Chunk subChunk(
