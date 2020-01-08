@@ -86,14 +86,14 @@ bool RuleSyntaxPrep::Split(
 
 void RuleSyntaxPrep::GenForbid(std::vector<ForbidItem> &forbidItems) const {
   ForbidItem forbidItem;
-  forbidItem.SetCategoryRule(Rule::kCategoryRuleSyntaxPrep);
-  forbidItem.SetOffset(forbidItem.GetOffset());
-  forbidItem.SetLen(forbidItem.GetLen());
+  forbidItem.SetCategoryRule(GetCategory());
+  forbidItem.SetOffset(offset_);
+  forbidItem.SetLen(len_);
   forbidItems.push_back(forbidItem);
 }
 
 bool RuleSyntaxPrep::PreCheckForbid(const ForbidItem &forbidItem) const {
-  return forbidItem.GetCategoryRule() == Rule::kCategoryRuleSyntaxPrep &&
+  return forbidItem.GetCategoryRule() == GetCategory() &&
          forbidItem.GetOffset() == offset_ &&
          forbidItem.GetLen() == len_;
 }

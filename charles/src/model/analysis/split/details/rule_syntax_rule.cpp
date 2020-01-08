@@ -110,14 +110,14 @@ void RuleSyntaxRule::GenForbid(std::vector<ForbidItem> &forbidItems) const {
   }
 
   ForbidItem forbidItem;
-  forbidItem.SetCategoryRule(Rule::kCategoryRuleSyntaxRule);
+  forbidItem.SetCategoryRule(GetCategory());
   forbidItem.SetOffset(context_->GetStartPos());
   forbidItem.SetLen(context_->GetCurPos() - context_->GetStartPos());
   forbidItems.push_back(forbidItem);
 }
 
 bool RuleSyntaxRule::PostCheckForbid(const ForbidItem &forbidItem) const {
-  return forbidItem.GetCategoryRule() == Rule::kCategoryRuleSyntaxRule &&
+  return forbidItem.GetCategoryRule() == GetCategory() &&
       nullptr != context_ &&
       context_->GetStartPos() == forbidItem.GetOffset() &&
       context_->GetCurPos() - context_->GetStartPos() == forbidItem.GetLen();

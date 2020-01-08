@@ -67,14 +67,14 @@ bool RuleSyntaxVerbArg::Split(
 
 void RuleSyntaxVerbArg::GenForbid(std::vector<ForbidItem> &forbidItems) const {
   ForbidItem forbidItem;
-  forbidItem.SetCategoryRule(Rule::kCategoryRuleSyntaxVerbArg);
+  forbidItem.SetCategoryRule(GetCategory());
   forbidItem.SetOffset(offset_);
   forbidItem.SetLen(len_);
   forbidItems.push_back(forbidItem);
 }
 
 bool RuleSyntaxVerbArg::PreCheckForbid(const ForbidItem& forbidItem) const {
-  return forbidItem.GetCategoryRule() == Rule::kCategoryRuleSyntaxVerbArg &&
+  return forbidItem.GetCategoryRule() == GetCategory() &&
       forbidItem.GetOffset() == offset_ &&
       forbidItem.GetLen() == len_;
 }
