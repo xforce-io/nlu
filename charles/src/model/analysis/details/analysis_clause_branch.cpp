@@ -84,7 +84,7 @@ bool AnalysisClauseBranch::Process(
             *nluContext,
             *splitStage_,
             endTag_,
-            bornStrategy_,
+            verifyStrategy_,
             traceEvent_);
     branches.push(child);
     children_.push_back(child);
@@ -145,6 +145,7 @@ int AnalysisClauseBranch::VerifySubBranches_() {
     auto clauseToVerify = std::make_shared<AnalysisClause>(
             subQuery,
             chunk->GetTag(),
+            chunk->GetVerifyStrategy(),
             false);
     bool ret = clauseToVerify->Init();
     if (!ret) {

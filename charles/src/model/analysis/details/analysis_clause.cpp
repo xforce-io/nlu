@@ -32,7 +32,7 @@ bool AnalysisClause::Init() {
           *clause_,
           *splitStage,
           endTag_,
-          bornStrategy_,
+          verifyStrategy_,
           traceEvent_);
   XFC_DELETE(splitStage);
   allBranches_.insert(std::make_pair(master_->GetNo(), master_));
