@@ -45,7 +45,9 @@ bool AnalysisClauseBranch::Process(
         jsonType["rule"] = splitStage_->GetLastRule()->GetRepr();
       }
       jsonType["verifySubBranch"] = verifySubBranch;
-      jsonType["endTag"] = basic::SyntaxTag::Str(endTag_);
+      if (endTag_ != basic::SyntaxTag::Type::kStc) {
+        jsonType["endTag"] = basic::SyntaxTag::Str(endTag_);
+      }
       jsonType["verifyStrategy"] = verifyStrategy_;
       basic::AnalysisTracer::Get()->AddEvent(jsonType);
     }
