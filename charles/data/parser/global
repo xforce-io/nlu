@@ -29,6 +29,7 @@ FEATURE_EXTRACTOR_BEGIN(syntax)
     { { #Chk(advp) ?} { #Chk(pp) ?} { #Chk(np) ?} $V $MPP -> syntactic._stc_ }
     { { #Chk(advp) ?} #Chk(pp) $v #Chk(np) #Chk(np) $MPP -> syntactic._stc_ }
     { { #Chk(_cont_np_) #Pos(c) #Chk(_cont_np_) -> syntactic.np } $MPP -> syntactic._stc_ }
+    { #Chk(np) $MPP -> syntactic._stc_ }
 
     { $V #Pos(c) $V -> syntactic.vp }
 
@@ -43,7 +44,6 @@ FEATURE_EXTRACTOR_BEGIN(syntax)
     ~{ #Chk(dp) #Chk(advp) -> syntactic.advp }
     ~{ "一" #Pos(nP) -> syntactic.advp }
 
-    ~{ #Chk(p) #Chk(np) -> syntactic.pp }
     ~{ { #Chk(p) #Chk(dp) -> syntactic.pp } $V }
     ~{ $v "了" -> syntactic.v }
     ~{ $v #Chk(np) % -> syntactic.vp }

@@ -84,6 +84,7 @@ bool AnalysisClauseBranch::Process(
             *nluContext,
             *splitStage_,
             endTag_,
+            bornStrategy_,
             traceEvent_);
     branches.push(child);
     children_.push_back(child);
