@@ -139,7 +139,8 @@ bool RuleSyntaxPrep::AddNewChunk_(
                     subChunkTo-subChunkFrom);
     AnalysisClause analysisClause(
             subStr,
-            basic::SyntaxTag::Type::kNp);
+            basic::SyntaxTag::Type::kNp,
+            GetRepr());
     ret = analysisClause.Init();
     if (!ret) {
       ERROR("fail_init_analysis_clause[" << subStr << "]");
