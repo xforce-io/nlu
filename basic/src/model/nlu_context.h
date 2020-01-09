@@ -92,6 +92,16 @@ bool NluContext::Add(const std::shared_ptr<Segment> &segment) {
 }
 
 bool NluContext::Add(const std::shared_ptr<ChunkSep> &chunkSep) {
+  auto iter = managerFragmentSet_->GetChunks().Begin();
+  while (iter != managerFragmentSet_->GetChunks().End()) {
+    auto next = iter;
+    ++next;
+    if ((*iter)->GetOffset() < chunkSep->GetOffset() &&
+        chunkSep->GetOffset() < (*iter)->GetEnd()) {
+      managerFragmentSet_->GetChunks().Erase(iter);
+    }
+    iter = next;
+  }
   return managerFragmentSet_->GetChunkSeps().Add(chunkSep);
 }
 
