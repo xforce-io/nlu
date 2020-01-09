@@ -64,8 +64,8 @@ bool RuleSyntaxPrep::Split(
     if (chunk->GetTag() == basic::SyntaxTag::Type::kAdvp ||
         chunk->GetTag() == basic::SyntaxTag::Type::kU) {
       continue;
-    } else if (chunk->GetTag() == basic::SyntaxTag::Type::kNp ||
-        chunk->GetTag() == basic::SyntaxTag::Type::kContNp) {
+    } else if (chunk->ContainTag(basic::SyntaxTag::Type::kNp) ||
+        chunk->ContainTag(basic::SyntaxTag::Type::kContNp)) {
       if (AddNewChunk_(
               splitStage,
               nluContext,

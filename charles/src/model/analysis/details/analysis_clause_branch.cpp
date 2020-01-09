@@ -13,7 +13,7 @@ AnalysisClauseBranch::AnalysisClauseBranch(
         basic::SyntaxTag::Type::Val endTag,
         const std::string &verifyStrategy,
         bool traceEvent) :
-    no_(no),
+    no_(endTag == basic::SyntaxTag::Type::kStc ? no : -no),
     nluContext_(nluContext.Clone()),
     splitStage_(splitStage.Clone()),
     endTag_(endTag),
