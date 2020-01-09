@@ -7,11 +7,11 @@ namespace xforce { namespace nlu { namespace charles {
 AnalysisClause::AnalysisClause(
         const std::wstring &clause,
         basic::SyntaxTag::Type::Val endTag,
-        const std::string &bornStrategy,
+        const std::string &verifyStrategy,
         bool traceEvent) :
     clause_(std::make_shared<basic::NluContext>(clause)),
     endTag_(endTag),
-    bornStrategy_(bornStrategy),
+    verifyStrategy_(verifyStrategy),
     traceEvent_(traceEvent),
     master_(nullptr) {}
 

@@ -11,13 +11,13 @@ AnalysisClauseBranch::AnalysisClauseBranch(
         const basic::NluContext &nluContext,
         const SplitStage &splitStage,
         basic::SyntaxTag::Type::Val endTag,
-        const std::string &bornStrategy,
+        const std::string &verifyStrategy,
         bool traceEvent) :
     no_(no),
     nluContext_(nluContext.Clone()),
     splitStage_(splitStage.Clone()),
     endTag_(endTag),
-    bornStrategy_(bornStrategy),
+    verifyStrategy_(verifyStrategy),
     traceEvent_(traceEvent),
     processed_(false),
     end_(false),
@@ -46,7 +46,7 @@ bool AnalysisClauseBranch::Process(
       }
       jsonType["verifySubBranch"] = verifySubBranch;
       jsonType["endTag"] = endTag_;
-      jsonType["bornStrategy"] = bornStrategy_;
+      jsonType["verifyStrategy"] = verifyStrategy_;
       basic::AnalysisTracer::Get()->AddEvent(jsonType);
     }
 
