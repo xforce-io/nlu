@@ -37,10 +37,11 @@ class Chunk : public FragmentMultitag<SyntaxTag::Type> {
   inline Chunk(const Chunk &other);
   virtual ~Chunk() {}
 
-  inline void SetNeedToVerify(bool needToVerify);
+  inline void SetNeedToVerify(const std::string &strategy);
   inline void SetDescDir(DescDir descDir);
 
   bool GetNeedToVerify() const { return needToVerify_; }
+  const std::string& GetVerifyStrategy() const { return verifyStrategy_; }
   inline DescDir GetDescDir() const;
 
   virtual const std::string& GetCategory() const;
@@ -59,6 +60,7 @@ class Chunk : public FragmentMultitag<SyntaxTag::Type> {
           SyntaxTag::Type::Val tag);
  private:
   bool needToVerify_;
+  std::string verifyStrategy_;
 
   DescDir descDir_;
 
@@ -96,8 +98,9 @@ Chunk::Chunk(const Chunk &other) :
     isArgZhun_(other.isArgZhun_),
     isDoubleArgs_(other.isDoubleArgs_) {}
 
-void Chunk::SetNeedToVerify(bool needToVerify) {
-  needToVerify_ = needToVerify;
+void Chunk::SetNeedToVerify( const std::string &strategy) {
+  needToVerify_ = true;
+  verifyStrategy_ = strategy;
 }
 
 void Chunk::SetDescDir(DescDir descDir) {

@@ -17,6 +17,7 @@ class AnalysisClause : public AnalysisComponent {
   AnalysisClause(
           const std::wstring &clause,
           basic::SyntaxTag::Type::Val endTag = basic::SyntaxTag::Type::kStc,
+          const std::string &bornStrategy = "null",
           bool traceEvent=true);
 
   virtual ~AnalysisClause();
@@ -33,6 +34,7 @@ class AnalysisClause : public AnalysisComponent {
  private:
   std::shared_ptr<basic::NluContext> clause_;
   basic::SyntaxTag::Type::Val endTag_;
+  std::string bornStrategy_;
   bool traceEvent_;
 
   std::shared_ptr<AnalysisClauseBranch> master_;

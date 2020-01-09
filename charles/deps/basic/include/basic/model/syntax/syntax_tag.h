@@ -9,6 +9,10 @@ class SyntaxTag {
  public:
   struct Type {
     enum Val {
+      //special mark
+      kStc,
+      kContNp,
+
       //pos tags
       kAd,
       kAs,
@@ -65,10 +69,6 @@ class SyntaxTag {
       kQp, //Quantifier phrase / 量词短语
       kUcp, //unidentical coordination phrase / 非对等同位语短语
       kVp, //Verb phrase / 动词短语
-
-      //special mark
-      kStc,
-      kContNp,
 
       kUndef,
     };

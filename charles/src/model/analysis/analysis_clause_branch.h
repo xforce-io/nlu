@@ -16,6 +16,7 @@ class AnalysisClauseBranch {
           const basic::NluContext &nluContext,
           const SplitStage &splitStage,
           basic::SyntaxTag::Type::Val endTag = basic::SyntaxTag::Type::kStc,
+          const std::string &bornStrategy = "null",
           bool traceEvent=true);
 
   virtual ~AnalysisClauseBranch();
@@ -41,6 +42,7 @@ class AnalysisClauseBranch {
   std::list<std::shared_ptr<AnalysisClauseBranch>> children_;
   SplitStage *splitStage_;
   basic::SyntaxTag::Type::Val endTag_;
+  std::string bornStrategy_;
   bool traceEvent_;
 
   std::vector<SubBranch*> subBranches_;

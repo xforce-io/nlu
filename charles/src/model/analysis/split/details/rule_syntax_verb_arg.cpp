@@ -44,7 +44,7 @@ bool RuleSyntaxVerbArg::Split(
               offset_+len_,
               chunk->GetEnd() - offset_ - len_,
               950);
-      newNp.SetNeedToVerify(true);
+      newNp.SetNeedToVerify(GetRepr());
 
       basic::Chunk newVp(
               *nluContext,

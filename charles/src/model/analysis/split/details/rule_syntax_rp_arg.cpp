@@ -49,7 +49,7 @@ void RuleSyntaxRpArg::AddChunks_(
           offset_+len_,
           chunk->GetEnd() - offset_ - len_,
           960);
-  argVp->SetNeedToVerify(true);
+  argVp->SetNeedToVerify(GetRepr());
   chunksToVerify_.push_back(argVp);
 
   std::shared_ptr<basic::Chunk> newVp = nullptr;
