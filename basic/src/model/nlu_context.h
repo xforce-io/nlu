@@ -112,8 +112,21 @@ bool NluContext::Add(const ChunkSep &chunkSep) {
   while (iter != managerFragmentSet_->GetChunks().End()) {
     auto next = iter;
     ++next;
-    if ((*iter)->GetOffset() < chunkSep.GetOffset() &&
+    if ((*iter)->GetTag() == SyntaxTag::Type::kContNp &&
+        (*iter)->GetOffset() < chunkSep.GetOffset() &&
         chunkSep.GetOffset() < (*iter)->GetEnd()) {
+      managerFragmentSet_->GetChunks().Add(
+              Chunk(
+                      *this,
+                      SyntaxTag::Type::kContNp,
+                      (*iter)->GetOffset(),
+                      chunkSep.GetOffset() - (*iter)->GetOffset()));
+      managerFragmentSet_->GetChunks().Add(
+              Chunk(
+                      *this,
+                      SyntaxTag::Type::kContNp,
+                      chunkSep.GetOffset(),
+                       (*iter)->GetEnd() - chunkSep.GetOffset()));
       managerFragmentSet_->GetChunks().Erase(iter);
     }
     iter = next;
