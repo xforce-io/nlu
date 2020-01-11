@@ -92,7 +92,7 @@ bool RuleSyntaxContNp::Filter_(const std::shared_ptr<basic::NluContext> &nluCont
       continue;
     }
 
-    if (chunk->IsOverlap(offset_, len_)) {
+    if (chunk->Intersect(offset_, len_)) {
       return false;
     }
   }
