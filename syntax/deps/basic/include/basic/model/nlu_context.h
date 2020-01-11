@@ -84,19 +84,19 @@ void NluContext::SetChunks(const typename Chunk::Set &chunks) {
 }
 
 bool NluContext::Add(const std::shared_ptr<NameEntity> &nameEntity) {
-  return managerFragmentSet_->GetNameEntities().Add(nameEntity);
+  return Add(*nameEntity);
 }
 
 bool NluContext::Add(const std::shared_ptr<Segment> &segment) {
-  return managerFragmentSet_->GetSegments().Add(segment);
+  return Add(*segment);
 }
 
 bool NluContext::Add(const std::shared_ptr<ChunkSep> &chunkSep) {
-  return managerFragmentSet_->GetChunkSeps().Add(chunkSep);
+  return Add(*chunkSep);
 }
 
 bool NluContext::Add(const std::shared_ptr<Chunk> &chunk) {
-  return managerFragmentSet_->GetChunks().Add(chunk);
+  return Add(*chunk);
 }
 
 bool NluContext::Add(const NameEntity &nameEntity) {
@@ -108,6 +108,29 @@ bool NluContext::Add(const Segment &segment) {
 }
 
 bool NluContext::Add(const ChunkSep &chunkSep) {
+  auto iter = managerFragmentSet_->GetChunks().Begin();
+  while (iter != managerFragmentSet_->GetChunks().End()) {
+    auto next = iter;
+    ++next;
+    if ((*iter)->GetTag() == SyntaxTag::Type::kContNp &&
+        (*iter)->GetOffset() < chunkSep.GetOffset() &&
+        chunkSep.GetOffset() < (*iter)->GetEnd()) {
+      managerFragmentSet_->GetChunks().Add(
+              Chunk(
+                      *this,
+                      SyntaxTag::Type::kContNp,
+                      (*iter)->GetOffset(),
+                      chunkSep.GetOffset() - (*iter)->GetOffset()));
+      managerFragmentSet_->GetChunks().Add(
+              Chunk(
+                      *this,
+                      SyntaxTag::Type::kContNp,
+                      chunkSep.GetOffset(),
+                       (*iter)->GetEnd() - chunkSep.GetOffset()));
+      managerFragmentSet_->GetChunks().Erase(iter);
+    }
+    iter = next;
+  }
   return managerFragmentSet_->GetChunkSeps().Add(chunkSep);
 }
 

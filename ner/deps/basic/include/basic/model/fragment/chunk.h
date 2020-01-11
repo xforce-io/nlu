@@ -74,6 +74,7 @@ class Chunk : public FragmentMultitag<SyntaxTag::Type> {
 Chunk::Chunk() :
   Super(),
   needToVerify_(false),
+  verifyStrategy_("null"),
   verbArgInfo_(false) {}
 
 Chunk::Chunk(
@@ -84,6 +85,7 @@ Chunk::Chunk(
         uint32_t strategy) :
     Super(syntaxTag, offset, len, strategy),
     needToVerify_(false),
+    verifyStrategy_("null"),
     verbArgInfo_(false) {
   AddTagForCtx(nluContext, *this, syntaxTag);
 }
