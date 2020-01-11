@@ -18,7 +18,7 @@ class Rule {
 
   static const size_t kMaxLenRepr = 1024;
 
-public:
+ public:
   Rule();
   Rule(size_t offset, size_t len);
 
@@ -44,6 +44,9 @@ public:
   static std::shared_ptr<basic::NluContext> Clone(
           const SplitStage &splitStage,
           const std::shared_ptr<basic::NluContext> &nluContext);
+
+ protected:
+  virtual bool Filter_(const std::shared_ptr<basic::NluContext>&) const { return true; }
 
  protected:
   mutable char repr_[kMaxLenRepr];

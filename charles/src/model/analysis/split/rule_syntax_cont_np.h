@@ -25,7 +25,8 @@ class RuleSyntaxContNp : public Rule {
   Rule* Clone();
 
  private:
-  bool AddNewChunk_(
+    bool Filter_(const std::shared_ptr<basic::NluContext> &nluContext) const;
+    bool AddNewChunk_(
           const SplitStage &splitStage,
           const std::shared_ptr<basic::NluContext> &nluContext,
           std::vector<std::shared_ptr<basic::NluContext>> &nluContexts,

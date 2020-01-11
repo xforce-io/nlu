@@ -22,7 +22,7 @@ class RuleSyntaxRpArg : public RuleSyntaxArg {
   Rule* Clone();
 
  protected:
-  virtual bool Filter_(const std::shared_ptr<basic::NluContext> &nluContext);
+  virtual bool Filter_(const std::shared_ptr<basic::NluContext> &nluContext) const;
   virtual bool ChunkFilter_(const std::shared_ptr<basic::Chunk> &chunk);
   virtual void AddChunks_(
           const SplitStage &splitStage,

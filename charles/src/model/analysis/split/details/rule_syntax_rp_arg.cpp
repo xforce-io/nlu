@@ -28,7 +28,7 @@ Rule* RuleSyntaxRpArg::Clone() {
   return new RuleSyntaxRpArg(offset_, len_, segment_);
 }
 
-bool RuleSyntaxRpArg::Filter_(const std::shared_ptr<basic::NluContext> &nluContext) {
+bool RuleSyntaxRpArg::Filter_(const std::shared_ptr<basic::NluContext> &nluContext) const {
   UNUSE(nluContext)
   return segment_.GetTag() == basic::PosTag::Type::kRp;
 }

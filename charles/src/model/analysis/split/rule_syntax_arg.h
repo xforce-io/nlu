@@ -21,7 +21,6 @@ class RuleSyntaxArg : public Rule {
   virtual bool PreCheckForbid(const ForbidItem &forbidItem) const;
 
  protected:
-  virtual bool Filter_(const std::shared_ptr<basic::NluContext> &nluContext) = 0;
   virtual bool ChunkFilter_(const std::shared_ptr<basic::Chunk> &chunk) = 0;
   virtual void AddChunks_(
           const SplitStage &splitStage,

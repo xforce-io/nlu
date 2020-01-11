@@ -16,6 +16,10 @@ bool RuleSyntaxContNp::Split(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,
         std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) {
+  if (!Filter_(nluContext)) {
+    return false;
+  }
+
   bool touched = false;
   for (auto &segment : nluContext->GetSegments().GetAll()) {
     if (segment->GetEnd() <= offset_ ||
@@ -72,6 +76,27 @@ bool RuleSyntaxContNp::PreCheckForbid(const ForbidItem &forbidItem) const {
 
 Rule* RuleSyntaxContNp::Clone() {
   return new RuleSyntaxContNp(offset_, len_);
+}
+
+bool RuleSyntaxContNp::Filter_(const std::shared_ptr<basic::NluContext> &nluContext) const {
+  for (auto &chunk : nluContext->GetChunks().GetAll()) {
+    bool hasCommon = false;
+    for (auto &tag : chunk->GetTags()) {
+      if (!basic::SyntaxTag::Type::IsSpecial(tag)) {
+        hasCommon = true;
+        break;
+      }
+    }
+
+    if (!hasCommon) {
+      continue;
+    }
+
+    if (chunk->IsOverlap(offset_, len_)) {
+      return false;
+    }
+  }
+  return true;
 }
 
 bool RuleSyntaxContNp::AddNewChunk_(
