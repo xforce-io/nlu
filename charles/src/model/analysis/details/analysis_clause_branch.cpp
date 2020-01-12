@@ -7,7 +7,7 @@
 namespace xforce { namespace nlu { namespace charles {
 
 AnalysisClauseBranch::AnalysisClauseBranch(
-        size_t no,
+        ssize_t no,
         const basic::NluContext &nluContext,
         const SplitStage &splitStage,
         basic::SyntaxTag::Type::Val endTag,

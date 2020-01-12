@@ -12,7 +12,7 @@ class SplitStage;
 class AnalysisClauseBranch {
  public:
   AnalysisClauseBranch(
-          size_t no,
+          ssize_t no,
           const basic::NluContext &nluContext,
           const SplitStage &splitStage,
           basic::SyntaxTag::Type::Val endTag = basic::SyntaxTag::Type::kStc,
