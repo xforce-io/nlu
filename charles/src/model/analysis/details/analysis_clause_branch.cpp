@@ -13,7 +13,7 @@ AnalysisClauseBranch::AnalysisClauseBranch(
         basic::SyntaxTag::Type::Val endTag,
         const std::string &verifyStrategy,
         bool traceEvent) :
-    no_(endTag == basic::SyntaxTag::Type::kStc ? no : -no),
+    no_(endTag == basic::SyntaxTag::Type::kStc ? abs(no): -abs(no)),
     nluContext_(nluContext.Clone()),
     splitStage_(splitStage.Clone()),
     endTag_(endTag),
@@ -81,7 +81,7 @@ bool AnalysisClauseBranch::Process(
   }
 
   for (auto const &nluContext : nluContexts) {
-    auto absVal = (no_>=0 ? no_ : -no_) * 100 + childrenIdx_;
+    auto absVal = abs(no_) * 100 + childrenIdx_;
     auto child = std::make_shared<AnalysisClauseBranch>(
             no_>=0 ? absVal : -absVal,
             *nluContext,
