@@ -37,7 +37,7 @@ class AnalysisClauseBranch {
   int VerifySubBranches_();
 
  private:
-  size_t no_;
+  ssize_t no_;
   std::shared_ptr<basic::NluContext> nluContext_;
   std::list<std::shared_ptr<AnalysisClauseBranch>> children_;
   SplitStage *splitStage_;
