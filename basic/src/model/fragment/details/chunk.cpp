@@ -36,7 +36,15 @@ void Chunk::AddTagForCtx(
       Chunk &chunk,
       SyntaxTag::Type::Val tag) {
   if (SyntaxTag::Type::kV == tag) {
-    std::wstring word = chunk.GetStrFromSentence(nluContext.GetQuery());
+    std::shared_ptr<Segment> theVerb;
+    for (auto &segment : nluContext.GetSegments().GetAll()) {
+      if (chunk.GetOffset() <= segment->GetOffset() && segment->GetEnd() <= chunk.GetEnd()) {
+        theVerb = segment;
+        break;
+      }
+    }
+
+    std::wstring word = theVerb->GetStrFromSentence(nluContext.GetQuery());
     bool isZhu = Manager::Get().GetGkb().GetGkbVerb().IsZhu(word);
     if (isZhu) {
       chunk.AddTag(SyntaxTag::Type::kVw);
