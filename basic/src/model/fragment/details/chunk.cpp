@@ -38,7 +38,9 @@ void Chunk::AddTagForCtx(
   if (SyntaxTag::Type::kV == tag) {
     std::shared_ptr<Segment> theVerb;
     for (auto &segment : nluContext.GetSegments().GetAll()) {
-      if (chunk.GetOffset() <= segment->GetOffset() && segment->GetEnd() <= chunk.GetEnd()) {
+      if (chunk.GetOffset() <= segment->GetOffset()
+          && segment->GetEnd() <= chunk.GetEnd()
+          && segment->GetTag() == PosTag::Type::kV) {
         theVerb = segment;
         break;
       }
