@@ -2,6 +2,7 @@
 
 #include "public.h"
 #include "analysis_component.h"
+#include "end_tags.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
@@ -16,7 +17,7 @@ class AnalysisClause : public AnalysisComponent {
  public:
   AnalysisClause(
           const std::wstring &clause,
-          basic::SyntaxTag::Type::Val endTag = basic::SyntaxTag::Type::kStc,
+          const EndTags &endTags,
           const std::string &verifyStrategy = "null",
           bool traceEvent=true);
 
@@ -33,7 +34,7 @@ class AnalysisClause : public AnalysisComponent {
 
  private:
   std::shared_ptr<basic::NluContext> clause_;
-  basic::SyntaxTag::Type::Val endTag_;
+  EndTags endTags_;
   std::string verifyStrategy_;
   bool traceEvent_;
 

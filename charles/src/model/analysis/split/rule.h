@@ -36,6 +36,10 @@ class Rule {
   virtual bool PreCheckForbid(const ForbidItem&) const { return false; }
   virtual bool PostCheckForbid(const ForbidItem&) const { return false; }
 
+  size_t GetOffset() const { return offset_; }
+  size_t GetLen() const { return len_; }
+  size_t GetEnd() const { return offset_+len_; }
+
   virtual ~Rule() {}
 
   virtual Rule* Clone() = 0;

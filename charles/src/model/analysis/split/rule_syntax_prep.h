@@ -1,11 +1,18 @@
 #pragma once
 
 #include "rule.h"
+#include "../end_tags.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
 class SplitStage;
+class EndTags;
 
+/*
+ * include pos : u,f,r
+ * include word : 说，来说，来看，之外，而外，以外，以后，以来，起，外
+ * include word append v : 所（u）+ v，给（u）+v
+ */
 class RuleSyntaxPrep : public Rule {
  public:
   explicit RuleSyntaxPrep(
@@ -26,7 +33,7 @@ class RuleSyntaxPrep : public Rule {
 
   virtual Rule* Clone();
 
-private:
+ private:
   bool AddNewChunk_(
           const SplitStage &splitStage,
           const std::shared_ptr<basic::NluContext> &nluContext,
@@ -34,10 +41,16 @@ private:
           size_t length,
           size_t subChunkFrom,
           size_t subChunkTo,
-          basic::SyntaxTag::Type::Val subChunkTag,
+          const EndTags &subChunkTag,
           uint32_t strategy);
 
  private:
+  EndTags endTagsForNp_;
+  EndTags endTagsForVp_;
+  EndTags endTagsForPpSub_;
+
+  std::unordered_set<std::wstring> includeWords_;
+
   std::wstring prep_;
 };
 

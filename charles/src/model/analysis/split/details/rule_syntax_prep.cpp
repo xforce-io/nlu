@@ -11,6 +11,23 @@ RuleSyntaxPrep::RuleSyntaxPrep(
         size_t len) :
     Rule(offset, len),
     prep_(prep) {
+  endTagsForNp_.Add(basic::SyntaxTag::Type::kNp);
+  endTagsForVp_.Add(basic::SyntaxTag::Type::kV);
+  endTagsForVp_.Add(basic::SyntaxTag::Type::kVp);
+  endTagsForPpSub_.Add(basic::SyntaxTag::Type::kNp);
+  endTagsForPpSub_.Add(basic::SyntaxTag::Type::kV);
+  endTagsForPpSub_.Add(basic::SyntaxTag::Type::kVp);
+
+  includeWords_.insert(L"说");
+  includeWords_.insert(L"来说");
+  includeWords_.insert(L"来看");
+  includeWords_.insert(L"之外");
+  includeWords_.insert(L"而外");
+  includeWords_.insert(L"以外");
+  includeWords_.insert(L"以后");
+  includeWords_.insert(L"以来");
+  includeWords_.insert(L"起");
+  includeWords_.insert(L"外");
 }
 
 const char* RuleSyntaxPrep::GetRepr() const {
@@ -25,33 +42,55 @@ bool RuleSyntaxPrep::Split(
   std::vector<const basic::EntryPrep*> entriesPrep;
   basic::Manager::Get().GetGkb().GetGkbPrep().GetEntriesPrep(prep_, entriesPrep);
 
+  bool isJian = false;
+  for (auto *entryPrep : entriesPrep) {
+    if (entryPrep->TiWei() == basic::EntryPrep::TiWei::kJian) {
+      isJian = true;
+      break;
+    }
+  }
+
   bool touched=false;
   for (auto &segment : nluContext->GetSegments().GetAll()) {
-    if (segment->GetOffset() < offset_ + len_) {
+    if (segment->GetOffset() < GetEnd() || GetEnd() == segment->GetBegin()) {
       continue;
     }
 
+    auto segPos = segment->GetTag();
+    auto segWord = segment->GetQuery(nluContext->GetQuery());
+
     //after words & after poses
     for (auto *entryPrep : entriesPrep) {
-      if (entryPrep->IsAfterWord(segment->GetQuery(nluContext->GetQuery())) ||
-          entryPrep->IsAfterPos(segment->GetTag())) {
-        if (offset_ + len_ == segment->GetBegin()) {
-          continue;
+      bool includeBoundary = false;
+      if (entryPrep->IsAfterPos(segPos)) {
+        if (segment->GetTag() == basic::PosTag::Type::kU ||
+            segment->GetTag() == basic::PosTag::Type::kF ||
+            segment->GetTag() == basic::PosTag::Type::kR) {
+          includeBoundary = true;
         }
-
-        if (AddNewChunk_(
-                splitStage,
-                nluContext,
-                nluContexts,
-                segment->GetEnd() - offset_,
-                offset_ + len_,
-                segment->GetBegin(),
-                basic::SyntaxTag::Type::kUndef,
-                910)) {
-          touched = true;
+      } else if (entryPrep->IsAfterWord(segWord)) {
+        if (includeWords_.find(segWord) != includeWords_.end()) {
+          includeBoundary = true;
+        } else if (L"所" == segWord || L"给" == segWord) {
+          auto chunk = nluContext->GetChunks().GetFragmentAfter(segment->GetEnd());
+          if (chunk != nullptr && chunk->ContainTag())
         }
-        break;
+      } else {
+        continue;
       }
+
+      if (AddNewChunk_(
+              splitStage,
+              nluContext,
+              nluContexts,
+              segment->GetEnd() - offset_,
+              offset_ + len_,
+              segment->GetBegin(),
+              endTagsForPpSub_,
+              910)) {
+        touched = true;
+      }
+      break;
     }
   }
 
@@ -73,8 +112,22 @@ bool RuleSyntaxPrep::Split(
               chunk->GetEnd() - offset_,
               offset_ + len_,
               chunk->GetEnd(),
-              basic::SyntaxTag::Type::kNp,
+              endTagsForNp_,
               911)) {
+        touched = true;
+      }
+    } else if (isJian &&
+        (chunk->ContainTag(basic::SyntaxTag::Type::kV) ||
+        chunk->ContainTag(basic::SyntaxTag::Type::kVp))) {
+      if (AddNewChunk_(
+              splitStage,
+              nluContext,
+              nluContexts,
+              chunk->GetEnd() - offset_,
+              offset_ + len_,
+              chunk->GetEnd(),
+              endTagsForVp_,
+              912)) {
         touched = true;
       }
     } else {
@@ -109,7 +162,7 @@ bool RuleSyntaxPrep::AddNewChunk_(
         size_t length,
         size_t subChunkFrom,
         size_t subChunkTo,
-        basic::SyntaxTag::Type::Val subChunkTag,
+        const EndTags &subChunkTags,
         uint32_t strategy) {
   basic::Chunk newChunk(
           *nluContext,
@@ -125,38 +178,29 @@ bool RuleSyntaxPrep::AddNewChunk_(
   }
   newBranch->Add(basic::ChunkSep(offset_+length));
 
-  if (basic::SyntaxTag::Type::kUndef != subChunkTag) {
-    basic::Chunk subChunk(
-            *nluContext,
-            subChunkTag,
-            subChunkFrom,
-            subChunkTo-subChunkFrom,
-            strategy);
-    newBranch->Add(subChunk);
-  } else {
-    std::wstring subStr = nluContext->GetQuery().substr(
-                    subChunkFrom,
-                    subChunkTo-subChunkFrom);
-    AnalysisClause analysisClause(
-            subStr,
-            basic::SyntaxTag::Type::kNp,
-            GetRepr());
-    ret = analysisClause.Init();
-    if (!ret) {
-      ERROR("fail_init_analysis_clause[" << subStr << "]");
-      return false;
-    }
-
-    ret = analysisClause.Process();
-    if (!ret) {
-      return false;
-    }
-
-    newBranch->AddPhrase(
-            subChunkFrom,
-            subChunkTo,
-            analysisClause.GetClause());
+  std::wstring subStr = nluContext->GetQuery().substr(
+                  subChunkFrom,
+                  subChunkTo-subChunkFrom);
+  AnalysisClause analysisClause(
+          subStr,
+          subChunkTags,
+          GetRepr());
+  ret = analysisClause.Init();
+  if (!ret) {
+    ERROR("fail_init_analysis_clause[" << subStr << "]");
+    return false;
   }
+
+  ret = analysisClause.Process();
+  if (!ret) {
+    return false;
+  }
+
+  newBranch->AddPhrase(
+          subChunkFrom,
+          subChunkTo,
+          analysisClause.GetClause());
+
   nluContexts.push_back(newBranch);
   return true;
 }

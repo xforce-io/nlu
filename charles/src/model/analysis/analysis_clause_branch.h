@@ -4,6 +4,7 @@
 #include "analysis_component.h"
 #include "nlu_context_split.h"
 #include "sub_branch.h"
+#include "end_tags.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
@@ -15,7 +16,7 @@ class AnalysisClauseBranch {
           ssize_t no,
           const basic::NluContext &nluContext,
           const SplitStage &splitStage,
-          basic::SyntaxTag::Type::Val endTag = basic::SyntaxTag::Type::kStc,
+          const EndTags &endTags,
           const std::string &verifyStrategy = "null",
           bool traceEvent=true);
 
@@ -41,7 +42,7 @@ class AnalysisClauseBranch {
   std::shared_ptr<basic::NluContext> nluContext_;
   std::list<std::shared_ptr<AnalysisClauseBranch>> children_;
   SplitStage *splitStage_;
-  basic::SyntaxTag::Type::Val endTag_;
+  EndTags endTags_;
   std::string verifyStrategy_;
   bool traceEvent_;
 

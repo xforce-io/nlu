@@ -6,11 +6,11 @@ namespace xforce { namespace nlu { namespace charles {
 
 AnalysisClause::AnalysisClause(
         const std::wstring &clause,
-        basic::SyntaxTag::Type::Val endTag,
+        const EndTags &endTags,
         const std::string &verifyStrategy,
         bool traceEvent) :
     clause_(std::make_shared<basic::NluContext>(clause)),
-    endTag_(endTag),
+    endTags_(endTags),
     verifyStrategy_(verifyStrategy),
     traceEvent_(traceEvent),
     master_(nullptr) {}
@@ -31,7 +31,7 @@ bool AnalysisClause::Init() {
           1,
           *clause_,
           *splitStage,
-          endTag_,
+          endTags_,
           verifyStrategy_,
           traceEvent_);
   XFC_DELETE(splitStage);

@@ -3,6 +3,7 @@
 #include "../split/split_stage.h"
 #include "../analysis_clause.h"
 #include "../sub_branch.h"
+#include "../end_tags.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
@@ -10,13 +11,13 @@ AnalysisClauseBranch::AnalysisClauseBranch(
         ssize_t no,
         const basic::NluContext &nluContext,
         const SplitStage &splitStage,
-        basic::SyntaxTag::Type::Val endTag,
+        const EndTags &endTags,
         const std::string &verifyStrategy,
         bool traceEvent) :
-    no_(endTag == basic::SyntaxTag::Type::kStc ? abs(no): -abs(no)),
+    no_(endTags.IsStc() ? abs(no): -abs(no)),
     nluContext_(nluContext.Clone()),
     splitStage_(splitStage.Clone()),
-    endTag_(endTag),
+    endTags_(endTags),
     verifyStrategy_(verifyStrategy),
     traceEvent_(traceEvent),
     processed_(false),
@@ -45,8 +46,8 @@ bool AnalysisClauseBranch::Process(
         jsonType["rule"] = splitStage_->GetLastRule()->GetRepr();
       }
       jsonType["verifySubBranch"] = verifySubBranch;
-      if (endTag_ != basic::SyntaxTag::Type::kStc) {
-        jsonType["endTag"] = basic::SyntaxTag::Str(endTag_);
+      if (!endTags_.IsStc()) {
+        jsonType["endTag"] = EndTags::Str(endTags_);
       }
       jsonType["verifyStrategy"] = verifyStrategy_;
       basic::AnalysisTracer::Get()->AddEvent(jsonType);
@@ -86,7 +87,7 @@ bool AnalysisClauseBranch::Process(
             no_>=0 ? absVal : -absVal,
             *nluContext,
             *splitStage_,
-            endTag_,
+            endTags_,
             verifyStrategy_,
             traceEvent_);
     branches.push(child);
@@ -127,7 +128,7 @@ bool AnalysisClauseBranch::IsFinished_(basic::NluContext &nluContext) {
     }
 
     for (auto &tag : chunk->GetTags()) {
-      if (tag == endTag_) {
+      if (endTags_.ContainTag(tag)) {
         return true;
       }
     }
