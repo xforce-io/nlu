@@ -52,9 +52,9 @@ class Fragment {
   inline uint32_t GetStrategy() const { return strategy_; }
   inline bool IsIn(size_t offset, size_t len) const;
   inline bool IsOverlap(size_t offset, size_t len) const;
-  virtual bool Same(const Fragment &other) const;
-
+  inline bool Intersect(size_t offset, size_t len) const;
   inline bool Intersect(const Fragment &fragment) const;
+  virtual bool Same(const Fragment &other) const;
 
   virtual void Dump(JsonType &jsonType) const;
 
@@ -166,11 +166,14 @@ bool Fragment::IsOverlap(size_t offset, size_t len) const {
   return offset_ == offset && len_ == len;
 }
 
+bool Fragment::Intersect(size_t offset, size_t len) const {
+  return (offset+len > GetOffset() && offset < GetEnd()) ||
+          (GetEnd() > offset && GetBegin() < offset+len);
+}
 
 bool Fragment::Intersect(const Fragment &fragment) const {
   return father_ == fragment.GetFather() &&
-      fragment.GetEnd() > GetBegin() &&
-      fragment.GetBegin() < GetEnd();
+      Intersect(fragment.GetOffset(), fragment.GetLen());
 }
 
 }}}

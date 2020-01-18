@@ -2,6 +2,8 @@
 
 #include "gtest/gtest.h"
 
+#include "basic/basic.h"
+
 #include "../../../src/milkie.h"
 #include "../../../src/core/model/pattern_expr/pattern_expr.h"
 #include "../../../src/core/model/refer/refer_manager.h"
@@ -16,6 +18,11 @@ const static std::wstring kTestBlockKey = L"testBlockKey";
 
 Milkie *milkie;
 
+void initBasic() {
+  const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/milkie.conf");
+  assert(Basic::Init((*conf)["basic"]));
+}
+
 void initMilkie() {
   milkie = new Milkie();
   assert(milkie->Init("../conf/milkie.conf"));
@@ -25,6 +32,7 @@ int main(int argc, char **argv) {
   setlocale(LC_ALL, "");
   LOGGER_SYS_INIT(L"../conf/log.conf");
 
+  initBasic();
   initMilkie();
 
   testing::InitGoogleTest(&argc, argv);
@@ -277,32 +285,32 @@ void testPartlyMultimatch() {
 }
 
 void testBugfix() {
-  std::wstring expr = Helper::PreprocessExprLine(L"{ #Pos(lP) \"的\" -> target }");
+  std::wstring expr = Helper::PreprocessExprLine(L"{ {#Chk(vp) && #Reg(.*是)} #Chk(advp) \"的\" -> syntactic.vp }");
   auto ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, expr);
   ASSERT_TRUE(ret.first != nullptr);
 
-  std::wstring query = L"强有力的";
+  std::wstring query = L"都是开心的";
   auto context = std::make_shared<Context>(query);
+  auto &nluContext = *(context->GetSentence().GetNluContext());
+
   FragmentSet<Segment> segments(query);
-  segments.Add(Segment(PosTag::Type::kL, 0, 3));
-  segments.Add(Segment(PosTag::Type::kU, 3, 1));
-  context->GetSentence().GetNluContext()->SetSegments(segments);
+  segments.Add(Segment(PosTag::Type::kD, 0, 1));
+  segments.Add(Segment(PosTag::Type::kV, 1, 1));
+  segments.Add(Segment(PosTag::Type::kA, 2, 2));
+  segments.Add(Segment(PosTag::Type::kU, 4, 1));
+  nluContext.SetSegments(segments);
+
+  FragmentSet<Chunk> chunks(query);
+  chunks.Add(Chunk(nluContext, SyntaxTag::Type::kVp, 0, 2));
+  chunks.Add(Chunk(nluContext, SyntaxTag::Type::kAdvp, 2, 2));
+  chunks.Add(Chunk(nluContext, SyntaxTag::Type::kU, 4, 1));
+  nluContext.SetChunks(chunks);
+
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
-  ASSERT_TRUE(*(context->GetCurStorageAsStr(L"target")) == L"强有力的");
 
-  expr = Helper::PreprocessExprLine(L"{ #Pos(((n|r|t|m|q|f|j|h|k)P-)+) -> target }");
-  ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, expr);
-  ASSERT_TRUE(ret.first != nullptr);
-
-  query = L"战术调整";
-  context = std::make_shared<Context>(query);
-  segments.Reset(query);
-  segments.Add(Segment(PosTag::Type::kN, 0, 2));
-
-  Segment segment(PosTag::Type::kV, 2, 2);
-  segment.AddTag(PosTag::Type::kN);
-  segments.Add(segment);
-
-  context->GetSentence().GetNluContext()->SetSegments(segments);
-  ASSERT_TRUE(!ret.first->ExactMatch(*(context.get())));
+  JsonType jsonType;
+  context->Dump(jsonType);
+  std::stringstream ss;
+  jsonType.DumpJson(ss);
+  std::cout << ss.str() << std::endl;
 }
