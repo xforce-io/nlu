@@ -15,7 +15,7 @@ int main(int argc, char **argv) {
   setlocale(LC_ALL, "");
   LOGGER_SYS_INIT(L"../conf/log.conf");
 
-  testing::InitGoogleTest(&argc, argv)
+  testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
 
@@ -23,7 +23,9 @@ TEST(testAll, all) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/charles.conf");
 
   ASSERT_TRUE(Charles::Init(*conf));
-  AnalysisClause analysisClause(L"不能说为了跟意大利比赛");
+  AnalysisClause analysisClause(
+      L"按旷课处理",
+      EndTags(basic::SyntaxTag::Type::kPp));
   ASSERT_TRUE(analysisClause.Init());
   analysisClause.Process();
 

@@ -26,7 +26,7 @@ TEST(testAll, all) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/charles.conf");
 
   ASSERT_TRUE(Charles::Init(*conf));
-  AnalysisClause analysisClause(L"不能说为了跟意大利比赛");
+  AnalysisClause analysisClause(L"不能说为了跟意大利比赛", EndTags(true));
   ASSERT_TRUE(analysisClause.Init());
   analysisClause.Process();
 

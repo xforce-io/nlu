@@ -2,7 +2,7 @@ FEATURE_EXTRACTOR_BEGIN(chunker)
     ^{ #Pos((nP-)+) -> syntactic.np }
     ~{ #Pos((cP-)+) -> syntactic.advp }
     ~{ #Pos((dP-)*((v|rp)P-)) -> syntactic.v }
-    ~{ #Pos((dP-)*(pP-)) ["了", "着"] -> syntactic.p }
+    ~{ #Pos((dP-)*(pP-)) { ["了", "着"] ?} -> syntactic.p }
     ~{ [#Pos((mP-)*(qP-)+), #Pos((mP-)+)] -> syntactic.qp }
     ~{ #Pos(lP) "的" -> syntactic.advp}
 FEATURE_EXTRACTOR_END

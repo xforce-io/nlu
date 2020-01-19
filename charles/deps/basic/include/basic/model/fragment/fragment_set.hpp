@@ -137,7 +137,7 @@ std::shared_ptr<FragmentType> FragmentSet<FragmentType>::GetFragmentBefore(
         size_t offset,
         std::function<bool(const FragmentType&)> filter) const {
   for (auto &fragment : fragments_) {
-    if (fragment->GetEnd() == offset && filter(fragment)) {
+    if (fragment->GetEnd() == offset && filter(*fragment)) {
       return fragment;
     }
   }
@@ -159,7 +159,7 @@ std::shared_ptr<FragmentType> FragmentSet<FragmentType>::GetFragmentAfter(
         size_t offset,
         std::function<bool(const FragmentType&)> filter) const {
   for (auto &fragment : fragments_) {
-    if (fragment->GetOffset() == offset && filter(fragment)) {
+    if (fragment->GetOffset() == offset && filter(*fragment)) {
       return fragment;
     }
   }

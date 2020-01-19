@@ -58,7 +58,7 @@ TEST(testAll, all) {
   };
 
   for (auto &query : wStrQuery) {
-    AnalysisClause analysisClause(query);
+    AnalysisClause analysisClause(query, EndTags(true));
     ASSERT_TRUE(analysisClause.Init());
     analysisClause.Process();
     assert(analysisClause.GetResults().size() >= 1);
