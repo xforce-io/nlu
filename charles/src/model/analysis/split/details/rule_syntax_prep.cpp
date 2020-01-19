@@ -56,24 +56,30 @@ bool RuleSyntaxPrep::Split(
       continue;
     }
 
+    size_t subChunkTo = segment->GetBegin();
     auto segPos = segment->GetTag();
     auto segWord = segment->GetQuery(nluContext->GetQuery());
 
     //after words & after poses
     for (auto *entryPrep : entriesPrep) {
-      bool includeBoundary = false;
-      if (entryPrep->IsAfterPos(segPos)) {
+      if (entryPrep->IsAfterWord(segWord)) {
+        if (includeWords_.find(segWord) != includeWords_.end()) {
+          subChunkTo = segment->GetEnd();
+        } else if (L"所" == segWord || L"给" == segWord) {
+          auto filter = [](const basic::Chunk &chunk) {
+              return chunk.ContainTag(basic::SyntaxTag::Type::kV);
+          };
+
+          auto chunk = nluContext->GetChunks().GetFragmentAfter(segment->GetEnd(), filter);
+          if (chunk != nullptr) {
+            subChunkTo = chunk->GetEnd();
+          }
+        }
+      } else if (entryPrep->IsAfterPos(segPos)) {
         if (segment->GetTag() == basic::PosTag::Type::kU ||
             segment->GetTag() == basic::PosTag::Type::kF ||
             segment->GetTag() == basic::PosTag::Type::kR) {
-          includeBoundary = true;
-        }
-      } else if (entryPrep->IsAfterWord(segWord)) {
-        if (includeWords_.find(segWord) != includeWords_.end()) {
-          includeBoundary = true;
-        } else if (L"所" == segWord || L"给" == segWord) {
-          auto chunk = nluContext->GetChunks().GetFragmentAfter(segment->GetEnd());
-          if (chunk != nullptr && chunk->ContainTag())
+          subChunkTo = segment->GetEnd();
         }
       } else {
         continue;
@@ -85,7 +91,7 @@ bool RuleSyntaxPrep::Split(
               nluContexts,
               segment->GetEnd() - offset_,
               offset_ + len_,
-              segment->GetBegin(),
+              subChunkTo,
               endTagsForPpSub_,
               910)) {
         touched = true;
