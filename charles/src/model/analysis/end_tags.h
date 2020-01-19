@@ -7,6 +7,7 @@ namespace xforce { namespace nlu { namespace charles {
 class EndTags {
  public:
   explicit EndTags(bool isStc=true);
+  explicit EndTags(basic::SyntaxTag::Type::Val tag);
   explicit EndTags(const EndTags &endTags);
 
   void Add(basic::SyntaxTag::Type::Val tag);

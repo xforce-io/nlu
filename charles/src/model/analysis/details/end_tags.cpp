@@ -8,6 +8,10 @@ EndTags::EndTags(bool isStc) {
   }
 }
 
+EndTags::EndTags(basic::SyntaxTag::Type::Val tag) {
+  tags_.push_back(tag);
+}
+
 EndTags::EndTags(const EndTags &endTags) {
   for (auto &tag : endTags.GetTags()) {
     tags_.push_back(tag);

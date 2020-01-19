@@ -148,7 +148,7 @@ int AnalysisClauseBranch::VerifySubBranches_() {
     std::wstring subQuery = chunk->GetQuery(nluContext_->GetQuery());
     auto clauseToVerify = std::make_shared<AnalysisClause>(
             subQuery,
-            chunk->GetTag(),
+            EndTags(chunk->GetTag()),
             chunk->GetVerifyStrategy(),
             false);
     bool ret = clauseToVerify->Init();
