@@ -110,6 +110,7 @@ bool RuleSyntaxPrep::Split(
         chunk->GetTag() == basic::SyntaxTag::Type::kU) {
       continue;
     } else if (chunk->ContainTag(basic::SyntaxTag::Type::kNp) ||
+        chunk->ContainTag(basic::SyntaxTag::Type::kDt) ||
         chunk->ContainTag(basic::SyntaxTag::Type::kContNp)) {
       if (AddNewChunk_(
               splitStage,
