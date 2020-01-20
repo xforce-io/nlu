@@ -10,6 +10,9 @@ RuleSyntaxPrep::RuleSyntaxPrep(
         size_t offset,
         size_t len) :
     Rule(offset, len),
+    endTagsForNp_(false),
+    endTagsForVp_(false),
+    endTagsForPpSub_(false),
     prep_(prep) {
   endTagsForNp_.Add(basic::SyntaxTag::Type::kNp);
   endTagsForVp_.Add(basic::SyntaxTag::Type::kV);

@@ -18,16 +18,35 @@ int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
-
+/*
 TEST(testAll, all) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/charles.conf");
+  ASSERT_TRUE(Charles::Init(*conf));
 
+  std::wstring wStrQuery[] = {
+      L"按旷课处理",
+      L"朝南边去",
+      L"除小李之外",
+  };
+
+  for (auto &query : wStrQuery) {
+    std::wcout << query << std::endl;
+    AnalysisClause analysisClause(
+        query,
+        EndTags(basic::SyntaxTag::Type::kPp));
+    ASSERT_TRUE(analysisClause.Init());
+    ASSERT_TRUE(analysisClause.Process());
+  }
+}*/
+
+TEST(testAll, bugfix) {
+  const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/charles.conf");
   ASSERT_TRUE(Charles::Init(*conf));
   AnalysisClause analysisClause(
-      L"按旷课处理",
+      L"朝南边",
       EndTags(basic::SyntaxTag::Type::kPp));
   ASSERT_TRUE(analysisClause.Init());
-  analysisClause.Process();
-
+  bool ret = analysisClause.Process();
   std::cout << basic::AnalysisTracer::Get()->GetReport() << std::endl;
+  ASSERT_TRUE(ret);
 }

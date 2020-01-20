@@ -28,9 +28,10 @@ TEST(testAll, all) {
   ASSERT_TRUE(Charles::Init(*conf));
   AnalysisClause analysisClause(L"不能说为了跟意大利比赛", EndTags(true));
   ASSERT_TRUE(analysisClause.Init());
-  analysisClause.Process();
-
+  bool ret = analysisClause.Process();
   std::cout << basic::AnalysisTracer::Get()->GetReport() << std::endl;
+  ASSERT_TRUE(ret);
+
 /*
   std::string repr;
   for (auto result : analysisClause.GetFinished()) {
