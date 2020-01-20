@@ -30,6 +30,8 @@ class AnalysisClause : public AnalysisComponent {
   inline const Branches& GetResults() const { return results_; }
   inline Branch GetFather(Branch &branch);
   inline bool IsAnalysised() const;
+  inline bool IsMainAnalysis() const;
+
   void Dump(JsonType &jsonType);
 
  private:
@@ -51,6 +53,10 @@ std::shared_ptr<basic::NluContext>& AnalysisClause::GetClause() {
 
 bool AnalysisClause::IsAnalysised() const {
   return results_.size() == 1;
+}
+
+bool AnalysisClause::IsMainAnalysis() const {
+  return endTags_.IsStc();
 }
 
 }}}

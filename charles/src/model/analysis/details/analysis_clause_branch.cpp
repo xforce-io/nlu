@@ -37,7 +37,7 @@ bool AnalysisClauseBranch::Process(
         std::queue<std::shared_ptr<AnalysisClauseBranch>> &branches) {
   if (!processed_) {
     int verifySubBranch = VerifySubBranches_();
-    if (traceEvent_) {
+    if (traceEvent_ && IsMainAnalysis()) {
       JsonType jsonType;
       jsonType["name"] = "branch_init";
       jsonType["no"] = no_;

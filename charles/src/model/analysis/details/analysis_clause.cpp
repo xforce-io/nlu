@@ -41,7 +41,7 @@ bool AnalysisClause::Init() {
 
 bool AnalysisClause::Process() {
   bool ret = master_->Process(branches_);
-  if (master_->GetEnd() && traceEvent_) {
+  if (master_->GetEnd() && traceEvent_ && master_->IsMainAnalysis()) {
     JsonType jsonType;
     jsonType["name"] = "branch_end";
     jsonType["no"] = master_->GetNo();
@@ -78,7 +78,7 @@ bool AnalysisClause::Process() {
       }
     }
 
-    if (branch->GetEnd() && traceEvent_) {
+    if (branch->GetEnd() && traceEvent_ && branch->IsMainAnalysis()) {
       JsonType jsonType;
       jsonType["name"] = "branch_end";
       jsonType["no"] = branch->GetNo();

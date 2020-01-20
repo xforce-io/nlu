@@ -29,6 +29,7 @@ class AnalysisClauseBranch {
   const std::shared_ptr<basic::NluContext>& GetNluContext() const { return nluContext_; }
   const SplitStage& GetSplitStage() const { return *splitStage_; }
   bool GetEnd() const { return end_; }
+  inline bool IsMainAnalysis() const;
 
   void Dump(JsonType &jsonType);
 
@@ -52,5 +53,9 @@ class AnalysisClauseBranch {
   bool end_;
   size_t childrenIdx_;
 };
+
+bool AnalysisClauseBranch::IsMainAnalysis() const {
+  return endTags_.IsStc();
+}
 
 }}}
