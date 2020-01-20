@@ -42,6 +42,7 @@ class RuleSyntaxPrep : public Rule {
           size_t subChunkFrom,
           size_t subChunkTo,
           const EndTags &subChunkTag,
+          bool phaseCheck,
           uint32_t strategy);
 
  private:

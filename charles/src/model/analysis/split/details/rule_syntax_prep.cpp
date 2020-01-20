@@ -89,10 +89,11 @@ bool RuleSyntaxPrep::Split(
               splitStage,
               nluContext,
               nluContexts,
-              segment->GetEnd() - offset_,
+              subChunkTo - offset_,
               offset_ + len_,
-              subChunkTo,
+              segment->GetBegin(),
               endTagsForPpSub_,
+              true,
               910)) {
         touched = true;
       }
@@ -120,6 +121,7 @@ bool RuleSyntaxPrep::Split(
               offset_ + len_,
               chunk->GetEnd(),
               endTagsForNp_,
+              false,
               911)) {
         touched = true;
       }
@@ -134,6 +136,7 @@ bool RuleSyntaxPrep::Split(
               offset_ + len_,
               chunk->GetEnd(),
               endTagsForVp_,
+              false,
               912)) {
         touched = true;
       }
@@ -170,6 +173,7 @@ bool RuleSyntaxPrep::AddNewChunk_(
         size_t subChunkFrom,
         size_t subChunkTo,
         const EndTags &subChunkTags,
+        bool phaseCheck,
         uint32_t strategy) {
   basic::Chunk newChunk(
           *nluContext,
@@ -186,27 +190,35 @@ bool RuleSyntaxPrep::AddNewChunk_(
   newBranch->Add(basic::ChunkSep(offset_+length));
 
   std::wstring subStr = nluContext->GetQuery().substr(
-                  subChunkFrom,
-                  subChunkTo-subChunkFrom);
-  AnalysisClause analysisClause(
-          subStr,
-          subChunkTags,
-          GetRepr());
-  ret = analysisClause.Init();
-  if (!ret) {
-    ERROR("fail_init_analysis_clause[" << subStr << "]");
-    return false;
-  }
-
-  ret = analysisClause.Process();
-  if (!ret) {
-    return false;
-  }
-
-  newBranch->AddPhrase(
           subChunkFrom,
-          subChunkTo,
-          analysisClause.GetClause());
+          subChunkTo - subChunkFrom);
+
+  if (phaseCheck) {
+    AnalysisClause analysisClause(
+            subStr,
+            subChunkTags,
+            GetRepr());
+    ret = analysisClause.Init();
+    if (!ret) {
+      ERROR("fail_init_analysis_clause[" << subStr << "]");
+      return false;
+    }
+
+    ret = analysisClause.Process();
+    if (!ret) {
+      return false;
+    }
+    newBranch->AddPhrase(
+            subChunkFrom,
+            subChunkTo,
+            analysisClause.GetClause());
+  } else {
+    auto clause = std::make_shared<basic::NluContext>(subStr);
+    newBranch->AddPhrase(
+            subChunkFrom,
+            subChunkTo,
+            clause);
+  }
 
   nluContexts.push_back(newBranch);
   return true;
