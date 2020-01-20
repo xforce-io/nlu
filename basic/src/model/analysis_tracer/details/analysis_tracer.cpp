@@ -2,16 +2,21 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
-void AnalysisTracer::AddEvent(const std::string &event) {
-  Get()->Add("event", event);
+void AnalysisTracer::AddEvent(
+        const std::string &key, const std::string &event) {
+  Get()->Add(key, event);
 }
 
-void AnalysisTracer::AddEvent(const std::wstring &event) {
-  Get()->Add("event", event);
+void AnalysisTracer::AddEvent(
+        const std::string &key,
+        const std::wstring &event) {
+  Get()->Add(key, event);
 }
 
-void AnalysisTracer::AddEvent(const JsonType &event) {
-  Get()->Add("event", event);
+void AnalysisTracer::AddEvent(
+        const std::string &key,
+        const JsonType &event) {
+  Get()->Add(key, event);
 }
 
 AnalysisTracer* AnalysisTracer::Get() {

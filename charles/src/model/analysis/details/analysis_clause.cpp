@@ -41,12 +41,14 @@ bool AnalysisClause::Init() {
 
 bool AnalysisClause::Process() {
   bool ret = master_->Process(branches_);
-  if (master_->GetEnd() && traceEvent_ && master_->IsMainAnalysis()) {
+  if (master_->GetEnd() && traceEvent_) {
     JsonType jsonType;
     jsonType["name"] = "branch_end";
     jsonType["no"] = master_->GetNo();
     master_->GetNluContext()->Dump(jsonType["ctx"], nullptr);
-    basic::AnalysisTracer::Get()->AddEvent(jsonType);
+    basic::AnalysisTracer::Get()->AddEvent(
+            master_->GetNluContext()->GetQuery(),
+            jsonType);
   }
 
   if (ret) {
@@ -78,7 +80,7 @@ bool AnalysisClause::Process() {
       }
     }
 
-    if (branch->GetEnd() && traceEvent_ && branch->IsMainAnalysis()) {
+    if (branch->GetEnd() && traceEvent_) {
       JsonType jsonType;
       jsonType["name"] = "branch_end";
       jsonType["no"] = branch->GetNo();
@@ -88,7 +90,9 @@ bool AnalysisClause::Process() {
               nullptr!=father ? &(*father->GetNluContext()) : nullptr);
       branch->GetNluContext()->Dump(jsonType["ctx"], nullptr);
       jsonType["isValid"] = branch->GetNluContext()->GetIsValid();
-      basic::AnalysisTracer::Get()->AddEvent(jsonType);
+      basic::AnalysisTracer::Get()->AddEvent(
+              branch->GetNluContext()->GetQuery(),
+              jsonType);
     }
   }
   return succ;
