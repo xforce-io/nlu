@@ -51,8 +51,12 @@ bool RuleSyntaxPrep::Split(
   }
 
   bool touched=false;
-  for (auto &segment : nluContext->GetSegments().GetAll()) {
+  auto iter = nluContext->GetSegments().GetAll().begin();
+  std::shared_ptr<basic::Segment> lastSegment;
+  while (iter != nluContext->GetSegments().GetAll().end()) {
+    auto segment = *iter;
     if (segment->GetOffset() < GetEnd() || GetEnd() == segment->GetBegin()) {
+      ++iter;
       continue;
     }
 
@@ -93,12 +97,14 @@ bool RuleSyntaxPrep::Split(
               offset_ + len_,
               segment->GetBegin(),
               endTagsForPpSub_,
-              true,
+              lastSegment != nullptr && lastSegment->GetBegin() != GetEnd(),
               910)) {
         touched = true;
       }
       break;
     }
+    lastSegment = segment;
+    ++iter;
   }
 
   for (auto &chunk : nluContext->GetChunks().GetAll()) {
