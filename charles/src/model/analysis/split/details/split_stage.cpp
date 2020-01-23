@@ -78,7 +78,7 @@ bool SplitStage::Split(
     ret = rule.Split(*this, nluContext, nluContexts);
     if (!forbidMgr_->PostCheckRule(rule)) { // post check
       ret = false;
-    } else {
+    } else if (ret) {
       forbidMgr_->AddRule(rule);
     }
   }
