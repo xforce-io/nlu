@@ -115,7 +115,6 @@ bool RuleSyntaxPrep::Split(
       continue;
     }
 
-    //NP
     if (chunk->GetTag() == basic::SyntaxTag::Type::kAdvp ||
         chunk->GetTag() == basic::SyntaxTag::Type::kU) {
       continue;
@@ -134,9 +133,21 @@ bool RuleSyntaxPrep::Split(
               911)) {
         touched = true;
       }
+    } else {
+      break;
+    }
+  }
+
+  for (auto &chunk : nluContext->GetChunks().GetAll()) {
+    if (chunk->GetOffset() < offset_ + len_) {
+      continue;
+    }
+
+    if (chunk->GetTag() == basic::SyntaxTag::Type::kPp) {
+      continue;
     } else if (isJian &&
-        (chunk->ContainTag(basic::SyntaxTag::Type::kV) ||
-        chunk->ContainTag(basic::SyntaxTag::Type::kVp))) {
+               (chunk->ContainTag(basic::SyntaxTag::Type::kV) ||
+                chunk->ContainTag(basic::SyntaxTag::Type::kVp))) {
       if (AddNewChunk_(
               splitStage,
               nluContext,
