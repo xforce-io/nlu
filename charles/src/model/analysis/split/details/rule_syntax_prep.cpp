@@ -110,17 +110,17 @@ bool RuleSyntaxPrep::Split(
     ++iter;
   }
 
-  for (auto &chunk : nluContext->GetChunks().GetAll()) {
-    if (chunk->GetOffset() < offset_ + len_) {
-      continue;
-    }
-
-    if (chunk->GetTag() == basic::SyntaxTag::Type::kAdvp ||
+  size_t pos = offset_+len_;
+  while (pos < nluContext->GetQuery().length()) {
+    auto chunk = nluContext->GetChunks().GetFragmentAfter(pos);
+    if (nullptr==chunk) {
+      break;
+    } else if (chunk->GetTag() == basic::SyntaxTag::Type::kAdvp ||
         chunk->GetTag() == basic::SyntaxTag::Type::kU) {
       continue;
     } else if (chunk->ContainTag(basic::SyntaxTag::Type::kNp) ||
-        chunk->ContainTag(basic::SyntaxTag::Type::kDt) ||
-        chunk->ContainTag(basic::SyntaxTag::Type::kContNp)) {
+               chunk->ContainTag(basic::SyntaxTag::Type::kDt) ||
+               chunk->ContainTag(basic::SyntaxTag::Type::kContNp)) {
       if (AddNewChunk_(
               splitStage,
               nluContext,
@@ -136,18 +136,18 @@ bool RuleSyntaxPrep::Split(
     } else {
       break;
     }
+    pos += chunk->GetLen();
   }
 
-  for (auto &chunk : nluContext->GetChunks().GetAll()) {
-    if (chunk->GetOffset() < offset_ + len_) {
+  pos = offset_+len_;
+  while (pos < nluContext->GetQuery().length()) {
+    auto chunk = nluContext->GetChunks().GetFragmentAfter(pos);
+    if (nullptr==chunk) {
+      break;
+    } else if (chunk->GetTag() == basic::SyntaxTag::Type::kPp) {
       continue;
-    }
-
-    if (chunk->GetTag() == basic::SyntaxTag::Type::kPp) {
-      continue;
-    } else if (isJian &&
-               (chunk->ContainTag(basic::SyntaxTag::Type::kV) ||
-                chunk->ContainTag(basic::SyntaxTag::Type::kVp))) {
+    } else if (chunk->ContainTag(basic::SyntaxTag::Type::kV) ||
+               chunk->ContainTag(basic::SyntaxTag::Type::kVp)) {
       if (AddNewChunk_(
               splitStage,
               nluContext,
@@ -163,6 +163,7 @@ bool RuleSyntaxPrep::Split(
     } else {
       break;
     }
+    pos += chunk->GetLen();
   }
   return touched;
 }
