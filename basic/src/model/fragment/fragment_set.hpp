@@ -170,7 +170,7 @@ std::shared_ptr<FragmentType> FragmentSet<FragmentType>::GetFragmentAfter(
 template <typename FragmentType>
 std::shared_ptr<FragmentType> FragmentSet<FragmentType>::GetLongFragmentAfter(size_t offset) const {
   std::shared_ptr<FragmentType> result;
-  int maxLen = -1;
+  size_t maxLen = 0;
   for (auto &fragment : fragments_) {
     if (fragment->GetOffset() == offset && fragment->GetLen() > maxLen) {
       result = fragment;
