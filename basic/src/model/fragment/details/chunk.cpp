@@ -46,10 +46,12 @@ void Chunk::AddTagForCtx(
       }
     }
 
-    std::wstring word = theVerb->GetStrFromSentence(nluContext.GetQuery());
-    bool isZhu = Manager::Get().GetGkb().GetGkbVerb().IsZhu(word);
-    if (isZhu) {
-      chunk.AddTag(SyntaxTag::Type::kVw);
+    if (theVerb != nullptr) { // maybe rp
+      std::wstring word = theVerb->GetStrFromSentence(nluContext.GetQuery());
+      bool isZhu = Manager::Get().GetGkb().GetGkbVerb().IsZhu(word);
+      if (isZhu) {
+        chunk.AddTag(SyntaxTag::Type::kVw);
+      }
     }
 
     if (chunk.tags_.empty()) {
