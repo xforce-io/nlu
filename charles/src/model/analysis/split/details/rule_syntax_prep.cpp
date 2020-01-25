@@ -112,10 +112,13 @@ bool RuleSyntaxPrep::Split(
 
   size_t pos = offset_+len_;
   while (pos < nluContext->GetQuery().length()) {
-    auto chunk = nluContext->GetChunks().GetFragmentAfter(pos);
+    auto chunk = nluContext->GetChunks().GetLongFragmentAfter(pos);
     if (nullptr==chunk) {
       break;
-    } else if (chunk->GetTag() == basic::SyntaxTag::Type::kAdvp ||
+    } 
+    
+    pos += chunk->GetLen();
+    if (chunk->GetTag() == basic::SyntaxTag::Type::kAdvp ||
         chunk->GetTag() == basic::SyntaxTag::Type::kU) {
       continue;
     } else if (chunk->ContainTag(basic::SyntaxTag::Type::kNp) ||
@@ -136,18 +139,20 @@ bool RuleSyntaxPrep::Split(
     } else {
       break;
     }
-    pos += chunk->GetLen();
   }
 
   pos = offset_+len_;
   while (pos < nluContext->GetQuery().length()) {
-    auto chunk = nluContext->GetChunks().GetFragmentAfter(pos);
+    auto chunk = nluContext->GetChunks().GetLongFragmentAfter(pos);
     if (nullptr==chunk) {
       break;
-    } else if (chunk->GetTag() == basic::SyntaxTag::Type::kPp) {
+    } 
+    
+    pos += chunk->GetLen();
+    if (chunk->GetTag() == basic::SyntaxTag::Type::kPp) {
       continue;
-    } else if (chunk->ContainTag(basic::SyntaxTag::Type::kV) ||
-               chunk->ContainTag(basic::SyntaxTag::Type::kVp)) {
+    } else if (isJian && (chunk->ContainTag(basic::SyntaxTag::Type::kV) ||
+               chunk->ContainTag(basic::SyntaxTag::Type::kVp))) {
       if (AddNewChunk_(
               splitStage,
               nluContext,
@@ -163,7 +168,6 @@ bool RuleSyntaxPrep::Split(
     } else {
       break;
     }
-    pos += chunk->GetLen();
   }
   return touched;
 }

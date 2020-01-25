@@ -25,8 +25,10 @@ TEST(testAll, all) {
 
   std::wstring wStrQuery[] = {
       L"按旷课处理",
-      L"朝南边去",
-      L"除小李之外",
+      L"朝南边",
+      L"除他之外",
+      L"被他所提及",
+      L"为了跟意大利比赛",
   };
 
   for (auto &query : wStrQuery) {
@@ -37,13 +39,13 @@ TEST(testAll, all) {
     ASSERT_TRUE(analysisClause.Init());
     ASSERT_TRUE(analysisClause.Process());
   }
-}*/
-
+}
+*/
 TEST(testAll, bugfix) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/charles.conf");
   ASSERT_TRUE(Charles::Init(*conf));
   AnalysisClause analysisClause(
-      L"朝南边",
+      L"为了跟意大利比赛",
       EndTags(basic::SyntaxTag::Type::kPp));
   ASSERT_TRUE(analysisClause.Init());
   bool ret = analysisClause.Process();

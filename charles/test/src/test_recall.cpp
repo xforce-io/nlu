@@ -55,6 +55,7 @@ TEST(testAll, all) {
           L"中国女排面对这个劲敌",
           L"是否会投入额外的准备呢",
           L"对中国队来说哪一场比赛都是重要的",
+          L"不能说为了跟意大利比赛",
   };
 
   for (auto &query : wStrQuery) {

@@ -39,6 +39,7 @@ class FragmentSet {
   inline std::shared_ptr<FragmentType> GetFragmentAfter(
           size_t offset,
           std::function<bool(const FragmentType&)> filter) const;
+  inline std::shared_ptr<FragmentType> GetLongFragmentAfter(size_t offset) const;
 
   template <class OtherFragmentType>
   inline std::shared_ptr<FragmentType> Find(
@@ -164,6 +165,19 @@ std::shared_ptr<FragmentType> FragmentSet<FragmentType>::GetFragmentAfter(
     }
   }
   return nullptr;
+}
+
+template <typename FragmentType>
+std::shared_ptr<FragmentType> FragmentSet<FragmentType>::GetLongFragmentAfter(size_t offset) const {
+  std::shared_ptr<FragmentType> result;
+  size_t maxLen = 0;
+  for (auto &fragment : fragments_) {
+    if (fragment->GetOffset() == offset && fragment->GetLen() > maxLen) {
+      result = fragment;
+      maxLen = fragment->GetLen();
+    }
+  }
+  return result;
 }
 
 template <typename FragmentType>

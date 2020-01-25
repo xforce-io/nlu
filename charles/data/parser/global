@@ -30,6 +30,7 @@ FEATURE_EXTRACTOR_BEGIN(syntax)
     { { #Chk(advp) ?} #Chk(pp) $v #Chk(np) #Chk(np) $MPP -> syntactic._stc_ }
     { { #Chk(_cont_np_) #Pos(c) #Chk(_cont_np_) -> syntactic.np } $MPP -> syntactic._stc_ }
     { #Chk(np) $MPP -> syntactic._stc_ }
+    { $v #Chk(pp) -> syntactic._stc_ }
 
     { $V #Pos(c) $V -> syntactic.vp }
 
