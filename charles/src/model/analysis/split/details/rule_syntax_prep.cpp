@@ -19,15 +19,7 @@ RuleSyntaxPrep::RuleSyntaxPrep(
   endTagsForPpSub_.Add(basic::SyntaxTag::Type::kVp);
 
   includeWords_.insert(L"说");
-  includeWords_.insert(L"来说");
-  includeWords_.insert(L"来看");
-  includeWords_.insert(L"之外");
-  includeWords_.insert(L"而外");
-  includeWords_.insert(L"以外");
-  includeWords_.insert(L"以后");
-  includeWords_.insert(L"以来");
   includeWords_.insert(L"起");
-  includeWords_.insert(L"外");
 }
 
 const char* RuleSyntaxPrep::GetRepr() const {

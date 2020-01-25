@@ -10,7 +10,7 @@ class EndTags;
 
 /*
  * include pos : u,f,r
- * include word : 说，来说，来看，之外，而外，以外，以后，以来，起，外
+ * include word : 说，起
  * include word append v : 所（u）+ v，给（u）+v
  */
 class RuleSyntaxPrep : public Rule {
