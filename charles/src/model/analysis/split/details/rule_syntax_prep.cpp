@@ -61,7 +61,13 @@ bool RuleSyntaxPrep::Split(
 
     //after words & after poses
     for (auto *entryPrep : entriesPrep) {
-      if (entryPrep->IsAfterWord(segWord)) {
+      if (entryPrep->IsAfterPos(segPos)) {
+        if (segment->GetTag() == basic::PosTag::Type::kU ||
+            segment->GetTag() == basic::PosTag::Type::kF ||
+            segment->GetTag() == basic::PosTag::Type::kR) {
+          subChunkTo = segment->GetEnd();
+        }
+      } else if (entryPrep->IsAfterWord(segWord)) {
         if (includeWords_.find(segWord) != includeWords_.end()) {
           subChunkTo = segment->GetEnd();
         } else if (L"所" == segWord || L"给" == segWord) {
@@ -73,12 +79,6 @@ bool RuleSyntaxPrep::Split(
           if (chunk != nullptr) {
             subChunkTo = chunk->GetEnd();
           }
-        }
-      } else if (entryPrep->IsAfterPos(segPos)) {
-        if (segment->GetTag() == basic::PosTag::Type::kU ||
-            segment->GetTag() == basic::PosTag::Type::kF ||
-            segment->GetTag() == basic::PosTag::Type::kR) {
-          subChunkTo = segment->GetEnd();
         }
       } else {
         continue;
