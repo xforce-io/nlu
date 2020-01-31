@@ -56,6 +56,7 @@ TEST(testAll, all) {
           L"是否会投入额外的准备呢",
           L"对中国队来说哪一场比赛都是重要的",
           L"不能说为了跟意大利比赛",
+          L"其余的比赛就不重要",
   };
 
   for (auto &query : wStrQuery) {

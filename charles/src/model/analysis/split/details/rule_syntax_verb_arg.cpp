@@ -27,7 +27,7 @@ bool RuleSyntaxVerbArg::Split(
           isArgTi,
           isArgWei,
           isArgZhun);
-  if (!ret || (!isArgTi && !isArgZhun) || isArgWei) {
+  if (!ret || (!isArgTi && !isArgZhun)) {
     return false;
   }
 
