@@ -168,12 +168,14 @@ bool RuleSyntaxPrep::Split(
   return touched;
 }
 
-void RuleSyntaxPrep::GenForbid(std::vector<ForbidItem> &forbidItems) const {
+void RuleSyntaxPrep::GenForbid(std::vector<ForbidItem> &/*forbidItems*/) const {
+/*
   ForbidItem forbidItem;
   forbidItem.SetCategoryRule(GetCategory());
   forbidItem.SetOffset(offset_);
   forbidItem.SetLen(len_);
   forbidItems.push_back(forbidItem);
+*/
 }
 
 bool RuleSyntaxPrep::PreCheckForbid(const ForbidItem &forbidItem) const {
