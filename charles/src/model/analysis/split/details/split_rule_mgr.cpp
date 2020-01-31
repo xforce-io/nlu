@@ -30,11 +30,11 @@ SplitRuleMgr::~SplitRuleMgr() {
 
 bool SplitRuleMgr::Init(const basic::NluContext &nluContext) {
   return InitPosForOffset_(nluContext) &&
-         InitSyntaxPrep_(nluContext) &&
-         InitSyntaxContNp_(nluContext) &&
          InitSyntaxFromRules_(nluContext) &&
+         InitSyntaxContNp_(nluContext) &&
          InitSyntaxVerbArg_(nluContext) &&
-         InitSyntaxRpArg_(nluContext);
+         InitSyntaxRpArg_(nluContext) &&
+         InitSyntaxPrep_(nluContext);
 }
 
 void SplitRuleMgr::Adjust(const basic::NluContext &nluContext) {
