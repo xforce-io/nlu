@@ -83,10 +83,6 @@ bool AnalysisClauseBranch::Process(
     }
   }
 
-  if (!nluContexts.empty()) {
-    nluContexts.push_back(nluContext_->Clone());
-  }
-
   for (auto const &nluContext : nluContexts) {
     auto absVal = abs(no_) * 100 + childrenIdx_;
     auto child = std::make_shared<AnalysisClauseBranch>(

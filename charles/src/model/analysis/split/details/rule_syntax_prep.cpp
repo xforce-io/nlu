@@ -161,6 +161,10 @@ bool RuleSyntaxPrep::Split(
       break;
     }
   }
+
+  if (!nluContexts.empty()) {
+    nluContexts.push_back(nluContext->Clone());
+  }
   return touched;
 }
 
