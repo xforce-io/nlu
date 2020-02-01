@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../public.h"
+#include "collection_nlu_context.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
@@ -28,7 +29,7 @@ class Rule {
   virtual bool Split(
           const SplitStage &splitStage,
           const std::shared_ptr<basic::NluContext> &nluContext,
-          std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) = 0;
+          CollectionNluContext &nluContexts) = 0;
 
   virtual void GenForbid(std::vector<ForbidItem>&) const {}
   virtual void GenGlobalForbid(std::vector<ForbidItem>&) const {}

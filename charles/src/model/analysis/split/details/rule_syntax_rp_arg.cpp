@@ -42,7 +42,7 @@ void RuleSyntaxRpArg::AddChunks_(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,
         const std::shared_ptr<basic::Chunk> &chunk,
-        std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) {
+        CollectionNluContext &nluContexts) {
   auto argVp = std::make_shared<basic::Chunk>(
           *nluContext,
           basic::SyntaxTag::Type::kVp,
@@ -79,7 +79,7 @@ void RuleSyntaxRpArg::AddChunks_(
   bool ret0 = newNluContext->Add(argVp);
   bool ret1 = newNluContext->Add(newVp);
   if (ret0 || ret1) {
-    nluContexts.push_back(newNluContext);
+    nluContexts.Add(newNluContext);
   }
 }
 

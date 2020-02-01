@@ -33,7 +33,7 @@ const char* RuleSyntaxPrep::GetRepr() const {
 bool RuleSyntaxPrep::Split(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,
-        std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) {
+        CollectionNluContext &nluContexts) {
   std::vector<const basic::EntryPrep*> entriesPrep;
   basic::Manager::Get().GetGkb().GetGkbPrep().GetEntriesPrep(prep_, entriesPrep);
 
@@ -162,8 +162,8 @@ bool RuleSyntaxPrep::Split(
     }
   }
 
-  if (!nluContexts.empty()) {
-    nluContexts.push_back(nluContext->Clone());
+  if (!nluContexts.Empty()) {
+    nluContexts.Add(nluContext->Clone());
   }
   return touched;
 }
@@ -191,7 +191,7 @@ Rule* RuleSyntaxPrep::Clone() {
 bool RuleSyntaxPrep::AddNewChunk_(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,
-        std::vector<std::shared_ptr<basic::NluContext>> &nluContexts,
+        CollectionNluContext &nluContexts,
         size_t length,
         size_t subChunkFrom,
         size_t subChunkTo,
@@ -243,7 +243,7 @@ bool RuleSyntaxPrep::AddNewChunk_(
             clause);
   }
 
-  nluContexts.push_back(newBranch);
+  nluContexts.Add(newBranch);
   return true;
 }
 

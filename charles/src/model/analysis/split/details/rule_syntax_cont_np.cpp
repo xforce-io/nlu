@@ -15,7 +15,7 @@ const char* RuleSyntaxContNp::GetRepr() const {
 bool RuleSyntaxContNp::Split(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,
-        std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) {
+        CollectionNluContext &nluContexts) {
   if (!Filter_(nluContext)) {
     return false;
   }
@@ -102,7 +102,7 @@ bool RuleSyntaxContNp::Filter_(const std::shared_ptr<basic::NluContext> &nluCont
 bool RuleSyntaxContNp::AddNewChunk_(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,
-        std::vector<std::shared_ptr<basic::NluContext>> &nluContexts,
+        CollectionNluContext &nluContexts,
         size_t offset,
         uint32_t strategy) {
   if (offset == offset_) {
@@ -115,7 +115,7 @@ bool RuleSyntaxContNp::AddNewChunk_(
 
     auto newBranch = Rule::Clone(splitStage, nluContext);
     if (newBranch->Add(newChunk)) {
-      nluContexts.push_back(newBranch);
+      nluContexts.Add(newBranch);
       return true;
     }
     return false;
@@ -140,7 +140,7 @@ bool RuleSyntaxContNp::AddNewChunk_(
 
     bool ret1 = newBranch->Add(rightChunk);
     if (ret0 || ret1) {
-      nluContexts.push_back(newBranch);
+      nluContexts.Add(newBranch);
     }
     return ret0 || ret1;
   }

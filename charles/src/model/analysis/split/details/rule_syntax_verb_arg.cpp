@@ -19,7 +19,7 @@ const char* RuleSyntaxVerbArg::GetRepr() const {
 bool RuleSyntaxVerbArg::Split(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,
-        std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) {
+        CollectionNluContext &nluContexts) {
   std::wstring query = segment_.GetQuery(nluContext->GetQuery());
   bool isArgTi, isArgWei, isArgZhun;
   bool ret = basic::Manager::Get().GetGkb().GetGkbVerb().TiWeiZhun(
@@ -57,12 +57,12 @@ bool RuleSyntaxVerbArg::Split(
       bool ret0 = newNluContext->Add(newNp);
       bool ret1 = newNluContext->Add(newVp);
       if (ret0 || ret1) {
-        nluContexts.push_back(newNluContext);
+        nluContexts.Add(newNluContext);
         continue;
       }
     }
   }
-  return !nluContexts.empty();
+  return !nluContexts.Empty();
 }
 
 void RuleSyntaxVerbArg::GenForbid(std::vector<ForbidItem> &forbidItems) const {

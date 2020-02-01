@@ -22,7 +22,7 @@ const char* RuleSyntaxRule::GetRepr() const {
 bool RuleSyntaxRule::Split(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,
-        std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) {
+        CollectionNluContext &nluContexts) {
   std::vector<std::shared_ptr<basic::NluContext>> branches;
   branches.resize(kMaxNumBranches, nullptr);
 
@@ -94,7 +94,7 @@ bool RuleSyntaxRule::Split(
 
   for (size_t i=0; i<kMaxNumBranches; ++i) {
     if (nullptr != branches[i]) {
-      nluContexts.push_back(branches[i]);
+      nluContexts.Add(branches[i]);
     }
   }
 

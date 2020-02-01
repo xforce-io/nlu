@@ -22,7 +22,7 @@ class RuleSyntaxRule : public Rule {
   virtual bool Split(
           const SplitStage &splitStage,
           const std::shared_ptr<basic::NluContext> &nluContext,
-          std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
+          CollectionNluContext &nluContexts);
 
   void GenForbid(std::vector<ForbidItem> &forbidItems) const;
   bool PostCheckForbid(const ForbidItem &forbidItem) const;

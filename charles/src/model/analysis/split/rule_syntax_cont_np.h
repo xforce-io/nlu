@@ -16,7 +16,7 @@ class RuleSyntaxContNp : public Rule {
   bool Split(
           const SplitStage &splitStage,
           const std::shared_ptr<basic::NluContext> &nluContext,
-          std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
+          CollectionNluContext &nluContexts);
 
   void GenForbid(std::vector<ForbidItem> &forbidItems) const;
   bool GlobalCheckForbid(const ForbidItem&) const;
@@ -29,7 +29,7 @@ class RuleSyntaxContNp : public Rule {
     bool AddNewChunk_(
           const SplitStage &splitStage,
           const std::shared_ptr<basic::NluContext> &nluContext,
-          std::vector<std::shared_ptr<basic::NluContext>> &nluContexts,
+          CollectionNluContext &nluContexts,
           size_t offset,
           uint32_t strategy);
 };

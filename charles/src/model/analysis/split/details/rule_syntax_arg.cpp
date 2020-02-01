@@ -14,7 +14,7 @@ RuleSyntaxArg::RuleSyntaxArg(
 bool RuleSyntaxArg::Split(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,
-        std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) {
+        CollectionNluContext &nluContexts) {
   if (!Filter_(nluContext)) {
     return false;
   }
@@ -29,7 +29,7 @@ bool RuleSyntaxArg::Split(
     }
     AddChunks_(splitStage, nluContext, chunk, nluContexts);
   }
-  return !nluContexts.empty();
+  return !nluContexts.Empty();
 }
 
 void RuleSyntaxArg::GenForbid(std::vector<ForbidItem> &forbidItems) const {
