@@ -187,7 +187,7 @@ bool RuleSyntaxPrep::AddNewChunk_(
         size_t length,
         size_t subChunkFrom,
         size_t subChunkTo,
-        const EndTags &subChunkTags,
+        const CollectionSyntaxTag &subChunkTags,
         bool phaseCheck,
         uint32_t strategy) {
   basic::Chunk newChunk(
@@ -207,6 +207,13 @@ bool RuleSyntaxPrep::AddNewChunk_(
   std::wstring subStr = nluContext->GetQuery().substr(
           subChunkFrom,
           subChunkTo - subChunkFrom);
+
+  basic::Chunk subChunk(
+          *nluContext,
+          subChunkTags,
+          subChunkFrom,
+          subChunkTo-subChunkFrom,
+          strategy);
 
   if (phaseCheck) {
     AnalysisClause analysisClause(

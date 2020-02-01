@@ -1,12 +1,12 @@
 #pragma once
 
 #include "rule.h"
-#include "../end_tags.h"
+#include "../collection_syntax_tag.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
 class SplitStage;
-class EndTags;
+class CollectionSyntaxTag;
 
 /*
  * include pos : u,f,r
@@ -41,14 +41,14 @@ class RuleSyntaxPrep : public Rule {
           size_t length,
           size_t subChunkFrom,
           size_t subChunkTo,
-          const EndTags &subChunkTag,
+          const CollectionSyntaxTag &subChunkTag,
           bool phaseCheck,
           uint32_t strategy);
 
  private:
-  EndTags endTagsForNp_;
-  EndTags endTagsForVp_;
-  EndTags endTagsForPpSub_;
+  CollectionSyntaxTag endTagsForNp_;
+  CollectionSyntaxTag endTagsForVp_;
+  CollectionSyntaxTag endTagsForPpSub_;
 
   std::unordered_set<std::wstring> includeWords_;
 

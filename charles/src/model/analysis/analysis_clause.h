@@ -2,7 +2,7 @@
 
 #include "public.h"
 #include "analysis_component.h"
-#include "end_tags.h"
+#include "collection_syntax_tag.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
@@ -17,7 +17,7 @@ class AnalysisClause : public AnalysisComponent {
  public:
   AnalysisClause(
           const std::wstring &clause,
-          const EndTags &endTags,
+          const CollectionSyntaxTag &endTags,
           const std::string &verifyStrategy = "null",
           bool traceEvent=true);
 
@@ -36,7 +36,7 @@ class AnalysisClause : public AnalysisComponent {
 
  private:
   std::shared_ptr<basic::NluContext> clause_;
-  EndTags endTags_;
+  CollectionSyntaxTag endTags_;
   std::string verifyStrategy_;
   bool traceEvent_;
 

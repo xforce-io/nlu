@@ -10,8 +10,8 @@ AnalysisContext::AnalysisContext(const std::wstring &query) {
   StrHelper::SplitStr(query, seps, vals);
   for (auto val : vals) {
     analysisClauses_.push_back(std::make_shared<AnalysisClause>(
-          val,
-          EndTags(true)));
+            val,
+            CollectionSyntaxTag(true)));
   }
 
   analysisSentence_ = std::make_shared<AnalysisSentence>(query, analysisClauses_);

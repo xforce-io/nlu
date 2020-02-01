@@ -1,0 +1,37 @@
+#include "../collection_syntax_tag.h"
+
+namespace xforce { namespace nlu { namespace basic {
+
+CollectionSyntaxTag::CollectionSyntaxTag(bool isStc) {
+  if (isStc) {
+    tags_.push_back(basic::SyntaxTag::Type::kStc);
+  }
+}
+
+CollectionSyntaxTag::CollectionSyntaxTag(basic::SyntaxTag::Type::Val tag) {
+  tags_.push_back(tag);
+}
+
+CollectionSyntaxTag::CollectionSyntaxTag(const CollectionSyntaxTag &endTags) {
+  for (auto &tag : endTags.GetTags()) {
+    tags_.push_back(tag);
+  }
+}
+
+void CollectionSyntaxTag::Add(basic::SyntaxTag::Type::Val tag) {
+  tags_.push_back(tag);
+}
+
+void CollectionSyntaxTag::Clear() {
+  tags_.clear();
+}
+
+std::wstring CollectionSyntaxTag::Str(const CollectionSyntaxTag &endTags) {
+  std::wstringstream wss;
+  for (auto &tag : endTags.GetTags()) {
+    wss << basic::SyntaxTag::Str(tag) << L",";
+  }
+  return wss.str();
+}
+
+}}}

@@ -35,7 +35,7 @@ TEST(testAll, all) {
     std::wcout << query << std::endl;
     AnalysisClause analysisClause(
         query,
-        EndTags(basic::SyntaxTag::Type::kPp));
+        CollectionSyntaxTag(basic::SyntaxTag::Type::kPp));
     ASSERT_TRUE(analysisClause.Init());
     ASSERT_TRUE(analysisClause.Process());
   }
@@ -45,8 +45,8 @@ TEST(testAll, bugfix) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/charles.conf");
   ASSERT_TRUE(Charles::Init(*conf));
   AnalysisClause analysisClause(
-      L"为了跟意大利比赛",
-      EndTags(basic::SyntaxTag::Type::kPp));
+          L"为了跟意大利比赛",
+          CollectionSyntaxTag(basic::SyntaxTag::Type::kPp));
   ASSERT_TRUE(analysisClause.Init());
   bool ret = analysisClause.Process();
   std::cout << basic::AnalysisTracer::Get()->GetReport() << std::endl;
