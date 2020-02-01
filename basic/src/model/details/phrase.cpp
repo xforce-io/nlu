@@ -7,7 +7,7 @@ Phrase::Phrase(
         size_t from,
         size_t to,
         std::shared_ptr<NluContext> nluContext,
-        CollectionSyntaxTag collectionSyntaxTag) :
+        std::shared_ptr<CollectionSyntaxTag> collectionSyntaxTag) :
     from_(from),
     to_(to),
     nluContext_(nluContext),
