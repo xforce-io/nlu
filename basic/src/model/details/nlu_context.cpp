@@ -15,9 +15,13 @@ NluContext::~NluContext() {
 void NluContext::AddPhrase(
         size_t from,
         size_t to,
-        std::shared_ptr<NluContext> &nluContext,
         std::shared_ptr<CollectionSyntaxTag> &collectionSyntaxTag) {
-  phrases_.push_back(Phrase(from, to, nluContext, collectionSyntaxTag));
+  auto nluContext = std::make_shared<basic::NluContext>(query_.substr(from, to-from));
+  phrases_.push_back(Phrase(
+          from,
+          to,
+          nluContext,
+          collectionSyntaxTag));
 }
 
 std::shared_ptr<NluContext> NluContext::Build(
