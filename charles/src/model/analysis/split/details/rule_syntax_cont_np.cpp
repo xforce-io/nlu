@@ -20,7 +20,6 @@ void RuleSyntaxContNp::Split(
     return;
   }
 
-  bool touched = false;
   for (auto &segment : nluContext->GetSegments().GetAll()) {
     if (segment->GetEnd() <= offset_ ||
         segment->GetEnd() == offset_+len_ ||

@@ -35,14 +35,16 @@ bool NluContextSplit::Init() {
 
 void NluContextSplit::Split(
         const std::shared_ptr<basic::NluContext> &nluContext,
-        std::vector<std::shared_ptr<basic::NluContext>> &nluContexts,
+        CollectionNluContext &nluContexts,
         basic::Stage::Val stage) {
   switch (stage) {
     case basic::Stage::Val::kPosTag : {
       SplitByPosTag_(nluContext, nluContexts);
+      return;
     }
     case basic::Stage::Val::kSyntax : {
       SplitBySyntax_(nluContext, nluContexts);
+      return;
     }
     default : {
       break;
@@ -74,7 +76,7 @@ void NluContextSplit::SplitByPosTag_(
 
 void NluContextSplit::SplitBySyntax_(
         const std::shared_ptr<basic::NluContext> &nluContext,
-        std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) {
+        CollectionNluContext &nluContexts) {
   std::vector<std::shared_ptr<basic::NluContext>> branches;
   branches.resize(kMaxNumBranches, nullptr);
 
