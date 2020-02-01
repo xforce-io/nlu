@@ -28,7 +28,7 @@ class RuleSyntaxRpArg : public RuleSyntaxArg {
           const SplitStage &splitStage,
           const std::shared_ptr<basic::NluContext> &nluContext,
           const std::shared_ptr<basic::Chunk> &chunk,
-          std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
+          CollectionNluContext &nluContexts);
 
  private:
   std::vector<std::shared_ptr<basic::Chunk>> chunksToVerify_;

@@ -16,7 +16,7 @@ class RulePosTagMultiTag : public Rule {
   bool Split(
           const SplitStage &splitStage,
           const std::shared_ptr<basic::NluContext> &nluContext,
-          std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
+          CollectionNluContext &nluContexts);
 
   virtual Rule* Clone();
 

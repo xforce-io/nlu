@@ -26,7 +26,7 @@ class RuleSyntaxPrep : public Rule {
   bool Split(
           const SplitStage &splitStage,
           const std::shared_ptr<basic::NluContext> &nluContext,
-          std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
+          CollectionNluContext &nluContexts);
 
   void GenForbid(std::vector<ForbidItem> &forbidItems) const;
   bool PreCheckForbid(const ForbidItem &forbidItem) const;
@@ -37,7 +37,7 @@ class RuleSyntaxPrep : public Rule {
   bool AddNewChunk_(
           const SplitStage &splitStage,
           const std::shared_ptr<basic::NluContext> &nluContext,
-          std::vector<std::shared_ptr<basic::NluContext>> &nluContexts,
+          CollectionNluContext &nluContexts,
           size_t length,
           size_t subChunkFrom,
           size_t subChunkTo,
