@@ -73,9 +73,9 @@ bool AnalysisClauseBranch::Process(
     }
   }
 
-  std::vector<std::shared_ptr<basic::NluContext>> nluContexts;
+  CollectionNluContext nluContexts;
   while (!splitStage_->IsEnd()) {
-    nluContexts.clear();
+    nluContexts.Clear();
 
     bool ret = splitStage_->Split(nluContext_, nluContexts);
     if (ret) {
@@ -83,7 +83,7 @@ bool AnalysisClauseBranch::Process(
     }
   }
 
-  for (auto const &nluContext : nluContexts) {
+  for (auto const &nluContext : nluContexts.Get()) {
     auto absVal = abs(no_) * 100 + childrenIdx_;
     auto child = std::make_shared<AnalysisClauseBranch>(
             no_>=0 ? absVal : -absVal,
@@ -98,7 +98,7 @@ bool AnalysisClauseBranch::Process(
   }
   ++childrenIdx_;
 
-  if (!nluContexts.empty()) {
+  if (!nluContexts.Empty()) {
     end_ = true;
     return false;
   }

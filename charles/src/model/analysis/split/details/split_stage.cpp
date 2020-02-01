@@ -64,7 +64,7 @@ void SplitStage::Process(std::shared_ptr<basic::NluContext> &nluContext) {
 
 bool SplitStage::Split(
         const std::shared_ptr<basic::NluContext> &nluContext,
-        std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) {
+        CollectionNluContext &nluContexts) {
   if (IsBegin() || IsEnd()) {
     return false;
   }

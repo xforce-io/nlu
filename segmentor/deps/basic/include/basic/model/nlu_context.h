@@ -40,7 +40,7 @@ class NluContext {
   std::shared_ptr<NluContext> Clone() const;
   void Reset(basic::Stage::Val stage);
 
-  inline bool GetIsValid() const;
+  inline bool GetIsValid(bool check = false);
   inline const typename NameEntity::Set& GetNameEntities() const;
   inline typename NameEntity::Set& GetNameEntities();
   inline const typename Segment::Set& GetSegments() const;
@@ -138,7 +138,16 @@ bool NluContext::Add(const Chunk &chunk) {
   return managerFragmentSet_->GetChunks().Add(chunk);
 }
 
-bool NluContext::GetIsValid() const {
+bool NluContext::GetIsValid(bool check) {
+  if (check) {
+    for (auto &chunk : managerFragmentSet_->GetChunks().GetAll()) {
+      if (chunk->ContainTag(SyntaxTag::Type::kNp) &&
+          chunk->ContainTag(SyntaxTag::Type::kVp)) {
+        isValid_ = false;
+        break;
+      }
+    }
+  }
   return isValid_;
 }
 

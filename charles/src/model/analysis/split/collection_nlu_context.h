@@ -9,7 +9,6 @@ class CollectionNluContext {
   typedef std::vector<std::shared_ptr<basic::NluContext>> Container;
 
  public:
-  CollectionNluContext();
   inline bool Add(std::shared_ptr<basic::NluContext> newNluContext);
   inline void Clear();
 

@@ -16,7 +16,7 @@ class SplitStage {
   void Process(std::shared_ptr<basic::NluContext> &nluContext);
   bool Split(
           const std::shared_ptr<basic::NluContext> &nluContext,
-          std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
+          CollectionNluContext &nluContexts);
 
   inline void SetBornStage(basic::Stage::Val stage);
   inline void AddForbidInterval(size_t offset, size_t len);
