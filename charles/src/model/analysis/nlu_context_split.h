@@ -1,6 +1,7 @@
 #pragma once
 
 #include "public.h"
+#include "collection_nlu_context.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
