@@ -93,7 +93,7 @@ bool RuleSyntaxContNp::Filter_(const std::shared_ptr<basic::NluContext> &nluCont
   return true;
 }
 
-bool RuleSyntaxContNp::AddNewChunk_(
+void RuleSyntaxContNp::AddNewChunk_(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,
         CollectionNluContext &nluContexts,
@@ -110,18 +110,16 @@ bool RuleSyntaxContNp::AddNewChunk_(
     auto newBranch = Rule::Clone(splitStage, nluContext);
     if (newBranch->Add(newChunk)) {
       nluContexts.Add(newBranch);
-      return true;
     }
-    return false;
   } else {
+    auto newBranch = Rule::Clone(splitStage, nluContext);
+
     basic::Chunk leftChunk(
             *nluContext,
             basic::SyntaxTag::Type::kNp,
             offset_,
             offset-offset_,
             strategy);
-
-    auto newBranch = Rule::Clone(splitStage, nluContext);
     bool ret0 = newBranch->Add(leftChunk);
 
     basic::Chunk rightChunk(
@@ -130,13 +128,14 @@ bool RuleSyntaxContNp::AddNewChunk_(
             offset,
             offset_+len_ - offset,
             strategy);
-
-
     bool ret1 = newBranch->Add(rightChunk);
-    if (ret0 || ret1) {
+
+    basic::ChunkSep chunkSep(offset);
+    bool ret2 = newBranch->Add(chunkSep);
+
+    if (ret0 || ret1 || ret2) {
       nluContexts.Add(newBranch);
     }
-    return ret0 || ret1;
   }
 }
 

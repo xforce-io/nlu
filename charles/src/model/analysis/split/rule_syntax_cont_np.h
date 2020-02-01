@@ -26,7 +26,7 @@ class RuleSyntaxContNp : public Rule {
 
  private:
     bool Filter_(const std::shared_ptr<basic::NluContext> &nluContext) const;
-    bool AddNewChunk_(
+    void AddNewChunk_(
           const SplitStage &splitStage,
           const std::shared_ptr<basic::NluContext> &nluContext,
           CollectionNluContext &nluContexts,
