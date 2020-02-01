@@ -57,7 +57,7 @@ void SplitStage::AddForbidInterval(size_t offset, size_t len) {
   forbidIntervals_.push_back(std::make_pair(offset, len));
 }
 
-void SplitStage::IsBegin() const {
+bool SplitStage::IsBegin() const {
   return basic::Stage::kNone == curStage_;
 }
 

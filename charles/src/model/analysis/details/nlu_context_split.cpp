@@ -33,27 +33,26 @@ bool NluContextSplit::Init() {
   return true;
 }
 
-bool NluContextSplit::Split(
+void NluContextSplit::Split(
         const std::shared_ptr<basic::NluContext> &nluContext,
         std::vector<std::shared_ptr<basic::NluContext>> &nluContexts,
         basic::Stage::Val stage) {
   switch (stage) {
     case basic::Stage::Val::kPosTag : {
-      return SplitByPosTag_(nluContext, nluContexts);
+      SplitByPosTag_(nluContext, nluContexts);
     }
     case basic::Stage::Val::kSyntax : {
-      return SplitBySyntax_(nluContext, nluContexts);
+      SplitBySyntax_(nluContext, nluContexts);
     }
     default : {
       break;
     }
   }
-  return false;
 }
 
-bool NluContextSplit::SplitByPosTag_(
+void NluContextSplit::SplitByPosTag_(
         const std::shared_ptr<basic::NluContext> &nluContext,
-        std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) {
+        CollectionNluContext &nluContexts) {
   auto iterSeg = nluContext->GetSegments().GetAll().begin();
   size_t idx=0;
   while (iterSeg != nluContext->GetSegments().GetAll().end()) {
@@ -61,17 +60,19 @@ bool NluContextSplit::SplitByPosTag_(
       for (auto tag : ((*iterSeg)->GetTags())) {
         auto newNluContext = nluContext->Clone();
         AdjustSegTags_(*newNluContext, idx, tag);
-        nluContexts.push_back(newNluContext);
+        nluContexts.Add(newNluContext);
       }
-      return true;
+
+      if (nluContexts.NonEmpty()) {
+        return;
+      }
     }
     ++iterSeg;
     ++idx;
   }
-  return false;
 }
 
-bool NluContextSplit::SplitBySyntax_(
+void NluContextSplit::SplitBySyntax_(
         const std::shared_ptr<basic::NluContext> &nluContext,
         std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) {
   std::vector<std::shared_ptr<basic::NluContext>> branches;
@@ -80,7 +81,7 @@ bool NluContextSplit::SplitBySyntax_(
   auto context = std::make_shared<milkie::Context>(nluContext);
   auto errCode = feNluContextSplit_->MatchPattern(*context);
   if (milkie::Errno::kOk != errCode) {
-    return false;
+    return;
   }
 
   const milkie::Storage &storage = context->GetStorage();
@@ -115,8 +116,9 @@ bool NluContextSplit::SplitBySyntax_(
 
     auto syntaxTag = basic::SyntaxTag::GetSyntaxTag(vals[1]);
     if (basic::SyntaxTag::Type::kUndef == syntaxTag) {
+      nluContexts.Clear();
       ERROR("unknown_syntax_tag[" << syntaxTag << "]");
-      return false;
+      return;
     }
 
     auto storageItems = storageKv.second->Get();
@@ -129,20 +131,17 @@ bool NluContextSplit::SplitBySyntax_(
               970);
       if (branches[index]->Add(chunk)) {
         if (basic::SyntaxTag::Type::kStc == syntaxTag) {
-          return true;
+          return;
         }
       }
     }
   }
 
-  bool touched = false;
   for (size_t i=0; i<kMaxNumBranches; ++i) {
     if (nullptr != branches[i]) {
-      nluContexts.push_back(branches[i]);
-      touched = true;
+      nluContexts.Add(branches[i]);
     }
   }
-  return touched;
 }
 
 void NluContextSplit::AdjustSegTags_(
