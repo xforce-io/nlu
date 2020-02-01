@@ -26,7 +26,7 @@ class Rule {
   virtual size_t GetCategory() const = 0;
   virtual const char* GetRepr() const = 0;
 
-  virtual bool Split(
+  virtual void Split(
           const SplitStage &splitStage,
           const std::shared_ptr<basic::NluContext> &nluContext,
           CollectionNluContext &nluContexts) = 0;

@@ -14,6 +14,7 @@ class CollectionNluContext {
 
   Container& Get() { return container_; }
   inline bool Empty() const;
+  inline bool NonEmpty() const;
 
  private:
   Container container_;
@@ -33,6 +34,10 @@ void CollectionNluContext::Clear() {
 
 bool CollectionNluContext::Empty() const {
   return container_.empty();
+}
+
+bool CollectionNluContext::NonEmpty() const {
+  return !container_.empty();
 }
 
 }}}

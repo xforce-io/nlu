@@ -12,12 +12,12 @@ const char* RuleSyntaxContNp::GetRepr() const {
   return repr_;
 }
 
-bool RuleSyntaxContNp::Split(
+void RuleSyntaxContNp::Split(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,
         CollectionNluContext &nluContexts) {
   if (!Filter_(nluContext)) {
-    return false;
+    return;
   }
 
   bool touched = false;
@@ -31,26 +31,21 @@ bool RuleSyntaxContNp::Split(
     if (segment->GetTag() == basic::PosTag::Type::kN ||
         segment->GetTag() == basic::PosTag::Type::kVn ||
         segment->GetTag() == basic::PosTag::Type::kR) {
-      if (AddNewChunk_(
+      AddNewChunk_(
               splitStage,
               nluContext,
               nluContexts,
               segment->GetEnd(),
-              940)) {
-        touched = true;
-      }
+              940);
     }
   }
 
-  if (AddNewChunk_(
+  AddNewChunk_(
           splitStage,
           nluContext,
           nluContexts,
           offset_,
-          941)) {
-    touched = true;
-  }
-  return touched;
+          941);
 }
 
 void RuleSyntaxContNp::GenForbid(std::vector<ForbidItem> &forbidItems) const {

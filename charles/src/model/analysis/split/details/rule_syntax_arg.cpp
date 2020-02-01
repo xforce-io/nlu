@@ -11,12 +11,12 @@ RuleSyntaxArg::RuleSyntaxArg(
     Rule(offset, len),
     segment_(segment) {}
 
-bool RuleSyntaxArg::Split(
+void RuleSyntaxArg::Split(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,
         CollectionNluContext &nluContexts) {
   if (!Filter_(nluContext)) {
-    return false;
+    return;
   }
 
   for (auto &chunk : nluContext->GetChunks().GetAll()) {
@@ -29,7 +29,6 @@ bool RuleSyntaxArg::Split(
     }
     AddChunks_(splitStage, nluContext, chunk, nluContexts);
   }
-  return !nluContexts.Empty();
 }
 
 void RuleSyntaxArg::GenForbid(std::vector<ForbidItem> &forbidItems) const {

@@ -23,7 +23,7 @@ class RuleSyntaxPrep : public Rule {
   size_t GetCategory() const { return Rule::kCategoryRuleSyntaxPrep; }
   const char* GetRepr() const;
 
-  bool Split(
+  void Split(
           const SplitStage &splitStage,
           const std::shared_ptr<basic::NluContext> &nluContext,
           CollectionNluContext &nluContexts);

@@ -62,32 +62,26 @@ void SplitStage::Process(std::shared_ptr<basic::NluContext> &nluContext) {
   }
 }
 
-bool SplitStage::Split(
+void SplitStage::Split(
         const std::shared_ptr<basic::NluContext> &nluContext,
         CollectionNluContext &nluContexts) {
   if (IsBegin() || IsEnd()) {
-    return false;
+    return;
   }
 
   auto &rule = *((*(splitRuleMgr_->GetRules()[curStage_]))[ruleIdx_]);
-  bool ret;
-  if (!forbidMgr_->GlobalCheckRule(rule) ||
-      !forbidMgr_->PreCheckRule(rule)) { //pre check
-    ret = false;
-  } else {
-    ret = rule.Split(*this, nluContext, nluContexts);
+  if (forbidMgr_->GlobalCheckRule(rule) &&
+      forbidMgr_->PreCheckRule(rule)) { //pre check
+    rule.Split(*this, nluContext, nluContexts);
     if (!forbidMgr_->PostCheckRule(rule)) { // post check
-      ret = false;
-    } else if (ret) {
+      nluContexts.Clear();
+    } else if (nluContexts.NonEmpty()) {
       forbidMgr_->AddRule(rule);
     }
   }
-
   lastStage_ = curStage_;
   lastRuleIdx_ = ruleIdx_;
-
   NextStage();
-  return ret;
 }
 
 bool SplitStage::PrevStage() {

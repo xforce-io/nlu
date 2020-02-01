@@ -19,7 +19,7 @@ class RuleSyntaxRule : public Rule {
   size_t GetCategory() const { return Rule::kCategoryRuleSyntaxRule; }
   const char* GetRepr() const;
 
-  virtual bool Split(
+  virtual void Split(
           const SplitStage &splitStage,
           const std::shared_ptr<basic::NluContext> &nluContext,
           CollectionNluContext &nluContexts);

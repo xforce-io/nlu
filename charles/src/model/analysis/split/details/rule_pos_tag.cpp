@@ -12,7 +12,7 @@ const char* RulePosTagMultiTag::GetRepr() const {
   return repr_;
 }
 
-bool RulePosTagMultiTag::Split(
+void RulePosTagMultiTag::Split(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,
         CollectionNluContext &nluContexts) {
@@ -25,12 +25,14 @@ bool RulePosTagMultiTag::Split(
         AdjustSegTags_(*newNluContext, idx, tag);
         nluContexts.Add(newNluContext);
       }
-      return true;
+
+      if (nluContexts.NonEmpty()) {
+        return;
+      }
     }
     ++iterSeg;
     ++idx;
   }
-  return false;
 }
 
 Rule* RulePosTagMultiTag::Clone() {

@@ -19,7 +19,7 @@ const char* RuleSyntaxRule::GetRepr() const {
   return repr_;
 }
 
-bool RuleSyntaxRule::Split(
+void RuleSyntaxRule::Split(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,
         CollectionNluContext &nluContexts) {
@@ -30,7 +30,7 @@ bool RuleSyntaxRule::Split(
   auto errCode = featureExtractor_->MatchPattern(*context_);
   if (milkie::Errno::kOk != errCode) {
     context_ = nullptr;
-    return false;
+    return;
   }
 
   const milkie::Storage &storage = context_->GetStorage();
@@ -67,8 +67,9 @@ bool RuleSyntaxRule::Split(
     auto syntaxTag = basic::SyntaxTag::GetSyntaxTag(vals[1]);
     if (basic::SyntaxTag::Type::kUndef == syntaxTag) {
       context_ = nullptr;
+      nluContexts.Clear();
       ERROR("unknown_syntax_tag[" << syntaxTag << "]");
-      return false;
+      return;
     }
 
     bool curTouched = false;
@@ -101,7 +102,6 @@ bool RuleSyntaxRule::Split(
   if (!touched) {
     context_ = nullptr;
   }
-  return touched;
 }
 
 void RuleSyntaxRule::GenForbid(std::vector<ForbidItem> &forbidItems) const {

@@ -16,7 +16,7 @@ const char* RuleSyntaxVerbArg::GetRepr() const {
   return repr_;
 }
 
-bool RuleSyntaxVerbArg::Split(
+void RuleSyntaxVerbArg::Split(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,
         CollectionNluContext &nluContexts) {
@@ -28,7 +28,7 @@ bool RuleSyntaxVerbArg::Split(
           isArgWei,
           isArgZhun);
   if (!ret || (!isArgTi && !isArgZhun)) {
-    return false;
+    return;
   }
 
   for (auto &chunk : nluContext->GetChunks().GetAll()) {
@@ -62,7 +62,6 @@ bool RuleSyntaxVerbArg::Split(
       }
     }
   }
-  return !nluContexts.Empty();
 }
 
 void RuleSyntaxVerbArg::GenForbid(std::vector<ForbidItem> &forbidItems) const {

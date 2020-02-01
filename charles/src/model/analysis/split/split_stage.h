@@ -14,7 +14,7 @@ class SplitStage {
   virtual ~SplitStage();
 
   void Process(std::shared_ptr<basic::NluContext> &nluContext);
-  bool Split(
+  void Split(
           const std::shared_ptr<basic::NluContext> &nluContext,
           CollectionNluContext &nluContexts);
 
@@ -57,7 +57,7 @@ void SplitStage::AddForbidInterval(size_t offset, size_t len) {
   forbidIntervals_.push_back(std::make_pair(offset, len));
 }
 
-bool SplitStage::IsBegin() const {
+void SplitStage::IsBegin() const {
   return basic::Stage::kNone == curStage_;
 }
 

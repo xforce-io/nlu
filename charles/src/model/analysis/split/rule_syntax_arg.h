@@ -12,7 +12,7 @@ class RuleSyntaxArg : public Rule {
           size_t len,
           const basic::Segment &segment);
 
-  virtual bool Split(
+  virtual void Split(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,
         CollectionNluContext &nluContexts);

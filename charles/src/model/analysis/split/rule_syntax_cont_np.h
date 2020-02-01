@@ -13,7 +13,7 @@ class RuleSyntaxContNp : public Rule {
   size_t GetCategory() const { return Rule::kCategoryRuleSyntaxContNp; }
   const char* GetRepr() const;
 
-  bool Split(
+  void Split(
           const SplitStage &splitStage,
           const std::shared_ptr<basic::NluContext> &nluContext,
           CollectionNluContext &nluContexts);

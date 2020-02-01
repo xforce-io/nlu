@@ -77,8 +77,8 @@ bool AnalysisClauseBranch::Process(
   while (!splitStage_->IsEnd()) {
     nluContexts.Clear();
 
-    bool ret = splitStage_->Split(nluContext_, nluContexts);
-    if (ret) {
+    splitStage_->Split(nluContext_, nluContexts);
+    if (!nluContexts.Empty()) {
       break;
     }
   }

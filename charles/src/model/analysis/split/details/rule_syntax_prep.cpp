@@ -30,7 +30,7 @@ const char* RuleSyntaxPrep::GetRepr() const {
   return repr_;
 }
 
-bool RuleSyntaxPrep::Split(
+void RuleSyntaxPrep::Split(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,
         CollectionNluContext &nluContexts) {
@@ -45,7 +45,6 @@ bool RuleSyntaxPrep::Split(
     }
   }
 
-  bool touched=false;
   auto iter = nluContext->GetSegments().GetAll().begin();
   std::shared_ptr<basic::Segment> lastSegment;
   while (iter != nluContext->GetSegments().GetAll().end()) {
@@ -84,7 +83,7 @@ bool RuleSyntaxPrep::Split(
         continue;
       }
 
-      if (AddNewChunk_(
+      AddNewChunk_(
               splitStage,
               nluContext,
               nluContexts,
@@ -93,9 +92,7 @@ bool RuleSyntaxPrep::Split(
               segment->GetBegin(),
               endTagsForPpSub_,
               lastSegment != nullptr && lastSegment->GetBegin() != GetEnd(),
-              910)) {
-        touched = true;
-      }
+              910);
       break;
     }
     lastSegment = segment;
@@ -116,7 +113,7 @@ bool RuleSyntaxPrep::Split(
     } else if (chunk->ContainTag(basic::SyntaxTag::Type::kNp) ||
                chunk->ContainTag(basic::SyntaxTag::Type::kDt) ||
                chunk->ContainTag(basic::SyntaxTag::Type::kContNp)) {
-      if (AddNewChunk_(
+      AddNewChunk_(
               splitStage,
               nluContext,
               nluContexts,
@@ -125,9 +122,7 @@ bool RuleSyntaxPrep::Split(
               chunk->GetEnd(),
               endTagsForNp_,
               false,
-              911)) {
-        touched = true;
-      }
+              911);
     } else {
       break;
     }
@@ -145,7 +140,7 @@ bool RuleSyntaxPrep::Split(
       continue;
     } else if (isJian && (chunk->ContainTag(basic::SyntaxTag::Type::kV) ||
                chunk->ContainTag(basic::SyntaxTag::Type::kVp))) {
-      if (AddNewChunk_(
+      AddNewChunk_(
               splitStage,
               nluContext,
               nluContexts,
@@ -154,9 +149,7 @@ bool RuleSyntaxPrep::Split(
               chunk->GetEnd(),
               endTagsForVp_,
               false,
-              912)) {
-        touched = true;
-      }
+              912);
     } else {
       break;
     }
@@ -165,7 +158,6 @@ bool RuleSyntaxPrep::Split(
   if (!nluContexts.Empty()) {
     nluContexts.Add(nluContext->Clone());
   }
-  return touched;
 }
 
 void RuleSyntaxPrep::GenForbid(std::vector<ForbidItem> &/*forbidItems*/) const {
