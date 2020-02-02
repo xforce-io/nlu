@@ -37,11 +37,7 @@ class Chunk : public FragmentMultitag<SyntaxTag::Type> {
   inline Chunk(const Chunk &other);
   virtual ~Chunk() {}
 
-  inline void SetNeedToVerify(const std::string &strategy);
   inline void SetDescDir(DescDir descDir);
-
-  bool GetNeedToVerify() const { return needToVerify_; }
-  const std::string& GetVerifyStrategy() const { return verifyStrategy_; }
   inline DescDir GetDescDir() const;
 
   virtual const std::string& GetCategory() const;
@@ -59,9 +55,6 @@ class Chunk : public FragmentMultitag<SyntaxTag::Type> {
           Chunk &chunk,
           SyntaxTag::Type::Val tag);
  private:
-  bool needToVerify_;
-  std::string verifyStrategy_;
-
   DescDir descDir_;
 
   bool verbArgInfo_;
@@ -73,8 +66,6 @@ class Chunk : public FragmentMultitag<SyntaxTag::Type> {
 
 Chunk::Chunk() :
   Super(),
-  needToVerify_(false),
-  verifyStrategy_("null"),
   verbArgInfo_(false) {}
 
 Chunk::Chunk(
@@ -84,26 +75,18 @@ Chunk::Chunk(
         size_t len,
         uint32_t strategy) :
     Super(syntaxTag, offset, len, strategy),
-    needToVerify_(false),
-    verifyStrategy_("null"),
     verbArgInfo_(false) {
   AddTagForCtx(nluContext, *this, syntaxTag);
 }
 
 Chunk::Chunk(const Chunk &other) :
     Super(SCAST<const Super&>(other)),
-    needToVerify_(other.needToVerify_),
     descDir_(other.descDir_),
     verbArgInfo_(other.verbArgInfo_),
     isArgTi_(other.isArgTi_),
     isArgWei_(other.isArgWei_),
     isArgZhun_(other.isArgZhun_),
     isDoubleArgs_(other.isDoubleArgs_) {}
-
-void Chunk::SetNeedToVerify( const std::string &strategy) {
-  needToVerify_ = true;
-  verifyStrategy_ = strategy;
-}
 
 void Chunk::SetDescDir(DescDir descDir) {
   descDir_ = descDir;

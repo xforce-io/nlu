@@ -23,7 +23,8 @@ class NluContext {
   void AddPhrase(
           size_t from,
           size_t to,
-          std::shared_ptr<CollectionSyntaxTag> &collectionSyntaxTag);
+          std::shared_ptr<CollectionSyntaxTag> collectionSyntaxTag,
+          std::string strategy);
 
   inline bool Add(const std::shared_ptr<NameEntity> &nameEntity);
   inline bool Add(const std::shared_ptr<Segment> &segment);
