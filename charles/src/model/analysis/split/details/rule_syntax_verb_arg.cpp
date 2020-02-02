@@ -44,7 +44,10 @@ void RuleSyntaxVerbArg::Split(
               offset_+len_,
               chunk->GetEnd() - offset_ - len_,
               950);
-      newNp.SetNeedToVerify(GetRepr());
+      nluContext->AddPhrase(
+              GetEnd(),
+              chunk->GetEnd(),
+              std::make_shared<basic::CollectionSyntaxTag>(basic::SyntaxTag::Type::kNp));
 
       basic::Chunk newVp(
               *nluContext,

@@ -2,8 +2,6 @@
 #include "../analysis_clause_branch.h"
 #include "../split/split_stage.h"
 #include "../analysis_clause.h"
-#include "../sub_branch.h"
-#include "../collection_syntax_tag.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
@@ -11,7 +9,7 @@ AnalysisClauseBranch::AnalysisClauseBranch(
         ssize_t no,
         const basic::NluContext &nluContext,
         const SplitStage &splitStage,
-        const CollectionSyntaxTag &endTags,
+        const basic::CollectionSyntaxTag &endTags,
         const std::string &verifyStrategy,
         bool traceEvent) :
     no_(endTags.IsStc() ? abs(no): -abs(no)),
@@ -44,7 +42,7 @@ bool AnalysisClauseBranch::Process(
       }
       jsonType["verifySubBranch"] = verifySubBranch;
       if (!endTags_.IsStc()) {
-        jsonType["endTag"] = CollectionSyntaxTag::Str(endTags_);
+        jsonType["endTag"] = basic::CollectionSyntaxTag::Str(endTags_);
       }
       jsonType["verifyStrategy"] = verifyStrategy_;
       basic::AnalysisTracer::Get()->AddEvent(
@@ -147,7 +145,7 @@ int AnalysisClauseBranch::VerifySubBranches_() {
     std::wstring subQuery = chunk->GetQuery(nluContext_->GetQuery());
     auto clauseToVerify = std::make_shared<AnalysisClause>(
             subQuery,
-            CollectionSyntaxTag(chunk->GetTag()),
+            basic::CollectionSyntaxTag(chunk->GetTag()),
             chunk->GetVerifyStrategy(),
             true);
     bool ret = clauseToVerify->Init();

@@ -15,7 +15,7 @@ class AnalysisClause : public AnalysisComponent {
 
  public:
   AnalysisClause(
-          std::shared_ptr<basic::NluContext> &nluContext,
+          std::shared_ptr<basic::NluContext> nluContext,
           const basic::CollectionSyntaxTag &endTags,
           const std::string &verifyStrategy = "null",
           bool traceEvent=true);

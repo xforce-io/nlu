@@ -5,7 +5,7 @@
 namespace xforce { namespace nlu { namespace charles {
 
 AnalysisClause::AnalysisClause(
-        std::shared_ptr<basic::NluContext> &nluContext,
+        std::shared_ptr<basic::NluContext> nluContext,
         const basic::CollectionSyntaxTag &endTags,
         const std::string &verifyStrategy,
         bool traceEvent) :

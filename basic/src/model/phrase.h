@@ -12,8 +12,9 @@ class Phrase {
   Phrase(
           size_t from,
           size_t to,
-          std::shared_ptr<NluContext> &nluContext,
-          std::shared_ptr<CollectionSyntaxTag> &collectionSyntaxTag);
+          std::shared_ptr<NluContext> nluContext,
+          std::shared_ptr<CollectionSyntaxTag> collectionSyntaxTag,
+          std::string strategy);
 
   size_t GetFrom() const { return from_; }
   size_t GetTo() const { return to_; }
@@ -24,6 +25,7 @@ class Phrase {
   size_t to_;
   std::shared_ptr<NluContext> nluContext_;
   std::shared_ptr<CollectionSyntaxTag> collectionSyntaxTag_;
+  std::string strategy_;
 };
 
 }}}
