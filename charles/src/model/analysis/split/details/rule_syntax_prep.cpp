@@ -15,7 +15,6 @@ RuleSyntaxPrep::RuleSyntaxPrep(
     endTagsForPpSub_(false),
     prep_(prep) {
   endTagsForNp_.Add(basic::SyntaxTag::Type::kNp);
-  endTagsForVp_.Add(basic::SyntaxTag::Type::kV);
   endTagsForVp_.Add(basic::SyntaxTag::Type::kVp);
   endTagsForPpSub_.Add(basic::SyntaxTag::Type::kNp);
   endTagsForPpSub_.Add(basic::SyntaxTag::Type::kV);
@@ -208,38 +207,20 @@ bool RuleSyntaxPrep::AddNewChunk_(
           subChunkFrom,
           subChunkTo - subChunkFrom);
 
-  basic::Chunk subChunk(
-          *nluContext,
-          subChunkTags,
-          subChunkFrom,
-          subChunkTo-subChunkFrom,
-          strategy);
-
   if (phaseCheck) {
-    AnalysisClause analysisClause(
-            subStr,
-            subChunkTags,
-            GetRepr());
-    ret = analysisClause.Init();
-    if (!ret) {
-      ERROR("fail_init_analysis_clause[" << subStr << "]");
-      return false;
-    }
-
-    ret = analysisClause.Process();
-    if (!ret) {
-      return false;
-    }
     newBranch->AddPhrase(
             subChunkFrom,
             subChunkTo,
             analysisClause.GetClause());
   } else {
-    auto clause = std::make_shared<basic::NluContext>(subStr);
-    newBranch->AddPhrase(
+    basic::Chunk subChunk(
+            *nluContext,
+            subChunkTags.GetTags().first,
             subChunkFrom,
-            subChunkTo,
-            clause);
+            subChunkTo-subChunkFrom,
+            strategy);
+
+    newBranch->Add(subChunk);
   }
 
   nluContexts.Add(newBranch);
