@@ -9,6 +9,7 @@
 #include "basic/model/fragment/chunk.h"
 #include "basic/model/fragment/fragment_set.hpp"
 #include "basic/model/analysis_tracer/analysis_tracer.h"
+#include "basic/model/syntax/collection_syntax_tag.h"
 #include "basic/data/manager.h"
 #include "basic/data/word_dict.h"
 #include "basic/data/dict_item.h"
