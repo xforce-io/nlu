@@ -83,6 +83,7 @@ bool AnalysisClause::Process() {
       succ = true;
       finished_.push_back(branch);
       results_.push_back(branch);
+      theEndTag_ = branch->GetTheEndTag();
     } else {
       if (branch->GetEnd()) {
         finished_.push_back(branch);

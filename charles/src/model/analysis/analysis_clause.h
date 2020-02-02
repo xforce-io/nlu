@@ -36,6 +36,7 @@ class AnalysisClause : public AnalysisComponent {
   inline Branch GetFather(Branch &branch);
   inline bool IsAnalysised() const;
   inline bool IsMainAnalysis() const;
+  basic::SyntaxTag::Type::Val GetTheEndTag() const { return theEndTag_; }
 
   void Dump(JsonType &jsonType);
 
@@ -50,6 +51,7 @@ class AnalysisClause : public AnalysisComponent {
   Branches finished_;
   Branches results_;
   std::unordered_map<size_t, std::shared_ptr<AnalysisClauseBranch>> allBranches_;
+  basic::SyntaxTag::Type::Val theEndTag_;
 };
 
 std::shared_ptr<basic::NluContext>& AnalysisClause::GetClause() {

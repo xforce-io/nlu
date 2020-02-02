@@ -27,6 +27,7 @@ class AnalysisClauseBranch {
   const std::shared_ptr<basic::NluContext>& GetNluContext() const { return nluContext_; }
   const SplitStage& GetSplitStage() const { return *splitStage_; }
   bool GetEnd() const { return end_; }
+  basic::SyntaxTag::Type::Val GetTheEndTag() const { return theEndTag_; }
   inline bool IsMainAnalysis() const;
 
   void Dump(JsonType &jsonType);
@@ -42,13 +43,13 @@ class AnalysisClauseBranch {
   std::list<std::shared_ptr<AnalysisClauseBranch>> children_;
   SplitStage *splitStage_;
   basic::CollectionSyntaxTag endTags_;
-  basic::SyntaxTag::Type::Val theEndTag_;
   std::string verifyStrategy_;
   bool traceEvent_;
 
   bool processed_;
   bool end_;
   size_t childrenIdx_;
+  basic::SyntaxTag::Type::Val theEndTag_;
 };
 
 bool AnalysisClauseBranch::IsMainAnalysis() const {

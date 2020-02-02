@@ -51,6 +51,7 @@ class NluContext {
   inline typename ChunkSep::Set& GetChunkSeps();
   inline const typename Chunk::Set& GetChunks() const;
   inline typename Chunk::Set& GetChunks();
+  const std::vector<Phrase>& GetPhrases() const { return phrases_; }
 
   inline bool HasPredPosBefore(size_t offset) const;
 

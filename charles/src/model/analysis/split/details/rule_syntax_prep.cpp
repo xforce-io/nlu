@@ -10,15 +10,15 @@ RuleSyntaxPrep::RuleSyntaxPrep(
         size_t offset,
         size_t len) :
     Rule(offset, len),
-    endTagsForNp_(false),
-    endTagsForVp_(false),
-    endTagsForPpSub_(false),
+    endTagsForNp_(std::make_shared<basic::CollectionSyntaxTag>(false)),
+    endTagsForVp_(std::make_shared<basic::CollectionSyntaxTag>(false)),
+    endTagsForPpSub_(std::make_shared<basic::CollectionSyntaxTag>(false)),
     prep_(prep) {
-  endTagsForNp_.Add(basic::SyntaxTag::Type::kNp);
-  endTagsForVp_.Add(basic::SyntaxTag::Type::kVp);
-  endTagsForPpSub_.Add(basic::SyntaxTag::Type::kNp);
-  endTagsForPpSub_.Add(basic::SyntaxTag::Type::kV);
-  endTagsForPpSub_.Add(basic::SyntaxTag::Type::kVp);
+  endTagsForNp_->Add(basic::SyntaxTag::Type::kNp);
+  endTagsForVp_->Add(basic::SyntaxTag::Type::kVp);
+  endTagsForPpSub_->Add(basic::SyntaxTag::Type::kNp);
+  endTagsForPpSub_->Add(basic::SyntaxTag::Type::kV);
+  endTagsForPpSub_->Add(basic::SyntaxTag::Type::kVp);
 
   includeWords_.insert(L"说");
   includeWords_.insert(L"起");
@@ -186,7 +186,7 @@ bool RuleSyntaxPrep::AddNewChunk_(
         size_t length,
         size_t subChunkFrom,
         size_t subChunkTo,
-        const CollectionSyntaxTag &subChunkTags,
+        std::shared_ptr<basic::CollectionSyntaxTag> &subChunkTags,
         bool phaseCheck,
         uint32_t strategy) {
   basic::Chunk newChunk(
@@ -201,25 +201,22 @@ bool RuleSyntaxPrep::AddNewChunk_(
   if (!ret) {
     return false;
   }
-  newBranch->Add(basic::ChunkSep(offset_+length));
 
-  std::wstring subStr = nluContext->GetQuery().substr(
-          subChunkFrom,
-          subChunkTo - subChunkFrom);
+  newBranch->Add(basic::ChunkSep(offset_+length));
 
   if (phaseCheck) {
     newBranch->AddPhrase(
             subChunkFrom,
             subChunkTo,
-            analysisClause.GetClause());
+            subChunkTags,
+            GetRepr());
   } else {
     basic::Chunk subChunk(
             *nluContext,
-            subChunkTags.GetTags().first,
+            subChunkTags->GetTags().front(),
             subChunkFrom,
             subChunkTo-subChunkFrom,
             strategy);
-
     newBranch->Add(subChunk);
   }
 

@@ -126,6 +126,7 @@ bool AnalysisClauseBranch::IsFinished_(basic::NluContext &nluContext) {
 
     for (auto &tag : chunk->GetTags()) {
       if (endTags_.ContainTag(tag)) {
+        theEndTag_ = tag;
         return true;
       }
     }
@@ -135,7 +136,7 @@ bool AnalysisClauseBranch::IsFinished_(basic::NluContext &nluContext) {
 
 int AnalysisClauseBranch::VerifySubBranches_() {
   bool touched = false;
-  for (auto &chunk : nluContext_->GetChunks().GetAll()) {
+  for (auto &chunk : nluContext_->GetP().GetAll()) {
     if (!chunk->GetNeedToVerify()) {
       continue;
     }

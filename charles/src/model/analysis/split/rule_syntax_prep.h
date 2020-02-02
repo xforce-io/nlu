@@ -1,7 +1,6 @@
 #pragma once
 
 #include "rule.h"
-#include "../collection_syntax_tag.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
@@ -41,14 +40,14 @@ class RuleSyntaxPrep : public Rule {
           size_t length,
           size_t subChunkFrom,
           size_t subChunkTo,
-          const CollectionSyntaxTag &subChunkTag,
+          std::shared_ptr<basic::CollectionSyntaxTag> &subChunkTag,
           bool phaseCheck,
           uint32_t strategy);
 
  private:
-  CollectionSyntaxTag endTagsForNp_;
-  CollectionSyntaxTag endTagsForVp_;
-  CollectionSyntaxTag endTagsForPpSub_;
+  std::shared_ptr<basic::CollectionSyntaxTag> endTagsForNp_;
+  std::shared_ptr<basic::CollectionSyntaxTag> endTagsForVp_;
+  std::shared_ptr<basic::CollectionSyntaxTag> endTagsForPpSub_;
 
   std::unordered_set<std::wstring> includeWords_;
 
