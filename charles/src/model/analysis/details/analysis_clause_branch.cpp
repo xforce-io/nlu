@@ -136,14 +136,8 @@ bool AnalysisClauseBranch::IsFinished_(basic::NluContext &nluContext) {
 
 int AnalysisClauseBranch::VerifySubBranches_() {
   bool touched = false;
-  for (auto &chunk : nluContext_->GetP().GetAll()) {
-    if (!chunk->GetNeedToVerify()) {
-      continue;
-    }
-
-    touched = true;
-
-    std::wstring subQuery = chunk->GetQuery(nluContext_->GetQuery());
+  for (auto &phrase : nluContext_->GetPhrases()) {
+    std::wstring subQuery = phrase.GetNluContext()->GetQuery();
     auto clauseToVerify = std::make_shared<AnalysisClause>(
             subQuery,
             basic::CollectionSyntaxTag(chunk->GetTag()),

@@ -74,6 +74,7 @@ add_custom_command(TARGET basic
   COMMAND cp ${BASIC_SRC_DIR}/data/word_dict.h ${BASIC_INC_OUTPUT_PATH}/data/
   COMMAND cp ${BASIC_SRC_DIR}/data/dict_item.h ${BASIC_INC_OUTPUT_PATH}/data/
   COMMAND cp ${BASIC_SRC_DIR}/model/nlu_context.h ${BASIC_INC_OUTPUT_PATH}/model/
+  COMMAND cp ${BASIC_SRC_DIR}/model/phrase.h ${BASIC_INC_OUTPUT_PATH}/model/
   COMMAND cp ${BASIC_SRC_DIR}/model/fragment/segment.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
   COMMAND cp ${BASIC_SRC_DIR}/model/fragment/name_entity.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
   COMMAND cp ${BASIC_SRC_DIR}/model/confidence.h ${BASIC_INC_OUTPUT_PATH}/model/
