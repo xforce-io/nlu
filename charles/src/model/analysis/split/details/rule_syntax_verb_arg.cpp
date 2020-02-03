@@ -38,16 +38,11 @@ void RuleSyntaxVerbArg::Split(
 
     if (chunk->ContainTag(basic::SyntaxTag::Type::kNp) ||
         chunk->ContainTag(basic::SyntaxTag::Type::kContNp)) {
-      basic::Chunk newNp(
-              *nluContext,
-              basic::SyntaxTag::Type::kNp,
-              offset_+len_,
-              chunk->GetEnd() - offset_ - len_,
-              950);
       nluContext->AddPhrase(
               GetEnd(),
-              chunk->GetEnd(),
-              std::make_shared<basic::CollectionSyntaxTag>(basic::SyntaxTag::Type::kNp));
+              chunk->GetEnd() - GetEnd(),
+              std::make_shared<basic::CollectionSyntaxTag>(basic::SyntaxTag::Type::kNp),
+              950);
 
       basic::Chunk newVp(
               *nluContext,
@@ -57,9 +52,8 @@ void RuleSyntaxVerbArg::Split(
               951);
 
       auto newNluContext = Rule::Clone(splitStage, nluContext);
-      bool ret0 = newNluContext->Add(newNp);
-      bool ret1 = newNluContext->Add(newVp);
-      if (ret0 || ret1) {
+      bool ret0 = newNluContext->Add(newVp);
+      if (ret0) {
         nluContexts.Add(newNluContext);
         continue;
       }

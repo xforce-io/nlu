@@ -4,6 +4,7 @@
 #include "public-cpp/str_helper.hpp"
 
 #include "basic/model/nlu_context.h"
+#include "basic/model/phrase.h"
 #include "basic/model/fragment/name_entity.h"
 #include "basic/model/fragment/segment.h"
 #include "basic/model/fragment/chunk.h"

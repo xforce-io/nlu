@@ -207,7 +207,7 @@ bool RuleSyntaxPrep::AddNewChunk_(
   if (phaseCheck) {
     newBranch->AddPhrase(
             subChunkFrom,
-            subChunkTo,
+            subChunkTo-subChunkFrom,
             subChunkTags,
             GetRepr());
   } else {

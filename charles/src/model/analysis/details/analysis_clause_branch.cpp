@@ -135,13 +135,14 @@ bool AnalysisClauseBranch::IsFinished_(basic::NluContext &nluContext) {
 }
 
 int AnalysisClauseBranch::VerifySubBranches_() {
-  bool touched = false;
   for (auto &phrase : nluContext_->GetPhrases()) {
-    std::wstring subQuery = phrase.GetNluContext()->GetQuery();
+    std::wstring subQuery;
+    phrase.GetSubQuery(subQuery);
+
     auto clauseToVerify = std::make_shared<AnalysisClause>(
             subQuery,
-            basic::CollectionSyntaxTag(chunk->GetTag()),
-            chunk->GetVerifyStrategy(),
+            phrase.GetCollectionSyntaxTag(),
+            phrase.GetStrategy(),
             true);
     bool ret = clauseToVerify->Init();
     if (!ret) {
@@ -152,8 +153,16 @@ int AnalysisClauseBranch::VerifySubBranches_() {
     if (!clauseToVerify->Process()) {
       return 1;
     }
+
+    basic::Chunk chunkForPhrase(
+            *nluContext_,
+            clauseToVerify->GetTheEndTag(),
+            phrase.GetFrom(),
+            phrase.GetLen(),
+            phrase.GetStrategy());
+    nluContext_->GetChunks().Add(chunkForPhrase);
   }
-  return touched ? 0 : -1;
+  return !nluContext_->GetPhrases().empty() ? 0 : -1;
 }
 
 }}}
