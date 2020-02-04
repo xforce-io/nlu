@@ -43,15 +43,6 @@ void RuleSyntaxRpArg::AddChunks_(
         const std::shared_ptr<basic::NluContext> &nluContext,
         const std::shared_ptr<basic::Chunk> &chunk,
         CollectionNluContext &nluContexts) {
-  auto argVp = std::make_shared<basic::Chunk>(
-          *nluContext,
-          basic::SyntaxTag::Type::kVp,
-          offset_+len_,
-          chunk->GetEnd() - offset_ - len_,
-          960);
-  argVp->SetNeedToVerify(GetRepr());
-  chunksToVerify_.push_back(argVp);
-
   std::shared_ptr<basic::Chunk> newVp = nullptr;
   auto segAfter = nluContext->GetSegments().GetFragmentAfter(chunk->GetEnd());
   if (nullptr!=segAfter) {
@@ -76,9 +67,14 @@ void RuleSyntaxRpArg::AddChunks_(
   }
 
   auto newNluContext = Rule::Clone(splitStage, nluContext);
-  bool ret0 = newNluContext->Add(argVp);
-  bool ret1 = newNluContext->Add(newVp);
-  if (ret0 || ret1) {
+  newNluContext->AddPhrase(
+          GetEnd(),
+          chunk->GetEnd() - GetEnd(),
+          std::make_shared<basic::CollectionSyntaxTag>(
+                  basic::SyntaxTag::Type::kVp),
+          960);
+  bool ret0 = newNluContext->Add(newVp);
+  if (ret0) {
     nluContexts.Add(newNluContext);
   }
 }
