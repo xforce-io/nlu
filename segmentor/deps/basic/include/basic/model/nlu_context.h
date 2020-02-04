@@ -22,9 +22,9 @@ class NluContext {
   inline void SetChunks(const Chunk::Set &chunks);
   void AddPhrase(
           size_t from,
-          size_t to,
+          size_t len,
           std::shared_ptr<CollectionSyntaxTag> collectionSyntaxTag,
-          std::string strategy);
+          uint32_t strategy);
 
   inline bool Add(const std::shared_ptr<NameEntity> &nameEntity);
   inline bool Add(const std::shared_ptr<Segment> &segment);
