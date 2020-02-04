@@ -142,8 +142,8 @@ int AnalysisClauseBranch::VerifySubBranches_() {
     std::string strategy = "phrase";
     auto clauseToVerify = std::make_shared<AnalysisClause>(
             subQuery,
-            *(phrase.GetCollectionSyntaxTag()),
-            strategy,
+            phrase.GetCollectionSyntaxTag(),
+            "phrase",
             true);
     bool ret = clauseToVerify->Init();
     if (!ret) {

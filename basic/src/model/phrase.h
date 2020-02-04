@@ -24,7 +24,7 @@ class Phrase {
   const std::shared_ptr<CollectionSyntaxTag> GetCollectionSyntaxTag() const { return collectionSyntaxTag_; }
   std::shared_ptr<CollectionSyntaxTag> GetCollectionSyntaxTag() { return collectionSyntaxTag_; }
   uint32_t GetStrategy() const { return strategy_; }
-  inline void GetSubQuery(std::wstring &subQuery) const;
+  void GetSubQuery(std::wstring &subQuery) const;
 
  private:
   size_t from_;
