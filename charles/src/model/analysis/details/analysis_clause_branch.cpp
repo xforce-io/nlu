@@ -159,7 +159,7 @@ int AnalysisClauseBranch::VerifySubBranches_() {
             clauseToVerify->GetTheEndTag(),
             phrase.GetFrom(),
             phrase.GetLen(),
-            phrase.GetStrategy());
+            1);
     nluContext_->GetChunks().Add(chunkForPhrase);
   }
   return !nluContext_->GetPhrases().empty() ? 0 : -1;

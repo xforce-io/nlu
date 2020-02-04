@@ -209,7 +209,7 @@ bool RuleSyntaxPrep::AddNewChunk_(
             subChunkFrom,
             subChunkTo-subChunkFrom,
             subChunkTags,
-            GetRepr());
+            strategy);
   } else {
     basic::Chunk subChunk(
             *nluContext,
