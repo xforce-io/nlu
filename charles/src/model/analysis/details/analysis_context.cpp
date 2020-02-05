@@ -11,7 +11,7 @@ AnalysisContext::AnalysisContext(const std::wstring &query) {
   for (auto val : vals) {
     analysisClauses_.push_back(std::make_shared<AnalysisClause>(
             val,
-            CollectionSyntaxTag(true)));
+            basic::CollectionSyntaxTag(true)));
   }
 
   analysisSentence_ = std::make_shared<AnalysisSentence>(query, analysisClauses_);

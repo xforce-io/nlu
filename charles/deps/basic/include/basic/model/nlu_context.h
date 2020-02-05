@@ -22,7 +22,7 @@ class NluContext {
   inline void SetChunks(const Chunk::Set &chunks);
   void AddPhrase(
           size_t from,
-          size_t to,
+          size_t len,
           std::shared_ptr<CollectionSyntaxTag> collectionSyntaxTag,
           uint32_t strategy);
 
