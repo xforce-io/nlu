@@ -85,7 +85,6 @@ void NluContext::Dump(JsonType &jsonType, const NluContext *diff) const {
     jsonType["phrase"][i]["query"] = query_.substr(
             phrase.GetFrom(),
             phrase.GetLen());
-    phrase.GetNluContext().Dump(jsonType["phrase"][i]["analysis"]);
     ++i;
   }
 }
