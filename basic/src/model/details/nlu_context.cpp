@@ -44,6 +44,9 @@ std::shared_ptr<NluContext> NluContext::Clone() const {
   nluContext->isValid_ = isValid_;
   nluContext->managerFragmentSet_ = managerFragmentSet_->Clone();
   nluContext->phrases_ = phrases_;
+  for (auto &phrase : nluContext->phrases_) {
+    phrase.SetNluContext(*nluContext);
+  }
   return nluContext;
 }
 
