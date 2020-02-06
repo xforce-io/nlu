@@ -119,8 +119,8 @@ void RuleSyntaxRule::GenForbid(std::vector<ForbidItem> &forbidItems) const {
 bool RuleSyntaxRule::PostCheckForbid(const ForbidItem &forbidItem) const {
   return forbidItem.GetCategoryRule() == GetCategory() &&
       nullptr != context_ &&
-      context_->GetStartPos() == forbidItem.GetOffset() &&
-      context_->GetCurPos() - context_->GetStartPos() == forbidItem.GetLen();
+      context_->GetStartPos() == (ssize_t)forbidItem.GetOffset() &&
+      context_->GetCurPos() - context_->GetStartPos() == (ssize_t)forbidItem.GetLen();
 }
 
 Rule* RuleSyntaxRule::Clone() {

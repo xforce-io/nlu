@@ -46,7 +46,7 @@ TEST(testAll, bugfix) {
   ASSERT_TRUE(Charles::Init(*conf));
   AnalysisClause analysisClause(
           L"为了跟意大利比赛",
-          std::make_shared<basic::CollectionSyntaxTag>(basic::SyntaxTag::Type::kPp));
+          basic::CollectionSyntaxTag(basic::SyntaxTag::Type::kPp));
   ASSERT_TRUE(analysisClause.Init());
   bool ret = analysisClause.Process();
   std::cout << basic::AnalysisTracer::Get()->GetReport() << std::endl;

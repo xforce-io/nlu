@@ -56,7 +56,7 @@ class FragmentSet {
   inline typename Container::iterator End();
   inline size_t Size() const;
 
-  void Dump(JsonType &jsonType, const FragmentSet<FragmentType> *diff);
+  void Dump(JsonType &jsonType, const FragmentSet<FragmentType> *diff) const;
 
  protected:
   std::wstring *text_;
@@ -225,7 +225,7 @@ size_t FragmentSet<FragmentType>::Size() const {
 template <typename FragmentType>
 void FragmentSet<FragmentType>::Dump(
         JsonType &jsonType,
-        const FragmentSet<FragmentType> *diff) {
+        const FragmentSet<FragmentType> *diff) const {
   size_t i=0;
   if (nullptr==diff) {
     for (auto &fragment : fragments_) {

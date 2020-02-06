@@ -31,7 +31,7 @@ class ManagerFragmentSet {
 
   void Dump(
           JsonType &jsonType,
-          const ManagerFragmentSet *managerFragmentSet);
+          const ManagerFragmentSet *managerFragmentSet) const;
 
  private:
   const std::wstring query_;

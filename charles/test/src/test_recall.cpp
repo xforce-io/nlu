@@ -9,6 +9,7 @@
 LOGGER_IMPL(xforce::xforce_logger, L"syntax")
 
 using namespace xforce;
+using namespace xforce::nlu;
 using namespace xforce::nlu::charles;
 
 int main(int argc, char **argv) {
@@ -60,7 +61,7 @@ TEST(testAll, all) {
   };
 
   for (auto &query : wStrQuery) {
-    AnalysisClause analysisClause(query, EndTags(true));
+    AnalysisClause analysisClause(query, basic::CollectionSyntaxTag(true));
     ASSERT_TRUE(analysisClause.Init());
     analysisClause.Process();
     assert(analysisClause.GetResults().size() >= 1);

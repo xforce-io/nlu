@@ -55,8 +55,8 @@ class NluContext {
 
   inline bool HasPredPosBefore(size_t offset) const;
 
-  void Dump(JsonType &jsonType, const NluContext *diff= nullptr);
-  void Dump(std::string &json);
+  void Dump(JsonType &jsonType, const NluContext *diff= nullptr) const;
+  void Dump(std::string &json) const;
 
  private:
   std::wstring query_;

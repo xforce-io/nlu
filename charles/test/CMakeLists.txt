@@ -67,3 +67,8 @@ add_executable(testRuleSyntaxPrep
   ${CMAKE_SOURCE_DIR}/src/model/analysis/split/test_rule_syntax_prep.cpp
 )
 
+add_executable(testMain
+  ${LOCAL_CPP_FILES}
+  ${CMAKE_SOURCE_DIR}/src/test_main.cpp
+)
+
