@@ -13,7 +13,8 @@ AnalysisClause::AnalysisClause(
     endTags_(endTags),
     verifyStrategy_(verifyStrategy),
     traceEvent_(traceEvent),
-    master_(nullptr) {}
+    master_(nullptr),
+    succ_(false) {}
 
 AnalysisClause::AnalysisClause(
         const std::wstring &clause,
@@ -65,13 +66,14 @@ bool AnalysisClause::Process() {
   if (ret) {
     finished_.push_back(master_);
     results_.push_back(master_);
+    succ_ = true;
     return true;
   } else if (master_->GetEnd() && branches_.empty()) {
     finished_.push_back(master_);
     return false;
   }
 
-  bool succ = false;
+  succ_ = false;
   while (!branches_.empty()) {
     auto branch = branches_.front();
     branches_.pop();
@@ -80,7 +82,7 @@ bool AnalysisClause::Process() {
 
     ret = branch->Process(branches_);
     if (ret) {
-      succ = true;
+      succ_ = true;
       finished_.push_back(branch);
       results_.push_back(branch);
       theEndTag_ = branch->GetTheEndTag();
@@ -107,7 +109,7 @@ bool AnalysisClause::Process() {
               jsonType);
     }
   }
-  return succ;
+  return succ_;
 }
 
 AnalysisClause::Branch AnalysisClause::GetFather(Branch &branch) {
