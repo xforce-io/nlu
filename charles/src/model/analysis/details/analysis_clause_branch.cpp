@@ -2,6 +2,7 @@
 #include "../analysis_clause_branch.h"
 #include "../split/split_stage.h"
 #include "../analysis_clause.h"
+#include "../analysis_cache.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
@@ -139,19 +140,25 @@ int AnalysisClauseBranch::VerifySubBranches_() {
     std::wstring subQuery;
     phrase.GetSubQuery(subQuery);
 
-    std::string strategy = "phrase";
-    auto clauseToVerify = std::make_shared<AnalysisClause>(
-            subQuery,
-            *(phrase.GetCollectionSyntaxTag()),
-            "phrase",
-            true);
-    bool ret = clauseToVerify->Init();
-    if (!ret) {
-      FATAL("fail_init_sub_query[" << subQuery << "]");
-      return 1;
-    }
+    auto clauseToVerify = AnalysisCache::Get().Get(subQuery);
+    if (clauseToVerify == nullptr) {
+      clauseToVerify = std::make_shared<AnalysisClause>(
+              subQuery,
+              phrase.GetCollectionSyntaxTag(),
+              "phrase",
+              true);
+      bool ret = clauseToVerify->Init();
+      if (!ret) {
+        FATAL("fail_init_sub_query[" << subQuery << "]");
+        return 1;
+      }
 
-    if (!clauseToVerify->Process()) {
+      ret = clauseToVerify->Process();
+      AnalysisCache::Get().Set(subQuery, clauseToVerify);
+      if (!ret) {
+        return 1;
+      }
+    } else if (!clauseToVerify->GetSucc()) {
       return 1;
     }
 
