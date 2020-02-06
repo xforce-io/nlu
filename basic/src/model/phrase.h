@@ -12,15 +12,14 @@ class Phrase {
   Phrase(
           size_t from,
           size_t len,
-          std::shared_ptr<NluContext> nluContext,
+          const NluContext &nluContext,
           std::shared_ptr<CollectionSyntaxTag> collectionSyntaxTag,
           uint32_t strategy);
 
   size_t GetFrom() const { return from_; }
   size_t GetLen() const { return len_; }
   size_t GetEnd() const { return from_+len_; }
-  const std::shared_ptr<NluContext>& GetNluContext() const { return nluContext_; }
-  std::shared_ptr<NluContext>& GetNluContext() { return nluContext_; }
+  const NluContext& GetNluContext() const { return *nluContext_; }
   const std::shared_ptr<CollectionSyntaxTag> GetCollectionSyntaxTag() const { return collectionSyntaxTag_; }
   std::shared_ptr<CollectionSyntaxTag> GetCollectionSyntaxTag() { return collectionSyntaxTag_; }
   uint32_t GetStrategy() const { return strategy_; }
@@ -29,7 +28,7 @@ class Phrase {
  private:
   size_t from_;
   size_t len_;
-  std::shared_ptr<NluContext> nluContext_;
+  const NluContext *nluContext_;
   std::shared_ptr<CollectionSyntaxTag> collectionSyntaxTag_;
   uint32_t strategy_;
 };

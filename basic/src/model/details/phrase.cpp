@@ -6,12 +6,12 @@ namespace xforce { namespace nlu { namespace basic {
 Phrase::Phrase(
         size_t from,
         size_t len,
-        std::shared_ptr<NluContext> nluContext,
+        const NluContext &nluContext,
         std::shared_ptr<CollectionSyntaxTag> collectionSyntaxTag,
         uint32_t strategy) :
     from_(from),
     len_(len),
-    nluContext_(std::move(nluContext)),
+    nluContext_(&nluContext),
     collectionSyntaxTag_(std::move(collectionSyntaxTag)),
     strategy_(strategy) {}
 

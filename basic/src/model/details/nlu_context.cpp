@@ -20,8 +20,7 @@ void NluContext::AddPhrase(
   phrases_.push_back(Phrase(
           from,
           len,
-          std::make_shared<basic::NluContext>(
-                  query_.substr(from, len)),
+          *this,
           std::move(collectionSyntaxTag),
           strategy));
 }
@@ -74,7 +73,7 @@ void NluContext::Reset(basic::Stage::Val stage) {
   }
 }
 
-void NluContext::Dump(JsonType &jsonType, const NluContext *diff) {
+void NluContext::Dump(JsonType &jsonType, const NluContext *diff) const {
   jsonType["query"] = query_;
   jsonType["isValid"] = isValid_;
   managerFragmentSet_->Dump(
@@ -86,12 +85,12 @@ void NluContext::Dump(JsonType &jsonType, const NluContext *diff) {
     jsonType["phrase"][i]["query"] = query_.substr(
             phrase.GetFrom(),
             phrase.GetLen());
-    phrase.GetNluContext()->Dump(jsonType["phrase"][i]["analysis"]);
+    phrase.GetNluContext().Dump(jsonType["phrase"][i]["analysis"]);
     ++i;
   }
 }
 
-void NluContext::Dump(std::string &json) {
+void NluContext::Dump(std::string &json) const {
   xforce::JsonType jsonToDump;
   Dump(jsonToDump);
 

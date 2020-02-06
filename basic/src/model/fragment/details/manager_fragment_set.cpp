@@ -11,7 +11,7 @@ ManagerFragmentSet::ManagerFragmentSet(const std::wstring &query) :
 
 void ManagerFragmentSet::Dump(
         JsonType &jsonType,
-        const ManagerFragmentSet *managerFragmentSet) {
+        const ManagerFragmentSet *managerFragmentSet) const {
   nameEntities_.Dump(
           jsonType,
           nullptr != managerFragmentSet ? &(managerFragmentSet->nameEntities_) : nullptr);
