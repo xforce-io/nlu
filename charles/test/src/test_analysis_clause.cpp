@@ -26,8 +26,7 @@ TEST(testAll, all) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/charles.conf");
 
   ASSERT_TRUE(Charles::Init(*conf));
-  //AnalysisClause analysisClause(L"他是如何进行人员和战术调整而挽回颓势的呢",basic::CollectionSyntaxTag(true));
-  AnalysisClause analysisClause(L"进行人员和战术调整而挽回颓势", basic::CollectionSyntaxTag(basic::SyntaxTag::Type::kVp));
+  AnalysisClause analysisClause(L"他是如何进行人员和战术调整而挽回颓势的呢",basic::CollectionSyntaxTag(true));
   ASSERT_TRUE(analysisClause.Init());
   bool ret = analysisClause.Process();
   std::cout << basic::AnalysisTracer::Get()->GetReport() << std::endl;

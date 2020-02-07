@@ -16,6 +16,8 @@ class Phrase {
           std::shared_ptr<CollectionSyntaxTag> collectionSyntaxTag,
           uint32_t strategy);
 
+  inline void SetNluContext(const NluContext &nluContext);
+
   size_t GetFrom() const { return from_; }
   size_t GetLen() const { return len_; }
   size_t GetEnd() const { return from_+len_; }
@@ -32,5 +34,9 @@ class Phrase {
   std::shared_ptr<CollectionSyntaxTag> collectionSyntaxTag_;
   uint32_t strategy_;
 };
+
+void Phrase::SetNluContext(const NluContext &nluContext) {
+  nluContext_ = &nluContext;
+}
 
 }}}

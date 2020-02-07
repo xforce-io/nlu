@@ -144,7 +144,7 @@ int AnalysisClauseBranch::VerifySubBranches_() {
     if (clauseToVerify == nullptr) {
       clauseToVerify = std::make_shared<AnalysisClause>(
               subQuery,
-              phrase.GetCollectionSyntaxTag(),
+              *(phrase.GetCollectionSyntaxTag()),
               "phrase",
               true);
       bool ret = clauseToVerify->Init();
