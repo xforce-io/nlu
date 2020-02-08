@@ -10,7 +10,7 @@ AnalysisClause::AnalysisClause(
         const std::string &verifyStrategy,
         bool traceEvent) :
     clause_(nluContext),
-    endTags_(endTags),
+    endTags_(std::make_shared<basic::CollectionSyntaxTag>(endTags)),
     verifyStrategy_(verifyStrategy),
     traceEvent_(traceEvent),
     master_(nullptr),
@@ -43,7 +43,7 @@ bool AnalysisClause::Init() {
           1,
           *clause_,
           *splitStage,
-          endTags_,
+          *endTags_,
           verifyStrategy_,
           traceEvent_);
   XFC_DELETE(splitStage);

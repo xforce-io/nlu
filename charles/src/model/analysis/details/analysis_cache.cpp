@@ -8,7 +8,7 @@ AnalysisCache AnalysisCache::analysisCache_;
 void AnalysisCache::Set(
         std::shared_ptr<AnalysisClause> analysisClause) {
   container_.insert(std::make_pair(
-          std::make_pair(analysisClause->GetClause()->GetQuery(), analysisClause->GetTheEndTag()),
+          std::make_pair(analysisClause->GetClause()->GetQuery(), analysisClause->GetEndTags()),
           analysisClause));
 }
 
