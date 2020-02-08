@@ -140,7 +140,9 @@ int AnalysisClauseBranch::VerifySubBranches_() {
     std::wstring subQuery;
     phrase.GetSubQuery(subQuery);
 
-    auto clauseToVerify = AnalysisCache::Get().Get(subQuery);
+    auto clauseToVerify = AnalysisCache::Get().Get(std::make_pair(
+            subQuery,
+            phrase.GetCollectionSyntaxTag()));
     if (clauseToVerify == nullptr) {
       clauseToVerify = std::make_shared<AnalysisClause>(
               subQuery,
@@ -154,7 +156,7 @@ int AnalysisClauseBranch::VerifySubBranches_() {
       }
 
       ret = clauseToVerify->Process();
-      AnalysisCache::Get().Set(subQuery, clauseToVerify);
+      AnalysisCache::Get().Set(clauseToVerify);
       if (!ret) {
         return 1;
       }

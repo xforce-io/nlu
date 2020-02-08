@@ -8,11 +8,16 @@ class AnalysisClause;
 
 class AnalysisCache {
  public:
-  typedef std::unordered_map<std::wstring, std::shared_ptr<AnalysisClause>> Container;
+  typedef std::unordered_map<
+          std::pair<std::wstring, std::shared_ptr<basic::CollectionSyntaxTag>>,
+          std::shared_ptr<AnalysisClause>> Container;
 
  public:
-  inline std::shared_ptr<AnalysisClause> Get(const std::wstring &key);
-  inline void Set(const std::wstring &key, std::shared_ptr<AnalysisClause> analysisClause);
+  inline std::shared_ptr<AnalysisClause> Get(
+          std::pair<std::wstring, std::shared_ptr<basic::CollectionSyntaxTag>> key);
+
+  inline void Set(
+          std::shared_ptr<AnalysisClause> analysisClause);
 
   static AnalysisCache& Get() { return analysisCache_; }
 
@@ -22,13 +27,15 @@ class AnalysisCache {
   static AnalysisCache analysisCache_;
 };
 
-std::shared_ptr<AnalysisClause> AnalysisCache::Get(const std::wstring &key) {
+std::shared_ptr<AnalysisClause> AnalysisCache::Get(
+        std::pair<std::wstring, std::shared_ptr<basic::CollectionSyntaxTag>> key) {
   auto iter = container_.find(key);
-  return iter != container_.end() ? iter->second : nullptr;
+  return iter != container_.end() ? *iter : nullptr;
 }
 
-void AnalysisCache::Set(const std::wstring &key, std::shared_ptr<AnalysisClause> analysisClause) {
-  container_.insert(std::make_pair(key, analysisClause));
+void AnalysisCache::Set(
+        std::shared_ptr<AnalysisClause> analysisClause) {
+  container_.insert(analysisClause);
 }
 
 }}}

@@ -30,6 +30,7 @@ class AnalysisClause : public AnalysisComponent {
 
   bool Init();
   bool Process();
+  inline const std::shared_ptr<basic::NluContext>& GetClause() const;
   inline std::shared_ptr<basic::NluContext>& GetClause();
   inline const Branches& GetFinished() const { return finished_; }
   inline const Branches& GetResults() const { return results_; }
@@ -55,6 +56,10 @@ class AnalysisClause : public AnalysisComponent {
   basic::SyntaxTag::Type::Val theEndTag_;
   bool succ_;
 };
+
+const std::shared_ptr<basic::NluContext>& AnalysisClause::GetClause() const {
+  return clause_;
+}
 
 std::shared_ptr<basic::NluContext>& AnalysisClause::GetClause() {
   return clause_;
