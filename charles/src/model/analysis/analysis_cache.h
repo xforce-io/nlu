@@ -27,7 +27,7 @@ class AnalysisCache {
   inline std::shared_ptr<AnalysisClause> Get(
           std::pair<std::wstring, std::shared_ptr<basic::CollectionSyntaxTag>> key);
 
-  inline void Set(
+  void Set(
           std::shared_ptr<AnalysisClause> analysisClause);
 
   static AnalysisCache& Get() { return analysisCache_; }
@@ -42,11 +42,6 @@ std::shared_ptr<AnalysisClause> AnalysisCache::Get(
         std::pair<std::wstring, std::shared_ptr<basic::CollectionSyntaxTag>> key) {
   auto iter = container_.find(key);
   return iter != container_.end() ? iter->second : nullptr;
-}
-
-void AnalysisCache::Set(
-        std::shared_ptr<AnalysisClause> analysisClause) {
-  container_.insert(analysisClause);
 }
 
 }}}
