@@ -31,7 +31,7 @@ AnalysisClause::~AnalysisClause() {
 }
 
 bool AnalysisClause::Init() {
-  SplitRuleMgr *splitRuleMgr = new SplitRuleMgr();
+  auto splitRuleMgr = new SplitRuleMgr();
 
   bool ret = splitRuleMgr->Init(*clause_);
   if (!ret) {
