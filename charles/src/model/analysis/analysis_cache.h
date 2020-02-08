@@ -7,10 +7,21 @@ namespace xforce { namespace nlu { namespace charles {
 class AnalysisClause;
 
 class AnalysisCache {
+ private:
+  struct HashAnalysisCache {
+      size_t operator()(
+              const std::pair<
+                      std::wstring,
+                      std::shared_ptr<basic::CollectionSyntaxTag>> &x) const {
+        return std::hash<std::wstring>()(x.first);
+      }
+  };
+
  public:
   typedef std::unordered_map<
           std::pair<std::wstring, std::shared_ptr<basic::CollectionSyntaxTag>>,
-          std::shared_ptr<AnalysisClause>> Container;
+          std::shared_ptr<AnalysisClause>,
+          HashAnalysisCache> Container;
 
  public:
   inline std::shared_ptr<AnalysisClause> Get(
