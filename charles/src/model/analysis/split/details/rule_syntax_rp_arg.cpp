@@ -50,7 +50,7 @@ void RuleSyntaxRpArg::AddChunks_(
     if (L"的" == segQuery) {
       newVp = std::make_shared<basic::Chunk>(
               *nluContext,
-              basic::SyntaxTag::Type::kVp,
+              basic::SyntaxTag::Type::kAdvp,
               offset_,
               chunk->GetEnd() - offset_ + segQuery.length(),
               961);
