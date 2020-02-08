@@ -32,6 +32,9 @@ class AnalysisClause : public AnalysisComponent {
   bool Process();
   inline const std::shared_ptr<basic::NluContext>& GetClause() const;
   inline std::shared_ptr<basic::NluContext>& GetClause();
+  const std::shared_ptr<basic::CollectionSyntaxTag> GetEndTags() const { return endTags_; }
+  std::shared_ptr<basic::CollectionSyntaxTag> GetEndTags() { return endTags_; }
+
   inline const Branches& GetFinished() const { return finished_; }
   inline const Branches& GetResults() const { return results_; }
   inline Branch GetFather(Branch &branch);
@@ -44,7 +47,7 @@ class AnalysisClause : public AnalysisComponent {
 
  private:
   std::shared_ptr<basic::NluContext> clause_;
-  basic::CollectionSyntaxTag endTags_;
+  std::shared_ptr<basic::CollectionSyntaxTag> endTags_;
   std::string verifyStrategy_;
   bool traceEvent_;
 
@@ -70,7 +73,7 @@ bool AnalysisClause::IsAnalysised() const {
 }
 
 bool AnalysisClause::IsMainAnalysis() const {
-  return endTags_.IsStc();
+  return endTags_->IsStc();
 }
 
 }}}
