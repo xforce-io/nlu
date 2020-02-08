@@ -147,7 +147,8 @@ bool SplitRuleMgr::InitSyntaxFromRules_(const basic::NluContext &nluContext) {
 
 bool SplitRuleMgr::InitSyntaxVerbArg_(const basic::NluContext &nluContext) {
   for (auto &chunk : nluContext.GetChunks().GetAll()) {
-    if (chunk->GetTag() == basic::SyntaxTag::Type::kV) {
+    if (chunk->GetTag() == basic::SyntaxTag::Type::kV &&
+        chunk->GetQuery(nluContext.GetQuery()) != L"是") {
       std::shared_ptr<basic::Segment> verb = nullptr;
       for (auto &segment : nluContext.GetSegments().GetAll()) {
         if (!segment->IsIn(chunk->GetOffset(), chunk->GetLen())) {
