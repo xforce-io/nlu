@@ -41,7 +41,7 @@ class AnalysisCache {
 std::shared_ptr<AnalysisClause> AnalysisCache::Get(
         std::pair<std::wstring, std::shared_ptr<basic::CollectionSyntaxTag>> key) {
   auto iter = container_.find(key);
-  return iter != container_.end() ? *iter : nullptr;
+  return iter != container_.end() ? iter->second : nullptr;
 }
 
 void AnalysisCache::Set(
