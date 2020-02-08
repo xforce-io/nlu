@@ -12,7 +12,7 @@ class AnalysisCache {
 
  private:
   struct EqAnalysisCache {
-      bool operator()(const Key &key0, const Key &key1) {
+      bool operator()(const Key &key0, const Key &key1) const {
         return key0.first == key1.first && *(key0.second) == *(key1.second);
       }
   };
