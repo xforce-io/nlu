@@ -23,7 +23,7 @@ class AnalysisClauseBranch {
 
   bool Process(std::queue<std::shared_ptr<AnalysisClauseBranch>> &children);
 
-  inline bool SetEnd(bool isEnd);
+  inline void SetEnd(bool isEnd);
 
   size_t GetNo() const { return no_; }
   size_t GetDepth() const { return depth_; }
@@ -57,7 +57,7 @@ class AnalysisClauseBranch {
   basic::SyntaxTag::Type::Val theEndTag_;
 };
 
-bool AnalysisClauseBranch::SetEnd(bool isEnd) {
+void AnalysisClauseBranch::SetEnd(bool isEnd) {
   end_ = isEnd;
 }
 
