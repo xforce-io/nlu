@@ -17,6 +17,7 @@ class CollectionSyntaxTag {
   std::list<SyntaxTag::Type::Val> GetTags() const { return tags_; }
   inline bool IsStc() const;
   inline bool ContainTag(SyntaxTag::Type::Val tag) const;
+  inline bool operator==(const CollectionSyntaxTag &other) const;
 
   static std::wstring Str(const CollectionSyntaxTag &endTags);
 
@@ -36,6 +37,27 @@ bool CollectionSyntaxTag::ContainTag(SyntaxTag::Type::Val tag) const {
     }
   }
   return false;
+}
+
+bool CollectionSyntaxTag::operator==(const CollectionSyntaxTag &other) const {
+  if (tags_.size() != other.tags_.size()) {
+    return false;
+  }
+
+  for (auto &tag : tags_) {
+    bool contained = false;
+    for (auto &otherTag : other.tags_) {
+      if (otherTag == tag) {
+        contained = true;
+        break;
+      }
+    }
+
+    if (!contained) {
+      return false;
+    }
+  }
+  return true;
 }
 
 }}}
