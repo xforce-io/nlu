@@ -12,6 +12,7 @@ class AnalysisClauseBranch {
  public:
   AnalysisClauseBranch(
           ssize_t no,
+          size_t depth,
           const basic::NluContext &nluContext,
           const SplitStage &splitStage,
           const basic::CollectionSyntaxTag &endTags,
@@ -22,7 +23,10 @@ class AnalysisClauseBranch {
 
   bool Process(std::queue<std::shared_ptr<AnalysisClauseBranch>> &children);
 
+  inline bool SetEnd(bool isEnd);
+
   size_t GetNo() const { return no_; }
+  size_t GetDepth() const { return depth_; }
   size_t GetNoFather() const { return no_/100; }
   const std::shared_ptr<basic::NluContext>& GetNluContext() const { return nluContext_; }
   const SplitStage& GetSplitStage() const { return *splitStage_; }
@@ -39,6 +43,7 @@ class AnalysisClauseBranch {
 
  private:
   ssize_t no_;
+  size_t depth_;
   std::shared_ptr<basic::NluContext> nluContext_;
   std::list<std::shared_ptr<AnalysisClauseBranch>> children_;
   SplitStage *splitStage_;
@@ -51,6 +56,10 @@ class AnalysisClauseBranch {
   size_t childrenIdx_;
   basic::SyntaxTag::Type::Val theEndTag_;
 };
+
+bool AnalysisClauseBranch::SetEnd(bool isEnd) {
+  end_ = isEnd;
+}
 
 bool AnalysisClauseBranch::IsMainAnalysis() const {
   return endTags_.IsStc();

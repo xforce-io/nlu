@@ -8,12 +8,14 @@ namespace xforce { namespace nlu { namespace charles {
 
 AnalysisClauseBranch::AnalysisClauseBranch(
         ssize_t no,
+        size_t depth,
         const basic::NluContext &nluContext,
         const SplitStage &splitStage,
         const basic::CollectionSyntaxTag &endTags,
         const std::string &verifyStrategy,
         bool traceEvent) :
     no_(endTags.IsStc() ? abs(no): -abs(no)),
+    depth_(depth),
     nluContext_(nluContext.Clone()),
     splitStage_(splitStage.Clone()),
     endTags_(endTags),
@@ -37,6 +39,7 @@ bool AnalysisClauseBranch::Process(
       JsonType jsonType;
       jsonType["name"] = "branch_init";
       jsonType["no"] = no_;
+      jsonType["depth"] = depth_;
       jsonType["born"] = splitStage_->GetBornStage();
       if (splitStage_->GetLastRule() != nullptr) {
         jsonType["rule"] = splitStage_->GetLastRule()->GetRepr();
@@ -83,6 +86,7 @@ bool AnalysisClauseBranch::Process(
     auto absVal = abs(no_) * 100 + childrenIdx_;
     auto child = std::make_shared<AnalysisClauseBranch>(
             no_>=0 ? absVal : -absVal,
+            depth_+1,
             *nluContext,
             *splitStage_,
             endTags_,

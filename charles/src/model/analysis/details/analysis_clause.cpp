@@ -41,6 +41,7 @@ bool AnalysisClause::Init() {
   auto splitStage = new SplitStage(*splitRuleMgr);
   master_ = std::make_shared<AnalysisClauseBranch>(
           1,
+          0,
           *clause_,
           *splitStage,
           *endTags_,
@@ -57,6 +58,7 @@ bool AnalysisClause::Process() {
     JsonType jsonType;
     jsonType["name"] = "branch_end";
     jsonType["no"] = master_->GetNo();
+    jsonType["depth"] = master_->GetDepth();
     master_->GetNluContext()->Dump(jsonType["ctx"], nullptr);
     basic::AnalysisTracer::Get()->AddEvent(
             master_->GetNluContext()->GetQuery(),
@@ -80,7 +82,13 @@ bool AnalysisClause::Process() {
 
     allBranches_.insert(std::make_pair(branch->GetNo(), branch));
 
-    ret = branch->Process(branches_);
+    if (branch->GetDepth() < 10) {
+      ret = branch->Process(branches_);
+    } else {
+      branch->SetEnd(true);
+      ret = false;
+    }
+
     if (ret) {
       succ_ = true;
       finished_.push_back(branch);
@@ -98,6 +106,7 @@ bool AnalysisClause::Process() {
       JsonType jsonType;
       jsonType["name"] = "branch_end";
       jsonType["no"] = branch->GetNo();
+      jsonType["depth"] = branch->GetDepth();
       auto father = GetFather(branch);
       branch->GetNluContext()->Dump(
               jsonType["diff"],
