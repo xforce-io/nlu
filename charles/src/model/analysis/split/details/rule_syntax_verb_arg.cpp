@@ -59,6 +59,10 @@ void RuleSyntaxVerbArg::Split(
       }
     }
   }
+
+  if (!nluContexts.Empty()) {
+    nluContexts.Add(nluContext->Clone());
+  }
 }
 
 void RuleSyntaxVerbArg::GenForbid(std::vector<ForbidItem> &forbidItems) const {
