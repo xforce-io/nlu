@@ -10,10 +10,13 @@ class RulePosTagMultiTag : public Rule {
  public:
   explicit RulePosTagMultiTag(size_t offset);
 
-  virtual bool Split(
+  size_t GetCategory() const { return Rule::kCategoryRulePosTag; }
+  const char* GetRepr() const;
+
+  void Split(
           const SplitStage &splitStage,
           const std::shared_ptr<basic::NluContext> &nluContext,
-          std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
+          CollectionNluContext &nluContexts);
 
   virtual Rule* Clone();
 

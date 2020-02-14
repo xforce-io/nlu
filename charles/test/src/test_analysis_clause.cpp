@@ -11,6 +11,7 @@
 LOGGER_IMPL(xforce::xforce_logger, L"charles")
 
 using namespace xforce;
+using namespace xforce::nlu;
 using namespace xforce::nlu::charles;
 
 int main(int argc, char **argv) {
@@ -25,17 +26,18 @@ TEST(testAll, all) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/charles.conf");
 
   ASSERT_TRUE(Charles::Init(*conf));
-  AnalysisClause analysisClause(L"我们一板打不死对方");
+  AnalysisClause analysisClause(L"不能说为了跟意大利比赛",basic::CollectionSyntaxTag(true));
   ASSERT_TRUE(analysisClause.Init());
-  analysisClause.Process();
+  bool ret = analysisClause.Process();
+  std::cout << basic::AnalysisTracer::Get()->GetReport() << std::endl;
+  ASSERT_TRUE(ret);
 
-  std::cout << analysisClause.GetFinished().size() << std::endl;
-
+/*
   std::string repr;
   for (auto result : analysisClause.GetFinished()) {
     std::cout << "no[" << result->GetNo() << "] ";
     std::cout << "born[" << result->GetSplitStage().GetBornStage() << "] ";
     result->GetNluContext()->Dump(repr);
     std::cout << "result[" << repr << "]" << std::endl;
-  }
+  }*/
 }

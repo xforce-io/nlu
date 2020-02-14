@@ -71,6 +71,8 @@ TEST(testAll, all) {
   storageVal = context->GetStorage(storageKey);
   ASSERT_TRUE(storageVal->Size() == 1);
   ASSERT_TRUE(storageVal->Get()[0].GetOffset() == 9);
+  ASSERT_TRUE(context->GetStartPos() == 4);
+  ASSERT_TRUE(context->GetCurPos() == 12);
 }
 
 TEST(testBugfix, test) {

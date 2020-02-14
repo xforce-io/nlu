@@ -1,18 +1,21 @@
 #include "../split_stage.h"
 #include "../split_rule_mgr.h"
+#include "../forbid_mgr.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
 SplitStage::SplitStage(
         SplitRuleMgr &splitRuleMgr) :
   splitRuleMgr_(&splitRuleMgr),
+  forbidMgr_(new ForbidMgr()),
   bornStage_(basic::Stage::kNone),
-  curStage_(basic::Stage::kSyntax),
+  curStage_(basic::Stage::kSegment),
   ruleIdx_(0),
   lastStage_(basic::Stage::kNone),
   lastRuleIdx_(0) {}
 
 SplitStage::~SplitStage() {
+  XFC_DELETE(forbidMgr_)
   XFC_DELETE(splitRuleMgr_)
 }
 
@@ -48,32 +51,37 @@ void SplitStage::Process(std::shared_ptr<basic::NluContext> &nluContext) {
 
   splitRuleMgr_->Adjust(*nluContext);
   ruleIdx_=0;
-  while (!IsBegin()) {
+  while (!IsEnd()) {
     size_t curStageSize = splitRuleMgr_->GetRules()[curStage_]->size();
     if (ruleIdx_ < curStageSize) {
       return;
     } else {
-      curStage_ = basic::Stage::GetPrev(curStage_);
+      curStage_ = basic::Stage::GetNext(curStage_);
       ruleIdx_=0;
     }
   }
 }
 
-bool SplitStage::Split(
+void SplitStage::Split(
         const std::shared_ptr<basic::NluContext> &nluContext,
-        std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) {
+        CollectionNluContext &nluContexts) {
   if (IsBegin() || IsEnd()) {
-    return false;
+    return;
   }
 
-  auto rules = *(splitRuleMgr_->GetRules()[curStage_]);
-  bool ret = rules[ruleIdx_]->Split(*this, nluContext, nluContexts);
-
+  auto &rule = *((*(splitRuleMgr_->GetRules()[curStage_]))[ruleIdx_]);
+  if (forbidMgr_->GlobalCheckRule(rule) &&
+      forbidMgr_->PreCheckRule(rule)) { //pre check
+    rule.Split(*this, nluContext, nluContexts);
+    if (!forbidMgr_->PostCheckRule(rule)) { // post check
+      nluContexts.Clear();
+    } else if (nluContexts.NonEmpty()) {
+      forbidMgr_->AddRule(rule);
+    }
+  }
   lastStage_ = curStage_;
   lastRuleIdx_ = ruleIdx_;
-
-  PrevStage();
-  return ret;
+  NextStage();
 }
 
 bool SplitStage::PrevStage() {
@@ -123,12 +131,21 @@ bool SplitStage::NextStage() {
 SplitStage* SplitStage::Clone() const {
   auto *newStage = new SplitStage(*splitRuleMgr_);
   newStage->splitRuleMgr_ = splitRuleMgr_->Clone();
+  newStage->forbidMgr_ = forbidMgr_->Clone();
   newStage->bornStage_ = bornStage_;
   newStage->curStage_ = curStage_;
   newStage->ruleIdx_ = ruleIdx_;
   newStage->lastStage_ = lastStage_;
   newStage->lastRuleIdx_ = lastRuleIdx_;
   return newStage;
+}
+
+const Rule* SplitStage::GetLastRule() const {
+  if (basic::Stage::kNone != lastStage_) {
+    return (*(splitRuleMgr_->GetRules()[lastStage_]))[lastRuleIdx_];
+  } else {
+    return nullptr;
+  }
 }
 
 }}}

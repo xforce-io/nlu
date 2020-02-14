@@ -24,10 +24,11 @@ void StatisticsItems::Add(const StatisticsUnit &newItem) {
   statisticsItems_.push_back(newItem);
 }
 
-const StatisticsUnit* StatisticsItems::GetDominator() const {
+const StatisticsUnit* StatisticsItems::GetDominator() {
   for (auto &statisticsUnit : statisticsItems_) {
     if (statisticsUnit.count * 1.0 / count_ >= kThresholdLeader &&
         statisticsUnit.count >= kThresholdCnt) {
+      statisticsUnit.CalcConfidence(count_);
       return &statisticsUnit;
     }
   }

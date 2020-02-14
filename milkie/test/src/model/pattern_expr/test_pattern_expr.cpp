@@ -2,18 +2,26 @@
 
 #include "gtest/gtest.h"
 
+#include "basic/basic.h"
+
 #include "../../../src/milkie.h"
 #include "../../../src/core/model/pattern_expr/pattern_expr.h"
 #include "../../../src/core/model/refer/refer_manager.h"
 
 LOGGER_IMPL(xforce::xforce_logger, L"milkie")
 
+using namespace xforce;
 using namespace xforce::nlu::milkie;
 using namespace xforce::nlu::basic;
 
 const static std::wstring kTestBlockKey = L"testBlockKey";
 
 Milkie *milkie;
+
+void initBasic() {
+  const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/milkie.conf");
+  assert(Basic::Init((*conf)["basic"]));
+}
 
 void initMilkie() {
   milkie = new Milkie();
@@ -24,6 +32,7 @@ int main(int argc, char **argv) {
   setlocale(LC_ALL, "");
   LOGGER_SYS_INIT(L"../conf/log.conf");
 
+  initBasic();
   initMilkie();
 
   testing::InitGoogleTest(&argc, argv);
@@ -35,6 +44,7 @@ void testcase1();
 void testcase2();
 void testcaseWildcard();
 void testcaseMultimatch();
+void testPartlyMultimatch();
 void testBugfix();
 
 TEST(testAll, all) {
@@ -44,6 +54,7 @@ TEST(testAll, all) {
   testcase2();
   testcaseWildcard();
   testcaseMultimatch();
+  testPartlyMultimatch();
   testBugfix();
 }
 
@@ -248,19 +259,58 @@ void testcaseMultimatch() {
   ASSERT_TRUE(!ret.first->ExactMatch(*(context.get())));
 }
 
-void testBugfix() {
-  std::wstring expr = Helper::PreprocessExprLine(L"{ #Pos(lP) \"的\" -> target }");
+void testPartlyMultimatch() {
+  std::wstring expr = Helper::PreprocessExprLine(L"{ #Pos((dP-)*(vP-)) -> syntactic.v }");
   auto ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, expr);
   ASSERT_TRUE(ret.first != nullptr);
 
-  std::wstring query = L"强有力的";
+  std::wstring query = L"他是会舞蹈";
   auto context = std::make_shared<Context>(query);
   FragmentSet<Segment> segments(query);
-  segments.Add(Segment(PosTag::Type::kL, 0, 3));
-  segments.Add(Segment(PosTag::Type::kU, 3, 1));
+  segments.Add(Segment(PosTag::Type::kR, 0, 1));
+  segments.Add(Segment(PosTag::Type::kV, 1, 1));
+  segments.Add(Segment(PosTag::Type::kV, 2, 1));
+  segments.Add(Segment(PosTag::Type::kA, 3, 2));
   context->GetSentence().GetNluContext()->SetSegments(segments);
+  ASSERT_TRUE(ret.first->PartlyMatch(*(context.get())));
+
+  JsonType jsonType;
+  context->Dump(jsonType);
+  std::stringstream ss;
+  jsonType.DumpJson(ss);
+  std::cout << ss.str() << std::endl;
+
+  size_t numVs = context->GetStorage(StorageKey(nullptr, L"syntactic.v"))->Size();
+  ASSERT_TRUE(numVs==2);
+}
+
+void testBugfix() {
+  std::wstring expr = Helper::PreprocessExprLine(L"{ {#Chk(vp) && #Reg(.*是)} #Chk(advp) \"的\" -> syntactic.vp }");
+  auto ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, expr);
+  ASSERT_TRUE(ret.first != nullptr);
+
+  std::wstring query = L"都是开心的";
+  auto context = std::make_shared<Context>(query);
+  auto &nluContext = *(context->GetSentence().GetNluContext());
+
+  FragmentSet<Segment> segments(query);
+  segments.Add(Segment(PosTag::Type::kD, 0, 1));
+  segments.Add(Segment(PosTag::Type::kV, 1, 1));
+  segments.Add(Segment(PosTag::Type::kA, 2, 2));
+  segments.Add(Segment(PosTag::Type::kU, 4, 1));
+  nluContext.SetSegments(segments);
+
+  FragmentSet<Chunk> chunks(query);
+  chunks.Add(Chunk(nluContext, SyntaxTag::Type::kVp, 0, 2));
+  chunks.Add(Chunk(nluContext, SyntaxTag::Type::kAdvp, 2, 2));
+  chunks.Add(Chunk(nluContext, SyntaxTag::Type::kU, 4, 1));
+  nluContext.SetChunks(chunks);
+
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
-  ASSERT_TRUE(*(context->GetCurStorageAsStr(L"target")) == L"强有力的");
 
-
+  JsonType jsonType;
+  context->Dump(jsonType);
+  std::stringstream ss;
+  jsonType.DumpJson(ss);
+  std::cout << ss.str() << std::endl;
 }

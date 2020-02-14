@@ -10,11 +10,11 @@ bool GkbVerb::Init(
   }
 
   for (auto *entry : entries_) {
-    if (entry->isDongjie()) {
+    if (entry->IsDongjie()) {
       dongjie_.insert(entry->GetWord());
     }
 
-    if (entry->isDongqu()) {
+    if (entry->IsDongqu()) {
       dongqu_.insert(entry->GetWord());
     }
   }
@@ -46,34 +46,61 @@ bool GkbVerb::IsDongjieOrDongquPhrase(
       gkbVerbDongqu_->IsPhrase(word0, word1);
 }
 
-bool GkbVerb::isZhu(const std::wstring &word) const {
+bool GkbVerb::IsZhu(const std::wstring &word) const {
   auto entries = GetEntries(word);
   if (nullptr == entries || entries->empty()) {
     return false;
   }
 
   for (auto *entry : *entries) {
-    if (entry->isZhu()) {
+    if (entry->IsZhu()) {
       return true;
     }
   }
   return false;
 }
 
-EntryVerb::TiWeiZhun::Val GkbVerb::TiWeiZhun(
-    const std::wstring &word) const {
+bool GkbVerb::TiWeiZhun(
+    const std::wstring &word,
+    bool &isArgTi,
+    bool &isArgWei,
+    bool &isArgZhun) const {
   auto entries = GetEntries(word);
   if (nullptr == entries || entries->empty()) {
-    return EntryVerb::TiWeiZhun::kOther;
+    return false;
   }
 
-  EntryVerb::TiWeiZhun::Val firstTag = (*entries)[0]->TiWeiZhun();
-  for (size_t i=1; i < entries->size(); ++i) {
-    if ((*entries)[i]->TiWeiZhun() != firstTag) {
-      return EntryVerb::TiWeiZhun::kOther;
+  isArgTi = false;
+  isArgWei = false;
+  isArgZhun = false;
+  for (size_t i=0; i < entries->size(); ++i) {
+    if ((*entries)[i]->IsArgTi()) {
+      isArgTi = true;
+    }
+
+    if ((*entries)[i]->IsArgWei()) {
+      isArgWei = true;
+    }
+
+    if ((*entries)[i]->IsArgZhun()) {
+      isArgZhun = true;
     }
   }
-  return firstTag;
+  return true;
+}
+
+bool GkbVerb::IsDoubleArgs(const std::wstring &word) const {
+  auto entries = GetEntries(word);
+  if (nullptr == entries || entries->empty()) {
+    return false;
+  }
+
+  for (size_t i = 0; i < entries->size(); ++i) {
+    if ((*entries)[i]->IsDoubleArgs()) {
+      return true;
+    }
+  }
+  return false;
 }
 
 }}}

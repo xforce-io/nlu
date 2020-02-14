@@ -5,7 +5,13 @@
 namespace xforce { namespace nlu { namespace charles {
 
 class SplitStage;
+class CollectionSyntaxTag;
 
+/*
+ * include pos : u,f,r
+ * include word : 说，起
+ * include word append v : 所（u）+ v，给（u）+v
+ */
 class RuleSyntaxPrep : public Rule {
  public:
   explicit RuleSyntaxPrep(
@@ -13,28 +19,39 @@ class RuleSyntaxPrep : public Rule {
           size_t offset,
           size_t len);
 
-  virtual bool Split(
+  size_t GetCategory() const { return Rule::kCategoryRuleSyntaxPrep; }
+  const char* GetRepr() const;
+
+  void Split(
           const SplitStage &splitStage,
           const std::shared_ptr<basic::NluContext> &nluContext,
-          std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
+          CollectionNluContext &nluContexts);
+
+  void GenForbid(std::vector<ForbidItem> &forbidItems) const;
+  bool PreCheckForbid(const ForbidItem &forbidItem) const;
 
   virtual Rule* Clone();
 
-private:
+ private:
   bool AddNewChunk_(
           const SplitStage &splitStage,
           const std::shared_ptr<basic::NluContext> &nluContext,
-          std::vector<std::shared_ptr<basic::NluContext>> &nluContexts,
+          CollectionNluContext &nluContexts,
           size_t length,
           size_t subChunkFrom,
           size_t subChunkTo,
-          basic::SyntaxTag::Type::Val subChunkTag,
+          std::shared_ptr<basic::CollectionSyntaxTag> &subChunkTag,
+          bool phaseCheck,
           uint32_t strategy);
 
  private:
+  std::shared_ptr<basic::CollectionSyntaxTag> endTagsForNp_;
+  std::shared_ptr<basic::CollectionSyntaxTag> endTagsForVp_;
+  std::shared_ptr<basic::CollectionSyntaxTag> endTagsForPpSub_;
+
+  std::unordered_set<std::wstring> includeWords_;
+
   std::wstring prep_;
-  size_t offsetPrep_;
-  size_t lenPrep_;
 };
 
 }}}

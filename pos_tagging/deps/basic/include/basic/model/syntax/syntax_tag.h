@@ -73,6 +73,7 @@ class SyntaxTag {
       kUndef,
     };
 
+    inline static bool IsCommon(SyntaxTag::Type::Val tagVal);
     inline static bool IsSpecial(SyntaxTag::Type::Val tagVal);
   };
 
@@ -80,6 +81,10 @@ class SyntaxTag {
   static SyntaxTag::Type::Val GetSyntaxTag(const std::wstring &syntaxTag);
   static const std::wstring& Str(SyntaxTag::Type::Val syntaxtTag);
 };
+
+bool SyntaxTag::Type::IsCommon(SyntaxTag::Type::Val tagVal) {
+  return !IsSpecial(tagVal);
+}
 
 bool SyntaxTag::Type::IsSpecial(SyntaxTag::Type::Val tagVal) {
   return tagVal == SyntaxTag::Type::kStc ||

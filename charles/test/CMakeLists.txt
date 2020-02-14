@@ -61,3 +61,14 @@ add_executable(testRecall
   ${LOCAL_CPP_FILES}
   ${CMAKE_SOURCE_DIR}/src/test_recall.cpp
 )
+
+add_executable(testRuleSyntaxPrep
+  ${LOCAL_CPP_FILES}
+  ${CMAKE_SOURCE_DIR}/src/model/analysis/split/test_rule_syntax_prep.cpp
+)
+
+add_executable(testMain
+  ${LOCAL_CPP_FILES}
+  ${CMAKE_SOURCE_DIR}/src/test_main.cpp
+)
+

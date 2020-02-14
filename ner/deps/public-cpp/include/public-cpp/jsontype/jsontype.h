@@ -3,6 +3,7 @@
 #include "../common.h"
 #include "../thread_privacy/thread_privacy.h"
 #include "../pool_objs/pool_objs.hpp"
+#include "../str_helper.hpp"
 
 namespace xforce {
 
@@ -109,7 +110,8 @@ class JsonType {
   Self& operator=(size_t size_val);
   Self& operator=(double double_val);
   Self& operator=(const char* str_val);
-  Self& operator=(const std::string& str_val) { return operator=(str_val.c_str()); }
+  Self& operator=(const std::string& str_val);
+  Self& operator=(const std::wstring& str_val);
   Self& operator=(const JsonType& json_val);
 
   inline void Append(bool bool_val);
@@ -118,7 +120,9 @@ class JsonType {
   inline void Append(size_t size_val);
   inline void Append(double double_val);
   inline void Append(const char* str_val);
-  inline void Append(const std::string& str_val) { return Append(str_val.c_str()); }
+  inline void Append(const std::string& str_val);
+  inline void Append(const std::wstring& str_val);
+  inline void Append(const JsonType& json_val);
 
   inline bool operator==(bool bool_val);
   inline bool operator==(int int_val);
@@ -246,6 +250,23 @@ void JsonType::Append(const char* str_val) {
   JsonType newJsonType(JsonValType::kStr);
   newJsonType.shared_json_val_->data.str_val->assign(str_val);
   shared_json_val_->data.list_val->push_back(newJsonType); 
+}
+
+void JsonType::Append(const std::string& str_val) {
+  return Append(str_val.c_str());
+}
+
+void JsonType::Append(const std::wstring& str_val) {
+  return Append(*(StrHelper::Wstr2Str(str_val)));
+}
+
+void JsonType::Append(const JsonType& json_val) {
+  if (JsonValType::kList != shared_json_val_->type) {
+    Reset_(JsonValType::kList);
+  }
+  Normalize_();
+
+  shared_json_val_->data.list_val->push_back(json_val);
 }
 
 bool JsonType::operator==(bool bool_val) {

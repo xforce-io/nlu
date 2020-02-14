@@ -52,7 +52,7 @@ WindowStatistics* WindowStatistics::Create(const std::string &filepath) {
 
         pairs.push_back(std::make_pair(
                 pair[0],
-                basic::PosTag::GetPosTag(pair[1])));
+                basic::PosTag::GetPosTag(pair[1], pair[0])));
       } else {
         FATAL("invalid_window_statistics_item[" << strs[i] << "]");
       }

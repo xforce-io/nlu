@@ -20,7 +20,9 @@ class Context {
   const Sentence& GetSentence() const { return *sentence_; }
   Sentence& GetSentence() { return *sentence_; }
   inline void Pass(ssize_t n);
+  inline void SetStartPos(ssize_t startPos);
   inline void SetCurPos(ssize_t curPos);
+  ssize_t GetStartPos() const { return startPos_; }
   ssize_t GetCurPos() const { return curPos_; }
   inline std::shared_ptr<StorageVal> GetCurPattern() const;
   inline void StartMatch();
@@ -53,14 +55,18 @@ class Context {
    * mark : str env supported only now
    */
   const Storage& GetStorage() const { return storage_; }
+  Storage& GetStorage() { return storage_; }
 
   inline void SetCurStoragePattern(StorageVal &storageItem);
   inline std::shared_ptr<StorageVal> GetCurStoragePattern();
   inline bool End() const;
   inline size_t Length() const;
 
+  void Dump(JsonType &jsonType);
+
  private:
   Sentence *sentence_;
+  ssize_t startPos_;
   ssize_t curPos_;
   std::stack<std::shared_ptr<Frame>> stack_;
 
@@ -74,7 +80,8 @@ class Context {
 
 namespace xforce { namespace nlu { namespace milkie {
 
-Context::Context(std::shared_ptr<basic::NluContext> nluContext) {
+Context::Context(std::shared_ptr<basic::NluContext> nluContext) :
+    startPos_(0) {
   sentence_ = new Sentence(nluContext);
   Reset();
 }
@@ -101,6 +108,10 @@ void Context::Reset(size_t offset) {
 
 void Context::Pass(ssize_t n) {
   curPos_ += n;
+}
+
+void Context::SetStartPos(ssize_t startPos) {
+  startPos_ = startPos;
 }
 
 void Context::SetCurPos(ssize_t curPos) {

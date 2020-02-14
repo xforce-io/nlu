@@ -26,6 +26,8 @@ bool StrategyWindowStatistics::Init() {
 }
 
 void StrategyWindowStatistics::Process(basic::NluContext &nluContext) {
+  Strategy::Process(nluContext);
+
   auto &segments = nluContext.GetSegments().GetAll();
 
   auto segIter0 = segments.begin();
@@ -55,56 +57,68 @@ void StrategyWindowStatistics::Process(basic::NluContext &nluContext) {
       SetPos(
               **segIter0,
               dominator.second->type0,
+              dominator.second->confidence,
               Strategy::kStrategyWindowStatistics);
     } else if (dominator.first == StatisticsItems::kCategory1) {
       SetPos(
               **segIter1,
               dominator.second->type1,
+              dominator.second->confidence,
               Strategy::kStrategyWindowStatistics);
     } else if (dominator.first == StatisticsItems::kCategory2) {
       SetPos(
               **segIter2,
               dominator.second->type2,
+              dominator.second->confidence,
               Strategy::kStrategyWindowStatistics);
     } else if (dominator.first == StatisticsItems::kCategory01) {
       SetPos(
               **segIter0,
               dominator.second->type0,
+              dominator.second->confidence,
               Strategy::kStrategyWindowStatistics);
       SetPos(
               **segIter1,
               dominator.second->type1,
+              dominator.second->confidence,
               Strategy::kStrategyWindowStatistics);
     } else if (dominator.first == StatisticsItems::kCategory12) {
       SetPos(
               **segIter1,
               dominator.second->type1,
+              dominator.second->confidence,
               Strategy::kStrategyWindowStatistics);
       SetPos(
               **segIter2,
               dominator.second->type2,
+              dominator.second->confidence,
               Strategy::kStrategyWindowStatistics);
     } else if (dominator.first == StatisticsItems::kCategory02) {
       SetPos(
               **segIter0,
               dominator.second->type0,
+              dominator.second->confidence,
               Strategy::kStrategyWindowStatistics);
       SetPos(
               **segIter2,
               dominator.second->type2,
+              dominator.second->confidence,
               Strategy::kStrategyWindowStatistics);
     } else if (dominator.first == StatisticsItems::kCategory012) {
       SetPos(
               **segIter0,
               dominator.second->type0,
+              dominator.second->confidence,
               Strategy::kStrategyWindowStatistics);
       SetPos(
               **segIter1,
               dominator.second->type1,
+              dominator.second->confidence,
               Strategy::kStrategyWindowStatistics);
       SetPos(
               **segIter2,
               dominator.second->type2,
+              dominator.second->confidence,
               Strategy::kStrategyWindowStatistics);
     }
 
@@ -133,34 +147,30 @@ void StrategyWindowStatistics::Process(basic::NluContext &nluContext) {
       SetPos(
               **segIter0,
               dominator.second->type0,
+              dominator.second->confidence,
               Strategy::kStrategyWindowStatistics);
     } else if (dominator.first == StatisticsItems::kCategory1) {
       SetPos(
               **segIter1,
               dominator.second->type1,
+              dominator.second->confidence,
               Strategy::kStrategyWindowStatistics);
     } else if (dominator.first == StatisticsItems::kCategory01) {
       SetPos(
               **segIter0,
               dominator.second->type0,
+              dominator.second->confidence,
               Strategy::kStrategyWindowStatistics);
       SetPos(
               **segIter1,
               dominator.second->type1,
+              dominator.second->confidence,
               Strategy::kStrategyWindowStatistics);
     }
 
     ++segIter0;
     ++segIter1;
   }
-}
-
-void StrategyWindowStatistics::SetPos(
-        basic::Segment &segment,
-        basic::PosTag::Type::Val posTag,
-        uint32_t strategy) {
-  segment.SetTag(posTag);
-  segment.SetStrategy(strategy);
 }
 
 }}}

@@ -9,6 +9,8 @@ class Strategy {
   static const uint32_t kStrategyUniq = 1; 
   static const uint32_t kStrategyWindowStatistics = 2; 
   static const uint32_t kStrategyContextInfer = 3;
+  static const uint32_t kStrategyComlement = 4;
+  static const uint32_t kStrategyLen1 = 5;
   static const uint32_t kStrategyOther = 0;
 
  public:
@@ -16,17 +18,21 @@ class Strategy {
   virtual ~Strategy() {}
 
   virtual bool Init() { return true; }
-  virtual void Process(basic::NluContext &nluContext) = 0;
+  virtual void Process(basic::NluContext &nluContext);
 
  protected:
   virtual void SetPos(
           basic::Segment &segment,
           basic::PosTag::Type::Val posTag,
+          basic::Confidence confidence,
           uint32_t strategy);
 
   virtual void AddPos(
           basic::Segment &segment,
           basic::PosTag::Type::Val posTag);
+
+ protected:
+  basic::NluContext *nluContext_;
 };
 
 }}}

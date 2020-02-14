@@ -19,12 +19,12 @@ class WindowStatistics {
  public:
   inline std::pair<StatisticsItems::Category, const StatisticsUnit*> GetDominator(
           const std::wstring &item0,
-          const std::wstring &item1) const;
+          const std::wstring &item1);
 
   inline std::pair<StatisticsItems::Category, const StatisticsUnit*> GetDominator(
           const std::wstring &item0,
           const std::wstring &item1,
-          const std::wstring &item2) const;
+          const std::wstring &item2);
 
   void Shrink();
   size_t Size() const { return statistics_.size(); }
@@ -55,7 +55,7 @@ class WindowStatistics {
 
 std::pair<StatisticsItems::Category, const StatisticsUnit*> WindowStatistics::GetDominator(
         const std::wstring &item0,
-        const std::wstring &item1) const {
+        const std::wstring &item1) {
   tmpFeatureCombs_.clear();
   windowFeaturesExtractor_.Enum(item0, item1, tmpFeatureCombs_);
   return GetDominatorFromFeatures_(tmpFeatureCombs_);
@@ -64,7 +64,7 @@ std::pair<StatisticsItems::Category, const StatisticsUnit*> WindowStatistics::Ge
 std::pair<StatisticsItems::Category, const StatisticsUnit*> WindowStatistics::GetDominator(
         const std::wstring &item0,
         const std::wstring &item1,
-        const std::wstring &item2) const {
+        const std::wstring &item2) {
   tmpFeatureCombs_.clear();
   windowFeaturesExtractor_.Enum(item0, item1, item2, tmpFeatureCombs_);
   return GetDominatorFromFeatures_(tmpFeatureCombs_);

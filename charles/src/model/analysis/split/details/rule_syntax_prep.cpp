@@ -1,6 +1,7 @@
 #include "../rule_syntax_prep.h"
 #include "../split_stage.h"
 #include "../../analysis_clause.h"
+#include "../forbid_item.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
@@ -8,127 +9,218 @@ RuleSyntaxPrep::RuleSyntaxPrep(
         const std::wstring &prep,
         size_t offset,
         size_t len) :
-  prep_(prep),
-  offsetPrep_(offset),
-  lenPrep_(len) {
+    Rule(offset, len),
+    endTagsForNp_(std::make_shared<basic::CollectionSyntaxTag>(false)),
+    endTagsForVp_(std::make_shared<basic::CollectionSyntaxTag>(false)),
+    endTagsForPpSub_(std::make_shared<basic::CollectionSyntaxTag>(false)),
+    prep_(prep) {
+  endTagsForNp_->Add(basic::SyntaxTag::Type::kNp);
+  endTagsForVp_->Add(basic::SyntaxTag::Type::kVp);
+  endTagsForPpSub_->Add(basic::SyntaxTag::Type::kNp);
+  endTagsForPpSub_->Add(basic::SyntaxTag::Type::kV);
+  endTagsForPpSub_->Add(basic::SyntaxTag::Type::kVp);
+
+  includeWords_.insert(L"说");
+  includeWords_.insert(L"起");
 }
 
-bool RuleSyntaxPrep::Split(
+const char* RuleSyntaxPrep::GetRepr() const {
+  std::sprintf(repr_, "ruleSyntaxPrep(%ld|%ld)", offset_, len_);
+  return repr_;
+}
+
+void RuleSyntaxPrep::Split(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,
-        std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) {
+        CollectionNluContext &nluContexts) {
   std::vector<const basic::EntryPrep*> entriesPrep;
   basic::Manager::Get().GetGkb().GetGkbPrep().GetEntriesPrep(prep_, entriesPrep);
 
-  bool touched=false;
-  for (auto &segment : nluContext->GetSegments().GetAll()) {
-    if (segment->GetOffset() < offsetPrep_+lenPrep_) {
+  bool isJian = false;
+  for (auto *entryPrep : entriesPrep) {
+    if (entryPrep->TiWei() == basic::EntryPrep::TiWei::kJian) {
+      isJian = true;
+      break;
+    }
+  }
+
+  auto iter = nluContext->GetSegments().GetAll().begin();
+  std::shared_ptr<basic::Segment> lastSegment;
+  while (iter != nluContext->GetSegments().GetAll().end()) {
+    auto segment = *iter;
+    if (segment->GetOffset() < GetEnd() || GetEnd() == segment->GetBegin()) {
+      ++iter;
       continue;
     }
+
+    size_t subChunkTo = segment->GetBegin();
+    auto segPos = segment->GetTag();
+    auto segWord = segment->GetQuery(nluContext->GetQuery());
 
     //after words & after poses
     for (auto *entryPrep : entriesPrep) {
-      if (entryPrep->IsAfterWord(segment->GetQuery(nluContext->GetQuery())) ||
-          entryPrep->IsAfterPos(segment->GetTag())) {
-        if (AddNewChunk_(
-                splitStage,
-                nluContext,
-                nluContexts,
-                segment->GetEnd() - offsetPrep_,
-                offsetPrep_+lenPrep_,
-                segment->GetBegin(),
-                basic::SyntaxTag::Type::kUndef,
-                910)) {
-          touched = true;
+      if (entryPrep->IsAfterPos(segPos)) {
+        if (segment->GetTag() == basic::PosTag::Type::kU ||
+            segment->GetTag() == basic::PosTag::Type::kF ||
+            segment->GetTag() == basic::PosTag::Type::kR) {
+          subChunkTo = segment->GetEnd();
         }
-        break;
+      } else if (entryPrep->IsAfterWord(segWord)) {
+        if (includeWords_.find(segWord) != includeWords_.end()) {
+          subChunkTo = segment->GetEnd();
+        } else if (L"所" == segWord || L"给" == segWord) {
+          auto filter = [](const basic::Chunk &chunk) {
+              return chunk.ContainTag(basic::SyntaxTag::Type::kV);
+          };
+
+          auto chunk = nluContext->GetChunks().GetFragmentAfter(segment->GetEnd(), filter);
+          if (chunk != nullptr) {
+            subChunkTo = chunk->GetEnd();
+          }
+        }
+      } else {
+        continue;
       }
-    }
-  }
 
-  for (auto &chunk : nluContext->GetChunks().GetAll()) {
-    if (chunk->GetOffset() < offsetPrep_+lenPrep_) {
-      continue;
-    }
-
-    //NP
-    if (chunk->GetTag() == basic::SyntaxTag::Type::kAdvp ||
-        chunk->GetTag() == basic::SyntaxTag::Type::kU) {
-      continue;
-    } else if (chunk->GetTag() == basic::SyntaxTag::Type::kNp ||
-        chunk->GetTag() == basic::SyntaxTag::Type::kContNp) {
-      if (AddNewChunk_(
+      AddNewChunk_(
               splitStage,
               nluContext,
               nluContexts,
-              chunk->GetEnd() - offsetPrep_,
-              offsetPrep_+lenPrep_,
+              subChunkTo - offset_,
+              offset_ + len_,
+              segment->GetBegin(),
+              endTagsForPpSub_,
+              lastSegment != nullptr && lastSegment->GetBegin() != GetEnd(),
+              910);
+      break;
+    }
+    lastSegment = segment;
+    ++iter;
+  }
+
+  size_t pos = offset_+len_;
+  while (pos < nluContext->GetQuery().length()) {
+    auto chunk = nluContext->GetChunks().GetLongFragmentAfter(pos);
+    if (nullptr==chunk) {
+      break;
+    } 
+    
+    pos += chunk->GetLen();
+    if (chunk->GetTag() == basic::SyntaxTag::Type::kAdvp ||
+        chunk->GetTag() == basic::SyntaxTag::Type::kU) {
+      continue;
+    } else if (chunk->ContainTag(basic::SyntaxTag::Type::kNp) ||
+               chunk->ContainTag(basic::SyntaxTag::Type::kDt) ||
+               chunk->ContainTag(basic::SyntaxTag::Type::kContNp)) {
+      AddNewChunk_(
+              splitStage,
+              nluContext,
+              nluContexts,
+              chunk->GetEnd() - offset_,
+              offset_ + len_,
               chunk->GetEnd(),
-              basic::SyntaxTag::Type::kNp,
-              911)) {
-        touched = true;
-      }
+              endTagsForNp_,
+              false,
+              911);
+    } else {
+      break;
     }
   }
-  return touched;
+
+  pos = offset_+len_;
+  while (pos < nluContext->GetQuery().length()) {
+    auto chunk = nluContext->GetChunks().GetLongFragmentAfter(pos);
+    if (nullptr==chunk) {
+      break;
+    } 
+    
+    pos += chunk->GetLen();
+    if (chunk->GetTag() == basic::SyntaxTag::Type::kPp) {
+      continue;
+    } else if (isJian && (chunk->ContainTag(basic::SyntaxTag::Type::kV) ||
+               chunk->ContainTag(basic::SyntaxTag::Type::kVp))) {
+      AddNewChunk_(
+              splitStage,
+              nluContext,
+              nluContexts,
+              chunk->GetEnd() - offset_,
+              offset_ + len_,
+              chunk->GetEnd(),
+              endTagsForVp_,
+              false,
+              912);
+    } else {
+      break;
+    }
+  }
+
+  if (!nluContexts.Empty()) {
+    nluContexts.Add(nluContext->Clone());
+  }
+}
+
+void RuleSyntaxPrep::GenForbid(std::vector<ForbidItem> &/*forbidItems*/) const {
+/*
+  ForbidItem forbidItem;
+  forbidItem.SetCategoryRule(GetCategory());
+  forbidItem.SetOffset(offset_);
+  forbidItem.SetLen(len_);
+  forbidItems.push_back(forbidItem);
+*/
+}
+
+bool RuleSyntaxPrep::PreCheckForbid(const ForbidItem &forbidItem) const {
+  return forbidItem.GetCategoryRule() == GetCategory() &&
+         forbidItem.GetOffset() == offset_ &&
+         forbidItem.GetLen() == len_;
 }
 
 Rule* RuleSyntaxPrep::Clone() {
-  return new RuleSyntaxPrep(prep_, offsetPrep_, lenPrep_);
+  return new RuleSyntaxPrep(prep_, offset_, len_);
 }
 
 bool RuleSyntaxPrep::AddNewChunk_(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,
-        std::vector<std::shared_ptr<basic::NluContext>> &nluContexts,
+        CollectionNluContext &nluContexts,
         size_t length,
         size_t subChunkFrom,
         size_t subChunkTo,
-        basic::SyntaxTag::Type::Val subChunkTag,
+        std::shared_ptr<basic::CollectionSyntaxTag> &subChunkTags,
+        bool phaseCheck,
         uint32_t strategy) {
   basic::Chunk newChunk(
           *nluContext,
           basic::SyntaxTag::Type::kPp,
-          offsetPrep_,
+          offset_,
           length,
           strategy);
 
   auto newBranch = Rule::Clone(splitStage, nluContext);
-  bool ret = newBranch->GetChunks().Add(newChunk);
+  bool ret = newBranch->Add(newChunk);
   if (!ret) {
     return false;
   }
 
-  if (basic::SyntaxTag::Type::kUndef != subChunkTag) {
+  newBranch->Add(basic::ChunkSep(offset_+length));
+
+  if (phaseCheck) {
+    newBranch->AddPhrase(
+            subChunkFrom,
+            subChunkTo-subChunkFrom,
+            subChunkTags,
+            strategy);
+  } else {
     basic::Chunk subChunk(
             *nluContext,
-            subChunkTag,
+            subChunkTags->GetTags().front(),
             subChunkFrom,
             subChunkTo-subChunkFrom,
             strategy);
-    newBranch->GetChunks().Add(subChunk);
-  } else {
-    std::wstring subStr = nluContext->GetQuery().substr(
-                    subChunkFrom,
-                    subChunkTo-subChunkFrom);
-    AnalysisClause analysisClause(subStr);
-    ret = analysisClause.Init();
-    if (!ret) {
-      ERROR("fail_init_analysis_clause[" << subStr << "]");
-      return false;
-    }
-
-    ret = analysisClause.Process();
-    if (!ret) {
-      return false;
-    }
-
-    newBranch->AddPhrase(
-            subChunkFrom,
-            subChunkTo,
-            analysisClause.GetClause());
+    newBranch->Add(subChunk);
   }
-  nluContexts.push_back(newBranch);
+
+  nluContexts.Add(newBranch);
   return true;
 }
 

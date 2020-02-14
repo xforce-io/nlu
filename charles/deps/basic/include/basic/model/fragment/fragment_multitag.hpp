@@ -43,11 +43,12 @@ class FragmentMultitag : public Fragment {
   const std::vector<typename Tag::Val>& GetTags() const { return tags_; }
   std::vector<typename Tag::Val>& GetTags() { return tags_; }
   inline typename Tag::Val GetTag() const;
-  inline bool ContainTag(typename Tag::Val tagVal);
+  inline bool ContainTag(typename Tag::Val tagVal) const;
+  virtual bool Same(const Fragment &other) const;
 
   inline std::wstring GetQuery(const std::wstring &sentence) const;
 
-  virtual void Dump(JsonType &jsonType);
+  virtual void Dump(JsonType &jsonType) const;
 
  protected:
   std::vector<typename Tag::Val> tags_;
@@ -118,6 +119,7 @@ bool FragmentMultitag<Tag>::Merge(const Self &other) {
   for (auto &tag : other.GetTags()) {
     if (!ContainTag(tag)) {
       tags_.push_back(tag);
+      strategy_ = other.strategy_;
       touched = true;
     }
   }
@@ -141,7 +143,7 @@ typename Tag::Val FragmentMultitag<Tag>::GetTag() const {
 }
 
 template <typename Tag>
-bool FragmentMultitag<Tag>::ContainTag(typename Tag::Val tag) {
+bool FragmentMultitag<Tag>::ContainTag(typename Tag::Val tag) const {
   for (auto &singleTag : tags_) {
     if (singleTag == tag) {
       return true;
@@ -151,12 +153,35 @@ bool FragmentMultitag<Tag>::ContainTag(typename Tag::Val tag) {
 }
 
 template <typename Tag>
+bool FragmentMultitag<Tag>::Same(const Fragment &fragment) const {
+  auto &other = SCAST<const FragmentMultitag<Tag>&>(fragment);
+  if (!Fragment::Same(other) || tags_.size() != other.tags_.size()) {
+    return false;
+  }
+
+  for (auto &tag : tags_) {
+    bool ret = false;
+    for (auto &otherTag : other.tags_) {
+      if (tag == otherTag) {
+        ret = true;
+        break;
+      }
+    }
+
+    if (!ret) {
+      return false;
+    }
+  }
+  return true;
+}
+
+template <typename Tag>
 std::wstring FragmentMultitag<Tag>::GetQuery(const std::wstring &sentence) const {
   return sentence.substr(offset_, len_);
 }
 
 template <typename Tag>
-void FragmentMultitag<Tag>::Dump(JsonType &jsonType) {
+void FragmentMultitag<Tag>::Dump(JsonType &jsonType) const {
   Super::Dump(jsonType);
 }
 

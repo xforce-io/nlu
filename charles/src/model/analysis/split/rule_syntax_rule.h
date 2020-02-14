@@ -16,15 +16,22 @@ class RuleSyntaxRule : public Rule {
  public:
   explicit RuleSyntaxRule(std::shared_ptr<milkie::FeatureExtractor> &featureExtractor);
 
-  virtual bool Split(
+  size_t GetCategory() const { return Rule::kCategoryRuleSyntaxRule; }
+  const char* GetRepr() const;
+
+  virtual void Split(
           const SplitStage &splitStage,
           const std::shared_ptr<basic::NluContext> &nluContext,
-          std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
+          CollectionNluContext &nluContexts);
+
+  void GenForbid(std::vector<ForbidItem> &forbidItems) const;
+  bool PostCheckForbid(const ForbidItem &forbidItem) const;
 
   virtual Rule* Clone();
 
  private:
   std::shared_ptr<milkie::FeatureExtractor> featureExtractor_;
+  std::shared_ptr<milkie::Context> context_;
 };
 
 }}}

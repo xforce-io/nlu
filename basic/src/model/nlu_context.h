@@ -6,6 +6,7 @@
 namespace xforce { namespace nlu { namespace basic {
 
 class Phrase;
+class CollectionSyntaxTag;
 
 class NluContext {
  public:
@@ -21,14 +22,27 @@ class NluContext {
   inline void SetChunks(const Chunk::Set &chunks);
   void AddPhrase(
           size_t from,
-          size_t to,
-          std::shared_ptr<NluContext> &nluContext);
+          size_t len,
+          std::shared_ptr<CollectionSyntaxTag> collectionSyntaxTag,
+          uint32_t strategy);
+
+  inline bool Add(const std::shared_ptr<NameEntity> &nameEntity);
+  inline bool Add(const std::shared_ptr<Segment> &segment);
+  inline bool Add(const std::shared_ptr<ChunkSep> &chunkSep);
+  inline bool Add(const std::shared_ptr<Chunk> &chunk);
+
+  inline bool Add(const NameEntity &nameEntity);
+  inline bool Add(const Segment &segment);
+  inline bool Add(const ChunkSep &chunkSep);
+  inline bool Add(const Chunk &chunk);
+
+  inline void Clear();
 
   std::shared_ptr<NluContext> Build(size_t from, size_t to);
   std::shared_ptr<NluContext> Clone() const;
   void Reset(basic::Stage::Val stage);
 
-  inline bool GetIsValid() const;
+  inline bool GetIsValid(bool check = false);
   inline const typename NameEntity::Set& GetNameEntities() const;
   inline typename NameEntity::Set& GetNameEntities();
   inline const typename Segment::Set& GetSegments() const;
@@ -37,11 +51,12 @@ class NluContext {
   inline typename ChunkSep::Set& GetChunkSeps();
   inline const typename Chunk::Set& GetChunks() const;
   inline typename Chunk::Set& GetChunks();
+  const std::vector<Phrase>& GetPhrases() const { return phrases_; }
 
   inline bool HasPredPosBefore(size_t offset) const;
 
-  void Dump(JsonType &jsonType);
-  void Dump(std::string &json);
+  void Dump(JsonType &jsonType, const NluContext *diff= nullptr) const;
+  void Dump(std::string &json) const;
 
  private:
   std::wstring query_;
@@ -71,7 +86,71 @@ void NluContext::SetChunks(const typename Chunk::Set &chunks) {
   managerFragmentSet_->SetChunks(chunks);
 }
 
-bool NluContext::GetIsValid() const {
+bool NluContext::Add(const std::shared_ptr<NameEntity> &nameEntity) {
+  return Add(*nameEntity);
+}
+
+bool NluContext::Add(const std::shared_ptr<Segment> &segment) {
+  return Add(*segment);
+}
+
+bool NluContext::Add(const std::shared_ptr<ChunkSep> &chunkSep) {
+  return Add(*chunkSep);
+}
+
+bool NluContext::Add(const std::shared_ptr<Chunk> &chunk) {
+  return Add(*chunk);
+}
+
+bool NluContext::Add(const NameEntity &nameEntity) {
+  return managerFragmentSet_->GetNameEntities().Add(nameEntity);
+}
+
+bool NluContext::Add(const Segment &segment) {
+  return managerFragmentSet_->GetSegments().Add(segment);
+}
+
+bool NluContext::Add(const ChunkSep &chunkSep) {
+  auto iter = managerFragmentSet_->GetChunks().Begin();
+  while (iter != managerFragmentSet_->GetChunks().End()) {
+    auto next = iter;
+    ++next;
+    if ((*iter)->GetTag() == SyntaxTag::Type::kContNp &&
+        (*iter)->GetOffset() < chunkSep.GetOffset() &&
+        chunkSep.GetOffset() < (*iter)->GetEnd()) {
+      managerFragmentSet_->GetChunks().Add(
+              Chunk(
+                      *this,
+                      SyntaxTag::Type::kContNp,
+                      (*iter)->GetOffset(),
+                      chunkSep.GetOffset() - (*iter)->GetOffset()));
+      managerFragmentSet_->GetChunks().Add(
+              Chunk(
+                      *this,
+                      SyntaxTag::Type::kContNp,
+                      chunkSep.GetOffset(),
+                       (*iter)->GetEnd() - chunkSep.GetOffset()));
+      managerFragmentSet_->GetChunks().Erase(iter);
+    }
+    iter = next;
+  }
+  return managerFragmentSet_->GetChunkSeps().Add(chunkSep);
+}
+
+bool NluContext::Add(const Chunk &chunk) {
+  return managerFragmentSet_->GetChunks().Add(chunk);
+}
+
+bool NluContext::GetIsValid(bool check) {
+  if (check) {
+    for (auto &chunk : managerFragmentSet_->GetChunks().GetAll()) {
+      if (chunk->ContainTag(SyntaxTag::Type::kNp) &&
+          chunk->ContainTag(SyntaxTag::Type::kVp)) {
+        isValid_ = false;
+        break;
+      }
+    }
+  }
   return isValid_;
 }
 

@@ -34,6 +34,7 @@ class StorageKey {
   inline size_t Hash() const;
 
   inline void GetRepr(std::wstring &repr) const;
+  inline void Dump(JsonType &jsonType) const;
 
  private:
   std::shared_ptr<std::wstring> space_;
@@ -129,6 +130,12 @@ void StorageKey::GetRepr(std::wstring &repr) const {
     ss << *item_;
   }
   repr = ss.str();
+}
+
+void StorageKey::Dump(JsonType &jsonType) const {
+  std::wstring repr;
+  GetRepr(repr);
+  jsonType["repr"] = repr;
 }
 
 }}}

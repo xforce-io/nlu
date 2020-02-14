@@ -1,30 +1,39 @@
 #include "../rule_syntax_rule.h"
 #include "../split_stage.h"
+#include "../forbid_item.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
-const std::wstring RuleSyntaxRule::kBranch0SyntaxStoragePrefix = L"/branch0-syntactic";
-const std::wstring RuleSyntaxRule::kBranch1SyntaxStoragePrefix = L"/branch1-syntactic";
-const std::wstring RuleSyntaxRule::kBranch2SyntaxStoragePrefix = L"/branch2-syntactic";
+const std::wstring RuleSyntaxRule::kBranch0SyntaxStoragePrefix = L"/branch0_syntactic";
+const std::wstring RuleSyntaxRule::kBranch1SyntaxStoragePrefix = L"/branch1_syntactic";
+const std::wstring RuleSyntaxRule::kBranch2SyntaxStoragePrefix = L"/branch2_syntactic";
 
 RuleSyntaxRule::RuleSyntaxRule(
         std::shared_ptr<milkie::FeatureExtractor> &featureExtractor) :
-  featureExtractor_(featureExtractor) {}
+  Rule(),
+  featureExtractor_(featureExtractor),
+  context_(nullptr) {}
 
-bool RuleSyntaxRule::Split(
+const char* RuleSyntaxRule::GetRepr() const {
+  std::sprintf(repr_, "ruleSyntaxRule");
+  return repr_;
+}
+
+void RuleSyntaxRule::Split(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,
-        std::vector<std::shared_ptr<basic::NluContext>> &nluContexts) {
+        CollectionNluContext &nluContexts) {
   std::vector<std::shared_ptr<basic::NluContext>> branches;
   branches.resize(kMaxNumBranches, nullptr);
 
-  auto context = std::make_shared<milkie::Context>(nluContext);
-  auto errCode = featureExtractor_->MatchPattern(*context);
+  context_ = std::make_shared<milkie::Context>(nluContext);
+  auto errCode = featureExtractor_->MatchPattern(*context_);
   if (milkie::Errno::kOk != errCode) {
-    return false;
+    context_ = nullptr;
+    return;
   }
 
-  const milkie::Storage &storage = context->GetStorage();
+  const milkie::Storage &storage = context_->GetStorage();
   bool touched = false;
   for (auto &storageKv : storage.Get()) {
     const milkie::StorageKey &key = storageKv.first;
@@ -57,10 +66,13 @@ bool RuleSyntaxRule::Split(
 
     auto syntaxTag = basic::SyntaxTag::GetSyntaxTag(vals[1]);
     if (basic::SyntaxTag::Type::kUndef == syntaxTag) {
+      context_ = nullptr;
+      nluContexts.Clear();
       ERROR("unknown_syntax_tag[" << syntaxTag << "]");
-      return false;
+      return;
     }
 
+    bool curTouched = false;
     auto storageItems = storageKv.second->Get();
     for (auto &storageItem : storageItems) {
       basic::Chunk chunk(
@@ -69,27 +81,46 @@ bool RuleSyntaxRule::Split(
               storageItem.GetOffset(),
               storageItem.GetContent().length(),
               930);
-      if (branches[index]->GetChunks().Add(chunk)) {
-        if (basic::SyntaxTag::Type::kStc == syntaxTag) {
-          return true;
-        }
-        touched = true;
+      if (branches[index]->Add(chunk)) {
+        curTouched = true;
       }
+    }
+
+    if (curTouched) {
+      touched = true;
+    } else {
+      branches[index] = nullptr;
+    }
+  }
+
+  for (size_t i=0; i<kMaxNumBranches; ++i) {
+    if (nullptr != branches[i]) {
+      nluContexts.Add(branches[i]);
     }
   }
 
   if (!touched) {
-    return false;
+    context_ = nullptr;
+  }
+}
+
+void RuleSyntaxRule::GenForbid(std::vector<ForbidItem> &forbidItems) const {
+  if (context_ == nullptr) {
+    return;
   }
 
-  touched = false;
-  for (size_t i=0; i<kMaxNumBranches; ++i) {
-    if (nullptr != branches[i]) {
-      nluContexts.push_back(branches[i]);
-      touched = true;
-    }
-  }
-  return touched;
+  ForbidItem forbidItem;
+  forbidItem.SetCategoryRule(GetCategory());
+  forbidItem.SetOffset(context_->GetStartPos());
+  forbidItem.SetLen(context_->GetCurPos() - context_->GetStartPos());
+  forbidItems.push_back(forbidItem);
+}
+
+bool RuleSyntaxRule::PostCheckForbid(const ForbidItem &forbidItem) const {
+  return forbidItem.GetCategoryRule() == GetCategory() &&
+      nullptr != context_ &&
+      context_->GetStartPos() == (ssize_t)forbidItem.GetOffset() &&
+      context_->GetCurPos() - context_->GetStartPos() == (ssize_t)forbidItem.GetLen();
 }
 
 Rule* RuleSyntaxRule::Clone() {

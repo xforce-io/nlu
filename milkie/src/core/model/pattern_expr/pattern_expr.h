@@ -129,16 +129,29 @@ bool PatternExpr::PartlyMatch(Context &context) const {
 bool PatternExpr::PartlyMatch(Context &context, bool singleton) const {
   bool ret = false;
   size_t curPos = 0;
+  size_t matchedStartPos = -1;
+  size_t matchedCurPos = -1;
   while (curPos < context.GetSentence().GetSentence().length()) {
     context.Reset();
+    context.SetStartPos(curPos);
     context.SetCurPos(curPos);
     if (MatchPattern_(context, singleton)) {
       curPos = context.GetCurPos();
+      if ((size_t)-1 == matchedStartPos) {
+        matchedStartPos = context.GetStartPos();
+        matchedCurPos = context.GetCurPos();
+      }
+
       context.Store();
       ret = true;
     } else {
       ++curPos;
     }
+  }
+
+  if ((size_t)-1 != matchedStartPos) {
+    context.SetStartPos(matchedStartPos);
+    context.SetCurPos(matchedCurPos);
   }
   return ret;
 }

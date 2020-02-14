@@ -1,6 +1,7 @@
 #pragma once
 
 #include "public.h"
+#include "collection_nlu_context.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
@@ -17,19 +18,19 @@ class NluContextSplit {
 
   bool Init();
 
-  bool Split(
+  void Split(
           const std::shared_ptr<basic::NluContext> &nluContext,
-          std::vector<std::shared_ptr<basic::NluContext>> &nluContexts,
+          CollectionNluContext &nluContexts,
           basic::Stage::Val stage);
 
  private:
-  bool SplitByPosTag_(
+  void SplitByPosTag_(
           const std::shared_ptr<basic::NluContext> &nluContext,
-          std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
+          CollectionNluContext &nluContexts);
 
-  bool SplitBySyntax_(
+  void SplitBySyntax_(
           const std::shared_ptr<basic::NluContext> &nluContext,
-          std::vector<std::shared_ptr<basic::NluContext>> &nluContexts);
+          CollectionNluContext &nluContexts);
 
   void AdjustSegTags_(
           const basic::NluContext &nluContext,

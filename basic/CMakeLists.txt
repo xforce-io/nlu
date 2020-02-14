@@ -24,7 +24,7 @@ FILE(GLOB_RECURSE BASIC_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -DUNICODE=1")
 
 add_library(basic
-  ${BASIC_FILES} src/model/phrase.h src/model/details/phrase.cpp)
+  ${BASIC_FILES} src/data/gkb/table/details/gkb_global.cpp)
 
 target_link_libraries(basic
   log4cplus
@@ -47,6 +47,7 @@ add_custom_command(TARGET basic
   COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/model/pos_ctb
   COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/model/syntax
   COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/model/fragment
+  COMMAND mkdir -p ${BASIC_INC_OUTPUT_PATH}/model/analysis_tracer
 
   COMMAND cp ${BASIC_SRC_DIR}/basic.h ${BASIC_INC_OUTPUT_PATH}/
   COMMAND cp ${BASIC_SRC_DIR}/public.h ${BASIC_INC_OUTPUT_PATH}/
@@ -73,15 +74,17 @@ add_custom_command(TARGET basic
   COMMAND cp ${BASIC_SRC_DIR}/data/word_dict.h ${BASIC_INC_OUTPUT_PATH}/data/
   COMMAND cp ${BASIC_SRC_DIR}/data/dict_item.h ${BASIC_INC_OUTPUT_PATH}/data/
   COMMAND cp ${BASIC_SRC_DIR}/model/nlu_context.h ${BASIC_INC_OUTPUT_PATH}/model/
-  COMMAND cp ${BASIC_SRC_DIR}/model/segment.h ${BASIC_INC_OUTPUT_PATH}/model/
-  COMMAND cp ${BASIC_SRC_DIR}/model/name_entity.h ${BASIC_INC_OUTPUT_PATH}/model/
+  COMMAND cp ${BASIC_SRC_DIR}/model/phrase.h ${BASIC_INC_OUTPUT_PATH}/model/
+  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/segment.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
+  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/name_entity.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
   COMMAND cp ${BASIC_SRC_DIR}/model/confidence.h ${BASIC_INC_OUTPUT_PATH}/model/
   COMMAND cp ${BASIC_SRC_DIR}/model/context.h ${BASIC_INC_OUTPUT_PATH}/model/
-  COMMAND cp ${BASIC_SRC_DIR}/model/chunk_sep.h ${BASIC_INC_OUTPUT_PATH}/model/
-  COMMAND cp ${BASIC_SRC_DIR}/model/chunk.h ${BASIC_INC_OUTPUT_PATH}/model/
+  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/chunk_sep.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
+  COMMAND cp ${BASIC_SRC_DIR}/model/fragment/chunk.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
   COMMAND cp ${BASIC_SRC_DIR}/model/pos/pos_tag.h ${BASIC_INC_OUTPUT_PATH}/model/pos/
   COMMAND cp ${BASIC_SRC_DIR}/model/pos_ctb/pos_ctb_tag.h ${BASIC_INC_OUTPUT_PATH}/model/pos_ctb/
   COMMAND cp ${BASIC_SRC_DIR}/model/syntax/syntax_tag.h ${BASIC_INC_OUTPUT_PATH}/model/syntax/
+  COMMAND cp ${BASIC_SRC_DIR}/model/syntax/collection_syntax_tag.h ${BASIC_INC_OUTPUT_PATH}/model/syntax/
   COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
   COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_multitag.hpp ${BASIC_INC_OUTPUT_PATH}/model/fragment/
   COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set.hpp ${BASIC_INC_OUTPUT_PATH}/model/fragment/
@@ -90,6 +93,7 @@ add_custom_command(TARGET basic
   COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set_non_multi.hpp ${BASIC_INC_OUTPUT_PATH}/model/fragment/
   COMMAND cp ${BASIC_SRC_DIR}/model/fragment/fragment_set_tree.hpp ${BASIC_INC_OUTPUT_PATH}/model/fragment/
   COMMAND cp ${BASIC_SRC_DIR}/model/fragment/manager_fragment_set.h ${BASIC_INC_OUTPUT_PATH}/model/fragment/
+  COMMAND cp ${BASIC_SRC_DIR}/model/analysis_tracer/analysis_tracer.h ${BASIC_INC_OUTPUT_PATH}/model/analysis_tracer/
   COMMAND git log | head -n 1 > ${BASIC_OUTPUT_PATH}/version
 )
 

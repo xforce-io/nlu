@@ -119,7 +119,7 @@ bool Matcher::SyntaxProcessForChunkSep_(std::shared_ptr<basic::NluContext> nluCo
                   storageItem.GetOffset() + (*cur)->GetOffset(),
                   storageItem.GetContent().length(),
                   410);
-          if (nluContext->GetChunks().Add(chunk)) {
+          if (nluContext->Add(chunk)) {
             touched = true;
           }
         }
@@ -168,7 +168,7 @@ bool Matcher::SyntaxProcessForChunk_(std::shared_ptr<basic::NluContext> nluConte
                 storageItem.GetOffset(),
                 storageItem.GetContent().length(),
                 420);
-        if (nluContext->GetChunks().Add(chunk)) {
+        if (nluContext->Add(chunk)) {
           if (basic::SyntaxTag::Type::kStc == syntaxTag) {
             return true;
           }
@@ -185,13 +185,13 @@ bool Matcher::SyntaxProcessForChunk_(std::shared_ptr<basic::NluContext> nluConte
 bool Matcher::PostProcess_(std::shared_ptr<basic::NluContext> nluContext) {
   bool touched = false;
   for (auto &chunk : nluContext->GetChunks().GetAll()) {
-    if (RuleContNp_(nluContext, chunk)) {
-      touched = true;
-    }
-
     if (RuleIntransitiveVerb_(nluContext, chunk)) {
       touched = true;
     }
+  }
+
+  if (RuleContNp_(nluContext)) {
+    touched = true;
   }
   return touched;
 }
@@ -200,47 +200,25 @@ void Matcher::AppendixProcess_(std::shared_ptr<basic::NluContext> nluContext) {
   AddAdvpDescDir_(nluContext);
 }
 
-bool Matcher::RuleContNp_(
-        std::shared_ptr<basic::NluContext> nluContext,
-        const std::shared_ptr<basic::Chunk> &chunk) {
-  if (chunk->GetTag() != basic::SyntaxTag::Type::kContNp) {
-    return false;
-  }
-
-  auto segBefore = nluContext->GetSegments().GetFragmentBefore(chunk->GetOffset());
-  auto segAfter = nluContext->GetSegments().GetFragmentAfter(chunk->GetOffset() + chunk->GetLen());
-  bool beforeCond = (nullptr == segBefore ||
-      (basic::PosTag::Type::kV != segBefore->GetTag() &&
-          basic::PosTag::Type::kP != segBefore->GetTag()));
-
-  bool afterCond = (nullptr == segAfter ||
-      (!basic::PosTag::IsPredicate(segAfter->GetTag()) &&
-      basic::PosTag::Type::kP != segAfter->GetTag()));
-
-  if (beforeCond || afterCond) {
-    basic::Chunk newChunk(
-            *nluContext,
-            basic::SyntaxTag::Type::kNp,
-            chunk->GetOffset(),
-            chunk->GetLen(),
-            430);
-    if (nluContext->GetChunks().Add(newChunk)) {
-      return true;
-    }
-  }
-  return false;
-}
-
 bool Matcher::RuleIntransitiveVerb_(
     std::shared_ptr<basic::NluContext> nluContext,
     const std::shared_ptr<basic::Chunk> &chunk) {
   if (chunk->GetTag() != basic::SyntaxTag::Type::kV ||
-      basic::Manager::Get().GetGkb().GetGkbVerb().TiWeiZhun(
-              chunk->GetStrFromSentence(nluContext->GetQuery())) !=
-              basic::EntryVerb::TiWeiZhun::kNone) {
+      !basic::Manager::Get().GetGkb().GetGkbVerb().IsArgNone(
+              chunk->GetStrFromSentence(nluContext->GetQuery()))) {
     return false;
   }
 
+  //strategy 0 : add VP flag to intransitive verb chunk
+  basic::Chunk newVp(
+          *nluContext,
+          basic::SyntaxTag::Type::kVp,
+          chunk->GetBegin(),
+          chunk->GetLen(),
+          440);
+  nluContext->Add(newVp);
+
+  //strategy 1
   auto npBefore = nluContext->GetChunks().GetFragmentBefore(chunk->GetOffset());
   if (nullptr == npBefore || !npBefore->ContainTag(basic::SyntaxTag::Type::kNp)) {
     return false;
@@ -260,14 +238,58 @@ bool Matcher::RuleIntransitiveVerb_(
     }
   }
 
-  basic::Chunk newChunk(
+  basic::Chunk newNp(
           *nluContext,
           basic::SyntaxTag::Type::kNp,
           npBefore->GetOffset(),
           chunk->GetEnd() - npBefore->GetOffset(),
-          440);
-  if (nluContext->GetChunks().Add(newChunk)) {
+          441);
+
+  basic::Chunk newContNp(
+          *nluContext,
+          basic::SyntaxTag::Type::kContNp,
+          npBefore->GetOffset(),
+          chunk->GetEnd() - npBefore->GetOffset(),
+          442);
+  if (nluContext->Add(newNp) ||
+      nluContext->Add(newContNp)) {
     return true;
+  }
+  return false;
+}
+
+bool Matcher::RuleContNp_(std::shared_ptr<basic::NluContext> nluContext) {
+  std::shared_ptr<basic::Chunk> tmpChunk = nullptr;
+  size_t maxLen = 0;
+  for (auto &chunk : nluContext->GetChunks().GetAll()) {
+    if (chunk->GetOffset() == 0) {
+      if (chunk->GetTag() == basic::SyntaxTag::Type::kContNp &&
+          chunk->GetLen() > maxLen) {
+        tmpChunk = chunk;
+        maxLen = chunk->GetLen();
+      }
+    } else {
+      break;
+    }
+  }
+
+  if (nullptr==tmpChunk) {
+    return false;
+  }
+
+  auto segment = nluContext->GetSegments().GetFragmentAfter(tmpChunk->GetEnd());
+  if (nullptr==segment ||
+      (segment->GetTag() != basic::PosTag::Type::kUndef &&
+      segment->GetTag() != basic::PosTag::Type::kV) ) {
+    basic::Chunk newNp(
+            *nluContext,
+            basic::SyntaxTag::Type::kNp,
+            0,
+            tmpChunk->GetEnd(),
+            442);
+    if (nluContext->Add(newNp)) {
+      return true;
+    }
   }
   return false;
 }
@@ -287,7 +309,9 @@ void Matcher::AddAdvpDescDirForChunk_(
   for (auto &segment : nluContext->GetSegments().GetAll()) {
     if (segment->GetOffset() >= advp->GetOffset() &&
         segment->GetOffset() + segment->GetLen() <= advp->GetOffset() + advp->GetLen()) {
-      if (segment->GetTag() == basic::PosTag::Type::kA) {
+      if (segment->GetTag() == basic::PosTag::Type::kA ||
+          segment->GetTag() == basic::PosTag::Type::kB ||
+          segment->GetTag() == basic::PosTag::Type::kZ) {
         adjs.push_back(std::make_pair(segment, basic::Chunk::kNone));
       }
     }
@@ -314,7 +338,7 @@ void Matcher::AddAdvpDescDirForChunk_(
         descRight<0 &&
         leftBound>0) {
       advp->SetDescDir(basic::Chunk::kLeft);
-      nluContext->GetChunks().Add(std::make_shared<basic::Chunk>(
+      nluContext->Add(basic::Chunk(
               *nluContext,
               resTag,
               leftBound,
@@ -324,7 +348,7 @@ void Matcher::AddAdvpDescDirForChunk_(
         descRight>0 &&
         rightBound>0) {
       advp->SetDescDir(basic::Chunk::kRight);
-      nluContext->GetChunks().Add(std::make_shared<basic::Chunk>(
+      nluContext->Add(basic::Chunk(
               *nluContext,
               resTag,
               advp->GetOffset(),
@@ -362,7 +386,7 @@ void Matcher::AddAdvpDescDirForChunk_(
         descRight[0] < 0 &&
         descRight[1] < 0) {
       advp->SetDescDir(basic::Chunk::kLeft);
-      nluContext->GetChunks().Add(std::make_shared<basic::Chunk>(
+      nluContext->Add(basic::Chunk(
               *nluContext,
               resTag[0],
               leftBound[0],
@@ -373,7 +397,7 @@ void Matcher::AddAdvpDescDirForChunk_(
         descRight[0] > 0 &&
         descRight[1] > 0) {
       advp->SetDescDir(basic::Chunk::kRight);
-      nluContext->GetChunks().Add(std::make_shared<basic::Chunk>(
+      nluContext->Add(basic::Chunk(
               *nluContext,
               resTag[1],
               advp->GetOffset(),
@@ -440,35 +464,49 @@ void Matcher::AnalysisAdj_(
         rightBound = segAfterAfter->GetEnd();
       }
       resTag = basic::SyntaxTag::Type::kNp;
-    }
-
-    bool theRightTag=true;
-    if (segAfter->GetTags().empty()) {
-      theRightTag=false;
     } else {
-      for (auto tag : segAfter->GetTags()) {
-        if (!basic::SyntaxTag::Type::IsSpecial(tag)) {
-          if (tag != basic::SyntaxTag::Type::kNp &&
-              tag != basic::SyntaxTag::Type::kQp) {
-            theRightTag = false;
-            break;
-          } else {
-            resTag = tag;
+      std::wstring adjStr = adj->GetQuery(nluContext->GetQuery());
+
+      bool theRightTag = true;
+      if (segAfter->GetTags().empty()) {
+        theRightTag = false;
+      } else {
+        for (auto tag : segAfter->GetTags()) {
+          if (!basic::SyntaxTag::Type::IsSpecial(tag)) {
+            if (tag != basic::SyntaxTag::Type::kNp &&
+                tag != basic::SyntaxTag::Type::kQp &&
+                tag != basic::SyntaxTag::Type::kV &&
+                tag != basic::SyntaxTag::Type::kVp) {
+              theRightTag = false;
+              break;
+            } else {
+              resTag = tag;
+            }
           }
         }
       }
-    }
 
-    if (theRightTag) {
-      int dingyu = basic::Manager::Get().GetGkb().GetGkbAdj().Dingyu(adj->GetQuery(nluContext->GetQuery()));
-      if (0==dingyu) {
-        descRight=1;
-        rightBound = segAfter->GetEnd();
+      if (theRightTag) {
+        int ret;
+        if (basic::SyntaxTag::Type::kNp == resTag ||
+            basic::SyntaxTag::Type::kQp == resTag) {
+          ret = basic::Manager::Get().GetGkb().GetGkbAdj().Dingyu(adjStr);
+        } else if (basic::SyntaxTag::Type::kV == resTag ||
+            basic::SyntaxTag::Type::kVp == resTag) {
+          ret = basic::Manager::Get().GetGkb().GetGkbAdj().Zhuangyu(adjStr);
+        } else {
+          ret = -1;
+        }
+
+        if (0==ret) {
+          descRight = 1;
+          rightBound = segAfter->GetEnd();
+        } else {
+          descRight = -1;
+        }
       } else {
-        descRight=-1;
+        descRight = -1;
       }
-    } else {
-      descRight=-1;
     }
   }
 }

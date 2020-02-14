@@ -1,10 +1,10 @@
 #pragma once
 
 #include "fragment_set.hpp"
-#include "../segment.h"
-#include "../name_entity.h"
-#include "../chunk_sep.h"
-#include "../chunk.h"
+#include "segment.h"
+#include "name_entity.h"
+#include "chunk_sep.h"
+#include "chunk.h"
 
 namespace xforce { namespace nlu { namespace basic {
 
@@ -29,7 +29,9 @@ class ManagerFragmentSet {
   const typename Chunk::Set& GetChunks() const { return chunks_; }
   typename Chunk::Set& GetChunks() { return chunks_; }
 
-  void Dump(JsonType &jsonType);
+  void Dump(
+          JsonType &jsonType,
+          const ManagerFragmentSet *managerFragmentSet) const;
 
  private:
   const std::wstring query_;

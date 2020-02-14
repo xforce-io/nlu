@@ -9,6 +9,7 @@
 LOGGER_IMPL(xforce::xforce_logger, L"syntax")
 
 using namespace xforce;
+using namespace xforce::nlu;
 using namespace xforce::nlu::charles;
 
 int main(int argc, char **argv) {
@@ -43,11 +44,24 @@ TEST(testAll, all) {
           L"我们自己有太多无谓的失误",
           L"自己的节奏还没有踩上",
           L"队员的心态还有些急躁",
-          L"车可以连续多少天不开",
+          L"尽管在前两局表现得磕磕绊绊",
+          L"但中国女排姑娘们迅速调整了比赛状态",
+          L"面对困难局面",
+          L"指导是如何进行人员和战术调整而挽回颓势的呢",
+          L"他就这个问题给出了解释",
+          L"只要比赛没有结束",
+          L"我们就要争取每一分",
+          L"下一场比赛",
+          L"中国队将面对小组赛实力最为强劲的意大利队",
+          L"中国女排面对这个劲敌",
+          L"是否会投入额外的准备呢",
+          L"对中国队来说哪一场比赛都是重要的",
+          L"不能说为了跟意大利比赛",
+          L"其余的比赛就不重要",
   };
 
   for (auto &query : wStrQuery) {
-    AnalysisClause analysisClause(query);
+    AnalysisClause analysisClause(query, basic::CollectionSyntaxTag(true));
     ASSERT_TRUE(analysisClause.Init());
     analysisClause.Process();
     assert(analysisClause.GetResults().size() >= 1);

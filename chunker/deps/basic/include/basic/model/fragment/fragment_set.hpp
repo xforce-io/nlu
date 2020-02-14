@@ -2,6 +2,7 @@
 
 #include "../../public.h"
 #include "fragment.h"
+#include "../analysis_tracer/analysis_tracer.h"
 
 namespace xforce { namespace nlu { namespace basic {
 
@@ -29,8 +30,20 @@ class FragmentSet {
   Self& operator=(const FragmentSet<FragmentType> &other);
 
   inline const Container& GetAll() const;
-  inline std::shared_ptr<FragmentType> GetFragmentBefore(size_t offset);
-  inline std::shared_ptr<FragmentType> GetFragmentAfter(size_t offset);
+  inline std::shared_ptr<FragmentType> GetFragmentBefore(size_t offset) const;
+  inline std::shared_ptr<FragmentType> GetFragmentBefore(
+          size_t offset,
+          std::function<bool(const FragmentType&)> filter) const;
+
+  inline std::shared_ptr<FragmentType> GetFragmentAfter(size_t offset) const;
+  inline std::shared_ptr<FragmentType> GetFragmentAfter(
+          size_t offset,
+          std::function<bool(const FragmentType&)> filter) const;
+  inline std::shared_ptr<FragmentType> GetLongFragmentAfter(size_t offset) const;
+
+  template <class OtherFragmentType>
+  inline std::shared_ptr<FragmentType> Find(
+          const std::shared_ptr<OtherFragmentType> &otherFragmentType) const;
 
   inline const typename FragmentSet<FragmentType>::Container::iterator Erase(
           const typename Container::iterator iter);
@@ -43,7 +56,7 @@ class FragmentSet {
   inline typename Container::iterator End();
   inline size_t Size() const;
 
-  void Dump(JsonType &jsonType);
+  void Dump(JsonType &jsonType, const FragmentSet<FragmentType> *diff) const;
 
  protected:
   std::wstring *text_;
@@ -75,12 +88,14 @@ void FragmentSet<FragmentType>::Clear() {
 template <typename FragmentType>
 bool FragmentSet<FragmentType>::Add(std::shared_ptr<FragmentType> fragment) {
   if (fragment->GetOffset() < text_->length()) {
+    bool ret;
     auto iter = fragments_.find(fragment);
     if (iter != fragments_.end()) {
-      return (*iter)->Merge(*fragment);
+      ret = (*iter)->Merge(*fragment);
     } else {
-      return fragments_.insert(fragment).second;
+      ret = fragments_.insert(fragment).second;
     }
+    return ret;
   }
   return false;
 }
@@ -109,9 +124,9 @@ const typename FragmentSet<FragmentType>::Container& FragmentSet<FragmentType>::
 }
 
 template <typename FragmentType>
-std::shared_ptr<FragmentType> FragmentSet<FragmentType>::GetFragmentBefore(size_t offset) {
+std::shared_ptr<FragmentType> FragmentSet<FragmentType>::GetFragmentBefore(size_t offset) const {
   for (auto &fragment : fragments_) {
-    if (fragment->GetOffset() + fragment->GetLen() == offset) {
+    if (fragment->GetEnd() == offset) {
       return fragment;
     }
   }
@@ -119,13 +134,62 @@ std::shared_ptr<FragmentType> FragmentSet<FragmentType>::GetFragmentBefore(size_
 }
 
 template <typename FragmentType>
-std::shared_ptr<FragmentType> FragmentSet<FragmentType>::GetFragmentAfter(size_t offset) {
+std::shared_ptr<FragmentType> FragmentSet<FragmentType>::GetFragmentBefore(
+        size_t offset,
+        std::function<bool(const FragmentType&)> filter) const {
+  for (auto &fragment : fragments_) {
+    if (fragment->GetEnd() == offset && filter(*fragment)) {
+      return fragment;
+    }
+  }
+  return nullptr;
+}
+
+template <typename FragmentType>
+std::shared_ptr<FragmentType> FragmentSet<FragmentType>::GetFragmentAfter(size_t offset) const {
   for (auto &fragment : fragments_) {
     if (fragment->GetOffset() == offset) {
       return fragment;
     }
   }
   return nullptr;
+}
+
+template <typename FragmentType>
+std::shared_ptr<FragmentType> FragmentSet<FragmentType>::GetFragmentAfter(
+        size_t offset,
+        std::function<bool(const FragmentType&)> filter) const {
+  for (auto &fragment : fragments_) {
+    if (fragment->GetOffset() == offset && filter(*fragment)) {
+      return fragment;
+    }
+  }
+  return nullptr;
+}
+
+template <typename FragmentType>
+std::shared_ptr<FragmentType> FragmentSet<FragmentType>::GetLongFragmentAfter(size_t offset) const {
+  std::shared_ptr<FragmentType> result;
+  size_t maxLen = 0;
+  for (auto &fragment : fragments_) {
+    if (fragment->GetOffset() == offset && fragment->GetLen() > maxLen) {
+      result = fragment;
+      maxLen = fragment->GetLen();
+    }
+  }
+  return result;
+}
+
+template <typename FragmentType>
+template <typename OtherFragmentType>
+std::shared_ptr<FragmentType> FragmentSet<FragmentType>::Find(
+        const std::shared_ptr<OtherFragmentType> &otherFragmentType) const {
+  if (!xforce::SameType<FragmentType, OtherFragmentType>::R) {
+    return nullptr;
+  }
+
+  auto iter = fragments_.find(otherFragmentType);
+  return iter != fragments_.end() ? *iter : nullptr;
 }
 
 template <typename FragmentType>
@@ -159,11 +223,23 @@ size_t FragmentSet<FragmentType>::Size() const {
 }
 
 template <typename FragmentType>
-void FragmentSet<FragmentType>::Dump(JsonType &jsonType) {
+void FragmentSet<FragmentType>::Dump(
+        JsonType &jsonType,
+        const FragmentSet<FragmentType> *diff) const {
   size_t i=0;
-  for (auto &fragment : fragments_) {
-    fragment->Dump(jsonType[fragment->GetCategory().c_str()][i]);
-    ++i;
+  if (nullptr==diff) {
+    for (auto &fragment : fragments_) {
+      fragment->Dump(jsonType[fragment->GetCategory().c_str()][i]);
+      ++i;
+    }
+  } else {
+    for (auto &fragment : fragments_) {
+      auto res = diff->Find(fragment);
+      if (nullptr==res || !fragment->Same(*res)) {
+        fragment->Dump(jsonType[fragment->GetCategory().c_str()][i]);
+        ++i;
+      }
+    }
   }
 }
 

@@ -2,6 +2,14 @@
 
 namespace xforce { namespace nlu { namespace pos {
 
+void StatisticsUnit::CalcConfidence(size_t totalCnt) {
+  if (count == totalCnt && count>10) {
+    confidence.SetScore((100+count-10)*100.0/200);
+  } else {
+    confidence.SetScore((count*100/totalCnt + count/50)*100.0/200);
+  }
+}
+
 int StatisticsUnit::Load(const std::string &str) {
   std::vector<std::string> items;
   StrHelper::SplitStr(str, kSep, items);

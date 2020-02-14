@@ -14,7 +14,7 @@ class StatisticsCollection {
   virtual ~StatisticsCollection();
 
   void Add(const StatisticsUnit &newItem);
-  inline std::pair<StatisticsItems::Category, const StatisticsUnit*> GetDominator() const;
+  inline std::pair<StatisticsItems::Category, const StatisticsUnit*> GetDominator();
   void Shrink();
   size_t Size() const { return container_.size(); }
   bool operator==(const StatisticsCollection &other) const;
@@ -31,7 +31,7 @@ class StatisticsCollection {
   std::vector<StatisticsItems*> container_;
 };
 
-std::pair<StatisticsItems::Category, const StatisticsUnit*> StatisticsCollection::GetDominator() const {
+std::pair<StatisticsItems::Category, const StatisticsUnit*> StatisticsCollection::GetDominator() {
   for (auto *statisticsItems : container_) {
     auto *dominator = statisticsItems->GetDominator();
     if (nullptr != dominator) {

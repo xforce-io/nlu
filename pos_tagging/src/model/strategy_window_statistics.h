@@ -15,12 +15,6 @@ class StrategyWindowStatistics : public Strategy {
   bool Init();
   void Process(basic::NluContext &nluContext);
 
- protected:
-  virtual void SetPos(
-          basic::Segment &segment,
-          basic::PosTag::Type::Val posTag,
-          uint32_t strategy);
-
  private:
   WindowStatistics *windowStatistics_;
 };

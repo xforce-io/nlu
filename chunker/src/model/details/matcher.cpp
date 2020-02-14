@@ -37,7 +37,7 @@ bool Matcher::Init() {
 }
 
 void Matcher::Match(std::shared_ptr<basic::NluContext> nluContext) {
-  nluContext->GetChunkSeps().Add(std::make_shared<basic::ChunkSep>(0));
+  nluContext->Add(basic::ChunkSep(0));
 
   ParseAccordingToRule_(nluContext);
   ParseCommon_(*nluContext);
@@ -68,7 +68,7 @@ void Matcher::ParseAccordingToRule_(std::shared_ptr<basic::NluContext> nluContex
         for (auto &storageItem : storageItems) {
           if (segment->GetOffset() == storageItem.GetOffset() ||
               segment->GetOffset() == storageItem.GetOffset() + storageItem.GetLen()) {
-            nluContext->GetChunkSeps().Add(basic::ChunkSep(segment->GetOffset()));
+            nluContext->Add(basic::ChunkSep(segment->GetOffset()));
           }
         }
       }
@@ -92,9 +92,9 @@ void Matcher::ParseAccordingToRule_(std::shared_ptr<basic::NluContext> nluContex
                 storageItem.GetOffset(),
                 storageItem.GetContent().length(),
                 310);
-        nluContext->GetChunks().Add(chunk);
-        nluContext->GetChunkSeps().Add(basic::ChunkSep(storageItem.GetOffset()));
-        nluContext->GetChunkSeps().Add(basic::ChunkSep(
+        nluContext->Add(chunk);
+        nluContext->Add(basic::ChunkSep(storageItem.GetOffset()));
+        nluContext->Add(basic::ChunkSep(
                 storageItem.GetOffset() + storageItem.GetContent().length()));
       }
     } else {
