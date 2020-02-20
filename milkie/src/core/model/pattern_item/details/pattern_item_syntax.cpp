@@ -7,17 +7,45 @@ PatternItemSyntax::PatternItemSyntax(const basic::SyntaxTag::Type::Val &syntaxTy
   syntaxType_(syntaxType) {}
 
 bool PatternItemSyntax::MatchPattern(Context &context) {
-  auto chunkSet = context.GetSentence().GetFeatureChunkAtOffset(context.GetCurPos());
-  if (nullptr == chunkSet) {
-    return false;
-  }
+  std::shared_ptr<basic::Chunk::Set> chunkSet;
+  ssize_t originOffset = context.GetCurPos();
+  ssize_t offset = context.GetCurPos();
+  std::unordered_set<basic::SyntaxTag::Type::Val> syntaxSetToMatch;
+  syntaxSetToMatch.insert(syntaxType_);
 
+  std::unordered_set<basic::SyntaxTag::Type::Val> syntaxSetToIgnore;
+  syntaxSetToIgnore.insert(basic::SyntaxTag::Type::kPp);
+  do {
+    chunkSet = context.GetSentence().GetFeatureChunkAtOffset(offset);
+    if (nullptr == chunkSet) {
+      return false;
+    }
+
+    auto theChunk = GetLongestMatch_(*chunkSet, syntaxSetToMatch);
+    if (nullptr != theChunk) {
+      contentMatched_ = context.GetSentence().GetSentence().substr(
+              originOffset,
+              theChunk->GetEnd() - originOffset);
+      return true;
+    } else {
+      theChunk = GetLongestMatch_(*chunkSet, syntaxSetToIgnore);
+      if (nullptr != theChunk) {
+        offset += theChunk->GetLen();
+      }
+    }
+  } while(offset < context.GetSentence().GetSentence().length());
+  return false;
+}
+
+std::shared_ptr<basic::Chunk> PatternItemSyntax::GetLongestMatch_(
+        const basic::Chunk::Set &chunkSet,
+        const std::unordered_set<basic::SyntaxTag::Type::Val> &syntaxSet) {
   std::shared_ptr<basic::Chunk> theChunk = nullptr;
   size_t maxLen = 0;
-  for (auto &chunk : chunkSet->GetAll()) {
+  for (auto &chunk : chunkSet.GetAll()) {
     bool matched = false;
     for (auto tag : chunk->GetTags()) {
-      if (tag == syntaxType_) {
+      if (syntaxSet.find(tag) != syntaxSet.end()) {
         matched = true;
         break;
       }
@@ -32,14 +60,7 @@ bool PatternItemSyntax::MatchPattern(Context &context) {
       maxLen = chunk->GetLen();
     }
   }
-
-  if (nullptr != theChunk) {
-    contentMatched_ = context.GetSentence().GetSentence().substr(
-            theChunk->GetOffset(),
-            theChunk->GetLen());
-    return true;
-  }
-  return false;
+  return theChunk;
 }
 
 
