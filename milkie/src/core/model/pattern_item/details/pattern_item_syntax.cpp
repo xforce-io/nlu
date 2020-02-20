@@ -31,6 +31,8 @@ bool PatternItemSyntax::MatchPattern(Context &context) {
       theChunk = GetLongestMatch_(*chunkSet, syntaxSetToIgnore);
       if (nullptr != theChunk) {
         offset += theChunk->GetLen();
+      } else {
+        return false;
       }
     }
   } while(offset < context.GetSentence().GetSentence().length());
