@@ -1,6 +1,4 @@
-v = { {#Chk(vw) ?} #Chk(v) }
-vp = { {#Chk(vw) ?} #Chk(vp) }
-V = [#Chk(vp), #Chk(v), $vp, $v]
+V = [#Chk(vp), #Chk(v)]
 Punctuation = #Pos(wP+)
 ModalParticle = #Pos(yP+)
 MPP = { {$ModalParticle ?} {$Punctuation ?} }

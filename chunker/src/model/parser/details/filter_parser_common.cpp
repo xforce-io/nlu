@@ -95,6 +95,7 @@ void FPCSurround::Filter(
 
   if (basic::PosTag::Class::kFuncWord == curClassOfPosTags ||
       basic::PosTag::Class::kMood == curClassOfPosTags ||
+      basic::PosTag::Class::kTime == curClassOfPosTags ||
       basic::PosTag::Class::kPunctuation == curClassOfPosTags) {
     chunkPos = -1;
     return;
