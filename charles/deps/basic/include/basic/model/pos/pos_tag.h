@@ -84,6 +84,7 @@ class PosTag {
       kAdv,
       kFuncWord,
       kMood,
+      kTime,
       kAppendixSubword,
       kAppendixIdiom,
       kPunctuation,
@@ -107,6 +108,7 @@ class PosTag {
   inline static bool IsAdv(PosTag::Type::Val posTag);
   inline static bool IsFuncWord(PosTag::Type::Val posTag);
   inline static bool IsMood(PosTag::Type::Val posTag);
+  inline static bool IsTime(PosTag::Type::Val posTag);
   inline static bool IsAppendixSubword(PosTag::Type::Val posTag);
   inline static bool IsAppendixIdiom(PosTag::Type::Val posTag);
   inline static bool IsPunctuation(PosTag::Type::Val posTag);
@@ -194,6 +196,10 @@ bool PosTag::IsMood(PosTag::Type::Val posTag) {
     PosTag::Type::kE == posTag;
 }
 
+bool PosTag::IsTime(PosTag::Type::Val posTag) {
+  return PosTag::Type::kT == posTag;
+}
+
 bool PosTag::IsAppendixSubword(PosTag::Type::Val posTag) {
   return PosTag::Type::kH == posTag ||
     PosTag::Type::kK == posTag ||
@@ -222,6 +228,8 @@ PosTag::Class::Val PosTag::GetClass(PosTag::Type::Val posTag) {
     return PosTag::Class::kFuncWord;
   } else if (IsMood(posTag)) {
     return PosTag::Class::kMood;
+  } else if (IsTime(posTag)) {
+    return PosTag::Class::kTime;
   } else if (IsAppendixSubword(posTag)) {
     return PosTag::Class::kAppendixSubword;
   } else if (IsAppendixIdiom(posTag)) {

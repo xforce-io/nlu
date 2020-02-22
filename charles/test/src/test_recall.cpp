@@ -61,6 +61,7 @@ TEST(testAll, all) {
           L"他在表明备战态度的同时",
           L"也从专业的角度对意大利队进行了分析",
           L"对于意大利这支队伍",
+          L"我们今晚是要好好备战的",
   };
 
   for (auto &query : wStrQuery) {

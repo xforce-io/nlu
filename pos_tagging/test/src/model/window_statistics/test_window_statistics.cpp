@@ -55,10 +55,10 @@ TEST(test_case, bugfix) {
   WindowStatistics *windowStatistics = WindowStatistics::Create("../data/labeled_data");
   ASSERT_TRUE(windowStatistics != nullptr);
 
-  auto result = windowStatistics->GetDominator(L"本场", L"比赛");
+  auto result = windowStatistics->GetDominator(L"队伍", L"攻防", L"是");
   ASSERT_TRUE(result.second != nullptr);
 
-  std::stringstream ss;
-  windowStatistics->Dump(ss);
-  std::cout << ss.str() << std::endl;
+  //std::stringstream ss;
+  //windowStatistics->Dump(ss);
+  //std::cout << ss.str() << std::endl;
 }
