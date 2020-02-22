@@ -11,7 +11,7 @@ void Strategy::SetPos(
         basic::PosTag::Type::Val posTag,
         basic::Confidence confidence,
         uint32_t strategy) {
-  if (segment.GetTag() == basic::PosTag::Type::kUndef ||
+  if (segment.GetTags().empty() ||
       confidence.Gt(segment.GetConfidence())) {
     segment.SetTag(
             basic::PosTag::EnhancePosTag(
