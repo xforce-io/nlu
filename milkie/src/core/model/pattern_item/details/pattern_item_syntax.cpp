@@ -16,6 +16,7 @@ bool PatternItemSyntax::MatchPattern(Context &context) {
   std::unordered_set<basic::SyntaxTag::Type::Val> syntaxSetToIgnore;
   syntaxSetToIgnore.insert(basic::SyntaxTag::Type::kPp);
   syntaxSetToIgnore.insert(basic::SyntaxTag::Type::kTp);
+  syntaxSetToIgnore.insert(basic::SyntaxTag::Type::kC);
   do {
     chunkSet = context.GetSentence().GetFeatureChunkAtOffset(offset);
     if (nullptr == chunkSet) {
