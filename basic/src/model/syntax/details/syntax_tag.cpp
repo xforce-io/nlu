@@ -13,6 +13,8 @@ SyntaxTag::Type::Val SyntaxTag::GetSyntaxTag(const std::wstring &syntaxTag) {
     return SyntaxTag::Type::kAdjp;
   } else if (L"advp" == syntaxTag) {
     return SyntaxTag::Type::kAdvp;
+  } else if (L"c" == syntaxTag) {
+    return SyntaxTag::Type::kC;
   } else if (L"clp" == syntaxTag) {
     return SyntaxTag::Type::kClp;
   } else if (L"cp" == syntaxTag) {
@@ -66,6 +68,7 @@ const std::wstring& SyntaxTag::Str(SyntaxTag::Type::Val syntaxTag) {
   static const std::wstring kVw = L"vw";
   static const std::wstring kAdjp = L"adjp";
   static const std::wstring kAdvp = L"advp";
+  static const std::wstring kC = L"c";
   static const std::wstring kClp = L"clp";
   static const std::wstring kCp = L"cp";
   static const std::wstring kDnp = L"dnp";
@@ -99,6 +102,8 @@ const std::wstring& SyntaxTag::Str(SyntaxTag::Type::Val syntaxTag) {
       return kAdjp;
     case SyntaxTag::Type::kAdvp :
       return kAdvp;
+    case SyntaxTag::Type::kC :
+      return kC;
     case SyntaxTag::Type::kClp :
       return kClp;
     case SyntaxTag::Type::kCp :

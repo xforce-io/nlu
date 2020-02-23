@@ -13,7 +13,7 @@ class SyntaxTag {
       kAd,
       kAs,
       kBa,
-      kCc,
+      kC,
       kCd,
       kCs,
       kDec,

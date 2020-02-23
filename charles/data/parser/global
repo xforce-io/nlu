@@ -1,6 +1,6 @@
 FEATURE_EXTRACTOR_BEGIN(chunker)
     ^{ #Pos((nP-)+) -> syntactic.np }
-    ~{ #Pos((cP-)+) -> syntactic.advp }
+    ~{ #Pos((cP-)+) -> syntactic.c }
     ~{ #Pos((dP-)*((v|rp)P-)) -> syntactic.v }
     ~{ #Pos((dP-)*(pP-)) { ["了", "着"] ?} -> syntactic.p }
     ~{ [#Pos((mP-)*(qP-)+), #Pos((mP-)+)] -> syntactic.qp }
@@ -18,21 +18,21 @@ FEATURE_EXTRACTOR_BEGIN(syntaxFromChunk)
 FEATURE_EXTRACTOR_END
 
 FEATURE_EXTRACTOR_BEGIN(syntax)
-    { { #Chk(vp) #Chk(np) -> syntactic.np } #Chk(vp) $MPP -> syntactic._stc_ }
-    { #Chk(v) #Chk(np) #Chk(np) $MPP -> syntactic._stc_ }
-    { #Chk(np) { #Chk(vw) ?} #Chk(pp) { $V ?} $MPP -> syntactic._stc_ }
-    { #Chk(np) #Chk(v) #Chk(np) #Chk(advp) $MPP -> syntactic._stc_ }
-    { { #Chk(np) ?} #Chk(v) #Chk(vp) $MPP -> syntactic._stc_ }
-    { { #Chk(pp) ?} #Chk(np) #Chk(np) $V $MPP -> syntactic._stc_ }
-    { #Chk(np) { #Chk(v) ?} #Chk(advp) $MPP -> syntactic._stc_ }
-    { #Chk(np) #Chk(advp) #Chk(vp) $MPP -> syntactic._stc_ }
-    { #Chk(np) #Chk(advp) #Chk(np) #Chk(advp) $MPP -> syntactic._stc_ }
-    { { #Chk(advp) ?} { #Chk(pp) ?} { #Chk(np) ?} $V $MPP -> syntactic._stc_ }
-    { { #Chk(advp) ?} #Chk(pp) #Chk(v) #Chk(np) #Chk(np) $MPP -> syntactic._stc_ }
-    { { #Chk(_cont_np_) #Pos(c) #Chk(_cont_np_) -> syntactic.np } $MPP -> syntactic._stc_ }
-    { #Chk(np) $MPP -> syntactic._stc_ }
-    { #Chk(v) #Chk(pp) $MPP -> syntactic._stc_ }
-    { #Chk(pp) $MPP -> syntactic._stc_ }
+    { $HC { #Chk(vp) #Chk(np) -> syntactic.np } #Chk(vp) $MPP -> syntactic._stc_ }
+    { $HC #Chk(v) #Chk(np) #Chk(np) $MPP -> syntactic._stc_ }
+    { $HC #Chk(np) { #Chk(vw) ?} #Chk(pp) { $V ?} $MPP -> syntactic._stc_ }
+    { $HC #Chk(np) #Chk(v) #Chk(np) #Chk(advp) $MPP -> syntactic._stc_ }
+    { $HC { #Chk(np) ?} #Chk(v) #Chk(vp) $MPP -> syntactic._stc_ }
+    { $HC { #Chk(pp) ?} #Chk(np) #Chk(np) $V $MPP -> syntactic._stc_ }
+    { $HC #Chk(np) { #Chk(v) ?} #Chk(advp) $MPP -> syntactic._stc_ }
+    { $HC #Chk(np) #Chk(advp) #Chk(vp) $MPP -> syntactic._stc_ }
+    { $HC #Chk(np) #Chk(advp) #Chk(np) #Chk(advp) $MPP -> syntactic._stc_ }
+    { $HC { #Chk(advp) ?} { #Chk(pp) ?} { #Chk(np) ?} $V $MPP -> syntactic._stc_ }
+    { $HC { #Chk(advp) ?} #Chk(pp) #Chk(v) #Chk(np) #Chk(np) $MPP -> syntactic._stc_ }
+    { $HC { #Chk(_cont_np_) #Pos(c) #Chk(_cont_np_) -> syntactic.np } $MPP -> syntactic._stc_ }
+    { $HC #Chk(np) $MPP -> syntactic._stc_ }
+    { $HC #Chk(v) #Chk(pp) $MPP -> syntactic._stc_ }
+    { $HC #Chk(pp) $MPP -> syntactic._stc_ }
 
     { $V #Pos(c) $V -> syntactic.vp }
 
@@ -57,4 +57,5 @@ FEATURE_EXTRACTOR_BEGIN(syntax)
     ~{ #Chk(vw) #Chk(vp) -> syntactic.vp }
     ~{ #Chk(_cont_np_) #Chk(_cont_np_) -> syntactic._cont_np_}
     ~{ #Chk(_cont_np_) $MPP % -> syntactic.np }
+    ~{ #Chk(np) #Chk(c) #Chk(np) $MPP % -> syntactic.np }
 FEATURE_EXTRACTOR_END
