@@ -61,6 +61,7 @@ class SyntaxTag {
       kLcp, //Phrase formed by “XP+LC” / LC位置词
       kLst, //List marker / 列表标记，如“--”
       kNp, //Noun phrase / 名词短语
+      kNv, // N+V
       kPp, //Preposition phrase / 介词短语
       kPrn, //Parenthetical / 括号中的，插入的
       kQp, //Quantifier phrase / 量词短语

@@ -46,7 +46,8 @@ FEATURE_EXTRACTOR_BEGIN(syntax)
     ~{ #Chk(dp) #Chk(advp) -> syntactic.advp }
     ~{ "一" #Pos(nP) -> syntactic.advp }
     ~{ { { #Chk(v) && #Reg(.*是) } [#Chk(advp), $V] "的" -> syntactic.vp } $MPP % }
-    ~{ { #Chk(v) && #Pos(rp) } #Chk(vp) "的" -> syntactic.advp }
+    ~{ { #Chk(v) && #Pos(rP) } #Chk(vp) "的" -> syntactic.advp }
+    ~{ #Chk(nv) #Pos(fP) -> syntactic.advp }
 
     ~{ { #Chk(p) #Chk(dp) -> syntactic.pp } $V }
     ~{ #Chk(v) "了" -> syntactic.v }

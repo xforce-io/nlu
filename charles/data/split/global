@@ -2,3 +2,8 @@ FEATURE_EXTRACTOR_BEGIN(nluContextSplit)
   ~{ #Chk(v) { #Chk(np) "的" #Chk(np) -> branch0_syntactic.np } }
   ~{ { #Chk(v) #Chk(np) -> branch1_syntactic.vp } "的" #Chk(np) }
 FEATURE_EXTRACTOR_END
+
+FEATURE_EXTRACTOR_BEGIN(vnv)
+  ~{ { #Chk(v) #Chk(np) -> branch0_syntactic.vp } #Chk(v) }
+  ~{ #Chk(v) { #Chk(np) #Chk(v) -> branch0_syntactic.nv } }
+FEATURE_EXTRACTOR_END
