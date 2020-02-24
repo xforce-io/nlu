@@ -10,15 +10,7 @@ const std::string& Chunk::GetCategory() const {
   return kCategory;
 }
 
-void Chunk::Dump(JsonType &jsonType) const {
-  Super::Dump(jsonType);
-  jsonType["type"] = "chunk";
-  for (auto &syntaxTag : tags_) {
-    jsonType["syn"].Append(*(StrHelper::Wstr2Str(SyntaxTag::Str(syntaxTag))));
-  }
-}
-
-std::shared_ptr<Segment> Chunk::FindSeg_(
+std::shared_ptr<Segment> Chunk::FindSeg(
         const NluContext &nluContext,
         basic::PosTag::Type::Val posTag) {
   for (auto &seg : nluContext.GetSegments().GetAll()) {
@@ -30,6 +22,15 @@ std::shared_ptr<Segment> Chunk::FindSeg_(
   }
   return nullptr;
 }
+
+void Chunk::Dump(JsonType &jsonType) const {
+  Super::Dump(jsonType);
+  jsonType["type"] = "chunk";
+  for (auto &syntaxTag : tags_) {
+    jsonType["syn"].Append(*(StrHelper::Wstr2Str(SyntaxTag::Str(syntaxTag))));
+  }
+}
+
 
 void Chunk::AddTagForCtx(
       const NluContext &nluContext,
@@ -55,7 +56,7 @@ void Chunk::AddTagForCtx(
     }
 
     if (chunk.tags_.empty()) {
-      auto segment = chunk.FindSeg_(nluContext, PosTag::Type::kV);
+      auto segment = chunk.FindSeg(nluContext, PosTag::Type::kV);
       if (nullptr != segment) {
         auto seg = segment->GetQuery(nluContext.GetQuery());
         bool ret = Manager::Get().GetGkb().GetGkbVerb().TiWeiZhun(

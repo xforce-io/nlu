@@ -4,6 +4,7 @@ namespace xforce { namespace nlu { namespace basic {
 
 EntryVerb::EntryVerb() :
     zhu_(false),
+    quxiang_(false),
     argTi_(false),
     argWei_(false),
     argZhun_(false),
@@ -18,6 +19,7 @@ int EntryVerb::Parse(const std::vector<std::wstring> &items) {
   }
 
   zhu_ = !items[kColZhu].empty();
+  quxiang_ = !items[kColQuxiang].empty();
 
   if (items[kColTiWeiZhun].find(L'体') != std::wstring::npos) {
     argTi_ = true;

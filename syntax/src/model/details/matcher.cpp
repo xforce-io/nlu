@@ -294,6 +294,28 @@ bool Matcher::RuleContNp_(std::shared_ptr<basic::NluContext> nluContext) {
   return false;
 }
 
+bool Matcher::RuleDongquQuxiang_(std::shared_ptr<basic::NluContext> nluContext) {
+  auto cur = nluContext->GetChunks().Begin();
+  while (cur != nluContext->GetChunks().End()) {
+    auto next = cur;
+    ++next;
+
+    std::shared_ptr<basic::NluContext> fragment;
+    if (next != nluContext->GetChunks().End()) {
+      if ((*cur)->ContainTag(basic::SyntaxTag::Type::kV) &&
+          (*next)->ContainTag(basic::SyntaxTag::Type::kV)) {
+        auto curSeg = (*cur)->FindSeg(nluContext, basic::PosTag::Type::kV);
+        auto nextSeg = (*next)->FindSeg(nluContext, basic::PosTag::Type::kV);
+        if (basic::Manager::Get().GetGkb().GetGkbVerb().IsDongqu(curSeg->))
+      }
+    } else {
+      return false;
+    }
+
+    cur = next;
+  }
+}
+
 void Matcher::AddAdvpDescDir_(std::shared_ptr<basic::NluContext> nluContext) {
   for (auto &chunk : nluContext->GetChunks().GetAll()) {
     if (chunk->GetTag() == basic::SyntaxTag::Type::kAdvp) {
