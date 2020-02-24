@@ -193,6 +193,10 @@ bool Matcher::PostProcess_(std::shared_ptr<basic::NluContext> nluContext) {
   if (RuleContNp_(nluContext)) {
     touched = true;
   }
+
+  if (RuleDongquQuxiang_(nluContext)) {
+    touched = true;
+  }
   return touched;
 }
 
@@ -295,6 +299,7 @@ bool Matcher::RuleContNp_(std::shared_ptr<basic::NluContext> nluContext) {
 }
 
 bool Matcher::RuleDongquQuxiang_(std::shared_ptr<basic::NluContext> nluContext) {
+  bool touched = false;
   auto cur = nluContext->GetChunks().Begin();
   while (cur != nluContext->GetChunks().End()) {
     auto next = cur;
@@ -304,16 +309,25 @@ bool Matcher::RuleDongquQuxiang_(std::shared_ptr<basic::NluContext> nluContext) 
     if (next != nluContext->GetChunks().End()) {
       if ((*cur)->ContainTag(basic::SyntaxTag::Type::kV) &&
           (*next)->ContainTag(basic::SyntaxTag::Type::kV)) {
-        auto curSeg = (*cur)->FindSeg(nluContext, basic::PosTag::Type::kV);
-        auto nextSeg = (*next)->FindSeg(nluContext, basic::PosTag::Type::kV);
-        if (basic::Manager::Get().GetGkb().GetGkbVerb().IsDongqu(curSeg->))
+        auto curSeg = (*cur)->FindSeg(*nluContext, basic::PosTag::Type::kV);
+        auto nextSeg = (*next)->FindSeg(*nluContext, basic::PosTag::Type::kV);
+        if (basic::Manager::Get().GetGkb().GetGkbVerb().IsDongqu(curSeg->GetStrFromSentence(nluContext->GetQuery())) &&
+            basic::Manager::Get().GetGkb().GetGkbVerb().IsQuxiang(nextSeg->GetStrFromSentence(nluContext->GetQuery()))) {
+          nluContext->Add(basic::Chunk(
+                  *nluContext,
+                  basic::SyntaxTag::Type::kVp,
+                  (*cur)->GetOffset(),
+                  (*cur)->GetLen() + (*next)->GetLen(),
+                  443));
+          touched = true;
+        }
       }
     } else {
-      return false;
+      return touched;
     }
-
     cur = next;
   }
+  return false;
 }
 
 void Matcher::AddAdvpDescDir_(std::shared_ptr<basic::NluContext> nluContext) {
