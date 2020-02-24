@@ -38,7 +38,6 @@ FEATURE_EXTRACTOR_BEGIN(syntax)
 
     ~{ { #Chk(dt) ?} #Chk(qp) -> syntactic.dp }
     ~{ #Chk(advp) {"的" ?} #Chk(np) $MPP % -> syntactic.np }
-    ~{ $V "的" #Chk(np) -> syntactic.np }
     ~{ #Chk(dp) "的" #Chk(np) -> syntactic.np }
     ~{ #Chk(dp) #Chk(np) -> syntactic.np }
     ~{ #Chk(np) [#Chk(np), #Chk(qp), #Chk(dp)] $MPP % -> syntactic.np }
