@@ -60,6 +60,20 @@ bool GkbVerb::IsZhu(const std::wstring &word) const {
   return false;
 }
 
+bool GkbVerb::IsQuxiang(const std::wstring &word) const {
+  auto entries = GetEntries(word);
+  if (nullptr == entries || entries->empty()) {
+    return false;
+  }
+
+  for (auto *entry : *entries) {
+    if (entry->IsQuxiang()) {
+      return true;
+    }
+  }
+  return false;
+}
+
 bool GkbVerb::TiWeiZhun(
     const std::wstring &word,
     bool &isArgTi,

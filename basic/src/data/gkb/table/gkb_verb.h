@@ -26,6 +26,7 @@ class GkbVerb : public Table<EntryVerb> {
       const std::wstring &word1) const;
 
   bool IsZhu(const std::wstring &word) const;
+  bool IsQuxiang(const std::wstring &word) const;
   bool TiWeiZhun(
       const std::wstring &word,
       bool &isArgTi,
