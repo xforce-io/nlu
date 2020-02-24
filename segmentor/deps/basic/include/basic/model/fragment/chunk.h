@@ -42,12 +42,11 @@ class Chunk : public FragmentMultitag<SyntaxTag::Type> {
 
   virtual const std::string& GetCategory() const;
 
-  virtual void Dump(JsonType &jsonType) const;
-
- private:
-  std::shared_ptr<Segment> FindSeg_(
+  std::shared_ptr<Segment> FindSeg(
           const NluContext &nluContext,
           basic::PosTag::Type::Val posTag);
+
+  virtual void Dump(JsonType &jsonType) const;
 
  private:
   static void AddTagForCtx(
