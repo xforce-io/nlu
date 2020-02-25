@@ -8,6 +8,7 @@ namespace xforce { namespace nlu { namespace basic {
 class EntryVerb : public Entry {
  public:
   const static size_t kColZhu = 7;
+  const static size_t kColQuxiang = 8;
   const static size_t kColTiWeiZhun = 16;
   const static size_t kColDoubleArgs = 17;
   const static size_t kColDongjie = 19;
@@ -19,6 +20,7 @@ class EntryVerb : public Entry {
   int Parse(const std::vector<std::wstring> &items);
 
   bool IsZhu() const { return zhu_; }
+  bool IsQuxiang() const { return quxiang_; }
 
   bool IsArgTi() const { return argTi_; }
   bool IsArgWei() const { return argWei_; }
@@ -31,6 +33,7 @@ class EntryVerb : public Entry {
 
  private:
   bool zhu_;
+  bool quxiang_;
 
   bool argTi_;
   bool argWei_;

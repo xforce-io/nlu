@@ -315,7 +315,7 @@ bool Matcher::RuleDongquQuxiang_(std::shared_ptr<basic::NluContext> nluContext) 
             basic::Manager::Get().GetGkb().GetGkbVerb().IsQuxiang(nextSeg->GetStrFromSentence(nluContext->GetQuery()))) {
           nluContext->Add(basic::Chunk(
                   *nluContext,
-                  basic::SyntaxTag::Type::kVp,
+                  basic::SyntaxTag::Type::kV,
                   (*cur)->GetOffset(),
                   (*cur)->GetLen() + (*next)->GetLen(),
                   443));
