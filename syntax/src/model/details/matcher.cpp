@@ -309,7 +309,8 @@ bool Matcher::RuleDongquQuxiang_(std::shared_ptr<basic::NluContext> nluContext) 
     std::shared_ptr<basic::NluContext> fragment;
     if (next != nluContext->GetChunks().End()) {
       if ((*cur)->ContainTag(basic::SyntaxTag::Type::kV) &&
-          (*next)->ContainTag(basic::SyntaxTag::Type::kV)) {
+          (*next)->ContainTag(basic::SyntaxTag::Type::kV) &&
+          (*cur)->GetEnd() == (*next)->GetOffset()) {
         auto curSeg = (*cur)->FindSeg(*nluContext, basic::PosTag::Type::kV);
         auto nextSeg = (*next)->FindSeg(*nluContext, basic::PosTag::Type::kV);
         if (basic::Manager::Get().GetGkb().GetGkbVerb().IsDongqu(curSeg->GetStrFromSentence(nluContext->GetQuery())) &&
