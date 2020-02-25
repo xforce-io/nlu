@@ -301,6 +301,7 @@ bool Matcher::RuleContNp_(std::shared_ptr<basic::NluContext> nluContext) {
 bool Matcher::RuleDongquQuxiang_(std::shared_ptr<basic::NluContext> nluContext) {
   bool touched = false;
   auto cur = nluContext->GetChunks().Begin();
+  std::vector<std::shared_ptr<basic::Chunk>> chunksToAdd;
   while (cur != nluContext->GetChunks().End()) {
     auto next = cur;
     ++next;
@@ -313,7 +314,7 @@ bool Matcher::RuleDongquQuxiang_(std::shared_ptr<basic::NluContext> nluContext) 
         auto nextSeg = (*next)->FindSeg(*nluContext, basic::PosTag::Type::kV);
         if (basic::Manager::Get().GetGkb().GetGkbVerb().IsDongqu(curSeg->GetStrFromSentence(nluContext->GetQuery())) &&
             basic::Manager::Get().GetGkb().GetGkbVerb().IsQuxiang(nextSeg->GetStrFromSentence(nluContext->GetQuery()))) {
-          nluContext->Add(basic::Chunk(
+          chunksToAdd.push_back(std::make_shared<basic::Chunk>(
                   *nluContext,
                   basic::SyntaxTag::Type::kV,
                   (*cur)->GetOffset(),
@@ -323,11 +324,15 @@ bool Matcher::RuleDongquQuxiang_(std::shared_ptr<basic::NluContext> nluContext) 
         }
       }
     } else {
-      return touched;
+      break;
     }
     cur = next;
   }
-  return false;
+
+  for (auto &chunkToAdd : chunksToAdd) {
+    nluContext->Add(chunksToAdd);
+  }
+  return touched;
 }
 
 void Matcher::AddAdvpDescDir_(std::shared_ptr<basic::NluContext> nluContext) {
