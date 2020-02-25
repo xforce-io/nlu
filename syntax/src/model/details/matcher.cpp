@@ -332,7 +332,7 @@ bool Matcher::RuleDongquQuxiang_(std::shared_ptr<basic::NluContext> nluContext) 
   for (auto &chunkToAdd : chunksToAdd) {
     nluContext->Add(chunksToAdd);
   }
-  return touch;
+  return touched;
 }
 
 void Matcher::AddAdvpDescDir_(std::shared_ptr<basic::NluContext> nluContext) {
