@@ -313,7 +313,9 @@ bool Matcher::RuleDongquQuxiang_(std::shared_ptr<basic::NluContext> nluContext) 
           (*cur)->GetEnd() == (*next)->GetOffset()) {
         auto curSeg = (*cur)->FindSeg(*nluContext, basic::PosTag::Type::kV);
         auto nextSeg = (*next)->FindSeg(*nluContext, basic::PosTag::Type::kV);
-        if (basic::Manager::Get().GetGkb().GetGkbVerb().IsDongqu(curSeg->GetStrFromSentence(nluContext->GetQuery())) &&
+        if (nullptr != curSeg &&
+            nullptr != nextSeg &&
+            basic::Manager::Get().GetGkb().GetGkbVerb().IsDongqu(curSeg->GetStrFromSentence(nluContext->GetQuery())) &&
             basic::Manager::Get().GetGkb().GetGkbVerb().IsQuxiang(nextSeg->GetStrFromSentence(nluContext->GetQuery()))) {
           chunksToAdd.push_back(std::make_shared<basic::Chunk>(
                   *nluContext,
