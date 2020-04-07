@@ -15,8 +15,11 @@ void StrategySpecialToken::Process(basic::NluContext &nluContext) {
       wchar_t c = segStr[i];
       bool isLetter = (c >= L'a' && c <= L'z') || (c >= L'A' && c <= L'Z');
       bool isNum = (c >= L'0' && c <= L'9');
-      if (isLetter || isNum) {
+      if (isLetter) {
         segment->AddTag(basic::PosTag::Type::kN);
+        break;
+      } else if (isNum) {
+        segment->AddTag(basic::PosTag::Type::kM);
         break;
       }
     }
