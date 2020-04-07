@@ -516,7 +516,9 @@ void Matcher::AnalysisAdj_(
         theRightTag = false;
       } else {
         for (auto tag : segAfter->GetTags()) {
-          if (!basic::SyntaxTag::Type::IsSpecial(tag)) {
+          if (tag == basic::SyntaxTag::Type::kContNp) {
+            resTag = basic::SyntaxTag::Type::kNp;
+          } else if (!basic::SyntaxTag::Type::IsSpecial(tag)) {
             if (tag != basic::SyntaxTag::Type::kNp &&
                 tag != basic::SyntaxTag::Type::kQp &&
                 tag != basic::SyntaxTag::Type::kV &&
