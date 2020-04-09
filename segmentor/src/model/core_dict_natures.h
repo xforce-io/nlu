@@ -14,6 +14,7 @@ class CoreDictNatures {
   bool Init(const CoreDictNature &coreDictNature);
   bool Init(const std::vector<const CoreDictNature*> &coreDictNatures);
 
+  const CoreDictNature* GetMainNature() const { return mainNature_; }
   size_t GetFreq() const { return allFreq_; }
 
   virtual ~CoreDictNatures();

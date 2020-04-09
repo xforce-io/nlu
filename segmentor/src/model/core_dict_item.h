@@ -12,6 +12,7 @@ class CoreDictItem {
 
   const std::wstring& GetName() const { return name_; }
   inline size_t GetFreq() const;
+  inline basic::PosTag::Type::Val GetPosTag() const;
 
   virtual ~CoreDictItem();
 

@@ -34,7 +34,27 @@ void TriggerPrefix::Process(
     std::list<TriggeredNodes*> &results) {
   UNUSE(graph)
   std::vector<const CoreDictItem*> coreDictItems;
-  Manager::Get().GetWordDict().PrefixMatch(
+
+  //local dict match
+  Manager::Get().GetLocalWordDict().PrefixMatch(
+          query.substr(offset),
+          coreDictItems);
+  if (!coreDictItems.empty()) {
+    for (auto iter = coreDictItems.begin();
+         iter != coreDictItems.end();
+         ++iter) {
+      const CoreDictItem &coreDictItem = **iter;
+      TriggeredNodes *triggeredNodes = new TriggeredNodes(
+              offset,
+              coreDictItem.GetName().length(),
+              coreDictItem.GetPosTag());
+      results.push_back(triggeredNodes);
+    }
+  }
+
+  //global dict match
+  coreDictItems.clear();
+  Manager::Get().GetGlobalWordDict().PrefixMatch(
       query.substr(offset),
       coreDictItems);
   if (!coreDictItems.empty()) {
