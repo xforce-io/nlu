@@ -6,7 +6,7 @@ namespace xforce { namespace nlu { namespace segmentor {
 
 struct Nature {
  public:
-  Nature(const std::string &name, uint32_t index, uint32_t freq);
+  inline Nature(const std::string &name, uint32_t index, uint32_t freq);
 
   inline basic::PosTag::Type::Val GetPosTag() const;
 
