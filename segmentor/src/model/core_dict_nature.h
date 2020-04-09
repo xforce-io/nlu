@@ -12,6 +12,7 @@ class CoreDictNature {
 
   const std::string &GetName() const { return name_; }
   size_t GetFreq() const { return freq_; }
+  const Nature& GetNature() const { return *nature_; }
 
  private:
   std::string name_;

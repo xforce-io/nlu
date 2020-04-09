@@ -16,12 +16,14 @@ class Manager {
   const BigramDict& GetBigramDict() const { return *bigramDict_; }
   const NatureDict& GetNatureDict() const { return *natureDict_; }
   const NatureBigram& GetNatureBigram() const { return *natureBigram_; }
-  const WordDict& GetWordDict() const { return *wordDict_; }
+  const WordDict& GetGlobalWordDict() const { return *globalWordDict_; }
+  const WordDict& GetLocalWordDict() const { return *localWordDict_; }
 
   inline static void SetBigramDict(BigramDict &bigramDict);
   inline static void SetNatureDict(NatureDict &natureDict);
   inline static void SetNatureBigram(NatureBigram &natureBigram);
-  inline static void SetWordDict(WordDict &wordDict);
+  inline static void SetGlobalWordDict(WordDict &wordDict);
+  inline static void SetLocalWordDict(WordDict &wordDict);
 
   virtual ~Manager();
 
@@ -32,7 +34,8 @@ class Manager {
   BigramDict *bigramDict_; 
   NatureDict *natureDict_;
   NatureBigram *natureBigram_;
-  WordDict *wordDict_;
+  WordDict *globalWordDict_;
+  WordDict *localWordDict_;
 
   static Manager *manager_;
 };
@@ -49,8 +52,12 @@ void Manager::SetNatureBigram(NatureBigram &natureBigram) {
   manager_->natureBigram_ = &natureBigram;
 }
 
-void Manager::SetWordDict(WordDict &wordDict) {
-  manager_->wordDict_ = &wordDict;
+void Manager::SetGlobalWordDict(WordDict &wordDict) {
+  manager_->globalWordDict_ = &wordDict;
+}
+
+void Manager::SetLocalWordDict(WordDict &wordDict) {
+  manager_->localWordDict_ = &wordDict;
 }
 
 }}}
