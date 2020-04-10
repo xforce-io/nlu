@@ -43,7 +43,6 @@ void Chunk::AddTagForCtx(
           && segment->GetEnd() <= chunk.GetEnd()
           && segment->GetTag() == PosTag::Type::kV) {
         theVerb = segment;
-        break;
       }
     }
 
