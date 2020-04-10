@@ -163,7 +163,9 @@ bool SplitRuleMgr::InitSyntaxVerbArg_(const basic::NluContext &nluContext) {
 
       size_t lenAux = 0;
       auto segAfterChunk = nluContext.GetSegments().GetFragmentAfter(chunk->GetEnd());
-      if (nullptr != segAfterChunk && segAfterChunk->GetTag() == basic::PosTag::Type::kU) {
+      if (nullptr != segAfterChunk &&
+          segAfterChunk->GetTag() == basic::PosTag::Type::kU &&
+          segAfterChunk->GetQuery(nluContext.GetQuery()) == L"了") {
         lenAux = segAfterChunk->GetLen();
       }
 
