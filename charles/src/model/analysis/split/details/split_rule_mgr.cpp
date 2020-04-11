@@ -161,11 +161,12 @@ bool SplitRuleMgr::InitSyntaxVerbArg_(const basic::NluContext &nluContext) {
         }
       }
 
+      std::wstring aux;
       size_t lenAux = 0;
       auto segAfterChunk = nluContext.GetSegments().GetFragmentAfter(chunk->GetEnd());
       if (nullptr != segAfterChunk &&
-          segAfterChunk->GetTag() == basic::PosTag::Type::kU &&
-          segAfterChunk->GetQuery(nluContext.GetQuery()) == L"了") {
+          segAfterChunk->GetTag() == basic::PosTag::Type::kU) {
+        aux = segAfterChunk->GetQuery(nluContext.GetQuery());
         lenAux = segAfterChunk->GetLen();
       }
 
@@ -173,7 +174,8 @@ bool SplitRuleMgr::InitSyntaxVerbArg_(const basic::NluContext &nluContext) {
         allRules_[basic::Stage::kSyntax]->push_back(new RuleSyntaxVerbArg(
                 chunk->GetBegin(),
                 chunk->GetLen() + lenAux,
-                *verb));
+                *verb,
+                aux));
       }
     }
   }
