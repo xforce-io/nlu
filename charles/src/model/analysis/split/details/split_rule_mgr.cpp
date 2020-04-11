@@ -161,13 +161,20 @@ bool SplitRuleMgr::InitSyntaxVerbArg_(const basic::NluContext &nluContext) {
         }
       }
 
+      //process aux
       std::wstring aux;
       size_t lenAux = 0;
-      auto segAfterChunk = nluContext.GetSegments().GetFragmentAfter(chunk->GetEnd());
-      if (nullptr != segAfterChunk &&
-          segAfterChunk->GetTag() == basic::PosTag::Type::kU) {
+      size_t tmpOffset = chunk->GetEnd();
+      while (true) {
+        auto segAfterChunk = nluContext.GetSegments().GetFragmentAfter(tmpOffset);
+        if (nullptr == segAfterChunk ||
+            segAfterChunk->GetTag() != basic::PosTag::Type::kU) {
+          break;
+        }
+
         aux = segAfterChunk->GetQuery(nluContext.GetQuery());
-        lenAux = segAfterChunk->GetLen();
+        lenAux += segAfterChunk->GetLen();
+        tmpOffset += lenAux;
       }
 
       if (nullptr != verb) {
