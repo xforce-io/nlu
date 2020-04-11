@@ -47,14 +47,14 @@ void RuleSyntaxVerbArg::Split(
               std::make_shared<basic::CollectionSyntaxTag>(basic::SyntaxTag::Type::kNp),
               950);
 
-      basic::Chunk newVp(
+      basic::Chunk newChunk(
               *nluContext,
-              basic::SyntaxTag::Type::kVp,
+              GetFinalSyntaxTag_(),
               offset_,
               chunk->GetEnd() - offset_,
               951);
 
-      bool ret0 = newNluContext->Add(newVp);
+      bool ret0 = newNluContext->Add(newChunk);
       if (ret0) {
         nluContexts.Add(newNluContext);
         continue;
@@ -89,7 +89,7 @@ Rule* RuleSyntaxVerbArg::Clone() {
       aux_);
 }
 
-basic::SyntaxTag::Type::Val RuleSyntaxVerbArg::GetFinalSyntaxTag_(const std::wstring &aux) const {
+basic::SyntaxTag::Type::Val RuleSyntaxVerbArg::GetFinalSyntaxTag_() const {
   if (L"的" == aux_) {
     return basic::SyntaxTag::Type::kNp;
   } else {

@@ -28,7 +28,7 @@ class RuleSyntaxVerbArg : public Rule {
   virtual Rule* Clone();
 
  private:
-  basic::SyntaxTag::Type::Val GetFinalSyntaxTag_(const std::wstring &aux) const;
+  basic::SyntaxTag::Type::Val GetFinalSyntaxTag_() const;
 
  private:
   const basic::Segment &segment_;
