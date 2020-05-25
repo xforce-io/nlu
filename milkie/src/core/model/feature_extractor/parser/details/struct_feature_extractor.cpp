@@ -2,6 +2,7 @@
 #include "../../../refer/refer_manager.h"
 #include "../../../pattern_expr/pattern_expr.h"
 #include "../../instruction_feature_extractor.h"
+#include "../../../variable/variable.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -61,25 +62,47 @@ bool StructFeatureExtractor::Parse(
         matchType = MatchType::kExactMatch;
       }
 
-      std::shared_ptr<PatternExpr> patternExpr;
+      std::pair<std::shared_ptr<PatternExpr>, ssize_t> buildRet;
       if (MatchType::kExactMatch == matchType) {
-        patternExpr = PatternExpr::Build(referManager, curName, lineAfterProcess).first;
+        buildRet = PatternExpr::Build(referManager, curName, lineAfterProcess);
       } else {
-        patternExpr = PatternExpr::Build(referManager, curName, lineAfterProcess.substr(1)).first;
+        buildRet = PatternExpr::Build(referManager, curName, lineAfterProcess.substr(1));
       }
 
-      if (nullptr == patternExpr) {
+      if (nullptr == buildRet.first) {
         return false;
       }
 
-      if (patternExpr->GetRepeatPattern() != CategoryPatternExpr::kOnce) {
+      if (buildRet.first->GetRepeatPattern() != CategoryPatternExpr::kOnce) {
         FATAL("feature_extractor_category_pattern_expr_should_be_once");
         return false;
       }
 
+      std::string nameInstruction;
+      ssize_t idx = buildRet.second;
+      std::shared_ptr<std::wstring> name;
+      while (true) {
+        if (idx >= lineAfterProcess.length() - 1) {
+          break;
+        } else if (lineAfterProcess.at(idx) != L'@') {
+          ++idx;
+          continue;
+        }
+
+        name = Variable::GetVariableName(lineAfterProcess, idx);
+        if (nullptr != name) {
+          break;
+        } else {
+          FATAL("invalid_pattern_expr_name[" << *name << "]");
+          return false;
+        }
+      }
+
       curInstructions.push_back(
               std::make_shared<InstructionFeatureExtractor>(
-                      patternExpr, matchType));
+                      (nullptr != name) ? *name : L"",
+                      buildRet.first,
+                      matchType));
     } else if (lineAfterProcess.find(L'=') != std::wstring::npos) {
       ret = referManager.PutLocalRefer(curName, lineAfterProcess);
       if (!ret) {
