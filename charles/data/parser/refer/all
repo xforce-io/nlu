@@ -2,4 +2,4 @@ V = [#Chk(vp), #Chk(v)]
 Punctuation = #Pos(wP+)
 ModalParticle = #Pos(yP+)
 MPP = { {$ModalParticle ?} {$Punctuation ?} }
-HC = { #Chk(c) ?}
+HC = { [#Chk(c), #Chk(tp)] *}

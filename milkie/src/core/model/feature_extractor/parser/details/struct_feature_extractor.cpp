@@ -100,7 +100,7 @@ bool StructFeatureExtractor::Parse(
 
       curInstructions.push_back(
               std::make_shared<InstructionFeatureExtractor>(
-                      (nullptr != name) ? *name : L"",
+                      (nullptr != name) ? *StrHelper::Wstr2Str(*name) : "",
                       buildRet.first,
                       matchType));
     } else if (lineAfterProcess.find(L'=') != std::wstring::npos) {

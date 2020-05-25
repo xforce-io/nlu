@@ -287,7 +287,7 @@ void testPartlyMultimatch() {
 }
 
 void testBugfix() {
-  std::wstring expr = Helper::PreprocessExprLine(L"{ #Chk(v) \"的\" #Chk(advp) -> syntactic.vp }");
+  std::wstring expr = Helper::PreprocessExprLine(L"{ #Chk(v) [\"的\", \"得\"] #Chk(advp) -> syntactic.vp }");
   auto ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, expr);
   ASSERT_TRUE(ret.first != nullptr);
 
