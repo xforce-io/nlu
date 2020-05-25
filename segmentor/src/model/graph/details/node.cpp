@@ -13,6 +13,14 @@ Node::Node(int offset, size_t len) {
   posTag_ = basic::PosTag::Type::kUndef;
 }
 
+Node::Node(
+    int offset,
+    size_t len,
+    basic::PosTag::Type::Val posTag) :
+  Node(offset, len) {
+  SetPosTag(posTag);
+}
+
 std::string Node::Str() const {
   std::stringstream ss;
   ss << "(" << this << "/" << offset_ << "/" << len_;

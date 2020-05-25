@@ -32,15 +32,24 @@ bool Manager::Init() {
   XFC_FAIL_HANDLE_FATAL(!ret, "fail_init_nature_bigram")
 
   ss.str("");  
-  ss << Conf::Get().GetDataDir() << "data/word/core.dic";
+  ss << Conf::Get().GetDataDir() << "data/word/global/core.dic";
   wordDictPaths.push_back(ss.str());
   ss.str("");
-  ss << Conf::Get().GetDataDir() << "data/word/china_province_city_county.dic";
+  ss << Conf::Get().GetDataDir() << "data/word/global/china_province_city_county.dic";
   wordDictPaths.push_back(ss.str());
-  wordDict_ = new WordDict();
-  ret = wordDict_->Init(wordDictPaths);
-  XFC_FAIL_HANDLE_FATAL(!ret, "fail_init_word_dict")
+  globalWordDict_ = new WordDict();
+  ret = globalWordDict_->Init(wordDictPaths);
+  XFC_FAIL_HANDLE_FATAL(!ret, "fail_init_global_word_dict")
 
+  wordDictPaths.clear();
+  ss.str("");
+  ss << Conf::Get().GetDataDir() << "data/word/local/";
+  ret = IOHelper::ScanFiles(ss.str(), wordDictPaths);
+  XFC_FAIL_HANDLE_FATAL(!ret, "fail_scan_local_word_dict")
+
+  localWordDict_ = new WordDict();
+  ret = localWordDict_->Init(wordDictPaths);
+  XFC_FAIL_HANDLE_FATAL(!ret, "fail_init_local_word_dict")
   return true;
 
   ERROR_HANDLE:
@@ -48,7 +57,8 @@ bool Manager::Init() {
 }  
 
 Manager::~Manager() {
-  XFC_DELETE(wordDict_)
+  XFC_DELETE(localWordDict_)
+  XFC_DELETE(globalWordDict_)
   XFC_DELETE(natureBigram_)
   XFC_DELETE(natureDict_)
   XFC_DELETE(bigramDict_)

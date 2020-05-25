@@ -19,6 +19,12 @@ TriggeredNodes::TriggeredNodes() :
 TriggeredNodes::TriggeredNodes(int offset, size_t length) :
   TriggeredNodes(new Node(offset, length)) {}
 
+TriggeredNodes::TriggeredNodes(
+    int offset,
+    size_t length,
+    basic::PosTag::Type::Val posTag) :
+  TriggeredNodes(new Node(offset, length, posTag)) {}
+
 std::string TriggeredNodes::Str() const {
   std::stringstream ss;
   ss << "( ";

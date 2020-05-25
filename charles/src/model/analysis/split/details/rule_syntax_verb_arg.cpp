@@ -7,9 +7,11 @@ namespace xforce { namespace nlu { namespace charles {
 RuleSyntaxVerbArg::RuleSyntaxVerbArg(
         size_t offset,
         size_t len,
-        const basic::Segment &segment) :
+        const basic::Segment &segment,
+        const std::wstring &aux) :
     Rule(offset, len),
-    segment_(segment) {}
+    segment_(segment),
+    aux_(aux) {}
 
 const char* RuleSyntaxVerbArg::GetRepr() const {
   std::sprintf(repr_, "ruleSyntaxVerbArg(%ld|%ld)", offset_, len_);
@@ -45,14 +47,14 @@ void RuleSyntaxVerbArg::Split(
               std::make_shared<basic::CollectionSyntaxTag>(basic::SyntaxTag::Type::kNp),
               950);
 
-      basic::Chunk newVp(
+      basic::Chunk newChunk(
               *nluContext,
-              basic::SyntaxTag::Type::kVp,
+              GetFinalSyntaxTag_(),
               offset_,
               chunk->GetEnd() - offset_,
               951);
 
-      bool ret0 = newNluContext->Add(newVp);
+      bool ret0 = newNluContext->Add(newChunk);
       if (ret0) {
         nluContexts.Add(newNluContext);
         continue;
@@ -80,7 +82,19 @@ bool RuleSyntaxVerbArg::PreCheckForbid(const ForbidItem& forbidItem) const {
 }
 
 Rule* RuleSyntaxVerbArg::Clone() {
-  return new RuleSyntaxVerbArg(offset_, len_, segment_);
+  return new RuleSyntaxVerbArg(
+      offset_,
+      len_,
+      segment_,
+      aux_);
+}
+
+basic::SyntaxTag::Type::Val RuleSyntaxVerbArg::GetFinalSyntaxTag_() const {
+  if (L"的" == aux_) {
+    return basic::SyntaxTag::Type::kNp;
+  } else {
+    return basic::SyntaxTag::Type::kVp;
+  }
 }
 
 }}}

@@ -11,7 +11,8 @@ class RuleSyntaxVerbArg : public Rule {
   explicit RuleSyntaxVerbArg(
           size_t offset,
           size_t len,
-          const basic::Segment &segment);
+          const basic::Segment &segment,
+          const std::wstring &aux);
 
   size_t GetCategory() const { return Rule::kCategoryRuleSyntaxVerbArg; }
   const char* GetRepr() const;
@@ -27,7 +28,11 @@ class RuleSyntaxVerbArg : public Rule {
   virtual Rule* Clone();
 
  private:
+  basic::SyntaxTag::Type::Val GetFinalSyntaxTag_() const;
+
+ private:
   const basic::Segment &segment_;
+  std::wstring aux_;
 };
 
 }}}

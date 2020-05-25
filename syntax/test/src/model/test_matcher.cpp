@@ -4,8 +4,8 @@
 
 #include "../../../src/syntax.h"
 #include "../../../src/model/matcher.h"
-#include "basic/model/segment.h"
-#include "basic/model/name_entity.h"
+#include "basic/model/fragment/segment.h"
+#include "basic/model/fragment/name_entity.h"
 #include "basic/basic.h"
 #include "segmentor/segmentor.h"
 #include "pos_tagging/pos_tagging.h"

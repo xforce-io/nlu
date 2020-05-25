@@ -36,8 +36,8 @@ void PatternSet::NotifyStorageSpace(const std::wstring &storageSpace) {
 
 bool PatternSet::MatchPattern(Context &context) {
   if (nullptr != patternStrsTrie_) {
-    int theBegin = -1;
-    int theEnd = -1;
+    ssize_t theBegin = -1;
+    ssize_t theEnd = -1;
     std::wstring theValue = L"";
 
     std::wstring matchedSentence;
@@ -52,7 +52,7 @@ bool PatternSet::MatchPattern(Context &context) {
     for (size_t i=0; i < result.size(); ++i) {
       if (result[i].get_start() == 0) {
         theBegin = result[i].get_start();
-        if (result[i].get_end() > theEnd) {
+        if ((ssize_t)result[i].get_end() > theEnd) {
           theEnd = result[i].get_end();
           theValue = result[i].get_keyword();
         }

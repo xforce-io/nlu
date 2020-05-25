@@ -13,6 +13,10 @@ class Node {
 
  public: 
   Node(int offset, size_t len);
+  Node(
+      int offset,
+      size_t len,
+      basic::PosTag::Type::Val posTag);
 
   inline void SetOffset(int offset); 
   inline void SetLen(size_t len);

@@ -13,7 +13,7 @@ class SyntaxTag {
       kAd,
       kAs,
       kBa,
-      kCc,
+      kC,
       kCd,
       kCs,
       kDec,
@@ -39,6 +39,7 @@ class SyntaxTag {
       kPu,
       kSb,
       kSp,
+      kTt,
       kU,
       kV,
       kVa,
@@ -60,9 +61,11 @@ class SyntaxTag {
       kLcp, //Phrase formed by “XP+LC” / LC位置词
       kLst, //List marker / 列表标记，如“--”
       kNp, //Noun phrase / 名词短语
+      kNv, // N+V
       kPp, //Preposition phrase / 介词短语
       kPrn, //Parenthetical / 括号中的，插入的
       kQp, //Quantifier phrase / 量词短语
+      kTp, // Time phrase
       kUcp, //unidentical coordination phrase / 非对等同位语短语
       kVp, //Verb phrase / 动词短语
 

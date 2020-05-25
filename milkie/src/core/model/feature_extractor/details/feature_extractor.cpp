@@ -28,6 +28,7 @@ Errno::Code FeatureExtractor::MatchPattern(Context &context, size_t offset) cons
               instruction->GetPatternExpr()->PrefixMatch(context, false)) ||
             (instruction->GetMatchType() == MatchType::kPartlyMatch &&
              instruction->GetPatternExpr()->PartlyMatch(context, false))) {
+          context.SetNameInstruction(instruction->GetName());
           ok = true;
         }
         break;

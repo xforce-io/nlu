@@ -14,31 +14,18 @@ using namespace xforce;
 using namespace xforce::nlu;
 using namespace xforce::nlu::charles;
 
-int main(int argc, char **argv) {
+int main(int /*argc*/, char** /*argv*/) {
   setlocale(LC_ALL, "");
   LOGGER_SYS_INIT(L"../conf/log.conf");
 
-  testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}
-
-TEST(testAll, all) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/charles.conf");
 
-  ASSERT_TRUE(Charles::Init(*conf));
-  AnalysisClause analysisClause(L"今年荣威上海和广西哪个卖的好",basic::CollectionSyntaxTag(true));
-
-  ASSERT_TRUE(analysisClause.Init());
+  assert(Charles::Init(*conf));
+  AnalysisClause analysisClause(L"他是如何进行人员和战术调整而挽回颓势的呢",basic::CollectionSyntaxTag(true));
+  assert(analysisClause.Init());
   bool ret = analysisClause.Process();
   std::cout << basic::AnalysisTracer::Get()->GetReport() << std::endl;
-  ASSERT_TRUE(ret);
+  assert(ret);
 
-/*
-  std::string repr;
-  for (auto result : analysisClause.GetFinished()) {
-    std::cout << "no[" << result->GetNo() << "] ";
-    std::cout << "born[" << result->GetSplitStage().GetBornStage() << "] ";
-    result->GetNluContext()->Dump(repr);
-    std::cout << "result[" << repr << "]" << std::endl;
-  }*/
+  return 0;
 }

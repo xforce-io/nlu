@@ -10,12 +10,13 @@ class ForbidItem;
 
 class Rule {
  public:
-  static const size_t kCategoryRulePosTag = 1;
-  static const size_t kCategoryRuleSyntaxContNp = 2;
-  static const size_t kCategoryRuleSyntaxPrep = 3;
-  static const size_t kCategoryRuleSyntaxRule = 4;
-  static const size_t kCategoryRuleSyntaxVerbArg = 5;
-  static const size_t kCategoryRuleSyntaxRpArg = 6;
+  static const size_t kCategoryRulePosTag = 100;
+  static const size_t kCategoryRuleSyntaxContNp = 200;
+  static const size_t kCategoryRuleSyntaxPrep = 300;
+  static const size_t kCategoryRuleSyntaxRule = 400;
+  static const size_t kCategoryRuleSyntaxVerbArg = 500;
+  static const size_t kCategoryRuleSyntaxRpArg = 600;
+  static const size_t kCategoryRuleSyntaxSplit = 700;
 
   static const size_t kMaxLenRepr = 1024;
 
@@ -23,6 +24,7 @@ class Rule {
   Rule();
   Rule(size_t offset, size_t len);
 
+  virtual bool Init() { return true; }
   virtual size_t GetCategory() const = 0;
   virtual const char* GetRepr() const = 0;
 

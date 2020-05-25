@@ -13,6 +13,8 @@ SyntaxTag::Type::Val SyntaxTag::GetSyntaxTag(const std::wstring &syntaxTag) {
     return SyntaxTag::Type::kAdjp;
   } else if (L"advp" == syntaxTag) {
     return SyntaxTag::Type::kAdvp;
+  } else if (L"c" == syntaxTag) {
+    return SyntaxTag::Type::kC;
   } else if (L"clp" == syntaxTag) {
     return SyntaxTag::Type::kClp;
   } else if (L"cp" == syntaxTag) {
@@ -35,12 +37,18 @@ SyntaxTag::Type::Val SyntaxTag::GetSyntaxTag(const std::wstring &syntaxTag) {
     return SyntaxTag::Type::kLst;
   } else if (L"np" == syntaxTag) {
     return SyntaxTag::Type::kNp;
+  } else if (L"nv" == syntaxTag) {
+    return SyntaxTag::Type::kNv;
   } else if (L"pp" == syntaxTag) {
     return SyntaxTag::Type::kPp;
   } else if (L"prn" == syntaxTag) {
     return SyntaxTag::Type::kPrn;
   } else if (L"qp" == syntaxTag) {
     return SyntaxTag::Type::kQp;
+  } else if (L"tp" == syntaxTag) {
+    return SyntaxTag::Type::kTp;
+  } else if (L"tt" == syntaxTag) {
+    return SyntaxTag::Type::kTt;
   } else if (L"u" == syntaxTag) {
     return SyntaxTag::Type::kU;
   } else if (L"ucp" == syntaxTag) {
@@ -62,6 +70,7 @@ const std::wstring& SyntaxTag::Str(SyntaxTag::Type::Val syntaxTag) {
   static const std::wstring kVw = L"vw";
   static const std::wstring kAdjp = L"adjp";
   static const std::wstring kAdvp = L"advp";
+  static const std::wstring kC = L"c";
   static const std::wstring kClp = L"clp";
   static const std::wstring kCp = L"cp";
   static const std::wstring kDnp = L"dnp";
@@ -73,9 +82,12 @@ const std::wstring& SyntaxTag::Str(SyntaxTag::Type::Val syntaxTag) {
   static const std::wstring kLcp = L"lcp";
   static const std::wstring kLst = L"lst";
   static const std::wstring kNp = L"np";
+  static const std::wstring kNv = L"nv";
   static const std::wstring kPp = L"pp";
   static const std::wstring kPrn = L"prn";
   static const std::wstring kQp = L"qp";
+  static const std::wstring kTp = L"tp";
+  static const std::wstring kTt = L"tt";
   static const std::wstring kU = L"u";
   static const std::wstring kUcp = L"ucp";
   static const std::wstring kVp = L"vp";
@@ -93,6 +105,8 @@ const std::wstring& SyntaxTag::Str(SyntaxTag::Type::Val syntaxTag) {
       return kAdjp;
     case SyntaxTag::Type::kAdvp :
       return kAdvp;
+    case SyntaxTag::Type::kC :
+      return kC;
     case SyntaxTag::Type::kClp :
       return kClp;
     case SyntaxTag::Type::kCp :
@@ -115,12 +129,18 @@ const std::wstring& SyntaxTag::Str(SyntaxTag::Type::Val syntaxTag) {
       return kLst;
     case SyntaxTag::Type::kNp :
       return kNp;
+    case SyntaxTag::Type::kNv :
+      return kNv;
     case SyntaxTag::Type::kPp :
       return kPp;
     case SyntaxTag::Type::kPrn :
       return kPrn;
     case SyntaxTag::Type::kQp :
       return kQp;
+    case SyntaxTag::Type::kTp :
+      return kTp;
+    case SyntaxTag::Type::kTt :
+      return kTt;
     case SyntaxTag::Type::kU :
       return kU;
     case SyntaxTag::Type::kUcp :

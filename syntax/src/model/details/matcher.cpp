@@ -193,6 +193,10 @@ bool Matcher::PostProcess_(std::shared_ptr<basic::NluContext> nluContext) {
   if (RuleContNp_(nluContext)) {
     touched = true;
   }
+
+  if (RuleDongquQuxiang_(nluContext)) {
+    touched = true;
+  }
   return touched;
 }
 
@@ -292,6 +296,46 @@ bool Matcher::RuleContNp_(std::shared_ptr<basic::NluContext> nluContext) {
     }
   }
   return false;
+}
+
+bool Matcher::RuleDongquQuxiang_(std::shared_ptr<basic::NluContext> nluContext) {
+  bool touched = false;
+  auto cur = nluContext->GetChunks().Begin();
+  std::vector<std::shared_ptr<basic::Chunk>> chunksToAdd;
+  while (cur != nluContext->GetChunks().End()) {
+    auto next = cur;
+    ++next;
+
+    std::shared_ptr<basic::NluContext> fragment;
+    if (next != nluContext->GetChunks().End()) {
+      if ((*cur)->ContainTag(basic::SyntaxTag::Type::kV) &&
+          (*next)->ContainTag(basic::SyntaxTag::Type::kV) &&
+          (*cur)->GetEnd() == (*next)->GetOffset()) {
+        auto curSeg = (*cur)->FindSeg(*nluContext, basic::PosTag::Type::kV);
+        auto nextSeg = (*next)->FindSeg(*nluContext, basic::PosTag::Type::kV);
+        if (nullptr != curSeg &&
+            nullptr != nextSeg &&
+            basic::Manager::Get().GetGkb().GetGkbVerb().IsDongqu(curSeg->GetStrFromSentence(nluContext->GetQuery())) &&
+            basic::Manager::Get().GetGkb().GetGkbVerb().IsQuxiang(nextSeg->GetStrFromSentence(nluContext->GetQuery()))) {
+          chunksToAdd.push_back(std::make_shared<basic::Chunk>(
+                  *nluContext,
+                  basic::SyntaxTag::Type::kV,
+                  (*cur)->GetOffset(),
+                  (*cur)->GetLen() + (*next)->GetLen(),
+                  443));
+          touched = true;
+        }
+      }
+    } else {
+      break;
+    }
+    cur = next;
+  }
+
+  for (auto &chunkToAdd : chunksToAdd) {
+    nluContext->Add(chunkToAdd);
+  }
+  return touched;
 }
 
 void Matcher::AddAdvpDescDir_(std::shared_ptr<basic::NluContext> nluContext) {
@@ -472,7 +516,9 @@ void Matcher::AnalysisAdj_(
         theRightTag = false;
       } else {
         for (auto tag : segAfter->GetTags()) {
-          if (!basic::SyntaxTag::Type::IsSpecial(tag)) {
+          if (tag == basic::SyntaxTag::Type::kContNp) {
+            resTag = basic::SyntaxTag::Type::kNp;
+          } else if (!basic::SyntaxTag::Type::IsSpecial(tag)) {
             if (tag != basic::SyntaxTag::Type::kNp &&
                 tag != basic::SyntaxTag::Type::kQp &&
                 tag != basic::SyntaxTag::Type::kV &&

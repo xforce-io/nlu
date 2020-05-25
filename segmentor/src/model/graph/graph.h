@@ -98,7 +98,7 @@ void Graph::AddMaxPrioredNegLogPossi(const Node &node) {
 }
 
 double Graph::GetNegLogPossi_(const std::wstring &str, const std::wstring &condStr) {
-  double freqCondIndex = Manager::Get().GetWordDict().GetFreq(condStr);
+  double freqCondIndex = Manager::Get().GetGlobalWordDict().GetFreq(condStr);
   double possi = 1.0 / WordDict::GetCntWord();
   if (freqCondIndex>0) {
     double freqCooccur = Manager::Get().GetBigramDict().GetFreq(condStr, str);

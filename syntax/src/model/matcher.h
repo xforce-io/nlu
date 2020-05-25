@@ -29,6 +29,7 @@ class Matcher {
           std::shared_ptr<basic::NluContext> nluContext,
           const std::shared_ptr<basic::Chunk> &chunk);
   bool RuleContNp_(std::shared_ptr<basic::NluContext> nluContext);
+  bool RuleDongquQuxiang_(std::shared_ptr<basic::NluContext> nluContext);
 
   void AddAdvpDescDir_(std::shared_ptr<basic::NluContext> nluContext);
   void AddAdvpDescDirForChunk_(
