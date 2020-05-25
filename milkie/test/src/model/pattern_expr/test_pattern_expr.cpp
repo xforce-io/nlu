@@ -49,12 +49,14 @@ void testBugfix();
 
 TEST(testAll, all) {
   ASSERT_TRUE(milkie->GetReferManager().AddToGlobalDict("../../data/test/dict"));
+  /*
   testcase0();
   testcase1();
   testcase2();
   testcaseWildcard();
   testcaseMultimatch();
   testPartlyMultimatch();
+  */
   testBugfix();
 }
 

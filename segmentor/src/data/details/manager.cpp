@@ -42,7 +42,9 @@ bool Manager::Init() {
   XFC_FAIL_HANDLE_FATAL(!ret, "fail_init_global_word_dict")
 
   wordDictPaths.clear();
-  ret = IOHelper::ScanFiles("data/word/local/", wordDictPaths);
+  ss.str("");
+  ss << Conf::Get().GetDataDir() << "data/word/local/";
+  ret = IOHelper::ScanFiles(ss.str(), wordDictPaths);
   XFC_FAIL_HANDLE_FATAL(!ret, "fail_scan_local_word_dict")
 
   localWordDict_ = new WordDict();
