@@ -12,7 +12,7 @@ class NameEntity : public Fragment {
   typedef FragmentSet<NameEntity> Set;
 
  public:
-  enum Category {
+  enum NECategory {
     kCategoryNone = -1,
     kCategoryTime = 1,
     kCategoryNumber = 2,
@@ -28,7 +28,7 @@ class NameEntity : public Fragment {
   virtual ~NameEntity();
 
   int GetNECategory() const { return kCategoryOther; }
-  const std::string& GetCategory() const;
+  Fragment::Category GetCategory() const { return kNameEntity; }
 
   void Dump(JsonType &jsonType) const;
 };

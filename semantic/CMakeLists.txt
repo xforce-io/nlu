@@ -15,10 +15,10 @@ link_directories(
 
 set(CMAKE_CXX_COMPILER g++)
 
-set(SYNTAX_OUTPUT_PATH semantic/)
-set(SYNTAX_LIB_OUTPUT_PATH  ${SYNTAX_OUTPUT_PATH}/lib/semantic)
-set(SYNTAX_INC_OUTPUT_PATH  ${SYNTAX_OUTPUT_PATH}/include/semantic)
-set(SYNTAX_SRC_DIR "${CMAKE_SOURCE_DIR}/src/")
+set(SEMANTIC_OUTPUT_PATH semantic/)
+set(SEMANTIC_LIB_OUTPUT_PATH  ${SEMANTIC_OUTPUT_PATH}/lib/semantic)
+set(SEMANTIC_INC_OUTPUT_PATH  ${SEMANTIC_OUTPUT_PATH}/include/semantic)
+set(SEMANTIC_SRC_DIR "${CMAKE_SOURCE_DIR}/src/")
 
 FILE(GLOB_RECURSE SEG_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 
@@ -43,20 +43,20 @@ add_custom_command(TARGET semantic
   PRE_BUILD
 
   #make semantic
-  COMMAND mkdir -p ${SYNTAX_LIB_OUTPUT_PATH}
-  COMMAND mkdir -p ${SYNTAX_INC_OUTPUT_PATH}
-  COMMAND mkdir -p ${SYNTAX_INC_OUTPUT_PATH}/public/
+  COMMAND mkdir -p ${SEMANTIC_LIB_OUTPUT_PATH}
+  COMMAND mkdir -p ${SEMANTIC_INC_OUTPUT_PATH}
+  COMMAND mkdir -p ${SEMANTIC_INC_OUTPUT_PATH}/public/
 
-  COMMAND cp ${SYNTAX_SRC_DIR}/semantic.h ${SYNTAX_INC_OUTPUT_PATH}/
-  COMMAND cp ${SYNTAX_SRC_DIR}/public.h ${SYNTAX_INC_OUTPUT_PATH}/
-  COMMAND cp ${SYNTAX_SRC_DIR}/public/public.h ${SYNTAX_INC_OUTPUT_PATH}/public/
-  COMMAND cp ${SYNTAX_SRC_DIR}/public/dep.h ${SYNTAX_INC_OUTPUT_PATH}/public/
-  COMMAND git log | head -n 1 > ${SYNTAX_OUTPUT_PATH}/version
+  COMMAND cp ${SEMANTIC_SRC_DIR}/semantic.h ${SEMANTIC_INC_OUTPUT_PATH}/
+  COMMAND cp ${SEMANTIC_SRC_DIR}/public.h ${SEMANTIC_INC_OUTPUT_PATH}/
+  COMMAND cp ${SEMANTIC_SRC_DIR}/public/public.h ${SEMANTIC_INC_OUTPUT_PATH}/public/
+  COMMAND cp ${SEMANTIC_SRC_DIR}/public/dep.h ${SEMANTIC_INC_OUTPUT_PATH}/public/
+  COMMAND git log | head -n 1 > ${SEMANTIC_OUTPUT_PATH}/version
 )
 
 add_custom_command(TARGET semantic
   POST_BUILD
 
   #make semantic
-  COMMAND cp libsemantic.a ${SYNTAX_LIB_OUTPUT_PATH}
+  COMMAND cp libsemantic.a ${SEMANTIC_LIB_OUTPUT_PATH}
 )

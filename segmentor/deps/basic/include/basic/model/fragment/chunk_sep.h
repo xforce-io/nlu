@@ -18,7 +18,7 @@ class ChunkSep : public Fragment {
   inline ChunkSep(const ChunkSep &other);
   virtual ~ChunkSep() {}
 
-  const std::string& GetCategory() const;
+  Fragment::Category GetCategory() const { return kChunkSep; }
 
   void Dump(JsonType &jsonType) const;
 };

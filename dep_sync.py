@@ -9,6 +9,7 @@ kBuildPathSegmentor = "segmentor/build/"
 kBuildPathPosTagging = "pos_tagging/build/"
 kBuildPathChunker = "chunker/build/"
 kBuildPathSyntax = "syntax/build/"
+kBuildPathSemantic = "semantic/build/"
 kBuildPathCharles = "charles/build/"
 
 kDepPathBasic = "basic/deps/"
@@ -18,6 +19,7 @@ kDepPathSegmentor = "segmentor/deps/"
 kDepPathPosTagging = "pos_tagging/deps/"
 kDepPathChunker = "chunker/deps/"
 kDepPathSyntax= "syntax/deps/"
+kDepPathSemantic = "semantic/deps/"
 kDepPathCharles = "charles/deps/"
 
 def call(cmd) :
@@ -112,6 +114,27 @@ def buildSyntax() :
     call("mkdir -p %s && rm -rf %s/* && cd %s && cmake ../ && make clean && make -j4 -s" % \
             (kBuildPathSyntax, kBuildPathSyntax, kBuildPathSyntax))
 
+def buildSemantic() :
+    call("mkdir -p %s && rm -rf %s/*" % (kDepPathSemantic, kDepPathSemantic))
+    call("cp -rf %s/public-cpp %s/public-cpp" % \
+            (kBuildPathPublicCpp, kDepPathSemantic))
+    call("cp -rf %s/basic %s/basic/" % \
+            (kBuildPathBasic, kDepPathSemantic))
+    call("cp -rf %s/milkie %s/milkie/" % \
+            (kBuildPathMilkie, kDepPathSemantic))
+    call("cp -rf %s/ner %s/ner/" % \
+            (kBuildPathNer, kDepPathSemantic))
+    call("cp -rf %s/segmentor %s/segmentor/" % \
+            (kBuildPathSegmentor, kDepPathSemantic))
+    call("cp -rf %s/pos_tagging %s/pos_tagging/" % \
+            (kBuildPathPosTagging, kDepPathSemantic))
+    call("cp -rf %s/chunker %s/chunker/" % \
+            (kBuildPathChunker, kDepPathSemantic))
+    call("cp -rf %s/syntax %s/syntax/" % \
+            (kBuildPathSyntax, kDepPathSemantic))
+    call("mkdir -p %s && rm -rf %s/* && cd %s && cmake ../ && make clean && make -j4 -s" % \
+            (kBuildPathSemantic, kBuildPathSemantic, kBuildPathSemantic))
+
 def buildCharles() :
     call("mkdir -p %s && rm -rf %s/*" % (kDepPathCharles, kDepPathCharles))
     call("cp -rf %s/public-cpp %s/public-cpp/" % \
@@ -130,6 +153,8 @@ def buildCharles() :
             (kBuildPathChunker, kDepPathCharles))
     call("cp -rf %s/syntax %s/syntax/" % \
             (kBuildPathSyntax, kDepPathCharles))
+    call("cp -rf %s/semantic %s/semantic/" % \
+            (kBuildPathSemantic, kDepPathCharles))
     call("mkdir -p %s && rm -rf %s/* && cd %s && cmake ../ && make clean && make -j4 -s" % \
             (kBuildPathCharles, kBuildPathCharles, kBuildPathCharles))
 
@@ -169,6 +194,10 @@ if __name__ == "__main__" :
 
         buildSyntax()
         if sys.argv[1] == "syn" :
+            sys.exit(0)
+
+        buildSemantic()
+        if sys.argv[1] == "sem" :
             sys.exit(0)
 
         buildCharles()

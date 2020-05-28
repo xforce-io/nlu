@@ -38,7 +38,6 @@ class FragmentMultitag : public Fragment {
   inline bool Merge(const Self &other);
   inline Self& operator=(const Self &other);
 
-  virtual const std::string& GetCategory() const = 0;
   size_t SizeTags() const { return tags_.size(); }
   const std::vector<typename Tag::Val>& GetTags() const { return tags_; }
   std::vector<typename Tag::Val>& GetTags() { return tags_; }

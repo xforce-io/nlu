@@ -24,7 +24,7 @@ class Segment : public FragmentMultitag<PosTag::Type> {
 
   inline void AddTag(typename PosTag::Type::Val tag);
 
-  const std::string& GetCategory() const;
+  typename Fragment::Category GetCategory() const { return kSegment; }
   inline PosTag::Class::Val GetClassOfPosTags() const;
 
   virtual void Dump(JsonType &jsonType) const;

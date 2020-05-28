@@ -229,14 +229,16 @@ void FragmentSet<FragmentType>::Dump(
   size_t i=0;
   if (nullptr==diff) {
     for (auto &fragment : fragments_) {
-      fragment->Dump(jsonType[fragment->GetCategory().c_str()][i]);
+      fragment->Dump(
+          jsonType[Fragment::StrCategory(fragment->GetCategory())][i]);
       ++i;
     }
   } else {
     for (auto &fragment : fragments_) {
       auto res = diff->Find(fragment);
       if (nullptr==res || !fragment->Same(*res)) {
-        fragment->Dump(jsonType[fragment->GetCategory().c_str()][i]);
+        fragment->Dump(
+            jsonType[Fragment::StrCategory(fragment->GetCategory())][i]);
         ++i;
       }
     }

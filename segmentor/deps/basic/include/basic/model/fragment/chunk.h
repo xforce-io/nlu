@@ -11,6 +11,7 @@
 namespace xforce { namespace nlu { namespace basic {
 
 class NluContext;
+class SemanticUnit;
 
 class Chunk : public FragmentMultitag<SyntaxTag::Type> {
  public:
@@ -40,7 +41,11 @@ class Chunk : public FragmentMultitag<SyntaxTag::Type> {
   inline void SetDescDir(DescDir descDir);
   inline DescDir GetDescDir() const;
 
-  virtual const std::string& GetCategory() const;
+  inline void SetSemanticUnit(const std::shared_ptr<SemanticUnit> &semanticUnit);
+  inline const std::shared_ptr<SemanticUnit>& GetSemanticUnit() const;
+  inline std::shared_ptr<SemanticUnit>& GetSemanticUnit();
+
+  Fragment::Category GetCategory() const { return kChunk; }
 
   std::shared_ptr<Segment> FindSeg(
           const NluContext &nluContext,
@@ -61,6 +66,8 @@ class Chunk : public FragmentMultitag<SyntaxTag::Type> {
   bool isArgWei_;
   bool isArgZhun_;
   bool isDoubleArgs_;
+
+  std::shared_ptr<SemanticUnit> semanticUnit_;
 };
 
 Chunk::Chunk() :
@@ -93,6 +100,18 @@ void Chunk::SetDescDir(DescDir descDir) {
 
 Chunk::DescDir Chunk::GetDescDir() const {
   return descDir_;
+}
+
+void Chunk::SetSemanticUnit(const std::shared_ptr<SemanticUnit> &semanticUnit) {
+  semanticUnit_ = semanticUnit;
+}
+
+const std::shared_ptr<SemanticUnit>& Chunk::GetSemanticUnit() const {
+  return semanticUnit_;
+}
+
+std::shared_ptr<SemanticUnit>& Chunk::GetSemanticUnit() {
+  return semanticUnit_;
 }
 
 }}}
