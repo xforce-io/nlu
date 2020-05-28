@@ -13,7 +13,7 @@ class Fragment {
     kChunkSep,
     kNameEntity,
     kSemantic,
-    kOther,
+    kUndef,
   };
 
  public:
@@ -67,6 +67,8 @@ class Fragment {
   virtual bool Same(const Fragment &other) const;
 
   virtual void Dump(JsonType &jsonType) const;
+
+  static const std::string& StrCategory(typename Fragment::Category category);
 
  protected:
   Fragment *father_;

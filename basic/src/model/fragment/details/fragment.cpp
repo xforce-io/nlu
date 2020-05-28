@@ -19,4 +19,28 @@ void Fragment::Dump(JsonType &jsonType) const {
   jsonType["strategy"] = (size_t)strategy_;
 }
 
+const std::string& Fragment::StrCategory(typename Fragment::Category category) {
+  static const std::string kStrSegment = "segment";
+  static const std::string kStrChunk = "chunk";
+  static const std::string kStrChunkSep = "chunkSep";
+  static const std::string kStrNameEntity = "nameEntity";
+  static const std::string kStrSemantic = "semantic";
+  static const std::string kStrUndef = "undef";
+  switch (category) {
+    case kSegment :
+      return kStrSegment;
+    case kChunk :
+      return kStrChunk;   
+    case kChunkSep :
+      return kStrChunkSep; 
+    case kNameEntity :    
+      return kStrNameEntity;  
+    case kSemantic :
+      return kStrSemantic;  
+    default :
+      return kStrUndef;  
+  }
+}
+
+
 }}}

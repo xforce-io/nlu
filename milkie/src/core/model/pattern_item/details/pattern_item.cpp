@@ -39,7 +39,7 @@ std::shared_ptr<PatternItem> PatternItem::Build(const StructPatternItem &structP
       FATAL("[INTERNAL ERROR] dep_pattern_item_currently_not_supported");
       return nullptr;
     } else if (structPatternItemCommon.GetCategory() == CategoryPatternItem::kSemantic) {
-      basic::SemanticUnit::Type::Val semanticType = basic::Semantic::GetSemanticUnitType(structPatternItemCommon.GetArgs(0));
+      basic::SemanticUnit::Type::Val semanticType = basic::SemanticUnit::GetSemanticUnitType(structPatternItemCommon.GetArgs(0));
       if (basic::SemanticUnit::Type::Val::kUndef != semanticType) {
         return std::make_shared<PatternItemSemantic>(semanticType);
       } else {

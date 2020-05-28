@@ -25,7 +25,7 @@ bool PatternItemSemantic::MatchPattern(Context &context) {
   return false;
 }
 
-std::shared_ptr<basic::SemanticUnit> PatternItemSemantic::GetLongestMatch_(
+std::shared_ptr<basic::Chunk> PatternItemSemantic::GetLongestMatch_(
         const basic::Chunk::Set &chunkSet,
         const std::unordered_set<basic::SemanticUnit::Type::Val> &semanticUnits) {
   std::shared_ptr<basic::Chunk> theChunk = nullptr;
@@ -33,7 +33,7 @@ std::shared_ptr<basic::SemanticUnit> PatternItemSemantic::GetLongestMatch_(
   for (auto &chunk : chunkSet.GetAll()) {
     bool matched = false;
     auto tag = chunk->GetSemanticUnit()->GetType();
-    if (semanticUnits.find(tag) != syntaxSet.end()) {
+    if (semanticUnits.find(tag) != semanticUnits.end()) {
       matched = true;
     }
 

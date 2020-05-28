@@ -1,7 +1,6 @@
 #pragma once
 
 #include "fragment.h"
-#include "fragment_category.h"
 
 namespace xforce { namespace nlu { namespace basic {
 
@@ -17,21 +16,21 @@ class FragmentInstruction {
  public:
   inline FragmentInstruction(
       OpCategory opCategory,
-      FragmentCategory::Category fragmentCategory);
+      Fragment::Category fragmentCategory);
 
   OpCategory GetOpCategory() const { return opCategory_; }
-  FragmentCategory::Category GetFragmentCategory() const { return fragmentCategory_; }
+  Fragment::Category GetFragmentCategory() const { return fragmentCategory_; }
   void AddFragment(const std::shared_ptr<Fragment> &fragment);
 
  private:
   OpCategory opCategory_;
-  FragmentCategory::Category fragmentCategory_;
+  Fragment::Category fragmentCategory_;
   std::vector<std::shared_ptr<Fragment>> fragments_;
 };
 
 FragmentInstruction::FragmentInstruction(
     OpCategory opCategory,
-    FragmentCategory::Category fragmentCategory) :
+    Fragment::Category fragmentCategory) :
   opCategory_(opCategory),
   fragmentCategory_(fragmentCategory) {}
 
