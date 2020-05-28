@@ -11,6 +11,7 @@ struct CategoryPatternItem {
     kPos,
     kChunk,
     kDep,
+    kSemantic,
     kInvalid
   };
 };

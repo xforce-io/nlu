@@ -42,6 +42,8 @@ CategoryPatternItem::Category PatternItem::ParseCategory(const std::wstring &cat
     return CategoryPatternItem::kDep;
   } else if (L"Chk" == category) {
     return CategoryPatternItem::kChunk;
+  } else if (L"Sem" = category) {
+    return CategoryPatternItem::kSemantic;
   } else {
     return CategoryPatternItem::kInvalid;
   }

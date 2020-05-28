@@ -2,7 +2,7 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
-const std::string& NameEntity::GetCategory() const {
+const std::string& NameEntity::GetCategoryStr() const {
   static const std::string kCategory = "nameEntity";
   return kCategory;
 }

@@ -5,11 +5,6 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
-const std::string& Chunk::GetCategory() const {
-  static const std::string kCategory = "chunk";
-  return kCategory;
-}
-
 std::shared_ptr<Segment> Chunk::FindSeg(
         const NluContext &nluContext,
         basic::PosTag::Type::Val posTag) {

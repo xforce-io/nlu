@@ -7,6 +7,16 @@ namespace xforce { namespace nlu { namespace basic {
 
 class Fragment {
  public:
+  enum Category {
+    kSegment,
+    kChunk,
+    kChunkSep,
+    kNameEntity,
+    kSemantic,
+    kOther,
+  };
+
+ public:
   typedef std::vector<std::shared_ptr<Fragment>> Vec;
   typedef std::list<std::shared_ptr<Fragment>> List;
 
@@ -40,7 +50,7 @@ class Fragment {
   virtual bool Merge(const Fragment &) { return true; }
   inline Fragment& operator=(const Fragment &other);
 
-  virtual const std::string& GetCategory() const = 0;
+  virtual Fragment::Category GetCategory() const = 0;
   const Fragment* GetFather() const { return father_; }
   const std::wstring* GetStr() const { return str_; }
   inline const std::wstring GetStrFromSentence(const std::wstring &sentence);

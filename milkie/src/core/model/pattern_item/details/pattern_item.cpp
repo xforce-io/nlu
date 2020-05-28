@@ -6,6 +6,7 @@
 #include "../pattern_item_reg.h"
 #include "../pattern_item_wordpos.h"
 #include "../pattern_item_syntax.h"
+#include "../pattern_item_semantic.h"
 #include "../pattern_item_end.h"
 
 namespace xforce { namespace nlu { namespace milkie {
@@ -37,6 +38,14 @@ std::shared_ptr<PatternItem> PatternItem::Build(const StructPatternItem &structP
     } else if (structPatternItemCommon.GetCategory() == CategoryPatternItem::kDep) {
       FATAL("[INTERNAL ERROR] dep_pattern_item_currently_not_supported");
       return nullptr;
+    } else if (structPatternItemCommon.GetCategory() == CategoryPatternItem::kSemantic) {
+      basic::SemanticUnit::Type::Val semanticType = basic::Semantic::GetSemanticUnitType(structPatternItemCommon.GetArgs(0));
+      if (basic::SemanticUnit::Type::Val::kUndef != semanticType) {
+        return std::make_shared<PatternItemSemantic>(semanticType);
+      } else {
+        FATAL("invalid_semantic_type(" << structPatternItemCommon.GetArgs(0) << ")");
+        return nullptr;
+      }
     } else {
       FATAL("[INTERNAL ERROR] invalid_pattern_item_category("
                     << structPatternItemCommon.GetCategory()

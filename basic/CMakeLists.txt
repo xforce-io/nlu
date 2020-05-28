@@ -24,7 +24,7 @@ FILE(GLOB_RECURSE BASIC_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -DUNICODE=1")
 
 add_library(basic
-  ${BASIC_FILES} src/data/gkb/table/details/gkb_global.cpp)
+  ${BASIC_FILES} src/data/gkb/table/details/gkb_global.cpp src/model/semantic_unit/semantic_unit.h src/model/semantic_unit/semantic_unit_entity.h src/model/semantic_unit/semantic_unit_entity_set.h src/model/kg/entity.h src/model/kg/property.h src/model/semantic_unit/details/semantic_unit.cpp)
 
 target_link_libraries(basic
   log4cplus

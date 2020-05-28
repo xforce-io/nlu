@@ -2,7 +2,7 @@
 
 namespace xforce { namespace nlu { namespace basic {
 
-const std::string& ChunkSep::GetCategory() const {
+const std::string& ChunkSep::GetCategoryStr() const {
   static const std::string kCategory = "chunkSep";
   return kCategory;
 }
