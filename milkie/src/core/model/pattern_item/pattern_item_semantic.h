@@ -13,7 +13,7 @@ class PatternItemSemantic : public PatternItem {
   bool MatchPattern(Context &context) final;
 
  private:
-  std::shared_ptr<basic::SemanticUnit> GetLongestMatch_(
+  std::shared_ptr<basic::Chunk> GetLongestMatch_(
           const basic::Chunk::Set &chunkSet,
           const std::unordered_set<basic::SemanticUnit::Type::Val> &semanticUnits);
 

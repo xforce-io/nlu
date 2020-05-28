@@ -20,7 +20,20 @@ bool PatternItemSemantic::MatchPattern(Context &context) {
       return false;
     }
 
-    //
+    auto theChunk = GetLongestMatch_(*chunkSet, semanticUnitTypesToMatch);
+    if (nullptr != theChunk) {
+      contentMatched_ = context.GetSentence().GetSentence().substr(
+              originOffset,
+              theChunk->GetEnd() - originOffset);
+      return true;
+    } else {
+      theChunk = GetLongestMatch_(*chunkSet, semanticUnitTypesToIgnore);
+      if (nullptr != theChunk) {
+        offset += theChunk->GetLen();
+      } else {
+        return false;
+      }
+    }
   } while (offset < context.GetSentence().GetSentence().length());
   return false;
 }
