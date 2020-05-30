@@ -114,7 +114,7 @@ SyntaxTag::Class::Val SyntaxTag::GetClass(SyntaxTag::Type::Val syntaxTag) {
   } else if (syntaxTag == Type::kNp || syntaxTag == Type::kNn) {
     return Class::kNp;
   } else {
-    return Class::kOther;
+    return Class::kUndef;
   }
 }
 

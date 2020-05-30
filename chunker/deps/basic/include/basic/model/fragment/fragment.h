@@ -13,7 +13,12 @@ class Fragment {
     kChunkSep,
     kNameEntity,
     kSemantic,
-    kUndef,
+  };
+
+  enum DistRes {
+      kArg0,
+      kArg1,
+      kUnknown,
   };
 
  public:
@@ -65,6 +70,9 @@ class Fragment {
   inline bool Intersect(size_t offset, size_t len) const;
   inline bool Intersect(const Fragment &fragment) const;
   virtual bool Same(const Fragment &other) const;
+  virtual DistRes Distance(
+          const Fragment &/*arg0*/,
+          const Fragment &/*arg1*/) const { return kUnknown; }
 
   virtual void Dump(JsonType &jsonType) const;
 

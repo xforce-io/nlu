@@ -24,8 +24,6 @@ class SemanticUnitEntitySet : public SemanticUnit {
  public:
   SemanticUnitEntitySet();
 
-  inline Category GetCategory() const { return kSemanticUnitEntitySet; }
-
  private:
   std::unordered_set<
           std::shared_ptr<Entity>,

@@ -5,6 +5,7 @@
 #include "table/gkb_verb.h"
 #include "table/gkb_adj.h"
 #include "table/gkb_adv.h"
+#include "table/gkb_conj.h"
 #include "table/gkb_prep.h"
 
 namespace xforce { namespace nlu { namespace basic {
@@ -22,6 +23,7 @@ class Gkb {
   const GkbVerb& GetGkbVerb() const { return *gkbVerb_; }
   const GkbAdj& GetGkbAdj() const { return *gkbAdj_; }
   const GkbAdv& GetGkbAdv() const { return *gkbAdv_; }
+  const GkbConj& GetGkbConj() const { return *gkbConj_; }
   const GkbPrep& GetGkbPrep() const { return *gkbPrep_; }
 
  private:
@@ -29,6 +31,7 @@ class Gkb {
   GkbVerb *gkbVerb_;
   GkbAdj *gkbAdj_;
   GkbAdv *gkbAdv_;
+  GkbConj *gkbConj_;
   GkbPrep *gkbPrep_;
 };
 
