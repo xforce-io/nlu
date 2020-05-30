@@ -34,11 +34,18 @@ class FragmentSet {
   inline std::shared_ptr<FragmentType> GetFragmentBefore(
           size_t offset,
           std::function<bool(const FragmentType&)> filter) const;
+  inline void GetFragmentBefore(
+          size_t offset,
+          std::vector<std::shared_ptr<FragmentType>> &result) const;
 
   inline std::shared_ptr<FragmentType> GetFragmentAfter(size_t offset) const;
   inline std::shared_ptr<FragmentType> GetFragmentAfter(
           size_t offset,
           std::function<bool(const FragmentType&)> filter) const;
+  inline void GetFragmentAfter(
+          size_t offset,
+          std::vector<std::shared_ptr<FragmentType>> &result) const;
+
   inline std::shared_ptr<FragmentType> GetLongFragmentAfter(size_t offset) const;
 
   template <class OtherFragmentType>
@@ -146,6 +153,17 @@ std::shared_ptr<FragmentType> FragmentSet<FragmentType>::GetFragmentBefore(
 }
 
 template <typename FragmentType>
+void FragmentSet<FragmentType>::GetFragmentBefore(
+        size_t offset,
+        std::vector<std::shared_ptr<FragmentType>> &result) const {
+  for (auto &fragment : fragments_) {
+    if (fragment->GetEnd() == offset) {
+      result.push(fragment);
+    }
+  }
+}
+
+template <typename FragmentType>
 std::shared_ptr<FragmentType> FragmentSet<FragmentType>::GetFragmentAfter(size_t offset) const {
   for (auto &fragment : fragments_) {
     if (fragment->GetOffset() == offset) {
@@ -165,6 +183,17 @@ std::shared_ptr<FragmentType> FragmentSet<FragmentType>::GetFragmentAfter(
     }
   }
   return nullptr;
+}
+
+template <typename FragmentType>
+void FragmentSet<FragmentType>::GetFragmentAfter(
+        size_t offset,
+        std::vector<std::shared_ptr<FragmentType>> &result) const {
+  for (auto &fragment : fragments_) {
+    if (fragment->GetOffset() == offset) {
+      result.push(fragment);
+    }
+  }
 }
 
 template <typename FragmentType>

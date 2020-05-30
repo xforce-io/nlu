@@ -28,7 +28,7 @@ set(LIB_DEPS
 )
 
 add_library(semantic
-  ${SEG_FILES} src/model/matcher.h src/model/details/matcher.cpp src/model/parser/parser.h)
+  ${SEG_FILES} src/model/matcher.h src/model/details/matcher.cpp src/model/parser/parser.h src/model/parser/parser_mid_conj.h src/model/parser/details/parser_mid_conj.cpp)
 
 target_link_libraries(semantic
   ${LIB_DEPS}
