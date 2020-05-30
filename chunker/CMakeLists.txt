@@ -28,7 +28,7 @@ set(LIB_DEPS
 )
 
 add_library(chunker
-  ${SEG_FILES} src/model/parser/parser_common.h src/model/parser/details/parser_common.cpp src/model/parser/filter_parser_common.h src/model/parser/details/filter_parser_common.cpp)
+  ${SEG_FILES})
 
 target_link_libraries(chunker
   ${LIB_DEPS}

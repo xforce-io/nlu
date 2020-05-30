@@ -2,6 +2,6 @@
 
 #include "public/public.h"
 
-namespace xforce { namespace nlu { namespace segmentor {
+namespace xforce { namespace nlu { namespace chunker {
 
 }}}

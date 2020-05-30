@@ -24,7 +24,7 @@ Matcher::~Matcher() {
 bool Matcher::Init() {
   bool ret = parser_->Init(Conf::Get().GetParserConfpath());
   if (!ret) {
-    FATAL("fail_init[parser]");
+    FATAL("fail_init_chunker[parser]");
     return false;
   }
 

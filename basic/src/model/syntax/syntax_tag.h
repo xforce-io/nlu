@@ -80,9 +80,20 @@ class SyntaxTag {
     inline static bool IsSpecial(SyntaxTag::Type::Val tagVal);
   };
 
+  struct Class {
+    enum Val {
+      kVp,
+      kVw,
+      kNp,
+      kUndef,
+    };
+  };
+
  public:
   static SyntaxTag::Type::Val GetSyntaxTag(const std::wstring &syntaxTag);
   static const std::wstring& Str(SyntaxTag::Type::Val syntaxtTag);
+
+  inline static SyntaxTag::Class::Val GetClass(SyntaxTag::Type::Val syntaxTag);
 };
 
 bool SyntaxTag::Type::IsCommon(SyntaxTag::Type::Val tagVal) {
@@ -93,6 +104,18 @@ bool SyntaxTag::Type::IsSpecial(SyntaxTag::Type::Val tagVal) {
   return tagVal == SyntaxTag::Type::kStc ||
       tagVal == SyntaxTag::Type::kContNp ||
       tagVal == SyntaxTag::Type::kUndef;
+}
+
+SyntaxTag::Class::Val SyntaxTag::GetClass(SyntaxTag::Type::Val syntaxTag) {
+  if (syntaxTag == Type::kV || syntaxTag == Type::kVp) {
+    return Class::kVp;
+  } else if (syntaxTag == Type::kVw) {
+    return Class::kVw;
+  } else if (syntaxTag == Type::kNp || syntaxTag == Type::kNn) {
+    return Class::kNp;
+  } else {
+    return Class::kOther;
+  }
 }
 
 }}}

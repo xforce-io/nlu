@@ -10,7 +10,6 @@ include_directories(
 )
 
 link_directories(
-  /usr/lib64/
 )
 
 set(CMAKE_CXX_COMPILER g++)
@@ -29,7 +28,7 @@ set(LIB_DEPS
 )
 
 add_library(semantic
-  ${SEG_FILES})
+  ${SEG_FILES} src/model/matcher.h src/model/details/matcher.cpp src/model/parser/parser.h)
 
 target_link_libraries(semantic
   ${LIB_DEPS}

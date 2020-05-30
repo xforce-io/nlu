@@ -44,17 +44,9 @@ std::shared_ptr<basic::Chunk> PatternItemSemantic::GetLongestMatch_(
   std::shared_ptr<basic::Chunk> theChunk = nullptr;
   size_t maxLen = 0;
   for (auto &chunk : chunkSet.GetAll()) {
-    bool matched = false;
     auto tag = chunk->GetSemanticUnit()->GetType();
-    if (semanticUnits.find(tag) != semanticUnits.end()) {
-      matched = true;
-    }
-
-    if (!matched) {
-      continue;
-    }
-
-    if (chunk->GetLen() > maxLen) {
+    if (semanticUnits.find(tag) != semanticUnits.end() &&
+        chunk->GetLen() > maxLen) {
       theChunk = chunk;
       maxLen = chunk->GetLen();
     }

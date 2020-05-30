@@ -8,10 +8,12 @@ Gkb::Gkb() :
   gkbVerb_(nullptr),
   gkbAdj_(nullptr),
   gkbAdv_(nullptr),
+  gkbConj_(nullptr),
   gkbPrep_(nullptr) {}
 
 Gkb::~Gkb() {
   XFC_DELETE(gkbPrep_)
+  XFC_DELETE(gkbConj_)
   XFC_DELETE(gkbAdv_)
   XFC_DELETE(gkbAdj_)
   XFC_DELETE(gkbVerb_)
@@ -52,6 +54,15 @@ bool Gkb::Init(const std::string &dir) {
   ret = gkbAdv_->Init(dir, ss.str());
   if (!ret) {
     FATAL("fail_init_gkb_adv");
+    return false;
+  }
+
+  ss.str("");
+  ss << dir << "/gkb_conj";
+  gkbConj_ = new GkbConj();
+  ret = gkbConj_->Init(dir, ss.str());
+  if (!ret) {
+    FATAL("fail_init_gkb_conj");
     return false;
   }
 
