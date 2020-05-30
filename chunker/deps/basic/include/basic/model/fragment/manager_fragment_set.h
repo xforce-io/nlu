@@ -12,22 +12,17 @@ class ManagerFragmentSet {
  public:
   ManagerFragmentSet(const std::wstring &query);
 
-  inline void SetNameEntities(const NameEntity::Set &nameEntities);
-  inline void SetSegments(const Segment::Set &segments);
-  inline void SetChunkSeps(const ChunkSep::Set &chunkSeps);
-  inline void SetChunks(const Chunk::Set &chunks);
+  template <typename FragmentType>
+  void Set(const typename FragmentType::Set &set);
 
   ManagerFragmentSet* Build(size_t from, size_t to);
   ManagerFragmentSet* Clone();
 
-  const typename NameEntity::Set& GetNameEntities() const { return nameEntities_; }
-  typename NameEntity::Set& GetNameEntities() { return nameEntities_; }
-  const typename Segment::Set& GetSegments() const { return segments_; }
-  typename Segment::Set& GetSegments() { return segments_; }
-  const typename ChunkSep::Set& GetChunkSeps() const { return chunkSeps_; }
-  typename ChunkSep::Set& GetChunkSeps() { return chunkSeps_; }
-  const typename Chunk::Set& GetChunks() const { return chunks_; }
-  typename Chunk::Set& GetChunks() { return chunks_; }
+  template <typename FragmentType>
+  const typename FragmentType::Set& Get() const;
+
+  template <typename FragmentType>
+  typename FragmentType::Set& Get();
 
   void Dump(
           JsonType &jsonType,
@@ -41,20 +36,64 @@ class ManagerFragmentSet {
   typename Chunk::Set chunks_;
 };
 
-void ManagerFragmentSet::SetNameEntities(const NameEntity::Set &nameEntities) {
-  nameEntities_ = nameEntities;
+template <>
+void ManagerFragmentSet::Set<NameEntity>(const typename NameEntity::Set &set) {
+  nameEntities_ = set;
 }
 
-void ManagerFragmentSet::SetSegments(const Segment::Set &segments) {
-  segments_ = segments;
+template <>
+void ManagerFragmentSet::Set<Segment>(const typename Segment::Set &set) {
+  segments_ = set;
 }
 
-void ManagerFragmentSet::SetChunkSeps(const ChunkSep::Set &chunkSeps) {
-  chunkSeps_ = chunkSeps;
+template <>
+void ManagerFragmentSet::Set<ChunkSep>(const typename ChunkSep::Set &set) {
+  chunkSeps_ = set;
 }
 
-void ManagerFragmentSet::SetChunks(const Chunk::Set &chunks) {
-  chunks_ = chunks;
+template <>
+void ManagerFragmentSet::Set<Chunk>(const typename Chunk::Set &set) {
+  chunks_ = set;
+}
+
+template <>
+const typename NameEntity::Set& ManagerFragmentSet::Get<NameEntity>() const {
+  return nameEntities_;
+}
+
+template <>
+typename NameEntity::Set& ManagerFragmentSet::Get<NameEntity>() {
+  return nameEntities_;
+}
+
+template <>
+const typename Segment::Set& ManagerFragmentSet::Get<Segment>() const {
+  return segments_;
+}
+
+template <>
+typename Segment::Set& ManagerFragmentSet::Get<Segment>() {
+  return segments_;
+}
+
+template <>
+const typename ChunkSep::Set& ManagerFragmentSet::Get<ChunkSep>() const {
+  return chunkSeps_;
+}
+
+template <>
+typename ChunkSep::Set& ManagerFragmentSet::Get<ChunkSep>() {
+  return chunkSeps_;
+}
+
+template <>
+const typename Chunk::Set& ManagerFragmentSet::Get<Chunk>() const {
+  return chunks_;
+}
+
+template <>
+typename Chunk::Set& ManagerFragmentSet::Get<Chunk>() {
+  return chunks_;
 }
 
 }}}

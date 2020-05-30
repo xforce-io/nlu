@@ -33,7 +33,7 @@ bool Segmentor::Init(
 
 void Segmentor::Parse(std::shared_ptr<basic::NluContext> &nluContext) {
   auto graph = new Graph(nluContext->GetQuery());
-  graph->Process(nluContext->GetSegments(), nluContext->GetNameEntities());
+  graph->Process(nluContext->Get<basic::Segment>(), nluContext->Get<basic::NameEntity>());
   XFC_DELETE(graph)
 }
 

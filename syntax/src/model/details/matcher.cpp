@@ -58,13 +58,13 @@ bool Matcher::Process_(std::shared_ptr<basic::NluContext> nluContext) {
 
 bool Matcher::SyntaxProcessForChunkSep_(std::shared_ptr<basic::NluContext> nluContext) {
   bool touched = false;
-  auto cur = nluContext->GetChunkSeps().Begin();
-  while (cur != nluContext->GetChunkSeps().End()) {
+  auto cur = nluContext->Get<basic::ChunkSep>().Begin();
+  while (cur != nluContext->Get<basic::ChunkSep>().End()) {
     auto next = cur;
     ++next;
 
     std::shared_ptr<basic::NluContext> fragment;
-    if (next != nluContext->GetChunkSeps().End()) {
+    if (next != nluContext->Get<basic::ChunkSep>().End()) {
       fragment = nluContext->Build(
               (*cur)->GetOffset(),
               (*next)->GetOffset());
@@ -184,7 +184,7 @@ bool Matcher::SyntaxProcessForChunk_(std::shared_ptr<basic::NluContext> nluConte
 
 bool Matcher::PostProcess_(std::shared_ptr<basic::NluContext> nluContext) {
   bool touched = false;
-  for (auto &chunk : nluContext->GetChunks().GetAll()) {
+  for (auto &chunk : nluContext->Get<basic::Chunk>().GetAll()) {
     if (RuleIntransitiveVerb_(nluContext, chunk)) {
       touched = true;
     }
@@ -223,18 +223,18 @@ bool Matcher::RuleIntransitiveVerb_(
   nluContext->Add(newVp);
 
   //strategy 1
-  auto npBefore = nluContext->GetChunks().GetFragmentBefore(chunk->GetOffset());
+  auto npBefore = nluContext->Get<basic::Chunk>().GetFragmentBefore(chunk->GetOffset());
   if (nullptr == npBefore || !npBefore->ContainTag(basic::SyntaxTag::Type::kNp)) {
     return false;
   }
 
-  auto npAfter = nluContext->GetChunks().GetFragmentAfter(chunk->GetEnd());
+  auto npAfter = nluContext->Get<basic::Chunk>().GetFragmentAfter(chunk->GetEnd());
   if (nullptr == npAfter || !npAfter->ContainTag(basic::SyntaxTag::Type::kNp)) {
     return false;
   }
 
   while (true) {
-    auto chunkBefore = nluContext->GetChunks().GetFragmentBefore(npBefore->GetOffset());
+    auto chunkBefore = nluContext->Get<basic::Chunk>().GetFragmentBefore(npBefore->GetOffset());
     if (nullptr != chunkBefore && chunkBefore->ContainTag(basic::SyntaxTag::Type::kNp)) {
       npBefore = chunkBefore;
     } else {
@@ -265,7 +265,7 @@ bool Matcher::RuleIntransitiveVerb_(
 bool Matcher::RuleContNp_(std::shared_ptr<basic::NluContext> nluContext) {
   std::shared_ptr<basic::Chunk> tmpChunk = nullptr;
   size_t maxLen = 0;
-  for (auto &chunk : nluContext->GetChunks().GetAll()) {
+  for (auto &chunk : nluContext->Get<basic::Chunk>().GetAll()) {
     if (chunk->GetOffset() == 0) {
       if (chunk->GetTag() == basic::SyntaxTag::Type::kContNp &&
           chunk->GetLen() > maxLen) {
@@ -281,7 +281,7 @@ bool Matcher::RuleContNp_(std::shared_ptr<basic::NluContext> nluContext) {
     return false;
   }
 
-  auto segment = nluContext->GetSegments().GetFragmentAfter(tmpChunk->GetEnd());
+  auto segment = nluContext->Get<basic::Segment>().GetFragmentAfter(tmpChunk->GetEnd());
   if (nullptr==segment ||
       (segment->GetTag() != basic::PosTag::Type::kUndef &&
       segment->GetTag() != basic::PosTag::Type::kV) ) {
@@ -300,14 +300,14 @@ bool Matcher::RuleContNp_(std::shared_ptr<basic::NluContext> nluContext) {
 
 bool Matcher::RuleDongquQuxiang_(std::shared_ptr<basic::NluContext> nluContext) {
   bool touched = false;
-  auto cur = nluContext->GetChunks().Begin();
+  auto cur = nluContext->Get<basic::Chunk>().Begin();
   std::vector<std::shared_ptr<basic::Chunk>> chunksToAdd;
-  while (cur != nluContext->GetChunks().End()) {
+  while (cur != nluContext->Get<basic::Chunk>().End()) {
     auto next = cur;
     ++next;
 
     std::shared_ptr<basic::NluContext> fragment;
-    if (next != nluContext->GetChunks().End()) {
+    if (next != nluContext->Get<basic::Chunk>().End()) {
       if ((*cur)->ContainTag(basic::SyntaxTag::Type::kV) &&
           (*next)->ContainTag(basic::SyntaxTag::Type::kV) &&
           (*cur)->GetEnd() == (*next)->GetOffset()) {
@@ -339,7 +339,7 @@ bool Matcher::RuleDongquQuxiang_(std::shared_ptr<basic::NluContext> nluContext) 
 }
 
 void Matcher::AddAdvpDescDir_(std::shared_ptr<basic::NluContext> nluContext) {
-  for (auto &chunk : nluContext->GetChunks().GetAll()) {
+  for (auto &chunk : nluContext->Get<basic::Chunk>().GetAll()) {
     if (chunk->GetTag() == basic::SyntaxTag::Type::kAdvp) {
       AddAdvpDescDirForChunk_(nluContext, chunk);
     }
@@ -350,7 +350,7 @@ void Matcher::AddAdvpDescDirForChunk_(
         std::shared_ptr<basic::NluContext> nluContext,
         std::shared_ptr<basic::Chunk> advp) {
   std::vector<std::pair<std::shared_ptr<basic::Segment>, basic::Chunk::DescDir>> adjs;
-  for (auto &segment : nluContext->GetSegments().GetAll()) {
+  for (auto &segment : nluContext->Get<basic::Segment>().GetAll()) {
     if (segment->GetOffset() >= advp->GetOffset() &&
         segment->GetOffset() + segment->GetLen() <= advp->GetOffset() + advp->GetLen()) {
       if (segment->GetTag() == basic::PosTag::Type::kA ||
@@ -467,13 +467,13 @@ void Matcher::AnalysisAdj_(
   descRight=0;
   rightBound=0;
 
-  auto segBefore = nluContext->GetSegments().GetFragmentBefore(advp->GetOffset());
+  auto segBefore = nluContext->Get<basic::Segment>().GetFragmentBefore(advp->GetOffset());
   if (nullptr!=segBefore) {
     auto strSegBefore = segBefore->GetQuery(nluContext->GetQuery());
     if (L"得"==strSegBefore || L"不"==strSegBefore) {
       descLeft=1;
       descRight=-1;
-      auto segBeforeBefore = nluContext->GetSegments().GetFragmentBefore(segBefore->GetOffset());
+      auto segBeforeBefore = nluContext->Get<basic::Segment>().GetFragmentBefore(segBefore->GetOffset());
       if (segBeforeBefore != nullptr) {
         leftBound = segBeforeBefore->GetOffset();
       }
@@ -498,12 +498,12 @@ void Matcher::AnalysisAdj_(
     descRight=1;
   }
 
-  auto segAfter = nluContext->GetChunks().GetFragmentAfter(advp->GetEnd());
+  auto segAfter = nluContext->Get<basic::Chunk>().GetFragmentAfter(advp->GetEnd());
   if (nullptr!=segAfter) {
     if (segAfter->GetQuery(nluContext->GetQuery()) == L"的") {
       descLeft=-1;
       descRight=1;
-      auto segAfterAfter = nluContext->GetChunks().GetFragmentAfter(segAfter->GetEnd());
+      auto segAfterAfter = nluContext->Get<basic::Chunk>().GetFragmentAfter(segAfter->GetEnd());
       if (segAfterAfter != nullptr) {
         rightBound = segAfterAfter->GetEnd();
       }

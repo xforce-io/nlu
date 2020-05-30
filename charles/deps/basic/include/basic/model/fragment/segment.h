@@ -24,8 +24,10 @@ class Segment : public FragmentMultitag<PosTag::Type> {
 
   inline void AddTag(typename PosTag::Type::Val tag);
 
-  const std::string& GetCategory() const;
+  typename Fragment::Category GetCategory() const { return kSegment; }
   inline PosTag::Class::Val GetClassOfPosTags() const;
+
+  DistRes Distance(const Fragment &arg0, const Fragment &arg1) const;
 
   virtual void Dump(JsonType &jsonType) const;
 };
@@ -58,16 +60,36 @@ void Segment::AddTag(typename PosTag::Type::Val tag) {
 
 PosTag::Class::Val Segment::GetClassOfPosTags() const {
   PosTag::Class::Val result = PosTag::Class::kUndef;
-  for (auto &posTag : tags_) {
-    auto curPosTag = PosTag::GetClass(posTag);
-    if (PosTag::Class::kUndef == curPosTag ||
+  for (auto &tag : tags_) {
+    auto curTag = PosTag::GetClass(tag);
+    if (PosTag::Class::kUndef == curTag ||
         (PosTag::Class::kUndef != result &&
-        curPosTag != result)) {
+         curTag != result)) {
       return PosTag::Class::kUndef;
     }
-    result = curPosTag;
+    result = curTag;
   }
   return result;
+}
+
+typename Fragment::DistRes
+Segment::Distance(const Fragment &arg0, const Fragment &arg1) const {
+  if (arg0.GetCategory() != Category::kSegment ||
+      arg1.GetCategory() != Category::kSegment) {
+    return Fragment::kUnknown;
+  }
+
+  PosTag::Class::Val classThis = GetClassOfPosTags();
+  PosTag::Class::Val classArg0 = ((const Segment&)arg0).GetClassOfPosTags();
+  PosTag::Class::Val classArg1 = ((const Segment&)arg1).GetClassOfPosTags();
+  if (classThis != PosTag::Class::kUndef) {
+    if (classThis == classArg0 && classThis != classArg1) {
+      return Fragment::kArg0;
+    } else if (classThis != classArg0 && classThis == classArg1) {
+      return Fragment::kArg1;
+    }
+  }
+  return Fragment::kUnknown;
 }
 
 }}}

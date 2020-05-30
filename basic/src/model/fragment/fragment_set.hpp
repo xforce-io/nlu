@@ -158,7 +158,7 @@ void FragmentSet<FragmentType>::GetFragmentBefore(
         std::vector<std::shared_ptr<FragmentType>> &result) const {
   for (auto &fragment : fragments_) {
     if (fragment->GetEnd() == offset) {
-      result.push(fragment);
+      result.push_back(fragment);
     }
   }
 }
@@ -191,7 +191,7 @@ void FragmentSet<FragmentType>::GetFragmentAfter(
         std::vector<std::shared_ptr<FragmentType>> &result) const {
   for (auto &fragment : fragments_) {
     if (fragment->GetOffset() == offset) {
-      result.push(fragment);
+      result.push_back(fragment);
     }
   }
 }

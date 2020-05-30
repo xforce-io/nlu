@@ -20,7 +20,7 @@ void FPCDongjieAndDongqu::Filter(
       syntaxTag = basic::SyntaxTag::Type::kV;
       return;
     } else if (L"得" == nextStr) {
-      for (auto &segment : nluContext.GetSegments().GetAll()) {
+      for (auto &segment : nluContext.Get<basic::Segment>().GetAll()) {
         if (segment->GetOffset() < next->GetOffset() + next->GetLen()) {
           continue;
         }

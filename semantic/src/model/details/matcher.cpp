@@ -1,5 +1,6 @@
 #include "../matcher.h"
 #include "../../conf/conf.h"
+#include "../../model/parser/parser.h"
 
 namespace xforce { namespace nlu { namespace semantic {
 

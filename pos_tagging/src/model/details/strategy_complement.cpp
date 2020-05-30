@@ -6,7 +6,7 @@ void StrategyComplement::Process(basic::NluContext &nluContext) {
   Strategy::Process(nluContext);
 
   auto &clause = nluContext.GetQuery();
-  typename basic::Segment::Set &segments = nluContext.GetSegments();
+  typename basic::Segment::Set &segments = nluContext.Get<basic::Segment>();
   for (auto &segment : segments.GetAll()) {
     if (segment->GetTags().empty()) {
       auto segmentStr = segment->GetStrFromSentence(clause);

@@ -6,11 +6,11 @@
 namespace xforce { namespace nlu { namespace basic {
 
 void FragmentExecutor::AddSegment(const Segment &segment) {
-  managerFragmentSet_->GetSegments().Add(segment);
+  managerFragmentSet_->Get<Segment>().Add(segment);
 }
 
 void FragmentExecutor::AddChunk(const Chunk &chunk) {
-  managerFragmentSet_->GetChunks().Add(chunk);
+  managerFragmentSet_->Get<Chunk>().Add(chunk);
 }
 
 }}}

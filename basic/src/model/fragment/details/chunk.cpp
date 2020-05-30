@@ -8,7 +8,7 @@ namespace xforce { namespace nlu { namespace basic {
 std::shared_ptr<Segment> Chunk::FindSeg(
         const NluContext &nluContext,
         basic::PosTag::Type::Val posTag) {
-  for (auto &seg : nluContext.GetSegments().GetAll()) {
+  for (auto &seg : nluContext.Get<Segment>().GetAll()) {
     if (seg->GetBegin() >= GetBegin() &&
         seg->GetEnd() <= GetEnd() &&
         seg->GetTag() == posTag) {
@@ -33,7 +33,7 @@ void Chunk::AddTagForCtx(
       SyntaxTag::Type::Val tag) {
   if (SyntaxTag::Type::kV == tag) {
     std::shared_ptr<Segment> theVerb;
-    for (auto &segment : nluContext.GetSegments().GetAll()) {
+    for (auto &segment : nluContext.Get<Segment>().GetAll()) {
       if (chunk.GetOffset() <= segment->GetOffset()
           && segment->GetEnd() <= chunk.GetEnd()
           && segment->GetTag() == PosTag::Type::kV) {

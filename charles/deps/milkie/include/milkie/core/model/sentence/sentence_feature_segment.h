@@ -21,7 +21,7 @@ std::shared_ptr<basic::Segment::Set> SentenceFeatureSegment::GetSegmentsFromOffs
 
   size_t accuLen = 0;
   bool mark = false;
-  for (auto &segment : nluContext_->GetSegments().GetAll()) {
+  for (auto &segment : nluContext_->Get<basic::Segment>().GetAll()) {
     if (offset == (ssize_t)accuLen) {
       mark = true;
     }
@@ -40,7 +40,7 @@ std::shared_ptr<basic::Segment::Set> SentenceFeatureSegment::GetSegmentsFromOffs
 
 const std::shared_ptr<basic::Segment> SentenceFeatureSegment::GetSegmentAtOffset(ssize_t offset) const {
   ssize_t accuLen = 0;
-  for (auto &segment : nluContext_->GetSegments().GetAll()) {
+  for (auto &segment : nluContext_->Get<basic::Segment>().GetAll()) {
     if (offset == accuLen) {
       return segment;
     }

@@ -44,6 +44,8 @@ class Context {
   inline void Store();
   inline void Clear();
 
+  inline void SetNameInstruction(const std::string &name);
+  inline const std::string& GetNameInstruction() const;
   inline const std::shared_ptr<StorageVal> GetCurStorage(const StorageKey &key);
   inline const std::shared_ptr<StorageVal> GetCurStorage(const wchar_t *item);
   inline const std::wstring* GetCurStorageAsStr(const StorageKey &key);
@@ -70,6 +72,7 @@ class Context {
   ssize_t curPos_;
   std::stack<std::shared_ptr<Frame>> stack_;
 
+  std::string nameInstruction_;
   Storage storage_;
 };
 
@@ -260,6 +263,14 @@ bool Context::End() const {
 
 size_t Context::Length() const {
   return sentence_->GetSentence().length();
+}
+
+void Context::SetNameInstruction(const std::string &name) {
+  nameInstruction_ = name;
+}
+
+const std::string& Context::GetNameInstruction() const {
+  return nameInstruction_;
 }
 
 }}}

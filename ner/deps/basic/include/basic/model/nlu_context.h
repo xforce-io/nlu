@@ -16,25 +16,21 @@ class NluContext {
   const std::wstring& GetQuery() const { return query_; }
 
   inline void SetIsValid(bool isValid);
-  inline void SetNameEntities(const NameEntity::Set &nameEntities);
-  inline void SetSegments(const Segment::Set &segments);
-  inline void SetChunkSeps(const ChunkSep::Set &chunkSeps);
-  inline void SetChunks(const Chunk::Set &chunks);
+
+  template <typename FragmentType>
+  void Set(const typename FragmentType::Set &set) const;
+
   void AddPhrase(
           size_t from,
           size_t len,
           std::shared_ptr<CollectionSyntaxTag> collectionSyntaxTag,
           uint32_t strategy);
 
-  inline bool Add(const std::shared_ptr<NameEntity> &nameEntity);
-  inline bool Add(const std::shared_ptr<Segment> &segment);
-  inline bool Add(const std::shared_ptr<ChunkSep> &chunkSep);
-  inline bool Add(const std::shared_ptr<Chunk> &chunk);
+  template <typename FragmentType>
+  bool Add(const FragmentType &fragment);
 
-  inline bool Add(const NameEntity &nameEntity);
-  inline bool Add(const Segment &segment);
-  inline bool Add(const ChunkSep &chunkSep);
-  inline bool Add(const Chunk &chunk);
+  template <typename FragmentType>
+  bool Add(const std::shared_ptr<FragmentType> &fragment);
 
   inline void Clear();
 
@@ -43,15 +39,23 @@ class NluContext {
   void Reset(basic::Stage::Val stage);
 
   inline bool GetIsValid(bool check = false);
-  inline const typename NameEntity::Set& GetNameEntities() const;
-  inline typename NameEntity::Set& GetNameEntities();
-  inline const typename Segment::Set& GetSegments() const;
-  inline typename Segment::Set& GetSegments();
-  inline const typename ChunkSep::Set& GetChunkSeps() const;
-  inline typename ChunkSep::Set& GetChunkSeps();
-  inline const typename Chunk::Set& GetChunks() const;
-  inline typename Chunk::Set& GetChunks();
   const std::vector<Phrase>& GetPhrases() const { return phrases_; }
+
+  template <typename FragmentType>
+  const typename FragmentType::Set& Get() const;
+
+  template <typename FragmentType>
+  typename FragmentType::Set& Get();
+
+  template <typename FragmentType>
+  void GetFragmentBefore(
+          size_t offset,
+          std::vector<std::shared_ptr<FragmentType>> &result) const;
+
+  template <typename FragmentType>
+  void GetFragmentAfter(
+          size_t offset,
+          std::vector<std::shared_ptr<FragmentType>> &result) const;
 
   inline bool HasPredPosBefore(size_t offset) const;
 
@@ -70,80 +74,52 @@ void NluContext::SetIsValid(bool isValid) {
   isValid_ = isValid;
 }
 
-void NluContext::SetNameEntities(const NameEntity::Set &nameEntities) {
-  managerFragmentSet_->SetNameEntities(nameEntities);
+template <typename FragmentType>
+void NluContext::Set(const typename FragmentType::Set &set) const {
+  managerFragmentSet_->Set(set);
 }
 
-void NluContext::SetSegments(const typename Segment::Set &segments) {
-  managerFragmentSet_->SetSegments(segments);
+template <typename FragmentType>
+bool NluContext::Add(const FragmentType &fragment) {
+  return managerFragmentSet_->Get<FragmentType>().Add(fragment);
 }
 
-void NluContext::SetChunkSeps(const ChunkSep::Set &chunkSeps) {
-  managerFragmentSet_->SetChunkSeps(chunkSeps);
-}
-
-void NluContext::SetChunks(const typename Chunk::Set &chunks) {
-  managerFragmentSet_->SetChunks(chunks);
-}
-
-bool NluContext::Add(const std::shared_ptr<NameEntity> &nameEntity) {
-  return Add(*nameEntity);
-}
-
-bool NluContext::Add(const std::shared_ptr<Segment> &segment) {
-  return Add(*segment);
-}
-
-bool NluContext::Add(const std::shared_ptr<ChunkSep> &chunkSep) {
-  return Add(*chunkSep);
-}
-
-bool NluContext::Add(const std::shared_ptr<Chunk> &chunk) {
-  return Add(*chunk);
-}
-
-bool NluContext::Add(const NameEntity &nameEntity) {
-  return managerFragmentSet_->GetNameEntities().Add(nameEntity);
-}
-
-bool NluContext::Add(const Segment &segment) {
-  return managerFragmentSet_->GetSegments().Add(segment);
-}
-
+template <>
 bool NluContext::Add(const ChunkSep &chunkSep) {
-  auto iter = managerFragmentSet_->GetChunks().Begin();
-  while (iter != managerFragmentSet_->GetChunks().End()) {
+  auto iter = managerFragmentSet_->Get<Chunk>().Begin();
+  while (iter != managerFragmentSet_->Get<Chunk>().End()) {
     auto next = iter;
     ++next;
     if ((*iter)->GetTag() == SyntaxTag::Type::kContNp &&
         (*iter)->GetOffset() < chunkSep.GetOffset() &&
         chunkSep.GetOffset() < (*iter)->GetEnd()) {
-      managerFragmentSet_->GetChunks().Add(
+      managerFragmentSet_->Get<Chunk>().Add(
               Chunk(
                       *this,
                       SyntaxTag::Type::kContNp,
                       (*iter)->GetOffset(),
                       chunkSep.GetOffset() - (*iter)->GetOffset()));
-      managerFragmentSet_->GetChunks().Add(
+      managerFragmentSet_->Get<Chunk>().Add(
               Chunk(
                       *this,
                       SyntaxTag::Type::kContNp,
                       chunkSep.GetOffset(),
-                       (*iter)->GetEnd() - chunkSep.GetOffset()));
-      managerFragmentSet_->GetChunks().Erase(iter);
+                      (*iter)->GetEnd() - chunkSep.GetOffset()));
+      managerFragmentSet_->Get<Chunk>().Erase(iter);
     }
     iter = next;
   }
-  return managerFragmentSet_->GetChunkSeps().Add(chunkSep);
+  return managerFragmentSet_->Get<ChunkSep>().Add(chunkSep);
 }
 
-bool NluContext::Add(const Chunk &chunk) {
-  return managerFragmentSet_->GetChunks().Add(chunk);
+template <typename FragmentType>
+bool NluContext::Add(const std::shared_ptr<FragmentType> &fragment) {
+  return Add(*fragment);
 }
 
 bool NluContext::GetIsValid(bool check) {
   if (check) {
-    for (auto &chunk : managerFragmentSet_->GetChunks().GetAll()) {
+    for (auto &chunk : managerFragmentSet_->Get<Chunk>().GetAll()) {
       if (chunk->ContainTag(SyntaxTag::Type::kNp) &&
           chunk->ContainTag(SyntaxTag::Type::kVp)) {
         isValid_ = false;
@@ -154,40 +130,58 @@ bool NluContext::GetIsValid(bool check) {
   return isValid_;
 }
 
-const typename NameEntity::Set& NluContext::GetNameEntities() const {
-  return managerFragmentSet_->GetNameEntities();
+template <typename FragmentType>
+const typename FragmentType::Set& NluContext::Get() const {
+  return managerFragmentSet_->Get<FragmentType>();
 }
 
-typename NameEntity::Set& NluContext::GetNameEntities() {
-  return managerFragmentSet_->GetNameEntities();
+template <typename FragmentType>
+typename FragmentType::Set& NluContext::Get() {
+  return managerFragmentSet_->Get<FragmentType>();
 }
 
-const typename Segment::Set& NluContext::GetSegments() const {
-  return managerFragmentSet_->GetSegments();
+template <typename FragmentType>
+void NluContext::GetFragmentBefore(
+        size_t offset,
+        std::vector<std::shared_ptr<FragmentType>> &result) const {
+  Get<FragmentType>().GetFragmentBefore(offset, result);
 }
 
-typename Segment::Set& NluContext::GetSegments() {
-  return managerFragmentSet_->GetSegments();
+template <>
+void NluContext::GetFragmentBefore<SemanticUnit>(
+        size_t offset,
+        std::vector<std::shared_ptr<SemanticUnit>> &result) const {
+  std::vector<std::shared_ptr<Chunk>> chunks;
+  GetFragmentBefore(offset, chunks);
+  for (auto &chunk : chunks) {
+    if (chunk->GetSemanticUnit() != nullptr) {
+      result.push_back(chunk->GetSemanticUnit());
+    }
+  }
 }
 
-const typename ChunkSep::Set& NluContext::GetChunkSeps() const {
-  return managerFragmentSet_->GetChunkSeps();
+template <typename FragmentType>
+void NluContext::GetFragmentAfter(
+        size_t offset,
+        std::vector<std::shared_ptr<FragmentType>> &result) const {
+  Get<FragmentType>().GetFragmentAfter(offset, result);
 }
 
-typename ChunkSep::Set& NluContext::GetChunkSeps() {
-  return managerFragmentSet_->GetChunkSeps();
-}
-
-const typename Chunk::Set& NluContext::GetChunks() const {
-  return managerFragmentSet_->GetChunks();
-}
-
-typename Chunk::Set& NluContext::GetChunks() {
-  return managerFragmentSet_->GetChunks();
+template <>
+void NluContext::GetFragmentAfter<SemanticUnit>(
+        size_t offset,
+        std::vector<std::shared_ptr<SemanticUnit>> &result) const {
+  std::vector<std::shared_ptr<Chunk>> chunks;
+  GetFragmentAfter(offset, chunks);
+  for (auto &chunk : chunks) {
+    if (chunk->GetSemanticUnit() != nullptr) {
+      result.push_back(chunk->GetSemanticUnit());
+    }
+  }
 }
 
 bool NluContext::HasPredPosBefore(size_t offset) const {
-  for (auto &segment : managerFragmentSet_->GetSegments().GetAll()) {
+  for (auto &segment : managerFragmentSet_->Get<Segment>().GetAll()) {
     if (segment->GetOffset() < offset &&
         PosTag::IsPredicate(segment->GetTag())) {
       return true;

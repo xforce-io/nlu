@@ -6,7 +6,7 @@ void StrategyUniq::Process(basic::NluContext &nluContext) {
   Strategy::Process(nluContext);
 
   auto &clause = nluContext.GetQuery();
-  basic::Segment::Set &segments = nluContext.GetSegments();
+  basic::Segment::Set &segments = nluContext.Get<basic::Segment>();
   for (auto &segment : segments.GetAll()) {
     if (segment->GetTags().empty()) {
       auto segmentStr = segment->GetStrFromSentence(clause);

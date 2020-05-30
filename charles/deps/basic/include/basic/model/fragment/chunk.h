@@ -11,6 +11,7 @@
 namespace xforce { namespace nlu { namespace basic {
 
 class NluContext;
+class SemanticUnit;
 
 class Chunk : public FragmentMultitag<SyntaxTag::Type> {
  public:
@@ -40,11 +41,18 @@ class Chunk : public FragmentMultitag<SyntaxTag::Type> {
   inline void SetDescDir(DescDir descDir);
   inline DescDir GetDescDir() const;
 
-  virtual const std::string& GetCategory() const;
+  inline void SetSemanticUnit(const std::shared_ptr<SemanticUnit> &semanticUnit);
+  inline const std::shared_ptr<SemanticUnit>& GetSemanticUnit() const;
+  inline std::shared_ptr<SemanticUnit>& GetSemanticUnit();
+
+  Fragment::Category GetCategory() const { return kChunk; }
+  inline SyntaxTag::Class::Val GetClassOfSyntaxTags() const;
 
   std::shared_ptr<Segment> FindSeg(
           const NluContext &nluContext,
           basic::PosTag::Type::Val posTag);
+
+  DistRes Distance(const Fragment &arg0, const Fragment &arg1) const;
 
   virtual void Dump(JsonType &jsonType) const;
 
@@ -61,6 +69,8 @@ class Chunk : public FragmentMultitag<SyntaxTag::Type> {
   bool isArgWei_;
   bool isArgZhun_;
   bool isDoubleArgs_;
+
+  std::shared_ptr<SemanticUnit> semanticUnit_;
 };
 
 Chunk::Chunk() :
@@ -94,5 +104,52 @@ void Chunk::SetDescDir(DescDir descDir) {
 Chunk::DescDir Chunk::GetDescDir() const {
   return descDir_;
 }
+
+void Chunk::SetSemanticUnit(const std::shared_ptr<SemanticUnit> &semanticUnit) {
+  semanticUnit_ = semanticUnit;
+}
+
+const std::shared_ptr<SemanticUnit>& Chunk::GetSemanticUnit() const {
+  return semanticUnit_;
+}
+
+std::shared_ptr<SemanticUnit>& Chunk::GetSemanticUnit() {
+  return semanticUnit_;
+}
+
+SyntaxTag::Class::Val Chunk::GetClassOfSyntaxTags() const {
+  SyntaxTag::Class::Val result = SyntaxTag::Class::kUndef;
+  for (auto &tag : tags_) {
+    auto curTag = SyntaxTag::GetClass(tag);
+    if (SyntaxTag::Class::kUndef == curTag ||
+            (SyntaxTag::Class::kUndef != result &&
+            curTag != result)) {
+      return SyntaxTag::Class::kUndef;
+    }
+    result = curTag;
+  }
+  return result;
+}
+
+typename Fragment::DistRes
+Chunk::Distance(const Fragment &arg0, const Fragment &arg1) const {
+  if (arg0.GetCategory() != Category::kChunk ||
+      arg1.GetCategory() != Category::kChunk) {
+    return Fragment::kUnknown;
+  }
+
+  SyntaxTag::Class::Val classThis = GetClassOfSyntaxTags();
+  SyntaxTag::Class::Val classArg0 = ((const Chunk&)arg0).GetClassOfSyntaxTags();
+  SyntaxTag::Class::Val classArg1 = ((const Chunk&)arg1).GetClassOfSyntaxTags();
+  if (classThis != SyntaxTag::Class::kUndef) {
+    if (classThis == classArg0 && classThis != classArg1) {
+      return Fragment::kArg0;
+    } else if (classThis != classArg0 && classThis == classArg1) {
+      return Fragment::kArg1;
+    }
+  }
+  return Fragment::kUnknown;
+}
+
 
 }}}

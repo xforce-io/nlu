@@ -50,12 +50,12 @@ class NluContext {
   template <typename FragmentType>
   void GetFragmentBefore(
           size_t offset,
-          std::vector<std::shared_ptr<FragmentType>> &result);
+          std::vector<std::shared_ptr<FragmentType>> &result) const;
 
   template <typename FragmentType>
   void GetFragmentAfter(
           size_t offset,
-          std::vector<std::shared_ptr<FragmentType>> &result);
+          std::vector<std::shared_ptr<FragmentType>> &result) const;
 
   inline bool HasPredPosBefore(size_t offset) const;
 
@@ -143,14 +143,14 @@ typename FragmentType::Set& NluContext::Get() {
 template <typename FragmentType>
 void NluContext::GetFragmentBefore(
         size_t offset,
-        std::vector<std::shared_ptr<FragmentType>> &result) {
+        std::vector<std::shared_ptr<FragmentType>> &result) const {
   Get<FragmentType>().GetFragmentBefore(offset, result);
 }
 
 template <>
 void NluContext::GetFragmentBefore<SemanticUnit>(
         size_t offset,
-        std::vector<std::shared_ptr<SemanticUnit>> &result) {
+        std::vector<std::shared_ptr<SemanticUnit>> &result) const {
   std::vector<std::shared_ptr<Chunk>> chunks;
   GetFragmentBefore(offset, chunks);
   for (auto &chunk : chunks) {
@@ -163,14 +163,14 @@ void NluContext::GetFragmentBefore<SemanticUnit>(
 template <typename FragmentType>
 void NluContext::GetFragmentAfter(
         size_t offset,
-        std::vector<std::shared_ptr<FragmentType>> &result) {
+        std::vector<std::shared_ptr<FragmentType>> &result) const {
   Get<FragmentType>().GetFragmentAfter(offset, result);
 }
 
 template <>
 void NluContext::GetFragmentAfter<SemanticUnit>(
         size_t offset,
-        std::vector<std::shared_ptr<SemanticUnit>> &result) {
+        std::vector<std::shared_ptr<SemanticUnit>> &result) const {
   std::vector<std::shared_ptr<Chunk>> chunks;
   GetFragmentAfter(offset, chunks);
   for (auto &chunk : chunks) {

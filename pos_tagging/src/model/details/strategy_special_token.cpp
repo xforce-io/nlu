@@ -5,7 +5,7 @@ namespace xforce { namespace nlu { namespace pos {
 void StrategySpecialToken::Process(basic::NluContext &nluContext) {
   Strategy::Process(nluContext);
 
-  for (auto &segment : nluContext.GetSegments().GetAll()) {
+  for (auto &segment : nluContext.Get<basic::Segment>().GetAll()) {
     if (!segment->GetTags().empty()) {
       continue;
     }

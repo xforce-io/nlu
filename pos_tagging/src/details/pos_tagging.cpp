@@ -72,7 +72,7 @@ void PosTagging::PostProcess_(basic::NluContext &nluContext) {
   while (true) {
     bool touched = false;
 
-    auto &segs = nluContext.GetSegments().GetAll();
+    auto &segs = nluContext.Get<basic::Segment>().GetAll();
     auto cur = segs.begin();
     if (cur == segs.end()) {
       return;
@@ -97,7 +97,7 @@ void PosTagging::PostProcess_(basic::NluContext &nluContext) {
                   (*cur)->GetLen() + (*next)->GetLen());
           auto afterNext = next;
           ++afterNext;
-          nluContext.GetSegments().Erase(cur, afterNext);
+          nluContext.Get<basic::Segment>().Erase(cur, afterNext);
           nluContext.Add(newSegment);
           touched = true;
           break;

@@ -64,7 +64,7 @@ void Matcher::ParseAccordingToRule_(std::shared_ptr<basic::NluContext> nluContex
 
     auto storageItems = storageKv.second->Get();
     if (vals[0] == kChunkStoragePrefix) {
-      for (auto &segment : nluContext->GetSegments().GetAll()) {
+      for (auto &segment : nluContext->Get<basic::Segment>().GetAll()) {
         for (auto &storageItem : storageItems) {
           if (segment->GetOffset() == storageItem.GetOffset() ||
               segment->GetOffset() == storageItem.GetOffset() + storageItem.GetLen()) {
@@ -104,7 +104,7 @@ void Matcher::ParseAccordingToRule_(std::shared_ptr<basic::NluContext> nluContex
 }
 
 void Matcher::ParseCommon_(basic::NluContext &nluContext) {
-  auto &segments = nluContext.GetSegments().GetAll();
+  auto &segments = nluContext.Get<basic::Segment>().GetAll();
   auto cur = segments.begin();
   while (cur != segments.end()) {
     auto next = cur;
