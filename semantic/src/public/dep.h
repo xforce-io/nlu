@@ -8,6 +8,7 @@
 #include "basic/model/fragment/segment.h"
 #include "basic/model/fragment/name_entity.h"
 #include "basic/model/fragment/chunk.h"
+#include "basic/model/semantic_unit/semantic_unit_entity.h"
 
 #include "milkie/milkie.h"
 #include "milkie/manager/manager.h"
