@@ -2,6 +2,7 @@
 
 #include "../public.h"
 #include "fragment/manager_fragment_set.h"
+#include "semantic_unit/semantic_unit_entity.h"
 
 namespace xforce { namespace nlu { namespace basic {
 
@@ -160,6 +161,20 @@ void NluContext::GetFragmentBefore<SemanticUnit>(
   }
 }
 
+template <>
+void NluContext::GetFragmentBefore<SemanticUnitEntity>(
+        size_t offset,
+        std::vector<std::shared_ptr<SemanticUnitEntity>> &result) const {
+  std::vector<std::shared_ptr<Chunk>> chunks;
+  GetFragmentBefore(offset, chunks);
+  for (auto &chunk : chunks) {
+    if (chunk->GetSemanticUnit() != nullptr &&
+        chunk->GetSemanticUnit()->GetType() == SemanticUnit::Type::kSemanticUnitEntity) {
+      result.push_back((std::dynamic_pointer_cast<SemanticUnitEntity>)(chunk->GetSemanticUnit()));
+    }
+  }
+}
+
 template <typename FragmentType>
 void NluContext::GetFragmentAfter(
         size_t offset,
@@ -176,6 +191,20 @@ void NluContext::GetFragmentAfter<SemanticUnit>(
   for (auto &chunk : chunks) {
     if (chunk->GetSemanticUnit() != nullptr) {
       result.push_back(chunk->GetSemanticUnit());
+    }
+  }
+}
+
+template <>
+void NluContext::GetFragmentAfter<SemanticUnitEntity>(
+        size_t offset,
+        std::vector<std::shared_ptr<SemanticUnitEntity>> &result) const {
+  std::vector<std::shared_ptr<Chunk>> chunks;
+  GetFragmentAfter(offset, chunks);
+  for (auto &chunk : chunks) {
+    if (chunk->GetSemanticUnit() != nullptr &&
+        chunk->GetSemanticUnit()->GetType() == SemanticUnit::Type::kSemanticUnitEntity) {
+      result.push_back((std::dynamic_pointer_cast<SemanticUnitEntity>)(chunk->GetSemanticUnit()));
     }
   }
 }

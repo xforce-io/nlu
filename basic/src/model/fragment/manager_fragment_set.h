@@ -5,6 +5,7 @@
 #include "name_entity.h"
 #include "chunk_sep.h"
 #include "chunk.h"
+#include "../semantic_unit/semantic_unit.h"
 
 namespace xforce { namespace nlu { namespace basic {
 
@@ -34,6 +35,7 @@ class ManagerFragmentSet {
   typename Segment::Set segments_;
   typename ChunkSep::Set chunkSeps_;
   typename Chunk::Set chunks_;
+  typename SemanticUnit::Set semanticUnits_;
 };
 
 template <>
@@ -54,6 +56,11 @@ void ManagerFragmentSet::Set<ChunkSep>(const typename ChunkSep::Set &set) {
 template <>
 void ManagerFragmentSet::Set<Chunk>(const typename Chunk::Set &set) {
   chunks_ = set;
+}
+
+template <>
+void ManagerFragmentSet::Set<SemanticUnit>(const typename SemanticUnit::Set &set) {
+  semanticUnits_ = set;
 }
 
 template <>
@@ -94,6 +101,16 @@ const typename Chunk::Set& ManagerFragmentSet::Get<Chunk>() const {
 template <>
 typename Chunk::Set& ManagerFragmentSet::Get<Chunk>() {
   return chunks_;
+}
+
+template <>
+const typename SemanticUnit::Set& ManagerFragmentSet::Get<SemanticUnit>() const {
+  return semanticUnits_;
+}
+
+template <>
+typename SemanticUnit::Set& ManagerFragmentSet::Get<SemanticUnit>() {
+  return semanticUnits_;
 }
 
 }}}
