@@ -1,11 +1,13 @@
 #include "../matcher.h"
 #include "../../conf/conf.h"
 #include "../../model/parser/parser.h"
+#include "../../model/parser/parser_mid_conj.h"
 
 namespace xforce { namespace nlu { namespace semantic {
 
 Matcher::Matcher() :
         ruleEngine_(new milkie::Milkie()) {
+  parsers_.push_back(new ParserMidConj());
 }
 
 Matcher::~Matcher() {
@@ -23,8 +25,10 @@ bool Matcher::Init() {
   }
 }
 
-void Matcher::Matcher(std::shared_ptr<basic::NluContext> nluContext) {
-
+void Matcher::Match(std::shared_ptr<basic::NluContext> nluContext) {
+  for (auto *parser : parsers_) {
+    parser->Process(nluContext)
+  }
 }
 
 }}}

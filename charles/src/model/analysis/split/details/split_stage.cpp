@@ -26,24 +26,32 @@ void SplitStage::Process(std::shared_ptr<basic::NluContext> &nluContext) {
       pos::PosTagging::Tagging(nluContext);
       chunker::Chunker::Parse(nluContext);
       syntax::Syntax::Parse(nluContext);
+      semantic::Semantic::Parse(nluContext);
       break;
     case basic::Stage::kSegment :
       segmentor::Segmentor::Parse(nluContext);
       pos::PosTagging::Tagging(nluContext);
       chunker::Chunker::Parse(nluContext);
       syntax::Syntax::Parse(nluContext);
+      semantic::Semantic::Parse(nluContext);
       break;
     case basic::Stage::kPosTag :
       pos::PosTagging::Tagging(nluContext);
       chunker::Chunker::Parse(nluContext);
       syntax::Syntax::Parse(nluContext);
+      semantic::Semantic::Parse(nluContext);
       break;
     case basic::Stage::kChunk :
       chunker::Chunker::Parse(nluContext);
       syntax::Syntax::Parse(nluContext);
+      semantic::Semantic::Parse(nluContext);
       break;
     case basic::Stage::kSyntax :
       syntax::Syntax::Parse(nluContext);
+      semantic::Semantic::Parse(nluContext);
+      break;
+    case basic::Stage::kSemantic :
+      semantic::Semantic::Parse(nluContext);
       break;
     default :
       break;

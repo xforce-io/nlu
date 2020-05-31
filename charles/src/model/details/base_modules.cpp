@@ -5,6 +5,7 @@
 #include "pos_tagging/pos_tagging.h"
 #include "chunker/chunker.h"
 #include "syntax/syntax.h"
+#include "semantic/semantic.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
@@ -38,6 +39,8 @@ bool BaseModules::Init(const xforce::JsonType &conf) {
     FATAL("fail_init_syntax");
     return false;
   }
+
+  ret = xforce::nlu::semantic::Semantic::Init();
   return true;
 }
 

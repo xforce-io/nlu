@@ -11,6 +11,7 @@ struct Stage {
     kPosTag,
     kChunk,
     kSyntax,
+    kSemantic,
     kEnd,
   };
 
@@ -26,6 +27,8 @@ Stage::Val Stage::GetPrev(Stage::Val stage) {
       return kPosTag;
     case kSyntax :
       return kChunk;
+    case kSemantic:
+      return kSyntax;
     case kEnd :
       return kSyntax;
     default :
@@ -44,6 +47,8 @@ Stage::Val Stage::GetNext(Stage::Val stage) {
     case kChunk :
       return kSyntax;
     case kSyntax :
+      return kSemantic;
+    case kSemantic :
       return kEnd;
     default :
       return kNone;

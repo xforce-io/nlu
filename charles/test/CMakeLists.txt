@@ -13,6 +13,7 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/../deps/pos_tagging/include/
   ${CMAKE_SOURCE_DIR}/../deps/chunker/include/
   ${CMAKE_SOURCE_DIR}/../deps/syntax/include/
+  ${CMAKE_SOURCE_DIR}/../deps/semantic/include/
   ../3rd/lua-5.3.5/include
 )
 
@@ -29,6 +30,7 @@ set(CMAKE_CXX_COMPILER g++)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -Wno-sign-compare -ansi -pthread -std=c++11 -DUT_TEST -DUNICODE=1")
 set(LIB_DEPS
+  ${CMAKE_SOURCE_DIR}/../deps/semantic/lib/semantic/libsemantic.a
   ${CMAKE_SOURCE_DIR}/../deps/syntax/lib/syntax/libsyntax.a
   ${CMAKE_SOURCE_DIR}/../deps/chunker/lib/chunker/libchunker.a
   ${CMAKE_SOURCE_DIR}/../deps/pos_tagging/lib/pos_tagging/libpos_tagging.a

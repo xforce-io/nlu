@@ -13,6 +13,7 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/deps/pos_tagging/include/
   ${CMAKE_SOURCE_DIR}/deps/chunker/include/
   ${CMAKE_SOURCE_DIR}/deps/syntax/include/
+  ${CMAKE_SOURCE_DIR}/deps/semantic/include/
 )
 
 link_directories(
@@ -25,7 +26,8 @@ set(CMAKE_CXX_COMPILER g++)
 FILE(GLOB_RECURSE SEG_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -DUNICODE=1")
-set(LIB_DEPS 
+set(LIB_DEPS
+  ${CMAKE_SOURCE_DIR}/deps/semantic/lib/semantic/libsemantic.a
   ${CMAKE_SOURCE_DIR}/deps/syntax/lib/syntax/libsyntax.a
   ${CMAKE_SOURCE_DIR}/deps/chunker/lib/chunker/libchunker.a
   ${CMAKE_SOURCE_DIR}/deps/pos_tagging/lib/pos_tagging/libpos_tagging.a
@@ -37,7 +39,7 @@ set(LIB_DEPS
 )
 
 add_executable(charles
-  ${SEG_FILES} src/charles.h src/details/charles.cpp src/model/analysis/split/rule.h src/model/analysis/split/rule_pos_tag.h src/model/analysis/split/details/rule_pos_tag.cpp src/model/analysis/split/rule_syntax_rule.h src/model/analysis/split/details/rule_syntax_rule.cpp src/model/analysis/split/split_rule_mgr.h src/model/analysis/split/details/split_rule_mgr.cpp src/model/analysis/split/split_stage.h src/model/analysis/split/details/split_stage.cpp src/model/analysis/split/rule_syntax_prep.h src/model/analysis/split/details/rule_syntax_prep.cpp src/model/analysis/split/details/rule.cpp src/model/analysis/split/rule_syntax_cont_np.h src/model/analysis/split/details/rule_syntax_cont_np.cpp src/model/analysis/split/forbid_item.h src/model/analysis/split/forbid_mgr.h src/model/analysis/split/details/forbid_mgr.cpp src/model/analysis/split/rule_syntax_verb_arg.h src/model/analysis/split/details/rule_syntax_verb_arg.cpp src/model/analysis/split/rule_syntax_arg.h src/model/analysis/split/details/rule_syntax_arg.cpp src/model/analysis/split/rule_syntax_rp_arg.h src/model/analysis/split/details/rule_syntax_rp_arg.cpp src/model/analysis/collection_nlu_context.h src/model/analysis/analysis_cache.h src/model/analysis/details/analysis_cache.cpp)
+  ${SEG_FILES})
 
 target_link_libraries(charles
   ${LIB_DEPS}

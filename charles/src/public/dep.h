@@ -35,3 +35,5 @@
 #include "chunker/chunker.h"
 
 #include "syntax/syntax.h"
+
+#include "semantic/semantic.h"
