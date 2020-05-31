@@ -15,7 +15,7 @@ bool GkbConj::Pos(
         const std::wstring &word,
         bool &prev,
         bool &mid,
-        bool &post) {
+        bool &post) const {
   auto entries = GetEntries(word);
   if (nullptr == entries || entries->empty()) {
     return false;

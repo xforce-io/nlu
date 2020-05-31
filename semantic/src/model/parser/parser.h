@@ -6,7 +6,17 @@ class Parser {
  public:
   Parser() {} 
   virtual ~Parser() {} 
-  virtual void Process(basic::NluContext &nluContext) = 0;
+  inline void Process(basic::NluContext &nluContext);
+
+ protected:
+  virtual bool Filter_(basic::NluContext &nluContext) = 0;
+  virtual void Process_(basic::NluContext &nluContext) = 0;
 };
+
+void Parser::Process(basic::NluContext &nluContext) {
+  if (Filter_(nluContext)) {
+    Process(nluContext);
+  }
+}
 
 }}}
