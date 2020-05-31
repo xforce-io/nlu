@@ -70,9 +70,10 @@ class Fragment {
   inline bool Intersect(size_t offset, size_t len) const;
   inline bool Intersect(const Fragment &fragment) const;
   virtual bool Same(const Fragment &other) const;
-  virtual DistRes Distance(
-          const Fragment &/*arg0*/,
-          const Fragment &/*arg1*/) const { return kUnknown; }
+  virtual ssize_t Distance(const Fragment &/*other*/) const { return -1; }
+  inline DistRes DistanceCmp(
+          const Fragment &arg0,
+          const Fragment &arg1) const;
 
   virtual void Dump(JsonType &jsonType) const;
 
@@ -194,6 +195,19 @@ bool Fragment::Intersect(size_t offset, size_t len) const {
 bool Fragment::Intersect(const Fragment &fragment) const {
   return father_ == fragment.GetFather() &&
       Intersect(fragment.GetOffset(), fragment.GetLen());
+}
+
+typename Fragment::DistRes Fragment::DistanceCmp(
+        const Fragment &arg0,
+        const Fragment &arg1) const {
+  ssize_t distArg0 = Distance(arg0);
+  ssize_t distArg1 = Distance(arg1);
+  if (distArg0 >= 0 && distArg0 <= distArg1) {
+    return Fragment::kArg0;
+  } else if (distArg1 >= 0 && distArg1 <= distArg0) {
+    return Fragment::kArg1;
+  }
+  return Fragment::kUnknown;
 }
 
 }}}

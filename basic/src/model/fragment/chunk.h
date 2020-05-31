@@ -131,26 +131,6 @@ SyntaxTag::Class::Val Chunk::GetClassOfSyntaxTags() const {
   return result;
 }
 
-typename Fragment::DistRes
-Chunk::Distance(const Fragment &arg0, const Fragment &arg1) const {
-  if (arg0.GetCategory() != Category::kChunk ||
-      arg1.GetCategory() != Category::kChunk) {
-    return Fragment::kUnknown;
-  }
-
-  SyntaxTag::Class::Val classThis = GetClassOfSyntaxTags();
-  SyntaxTag::Class::Val classArg0 = ((const Chunk&)arg0).GetClassOfSyntaxTags();
-  SyntaxTag::Class::Val classArg1 = ((const Chunk&)arg1).GetClassOfSyntaxTags();
-  if (classThis != SyntaxTag::Class::kUndef) {
-    if (classThis == classArg0 && classThis != classArg1) {
-      return Fragment::kArg0;
-    } else if (classThis != classArg0 && classThis == classArg1) {
-      return Fragment::kArg1;
-    }
-  }
-  return Fragment::kUnknown;
-}
-
 ssize_t Chunk::Distance(const Fragment &other) const {
   if (other.GetCategory() != Category::kChunk) {
     return -1;

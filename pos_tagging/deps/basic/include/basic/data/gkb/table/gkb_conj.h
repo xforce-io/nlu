@@ -19,7 +19,7 @@ class GkbConj : public Table<EntryConj> {
           const std::wstring &word,
           bool &prev,
           bool &mid,
-          bool &post);
+          bool &post) const;
 };
 
 }}}
