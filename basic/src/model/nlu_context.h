@@ -113,6 +113,26 @@ inline bool NluContext::Add(const ChunkSep &chunkSep) {
   return managerFragmentSet_->Get<ChunkSep>().Add(chunkSep);
 }
 
+template <>
+inline bool NluContext::Add(const Chunk &chunk) {
+  if (chunk.GetClassOfSyntaxTags() == SyntaxTag::Class::kNp) {
+    auto iter = managerFragmentSet_->Get<Chunk>().GetAll().begin();
+    for (auto &tmpChunk : managerFragmentSet_->Get<Chunk>().GetAll()) {
+      if (tmpChunk->GetTag() == SyntaxTag::Type::kContNp) {
+        if (tmpChunk->GetEnd() == chunk.GetEnd() &&
+            tmpChunk->GetOffset() < chunk.GetOffset()) {
+          tmpChunk->SetLen(chunk.GetOffset() - tmpChunk->GetOffset());
+        } else if (tmpChunk->GetBegin() == chunk.GetBegin() &&
+            tmpChunk->GetEnd() > chunk.GetEnd()) {
+          tmpChunk->SetOffset(chunk.GetEnd());
+          tmpChunk->SetLen(tmpChunk->GetEnd() - chunk.GetEnd());
+        }
+      }
+    }
+  }
+  return managerFragmentSet_->Get<Chunk>().Add(chunk);
+}
+
 template <typename FragmentType>
 bool NluContext::Add(const std::shared_ptr<FragmentType> &fragment) {
   return Add(*fragment);
