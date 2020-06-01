@@ -116,16 +116,17 @@ inline bool NluContext::Add(const ChunkSep &chunkSep) {
 template <>
 inline bool NluContext::Add(const Chunk &chunk) {
   if (chunk.GetClassOfSyntaxTags() == SyntaxTag::Class::kNp) {
-    auto iter = managerFragmentSet_->Get<Chunk>().GetAll().begin();
-    for (auto &tmpChunk : managerFragmentSet_->Get<Chunk>().GetAll()) {
-      if (tmpChunk->GetTag() == SyntaxTag::Type::kContNp) {
-        if (tmpChunk->GetEnd() == chunk.GetEnd() &&
-            tmpChunk->GetOffset() < chunk.GetOffset()) {
-          tmpChunk->SetLen(chunk.GetOffset() - tmpChunk->GetOffset());
-        } else if (tmpChunk->GetBegin() == chunk.GetBegin() &&
-            tmpChunk->GetEnd() > chunk.GetEnd()) {
-          tmpChunk->SetOffset(chunk.GetEnd());
-          tmpChunk->SetLen(tmpChunk->GetEnd() - chunk.GetEnd());
+    for (auto &contChunk : managerFragmentSet_->Get<Chunk>().GetAll()) {
+      if (contChunk->GetTag() == SyntaxTag::Type::kContNp) {
+        if (contChunk->GetOffset() < chunk.GetOffset() &&
+            contChunk->GetEnd() >= chunk.GetOffset() &&
+            contChunk->GetEnd() <= chunk.GetEnd()) {
+          contChunk->SetLen(chunk.GetOffset() - contChunk->GetOffset());
+        } else if (contChunk->GetEnd() > chunk.GetEnd() &&
+            contChunk->GetOffset() >= chunk.GetOffset() &&
+            contChunk->GetOffset() <= chunk.GetEnd()) {
+          contChunk->SetOffset(chunk.GetEnd());
+          contChunk->SetLen(contChunk->GetEnd() - chunk.GetEnd());
         }
       }
     }
