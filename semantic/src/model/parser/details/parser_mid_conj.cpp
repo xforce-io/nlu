@@ -14,6 +14,7 @@ bool ParserMidConj::Filter_(basic::NluContext &nluContext) {
       }
     }
   }
+  return !conjs_.empty();
 }
 
 void ParserMidConj::Process_(basic::NluContext &nluContext) {
@@ -32,8 +33,9 @@ bool ParserMidConj::ProcessFeature_(
         std::shared_ptr<basic::Segment> &conj) {
   std::vector<std::shared_ptr<FragmentType>> before;
   std::vector<std::shared_ptr<FragmentType>> after;
-  nluContext.GetFragmentBefore(conj->GetOffset(), before);
-  nluContext.GetFragmentAfter(conj->GetOffset(), after);
+  nluContext.GetFragmentBefore<FragmentType>(conj->GetOffset(), before);
+  nluContext.GetFragmentAfter<FragmentType>(conj->GetEnd(), after);
+
   ssize_t minDist = SSIZE_MAX;
   std::shared_ptr<FragmentType> minBefore;
   std::shared_ptr<FragmentType> minAfter;
@@ -57,7 +59,8 @@ bool ParserMidConj::ProcessFeature_(
             nluContext,
             basic::SyntaxTag::Type::kNp,
             minBefore->GetOffset(),
-            minAfter->GetEnd() - minBefore->GetOffset());
+            minAfter->GetEnd() - minBefore->GetOffset(),
+            600);
     nluContext.Add(newChunk);
     return true;
   }

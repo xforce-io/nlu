@@ -12,6 +12,11 @@ bool Conf::Init(const xforce::JsonType &confJson) {
           "fail_get_dataDir")
   dataDir_ = confJson["dataDir"].AsStr();
 
+  XFC_FAIL_HANDLE_FATAL(
+          !confJson["parserConfpath"].IsStr(),
+          "fail_get_parserConfpath")
+  parserConfpath_ = confJson["parserConfpath"].AsStr();
+
   return true;
 
   ERROR_HANDLE:

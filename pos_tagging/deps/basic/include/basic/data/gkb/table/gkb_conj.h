@@ -15,7 +15,7 @@ class GkbConj : public Table<EntryConj> {
           const std::string &dir,
           const std::string &filepath);
 
-  inline bool Pos(
+  bool Pos(
           const std::wstring &word,
           bool &prev,
           bool &mid,

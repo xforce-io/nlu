@@ -9,26 +9,6 @@ ManagerFragmentSet::ManagerFragmentSet(const std::wstring &query) :
     chunkSeps_(query),
     chunks_(query) {}
 
-void ManagerFragmentSet::Dump(
-        JsonType &jsonType,
-        const ManagerFragmentSet *managerFragmentSet) const {
-  nameEntities_.Dump(
-          jsonType,
-          nullptr != managerFragmentSet ? &(managerFragmentSet->nameEntities_) : nullptr);
-
-  segments_.Dump(
-          jsonType,
-          nullptr != managerFragmentSet ? &(managerFragmentSet->segments_) : nullptr);
-
-  chunkSeps_.Dump(
-          jsonType,
-          nullptr != managerFragmentSet ? &(managerFragmentSet->chunkSeps_) : nullptr);
-
-  chunks_.Dump(
-          jsonType,
-          nullptr != managerFragmentSet ? &(managerFragmentSet->chunks_) : nullptr);
-}
-
 ManagerFragmentSet* ManagerFragmentSet::Build(
         size_t from,
         size_t to) {
@@ -78,6 +58,26 @@ ManagerFragmentSet* ManagerFragmentSet::Clone() {
   managerFragmentSet->Set<ChunkSep>(chunkSeps_);
   managerFragmentSet->Set<Chunk>(chunks_);
   return managerFragmentSet;
+}
+
+void ManagerFragmentSet::Dump(
+        JsonType &jsonType,
+        const ManagerFragmentSet *managerFragmentSet) const {
+  nameEntities_.Dump(
+          jsonType,
+          nullptr != managerFragmentSet ? &(managerFragmentSet->nameEntities_) : nullptr);
+
+  segments_.Dump(
+          jsonType,
+          nullptr != managerFragmentSet ? &(managerFragmentSet->segments_) : nullptr);
+
+  chunkSeps_.Dump(
+          jsonType,
+          nullptr != managerFragmentSet ? &(managerFragmentSet->chunkSeps_) : nullptr);
+
+  chunks_.Dump(
+          jsonType,
+          nullptr != managerFragmentSet ? &(managerFragmentSet->chunks_) : nullptr);
 }
 
 }}}

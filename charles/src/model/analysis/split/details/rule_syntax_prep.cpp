@@ -44,9 +44,9 @@ void RuleSyntaxPrep::Split(
     }
   }
 
-  auto iter = nluContext->GetSegments().GetAll().begin();
+  auto iter = nluContext->Get<basic::Segment>().GetAll().begin();
   std::shared_ptr<basic::Segment> lastSegment;
-  while (iter != nluContext->GetSegments().GetAll().end()) {
+  while (iter != nluContext->Get<basic::Segment>().GetAll().end()) {
     auto segment = *iter;
     if (segment->GetOffset() < GetEnd() || GetEnd() == segment->GetBegin()) {
       ++iter;
@@ -73,7 +73,7 @@ void RuleSyntaxPrep::Split(
               return chunk.ContainTag(basic::SyntaxTag::Type::kV);
           };
 
-          auto chunk = nluContext->GetChunks().GetFragmentAfter(segment->GetEnd(), filter);
+          auto chunk = nluContext->Get<basic::Chunk>().GetFragmentAfter(segment->GetEnd(), filter);
           if (chunk != nullptr) {
             subChunkTo = chunk->GetEnd();
           }
@@ -100,7 +100,7 @@ void RuleSyntaxPrep::Split(
 
   size_t pos = offset_+len_;
   while (pos < nluContext->GetQuery().length()) {
-    auto chunk = nluContext->GetChunks().GetLongFragmentAfter(pos);
+    auto chunk = nluContext->Get<basic::Chunk>().GetLongFragmentAfter(pos);
     if (nullptr==chunk) {
       break;
     } 
@@ -129,7 +129,7 @@ void RuleSyntaxPrep::Split(
 
   pos = offset_+len_;
   while (pos < nluContext->GetQuery().length()) {
-    auto chunk = nluContext->GetChunks().GetLongFragmentAfter(pos);
+    auto chunk = nluContext->Get<basic::Chunk>().GetLongFragmentAfter(pos);
     if (nullptr==chunk) {
       break;
     } 

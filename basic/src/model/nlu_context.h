@@ -86,7 +86,7 @@ bool NluContext::Add(const FragmentType &fragment) {
 }
 
 template <>
-bool NluContext::Add(const ChunkSep &chunkSep) {
+inline bool NluContext::Add(const ChunkSep &chunkSep) {
   auto iter = managerFragmentSet_->Get<Chunk>().Begin();
   while (iter != managerFragmentSet_->Get<Chunk>().End()) {
     auto next = iter;
@@ -149,7 +149,7 @@ void NluContext::GetFragmentBefore(
 }
 
 template <>
-void NluContext::GetFragmentBefore<SemanticUnit>(
+inline void NluContext::GetFragmentBefore<SemanticUnit>(
         size_t offset,
         std::vector<std::shared_ptr<SemanticUnit>> &result) const {
   std::vector<std::shared_ptr<Chunk>> chunks;
@@ -162,7 +162,7 @@ void NluContext::GetFragmentBefore<SemanticUnit>(
 }
 
 template <>
-void NluContext::GetFragmentBefore<SemanticUnitEntity>(
+inline void NluContext::GetFragmentBefore<SemanticUnitEntity>(
         size_t offset,
         std::vector<std::shared_ptr<SemanticUnitEntity>> &result) const {
   std::vector<std::shared_ptr<Chunk>> chunks;
@@ -183,7 +183,7 @@ void NluContext::GetFragmentAfter(
 }
 
 template <>
-void NluContext::GetFragmentAfter<SemanticUnit>(
+inline void NluContext::GetFragmentAfter<SemanticUnit>(
         size_t offset,
         std::vector<std::shared_ptr<SemanticUnit>> &result) const {
   std::vector<std::shared_ptr<Chunk>> chunks;
@@ -196,7 +196,7 @@ void NluContext::GetFragmentAfter<SemanticUnit>(
 }
 
 template <>
-void NluContext::GetFragmentAfter<SemanticUnitEntity>(
+inline void NluContext::GetFragmentAfter<SemanticUnitEntity>(
         size_t offset,
         std::vector<std::shared_ptr<SemanticUnitEntity>> &result) const {
   std::vector<std::shared_ptr<Chunk>> chunks;

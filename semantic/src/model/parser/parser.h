@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../../public.h"
 
 namespace xforce { namespace nlu { namespace semantic {
@@ -15,7 +17,7 @@ class Parser {
 
 void Parser::Process(basic::NluContext &nluContext) {
   if (Filter_(nluContext)) {
-    Process(nluContext);
+    Process_(nluContext);
   }
 }
 

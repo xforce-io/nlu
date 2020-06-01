@@ -20,7 +20,7 @@ void RuleSyntaxContNp::Split(
     return;
   }
 
-  for (auto &segment : nluContext->GetSegments().GetAll()) {
+  for (auto &segment : nluContext->Get<basic::Segment>().GetAll()) {
     if (segment->GetEnd() <= offset_ ||
         segment->GetEnd() == offset_+len_ ||
         segment->GetOffset() >= offset_+len_) {
@@ -73,7 +73,7 @@ Rule* RuleSyntaxContNp::Clone() {
 }
 
 bool RuleSyntaxContNp::Filter_(const std::shared_ptr<basic::NluContext> &nluContext) const {
-  for (auto &chunk : nluContext->GetChunks().GetAll()) {
+  for (auto &chunk : nluContext->Get<basic::Chunk>().GetAll()) {
     bool hasCommon = false;
     for (auto &tag : chunk->GetTags()) {
       if (!basic::SyntaxTag::Type::IsSpecial(tag)) {

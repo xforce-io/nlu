@@ -40,7 +40,11 @@ bool BaseModules::Init(const xforce::JsonType &conf) {
     return false;
   }
 
-  ret = xforce::nlu::semantic::Semantic::Init();
+  ret = xforce::nlu::semantic::Semantic::Init(conf["semantic"]);
+  if (!ret) {
+    FATAL("fail_init_semantic");
+    return false;
+  }
   return true;
 }
 

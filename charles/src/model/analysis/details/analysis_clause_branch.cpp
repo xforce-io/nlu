@@ -123,7 +123,7 @@ bool AnalysisClauseBranch::AllChildrenEnd_() {
 }
 
 bool AnalysisClauseBranch::IsFinished_(basic::NluContext &nluContext) {
-  for (auto &chunk : nluContext.GetChunks().GetAll()) {
+  for (auto &chunk : nluContext.Get<basic::Chunk>().GetAll()) {
     if (chunk->GetOffset() != 0 ||
         chunk->GetLen() != nluContext.GetQuery().length()) {
       continue;
@@ -174,7 +174,7 @@ int AnalysisClauseBranch::VerifySubBranches_() {
             phrase.GetFrom(),
             phrase.GetLen(),
             1);
-    nluContext_->GetChunks().Add(chunkForPhrase);
+    nluContext_->Get<basic::Chunk>().Add(chunkForPhrase);
   }
   return !nluContext_->GetPhrases().empty() ? 0 : -1;
 }

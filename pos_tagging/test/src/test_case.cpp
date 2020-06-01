@@ -39,7 +39,7 @@ TEST(test_case, all) {
     PosTagging::Tagging(nluContext);
 
     xforce::JsonType jsonToDump;
-    nluContext->GetSegments().Dump(jsonToDump, nullptr);
+    nluContext->Get<Segment>().Dump(jsonToDump, nullptr);
 
     std::stringstream ss;
     jsonToDump.DumpJson(ss);

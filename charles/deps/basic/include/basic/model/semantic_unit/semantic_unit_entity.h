@@ -8,12 +8,12 @@ class Entity;
 
 class SemanticUnitEntity : public SemanticUnit {
  public:
-  SemanticUnitEntity();
+  Type::Val GetType() const { return Type::kSemanticUnitEntity; }
 
   const std::shared_ptr<Entity> GetEntity() const { return entity_; }
   std::shared_ptr<Entity> GetEntity() { return entity_; }
 
-  DistRes Distance(const Fragment &arg0, const Fragment &arg1) const;
+  ssize_t Distance(const Fragment &other) const;
 
  private:
   std::shared_ptr<Entity> entity_;

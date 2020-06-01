@@ -16,9 +16,9 @@ void RulePosTagMultiTag::Split(
         const SplitStage &splitStage,
         const std::shared_ptr<basic::NluContext> &nluContext,
         CollectionNluContext &nluContexts) {
-  auto iterSeg = nluContext->GetSegments().GetAll().begin();
+  auto iterSeg = nluContext->Get<basic::Segment>().GetAll().begin();
   size_t idx=0;
-  while (iterSeg != nluContext->GetSegments().GetAll().end()) {
+  while (iterSeg != nluContext->Get<basic::Segment>().GetAll().end()) {
     if ((*iterSeg)->GetOffset() == offsetMultiTag_ && (*iterSeg)->GetTags().size() > 1) {
       for (auto tag : ((*iterSeg)->GetTags())) {
         auto newNluContext = Rule::Clone(splitStage, nluContext);
@@ -43,9 +43,9 @@ void RulePosTagMultiTag::AdjustSegTags_(
         const basic::NluContext &nluContext,
         size_t i,
         basic::PosTag::Type::Val posTag) {
-  auto iterSeg = nluContext.GetSegments().GetAll().begin();
+  auto iterSeg = nluContext.Get<basic::Segment>().GetAll().begin();
   size_t idx=0;
-  while (iterSeg != nluContext.GetSegments().GetAll().end()) {
+  while (iterSeg != nluContext.Get<basic::Segment>().GetAll().end()) {
     if (idx == i) {
       (*iterSeg)->SetTag(posTag);
       break;

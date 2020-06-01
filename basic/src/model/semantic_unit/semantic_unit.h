@@ -23,7 +23,7 @@ class SemanticUnit : public Fragment {
 
   Fragment::Category GetCategory() const { return kSemantic; }
 
-  virtual Type::Val GetType() const;
+  virtual Type::Val GetType() const = 0;
 
  public:
   static SemanticUnit::Type::Val GetSemanticUnitType(const std::wstring &type);

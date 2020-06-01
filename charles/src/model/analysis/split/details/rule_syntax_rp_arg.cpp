@@ -44,7 +44,7 @@ void RuleSyntaxRpArg::AddChunks_(
         const std::shared_ptr<basic::Chunk> &chunk,
         CollectionNluContext &nluContexts) {
   std::shared_ptr<basic::Chunk> newVp = nullptr;
-  auto segAfter = nluContext->GetSegments().GetFragmentAfter(chunk->GetEnd());
+  auto segAfter = nluContext->Get<basic::Segment>().GetFragmentAfter(chunk->GetEnd());
   if (nullptr!=segAfter) {
     auto segQuery = segAfter->GetQuery(nluContext->GetQuery());
     if (L"的" == segQuery) {

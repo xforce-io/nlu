@@ -23,11 +23,12 @@ bool Matcher::Init() {
     FATAL("fail_init_semantic[parser]");
     return false;
   }
+  return true;
 }
 
 void Matcher::Match(std::shared_ptr<basic::NluContext> nluContext) {
   for (auto *parser : parsers_) {
-    parser->Process(nluContext)
+    parser->Process(*nluContext);
   }
 }
 

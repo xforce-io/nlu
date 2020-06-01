@@ -33,7 +33,7 @@ void RuleSyntaxVerbArg::Split(
     return;
   }
 
-  for (auto &chunk : nluContext->GetChunks().GetAll()) {
+  for (auto &chunk : nluContext->Get<basic::Chunk>().GetAll()) {
     if (chunk->GetOffset() < offset_+len_) {
       continue;
     }

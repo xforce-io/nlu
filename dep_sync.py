@@ -211,13 +211,19 @@ if __name__ == "__main__" :
             buildPosTagging()
             buildChunker()
             buildSyntax()
+            buildSemantic()
             buildCharles()
         elif sys.argv[1] == "chk" :    
             buildChunker()
             buildSyntax()
+            buildSemantic()
             buildCharles()
         elif sys.argv[1] == "syn" :
             buildSyntax()
+            buildSemantic()
+            buildCharles()
+        elif sys.argv[1] == "sem" :
+            buildSemantic()
             buildCharles()
         else :    
             print("unknown mod[%s]" % sys.argv[1])

@@ -30,7 +30,7 @@ Stage::Val Stage::GetPrev(Stage::Val stage) {
     case kSemantic:
       return kSyntax;
     case kEnd :
-      return kSyntax;
+      return kSemantic;
     default :
       return kNone;
   }
@@ -48,7 +48,7 @@ Stage::Val Stage::GetNext(Stage::Val stage) {
       return kSyntax;
     case kSyntax :
       return kSemantic;
-    case kSemantic :
+    case kSemantic:
       return kEnd;
     default :
       return kNone;
