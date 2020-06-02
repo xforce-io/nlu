@@ -119,12 +119,12 @@ inline bool NluContext::Add(const Chunk &chunk) {
     for (auto &contChunk : managerFragmentSet_->Get<Chunk>().GetAll()) {
       if (contChunk->GetTag() == SyntaxTag::Type::kContNp) {
         if (contChunk->GetOffset() < chunk.GetOffset() &&
-            contChunk->GetEnd() >= chunk.GetOffset() &&
+            contChunk->GetEnd() > chunk.GetOffset() &&
             contChunk->GetEnd() <= chunk.GetEnd()) {
           contChunk->SetLen(chunk.GetOffset() - contChunk->GetOffset());
         } else if (contChunk->GetEnd() > chunk.GetEnd() &&
             contChunk->GetOffset() >= chunk.GetOffset() &&
-            contChunk->GetOffset() <= chunk.GetEnd()) {
+            contChunk->GetOffset() < chunk.GetEnd()) {
           contChunk->SetOffset(chunk.GetEnd());
           contChunk->SetLen(contChunk->GetEnd() - chunk.GetEnd());
         }
