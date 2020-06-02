@@ -57,7 +57,7 @@ FEATURE_EXTRACTOR_BEGIN(syntax)
     ~{ #Chk(v) #Chk(v) $MPP % -> syntactic.vp }
     ~{ #Chk(vw) #Chk(v) -> syntactic.v }
     ~{ #Chk(vw) #Chk(vp) -> syntactic.vp }
-    ~{ #Chk(_cont_np_) #Chk(_cont_np_) -> syntactic._cont_np_}
+    ~{ [#Chk(_cont_np_), #Chk(np)] { [#Chk(_cont_np_), #Chk(np)] +} -> syntactic._cont_np_}
     ~{ #Chk(_cont_np_) $MPP % -> syntactic.np }
     ~{ #Chk(np) #Chk(c) #Chk(np) $MPP % -> syntactic.np }
 FEATURE_EXTRACTOR_END
