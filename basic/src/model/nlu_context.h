@@ -125,8 +125,10 @@ inline bool NluContext::Add(const Chunk &chunk) {
         } else if (contChunk->GetEnd() > chunk.GetEnd() &&
             contChunk->GetOffset() >= chunk.GetOffset() &&
             contChunk->GetOffset() < chunk.GetEnd()) {
-          contChunk->SetOffset(chunk.GetEnd());
-          contChunk->SetLen(contChunk->GetEnd() - chunk.GetEnd());
+          size_t offset = chunk.GetEnd();
+          size_t len = contChunk->GetEnd() - chunk.GetEnd();
+          contChunk->SetOffset(offset);
+          contChunk->SetLen(len);
         }
       }
     }
