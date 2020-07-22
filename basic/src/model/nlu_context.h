@@ -116,20 +116,52 @@ inline bool NluContext::Add(const ChunkSep &chunkSep) {
 template <>
 inline bool NluContext::Add(const Chunk &chunk) {
   if (chunk.GetClassOfSyntaxTags() == SyntaxTag::Class::kNp) {
-    for (auto &contChunk : managerFragmentSet_->Get<Chunk>().GetAll()) {
-      if (contChunk->GetTag() == SyntaxTag::Type::kContNp) {
-        if (contChunk->GetOffset() < chunk.GetOffset() &&
-            contChunk->GetEnd() > chunk.GetOffset() &&
-            contChunk->GetEnd() <= chunk.GetEnd()) {
-          contChunk->SetLen(chunk.GetOffset() - contChunk->GetOffset());
-        } else if (contChunk->GetEnd() > chunk.GetEnd() &&
-            contChunk->GetOffset() >= chunk.GetOffset() &&
-            contChunk->GetOffset() < chunk.GetEnd()) {
-          size_t offset = chunk.GetEnd();
-          size_t len = contChunk->GetEnd() - chunk.GetEnd();
-          contChunk->SetOffset(offset);
-          contChunk->SetLen(len);
+    auto &chunkSet = managerFragmentSet_->Get<Chunk>();
+
+    bool touched = true;
+    while (touched) {
+      touched = false;
+      auto iter = chunkSet.GetAll().begin();
+      while (iter != chunkSet.GetAll().end()) {
+        auto &contChunk = *iter;
+        if (contChunk->GetTag() == SyntaxTag::Type::kContNp) {
+          if (contChunk->GetOffset() < chunk.GetOffset() &&
+              contChunk->GetEnd() > chunk.GetOffset() &&
+              contChunk->GetEnd() < chunk.GetEnd()) {
+            chunkSet.Add(std::make_shared<basic::Chunk>(
+                    *this,
+                    SyntaxTag::Type::kContNp,
+                    contChunk->GetOffset(),
+                    chunk.GetOffset() - contChunk->GetOffset(),
+                    contChunk->GetStrategy()));
+            chunkSet.Erase(iter);
+            touched = true;
+          } else if (contChunk->GetEnd() > chunk.GetEnd() &&
+                     contChunk->GetOffset() > chunk.GetOffset() &&
+                     contChunk->GetOffset() < chunk.GetEnd()) {
+            size_t offset = chunk.GetEnd();
+            size_t len = contChunk->GetEnd() - chunk.GetEnd();
+            chunkSet.Add(std::make_shared<basic::Chunk>(
+                    *this,
+                    SyntaxTag::Type::kContNp,
+                    offset,
+                    len,
+                    contChunk->GetStrategy()));
+            chunkSet.Erase(iter);
+            touched = true;
+          }
         }
+        ++iter;
+      }
+    }
+  } else if (chunk.GetTag() == SyntaxTag::Type::kContNp) {
+    for (auto &singleChunk : managerFragmentSet_->Get<Chunk>().GetAll()) {
+      if (((singleChunk->GetOffset() < chunk.GetOffset() &&
+          chunk.GetEnd() <= singleChunk->GetEnd()) ||
+          (singleChunk->GetOffset() <= chunk.GetOffset() &&
+          chunk.GetEnd() < singleChunk->GetEnd())) &&
+          singleChunk->ContainTag(SyntaxTag::Type::kContNp)) {
+        return false;
       }
     }
   }

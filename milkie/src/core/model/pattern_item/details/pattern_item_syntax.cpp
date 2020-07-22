@@ -7,7 +7,6 @@ PatternItemSyntax::PatternItemSyntax(const basic::SyntaxTag::Type::Val &syntaxTy
   syntaxType_(syntaxType) {}
 
 bool PatternItemSyntax::MatchPattern(Context &context) {
-  std::shared_ptr<basic::Chunk::Set> chunkSet;
   ssize_t originOffset = context.GetCurPos();
   ssize_t offset = context.GetCurPos();
   std::unordered_set<basic::SyntaxTag::Type::Val> syntaxSetToMatch;
@@ -15,7 +14,7 @@ bool PatternItemSyntax::MatchPattern(Context &context) {
 
   std::unordered_set<basic::SyntaxTag::Type::Val> syntaxSetToIgnore;
   do {
-    chunkSet = context.GetSentence().GetFeatureChunkAtOffset(offset);
+    auto chunkSet = context.GetSentence().GetFeatureChunkAtOffset(offset);
     if (nullptr == chunkSet) {
       return false;
     }

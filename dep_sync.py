@@ -207,7 +207,16 @@ if __name__ == "__main__" :
             print("unknown mod[%s]" % sys.argv[1])
             sys.exit(2)
     elif len(sys.argv) == 3 and sys.argv[2] == "f" :
-        if sys.argv[1] == "pos" :
+        if sys.argv[1] == "mki" :
+            buildMilkie()
+            buildNer()
+            buildSegmentor()
+            buildPosTagging()
+            buildChunker()
+            buildSyntax()
+            buildSemantic()
+            buildCharles()        
+        elif sys.argv[1] == "pos" :
             buildPosTagging()
             buildChunker()
             buildSyntax()

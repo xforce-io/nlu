@@ -31,13 +31,17 @@ std::shared_ptr<basic::Chunk::Set> SentenceFeatureChunk::GetChunksFromOffset(ssi
 }
 
 const std::shared_ptr<basic::Chunk::Set> SentenceFeatureChunk::GetChunkAtOffset(ssize_t offset) const {
-  auto result = std::make_shared<basic::Chunk::Set>(nluContext_->GetQuery());
+  auto chunks = std::make_shared<basic::Chunk::Set>(nluContext_->GetQuery());
   for (auto &chunk : nluContext_->Get<basic::Chunk>().GetAll()) {
     if (offset == (ssize_t)chunk->GetOffset()) {
-      result->Add(*chunk);
+      chunks->Add(*chunk);
     }
   }
-  return result;
+
+  if (chunks->Size() != 0) {
+    return chunks;
+  }
+  return nullptr;
 }
 
 }}}
