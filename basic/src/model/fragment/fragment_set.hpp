@@ -69,6 +69,7 @@ class FragmentSet {
   std::wstring *text_;
 
   Container fragments_;
+  Container erased_;
 };
 
 template <typename FragmentType>
@@ -94,6 +95,11 @@ void FragmentSet<FragmentType>::Clear() {
 
 template <typename FragmentType>
 bool FragmentSet<FragmentType>::Add(std::shared_ptr<FragmentType> fragment) {
+  auto &erasedIter = erased_.find(fragment);
+  if (erasedIter != erased_.end() && erasedIter->Contain(*fragment)) {
+    return false;
+  }
+
   if (fragment->GetOffset() < text_->length()) {
     bool ret;
     auto iter = fragments_.find(fragment);
@@ -224,6 +230,7 @@ std::shared_ptr<FragmentType> FragmentSet<FragmentType>::Find(
 template <typename FragmentType>
 const typename FragmentSet<FragmentType>::Container::iterator FragmentSet<FragmentType>::Erase(
         const typename Container::iterator iter) {
+  erased_.insert(*iter);
   return fragments_.erase(iter);
 }
 
@@ -231,6 +238,11 @@ template <typename FragmentType>
 const typename FragmentSet<FragmentType>::Container::iterator FragmentSet<FragmentType>::Erase(
         const typename Container::iterator from,
         const typename Container::iterator to) {
+  const typename Container::iterator iter = from;
+  while (iter != to) {
+    erased_.insert(*iter);
+    ++iter;
+  }
   return fragments_.erase(from, to);
 }
 
