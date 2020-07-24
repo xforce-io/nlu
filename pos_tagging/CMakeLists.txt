@@ -31,7 +31,7 @@ set(LIB_DEPS
 )
 
 add_library(pos_tagging
-  ${SEG_FILES} src/model/strategy_special_token.h src/model/details/strategy_special_token.cpp src/model/strategy_len1.h src/model/details/strategy_len1.cpp)
+  ${SEG_FILES} src/model/strategy_special_token.h src/model/details/strategy_special_token.cpp src/model/strategy_len1.h src/model/details/strategy_len1.cpp src/model/strategy_verb_before_aux.h src/model/details/strategy_verb_before_aux.cpp)
 
 target_link_libraries(pos_tagging
   ${LIB_DEPS}

@@ -8,6 +8,7 @@
 #include "../model/strategy_only_pred_or_prep.h"
 #include "../model/strategy_special_token.h"
 #include "../model/strategy_len1.h"
+#include "../model/strategy_verb_before_aux.h"
 
 namespace xforce { namespace nlu { namespace pos {
 
@@ -21,6 +22,7 @@ PosTagging::PosTagging() {
   //strategies_.push_back(new StrategyOnlyPredOrPrep()); // 如果句子就是名词短语
   strategies_.push_back(new StrategySpecialToken());
   strategies_.push_back(new StrategyLen1());
+  strategies_.push_back(new StrategyVerbBeforeAux());
 }
 
 PosTagging::~PosTagging() {

@@ -39,7 +39,7 @@ set(LIB_DEPS
 )
 
 add_executable(charles
-  ${SEG_FILES})
+  ${SEG_FILES} src/model/analysis/split/rule_syntax_verb_before_aux.h)
 
 target_link_libraries(charles
   ${LIB_DEPS}
