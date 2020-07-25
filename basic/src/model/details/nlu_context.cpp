@@ -1,5 +1,6 @@
 #include "../nlu_context.h"
 #include "../phrase.h"
+#include "../syntax/collection_syntax_tag.h"
 
 namespace xforce { namespace nlu { namespace basic {
 
@@ -17,6 +18,25 @@ void NluContext::AddPhrase(
         size_t len,
         std::shared_ptr<CollectionSyntaxTag> collectionSyntaxTag,
         uint32_t strategy) {
+  bool matched = false;
+  for (auto &segment : Get<basic::Segment>().GetAll()) {
+    if (segment->GetOffset() == from && segment->GetLen() == len) {
+      matched = true;
+      break;
+    }
+  }
+
+  if (matched) {
+    basic::Chunk chunkForPhrase(
+            *this,
+            *(collectionSyntaxTag->GetTags().begin()),
+            from,
+            len,
+            1);
+    Get<basic::Chunk>().Add(chunkForPhrase);
+    return;
+  }
+
   phrases_.push_back(Phrase(
           from,
           len,
