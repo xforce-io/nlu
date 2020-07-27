@@ -38,9 +38,6 @@ set(LIB_DEPS
   ${CMAKE_SOURCE_DIR}/deps/public-cpp/lib/public-cpp/libpublic-cpp.a
 )
 
-add_executable(charles
-  ${SEG_FILES} src/model/analysis/split/rule_syntax_verb_before_aux.h)
-
 target_link_libraries(charles
   ${LIB_DEPS}
   lua

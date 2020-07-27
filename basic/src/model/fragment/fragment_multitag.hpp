@@ -182,8 +182,16 @@ bool FragmentMultitag<Tag>::Contain(const Fragment &fragment) const {
   }
 
   auto &other = SCAST<const FragmentMultitag<Tag>&>(fragment);
-  for (auto &tag : other.tags_) {
-    if (!tags_.find(tag)) {
+  for (auto &otherTag : other.tags_) {
+    bool matched = false;
+    for (auto &curTag : tags_) {
+      if (otherTag == curTag) {
+        matched = true;
+        break;
+      }
+    }
+
+    if (!matched) {
       return false;
     }
   }

@@ -70,6 +70,7 @@ class Fragment {
   inline bool Intersect(size_t offset, size_t len) const;
   inline bool Intersect(const Fragment &fragment) const;
   virtual bool Same(const Fragment &other) const;
+  virtual bool Contain(const Fragment &/*other*/) const { return false; }
   virtual ssize_t Distance(const Fragment &/*other*/) const { return -1; }
   inline DistRes DistanceCmp(
           const Fragment &arg0,

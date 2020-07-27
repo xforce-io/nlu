@@ -115,9 +115,8 @@ inline bool NluContext::Add(const ChunkSep &chunkSep) {
 
 template <>
 inline bool NluContext::Add(const Chunk &chunk) {
+  auto &chunkSet = managerFragmentSet_->Get<Chunk>();
   if (chunk.GetClassOfSyntaxTags() == SyntaxTag::Class::kNp) {
-    auto &chunkSet = managerFragmentSet_->Get<Chunk>();
-
     bool touched = true;
     while (touched) {
       touched = false;
@@ -155,17 +154,15 @@ inline bool NluContext::Add(const Chunk &chunk) {
       }
     }
   } else if (chunk.GetTag() == SyntaxTag::Type::kContNp) {
-    for (auto &singleChunk : managerFragmentSet_->Get<Chunk>().GetAll()) {
-      if (((singleChunk->GetOffset() < chunk.GetOffset() &&
-          chunk.GetEnd() <= singleChunk->GetEnd()) ||
-          (singleChunk->GetOffset() <= chunk.GetOffset() &&
-          chunk.GetEnd() < singleChunk->GetEnd())) &&
+    for (auto &singleChunk : chunkSet.GetAll()) {
+      if ((singleChunk->GetOffset() <= chunk.GetOffset() &&
+          chunk.GetEnd() <= singleChunk->GetEnd()) &&
           singleChunk->ContainTag(SyntaxTag::Type::kContNp)) {
         return false;
       }
     }
   }
-  return managerFragmentSet_->Get<Chunk>().Add(chunk);
+  return chunkSet.Add(chunk);
 }
 
 template <typename FragmentType>
