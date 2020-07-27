@@ -95,8 +95,8 @@ void FragmentSet<FragmentType>::Clear() {
 
 template <typename FragmentType>
 bool FragmentSet<FragmentType>::Add(std::shared_ptr<FragmentType> fragment) {
-  auto &erasedIter = erased_.find(fragment);
-  if (erasedIter != erased_.end() && erasedIter->Contain(*fragment)) {
+  auto erasedIter = erased_.find(fragment);
+  if (erasedIter != erased_.end() && (*erasedIter)->Contain(*fragment)) {
     return false;
   }
 
@@ -238,7 +238,7 @@ template <typename FragmentType>
 const typename FragmentSet<FragmentType>::Container::iterator FragmentSet<FragmentType>::Erase(
         const typename Container::iterator from,
         const typename Container::iterator to) {
-  const typename Container::iterator iter = from;
+  typename Container::iterator iter = from;
   while (iter != to) {
     erased_.insert(*iter);
     ++iter;

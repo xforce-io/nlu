@@ -26,9 +26,9 @@ FEATURE_EXTRACTOR_BEGIN(syntax)
     { $HC { #Chk(np) ?} #Chk(v) #Chk(vp) $MPP -> syntactic._stc_ }
     { $HC { #Chk(pp) ?} #Chk(np) #Chk(np) $V $MPP -> syntactic._stc_ }
     { $HC #Chk(np) { #Chk(v) ?} #Chk(advp) $MPP -> syntactic._stc_ }
-    { $HC { #Chk(np) +} { #Chk(advp) ?} #Chk(vp) $MPP -> syntactic._stc_ }
+    { $HC { #Chk(np) +} { #Chk(tp) ?}  { #Chk(advp) ?} #Chk(vp) $MPP -> syntactic._stc_ }
     { $HC #Chk(np) #Chk(advp) #Chk(np) #Chk(advp) $MPP -> syntactic._stc_ }
-    { $HC { #Chk(advp) ?} { #Chk(pp) ?} { #Chk(np) ?} $V $MPP -> syntactic._stc_ }
+    { $HC { #Chk(advp) ?} { { #Chk(pp) +} ?} { #Chk(np) ?} $V $MPP -> syntactic._stc_ }
     { $HC { #Chk(advp) ?} #Chk(pp) #Chk(v) #Chk(np) #Chk(np) $MPP -> syntactic._stc_ }
     { $HC { #Chk(_cont_np_) #Pos(c) #Chk(_cont_np_) -> syntactic.np } $MPP -> syntactic._stc_ }
     { $HC #Chk(np) $MPP -> syntactic._stc_ }

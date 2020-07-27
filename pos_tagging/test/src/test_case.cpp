@@ -29,7 +29,7 @@ TEST(test_case, all) {
     ASSERT_TRUE(Segmentor::Init((*conf)["segmentor"], (*conf)["ner"]));
     ASSERT_TRUE(PosTagging::Init((*conf)["pos"]));
 
-    std::wstring wStrQuery = L"但却在本场比赛给了中国队强有力的冲击";
+    std::wstring wStrQuery = L"传达出小米对于保护中国市场的决心";
     auto nluContext = std::make_shared<NluContext>(wStrQuery);
 
     Segment::Set segments(wStrQuery);

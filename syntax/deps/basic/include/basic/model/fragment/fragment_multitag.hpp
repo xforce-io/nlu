@@ -44,6 +44,7 @@ class FragmentMultitag : public Fragment {
   inline typename Tag::Val GetTag() const;
   inline bool ContainTag(typename Tag::Val tagVal) const;
   virtual bool Same(const Fragment &other) const;
+  virtual bool Contain(const Fragment &other) const;
 
   inline std::wstring GetQuery(const std::wstring &sentence) const;
 
@@ -168,6 +169,29 @@ bool FragmentMultitag<Tag>::Same(const Fragment &fragment) const {
     }
 
     if (!ret) {
+      return false;
+    }
+  }
+  return true;
+}
+
+template <typename Tag>
+bool FragmentMultitag<Tag>::Contain(const Fragment &fragment) const {
+  if (offset_ != fragment.GetOffset() || len_ != fragment.GetLen()) {
+    return false;
+  }
+
+  auto &other = SCAST<const FragmentMultitag<Tag>&>(fragment);
+  for (auto &otherTag : other.tags_) {
+    bool matched = false;
+    for (auto &curTag : tags_) {
+      if (otherTag == curTag) {
+        matched = true;
+        break;
+      }
+    }
+
+    if (!matched) {
       return false;
     }
   }
