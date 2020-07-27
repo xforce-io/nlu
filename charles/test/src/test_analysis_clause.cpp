@@ -25,9 +25,10 @@ int main(int argc, char **argv) {
 TEST(testAll, all) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/charles.conf");
 
+  //std::wstring query = L"今年荣威上海和广西哪个卖的好";
+  std::wstring query = L"指导是如何进行人员和战术调整而挽回颓势的呢";
   ASSERT_TRUE(Charles::Init(*conf));
-  //AnalysisClause analysisClause(L"今年荣威上海和广西哪个卖的好",basic::CollectionSyntaxTag(true));
-  AnalysisClause analysisClause(L"指导是如何进行人员和战术调整而挽回颓势的呢",basic::CollectionSyntaxTag(true));
+  AnalysisClause analysisClause(query,basic::CollectionSyntaxTag(true));
 
   ASSERT_TRUE(analysisClause.Init());
   bool ret = analysisClause.Process();
