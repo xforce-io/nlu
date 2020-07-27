@@ -317,6 +317,8 @@ bool Matcher::RuleDongquQuxiang_(std::shared_ptr<basic::NluContext> nluContext) 
             nullptr != nextSeg &&
             basic::Manager::Get().GetGkb().GetGkbVerb().IsDongqu(curSeg->GetStrFromSentence(nluContext->GetQuery())) &&
             basic::Manager::Get().GetGkb().GetGkbVerb().IsQuxiang(nextSeg->GetStrFromSentence(nluContext->GetQuery()))) {
+          (*cur)->RemoveTag(basic::SyntaxTag::Type::kV);
+          (*next)->RemoveTag(basic::SyntaxTag::Type::kV);
           chunksToAdd.push_back(std::make_shared<basic::Chunk>(
                   *nluContext,
                   basic::SyntaxTag::Type::kV,
