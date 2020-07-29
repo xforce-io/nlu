@@ -19,7 +19,7 @@ class NluContext {
   inline void SetIsValid(bool isValid);
 
   template <typename FragmentType>
-  void Set(const typename FragmentType::Set &set) const;
+  void Set(const typename FragmentType::Set &set);
 
   void AddPhrase(
           size_t from,
@@ -76,7 +76,7 @@ void NluContext::SetIsValid(bool isValid) {
 }
 
 template <typename FragmentType>
-void NluContext::Set(const typename FragmentType::Set &set) const {
+void NluContext::Set(const typename FragmentType::Set &set) {
   managerFragmentSet_->Set(set);
 }
 
