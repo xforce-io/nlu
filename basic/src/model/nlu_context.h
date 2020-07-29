@@ -77,7 +77,7 @@ void NluContext::SetIsValid(bool isValid) {
 
 template <typename FragmentType>
 void NluContext::Set(const typename FragmentType::Set &set) {
-  managerFragmentSet_->Set(set);
+  managerFragmentSet_->Set<FragmentType>(set);
 }
 
 template <typename FragmentType>
