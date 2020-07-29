@@ -36,7 +36,7 @@ TEST(testAll, build) {
   segments.Add(Segment(PosTag::Type::kA, 0, 2));
   segments.Add(Segment(PosTag::Type::kU, 2, 1));
   segments.Add(Segment(PosTag::Type::kN, 3, 3));
-  context->GetSentence().GetNluContext()->SetSegments(segments);
+  context->GetSentence().GetNluContext()->Set<Segment>(segments);
   ASSERT_TRUE(ret.first->MatchPattern(*(context.get())));
 
   context = std::make_shared<Context>(L"美味的牛肉才好吃");

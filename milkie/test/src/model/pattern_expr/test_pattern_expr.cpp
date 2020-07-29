@@ -75,7 +75,7 @@ void testcase1() {
   auto context = std::make_shared<Context>(query);
   segments.Add(Segment(PosTag::Type::kD, 0, 1));
   segments.Add(Segment(PosTag::Type::kA, 1, 1));
-  context->GetSentence().GetNluContext()->SetSegments(segments);
+  context->GetSentence().GetNluContext()->Set<Segment>(segments);
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
   ASSERT_TRUE(*(context->GetCurStorageAsStr(L"target")) == L"不好");
 
@@ -86,7 +86,7 @@ void testcase1() {
   segments.Add(Segment(PosTag::Type::kA, 1, 1));
   segments.Add(Segment(PosTag::Type::kD, 2, 1));
   segments.Add(Segment(PosTag::Type::kA, 3, 1));
-  context->GetSentence().GetNluContext()->SetSegments(segments);
+  context->GetSentence().GetNluContext()->Set<Segment>(segments);
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
 
   query = L"不好不好机器人";
@@ -97,7 +97,7 @@ void testcase1() {
   segments.Add(Segment(PosTag::Type::kD, 2, 1));
   segments.Add(Segment(PosTag::Type::kA, 3, 1));
   segments.Add(Segment(PosTag::Type::kN, 4, 3));
-  context->GetSentence().GetNluContext()->SetSegments(segments);
+  context->GetSentence().GetNluContext()->Set<Segment>(segments);
   ASSERT_TRUE(ret.first->PrefixMatch(*(context.get()), false));
 }
 
@@ -114,7 +114,7 @@ void testcase2() {
   segments.Add(Segment(PosTag::Type::kD, 4, 1));
   segments.Add(Segment(PosTag::Type::kA, 5, 2));
   segments.Add(Segment(PosTag::Type::kY, 7, 1));
-  context->GetSentence().GetNluContext()->SetSegments(segments);
+  context->GetSentence().GetNluContext()->Set<Segment>(segments);
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
   ASSERT_TRUE(*(context->GetCurStorageAsStr(*new StorageKey(L"target", nullptr))) == L"苹果橘子不好吃吧");
   ASSERT_TRUE(*(context->GetCurStorageAsStr(*new StorageKey(L"target", L"noun"))) == L"苹果橘子");
@@ -126,7 +126,7 @@ void testcase2() {
   segments.Add(Segment(PosTag::Type::kN, 0, 2));
   segments.Add(Segment(PosTag::Type::kD, 2, 1));
   segments.Add(Segment(PosTag::Type::kA, 3, 2));
-  context->GetSentence().GetNluContext()->SetSegments(segments);
+  context->GetSentence().GetNluContext()->Set<Segment>(segments);
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
   ASSERT_TRUE(*(context->GetCurStorageAsStr(*new StorageKey(L"target", nullptr))) == L"苹果不好吃");
   ASSERT_TRUE(*(context->GetCurStorageAsStr(*new StorageKey(L"target", L"noun"))) == L"苹果");
@@ -152,7 +152,7 @@ void testcaseWildcard() {
   segments.Add(Segment(PosTag::Type::kD, 8, 1));
   segments.Add(Segment(PosTag::Type::kA, 9, 2));
   segments.Add(Segment(PosTag::Type::kY,11, 1));
-  context->GetSentence().GetNluContext()->SetSegments(segments);
+  context->GetSentence().GetNluContext()->Set<Segment>(segments);
   std::cout << "A.2" << std::endl;
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
   std::cout << "A.3" << std::endl;
@@ -178,7 +178,7 @@ void testcaseWildcard() {
   segments.Add(Segment(PosTag::Type::kA, 9, 2));
   segments.Add(Segment(PosTag::Type::kV,11, 1));
   segments.Add(Segment(PosTag::Type::kY,12, 1));
-  context->GetSentence().GetNluContext()->SetSegments(segments);
+  context->GetSentence().GetNluContext()->Set<Segment>(segments);
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
   ASSERT_TRUE(*(context->GetCurStorageAsStr(L"Wield")) == L"真的真的不好吃");
 
@@ -197,7 +197,7 @@ void testcaseWildcard() {
   segments.Add(Segment(PosTag::Type::kD, 6, 2));
   segments.Add(Segment(PosTag::Type::kD, 8, 1));
   segments.Add(Segment(PosTag::Type::kA, 9, 2));
-  context->GetSentence().GetNluContext()->SetSegments(segments);
+  context->GetSentence().GetNluContext()->Set<Segment>(segments);
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
   ASSERT_TRUE(*(context->GetCurStorageAsStr(L"Wield")) == L"真的真的不好吃");
 
@@ -218,7 +218,7 @@ void testcaseMultimatch() {
   segments.Add(Segment(PosTag::Type::kA, 5, 2));
   segments.Add(Segment(PosTag::Type::kY, 7, 1));
   segments.Add(Segment(PosTag::Type::kY, 8, 1));
-  context->GetSentence().GetNluContext()->SetSegments(segments);
+  context->GetSentence().GetNluContext()->Set<Segment>(segments);
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
   ASSERT_TRUE(context->GetCurStorage(L"yPhrase")->Size() == 2);
 
@@ -229,7 +229,7 @@ void testcaseMultimatch() {
   segments.Add(Segment(PosTag::Type::kN, 2, 2));
   segments.Add(Segment(PosTag::Type::kD, 4, 1));
   segments.Add(Segment(PosTag::Type::kA, 5, 2));
-  context->GetSentence().GetNluContext()->SetSegments(segments);
+  context->GetSentence().GetNluContext()->Set<Segment>(segments);
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
   ASSERT_TRUE(context->GetCurStorage(L"yPhrase") == nullptr);
 
@@ -246,7 +246,7 @@ void testcaseMultimatch() {
   segments.Add(Segment(PosTag::Type::kA, 5, 2));
   segments.Add(Segment(PosTag::Type::kY, 7, 1));
   segments.Add(Segment(PosTag::Type::kY, 8, 1));
-  context->GetSentence().GetNluContext()->SetSegments(segments);
+  context->GetSentence().GetNluContext()->Set<Segment>(segments);
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
   ASSERT_TRUE(context->GetCurStorage(L"yPhrase")->Size() == 2);
 
@@ -257,7 +257,7 @@ void testcaseMultimatch() {
   segments.Add(Segment(PosTag::Type::kN, 2, 2));
   segments.Add(Segment(PosTag::Type::kD, 4, 1));
   segments.Add(Segment(PosTag::Type::kA, 5, 2));
-  context->GetSentence().GetNluContext()->SetSegments(segments);
+  context->GetSentence().GetNluContext()->Set<Segment>(segments);
   ASSERT_TRUE(!ret.first->ExactMatch(*(context.get())));
 }
 
@@ -273,7 +273,7 @@ void testPartlyMultimatch() {
   segments.Add(Segment(PosTag::Type::kV, 1, 1));
   segments.Add(Segment(PosTag::Type::kV, 2, 1));
   segments.Add(Segment(PosTag::Type::kA, 3, 2));
-  context->GetSentence().GetNluContext()->SetSegments(segments);
+  context->GetSentence().GetNluContext()->Set<Segment>(segments);
   ASSERT_TRUE(ret.first->PartlyMatch(*(context.get())));
 
   JsonType jsonType;
@@ -287,19 +287,17 @@ void testPartlyMultimatch() {
 }
 
 void testBugfix() {
-  std::wstring expr = Helper::PreprocessExprLine(L"{ #Chk(v) [\"的\", \"得\"] #Chk(advp) -> syntactic.vp }");
+  std::wstring expr = Helper::PreprocessExprLine(L"{ #Chk(v) $MPP -> syntactic._stc_ }");
   auto ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, expr);
   ASSERT_TRUE(ret.first != nullptr);
 
-  std::wstring query = L"卖得很好";
+  std::wstring query = L"卖";
   auto context = std::make_shared<Context>(query);
   auto &nluContext = *(context->GetSentence().GetNluContext());
 
   FragmentSet<Chunk> chunks(query);
   chunks.Add(Chunk(nluContext, SyntaxTag::Type::kV, 0, 1));
-  chunks.Add(Chunk(nluContext, SyntaxTag::Type::kU, 1, 1));
-  chunks.Add(Chunk(nluContext, SyntaxTag::Type::kAdvp, 2, 2));
-  nluContext.SetChunks(chunks);
+  nluContext.Set<Chunk>(chunks);
 
   ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
 

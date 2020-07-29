@@ -38,6 +38,9 @@ set(LIB_DEPS
   ${CMAKE_SOURCE_DIR}/deps/public-cpp/lib/public-cpp/libpublic-cpp.a
 )
 
+add_library(charles
+  ${SEG_FILES})
+
 target_link_libraries(charles
   ${LIB_DEPS}
   lua

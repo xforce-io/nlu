@@ -25,14 +25,13 @@ int main(int argc, char **argv) {
 TEST(testAll, all) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/charles.conf");
 
-  //std::wstring query = L"今年荣威上海和广西哪个卖的好";
-  std::wstring query = L"指导是如何进行人员和战术调整而挽回颓势的呢";
+  std::wstring query = L"明天到期的基金有哪些";
   ASSERT_TRUE(Charles::Init(*conf));
   AnalysisClause analysisClause(query,basic::CollectionSyntaxTag(true));
 
   ASSERT_TRUE(analysisClause.Init());
   bool ret = analysisClause.Process();
-  std::cout << basic::AnalysisTracer::Get()->GetReport() << std::endl;
+  std::cout << basic::AnalysisTracer::Get()->GetReport(*StrHelper::Wstr2Str(query)) << std::endl;
   ASSERT_TRUE(ret);
 
 /*

@@ -48,7 +48,7 @@ TEST(testAll, match) {
   segments.Add(Segment(PosTag::Type::kA, 0, 2));
   segments.Add(Segment(PosTag::Type::kU, 2, 1));
   segments.Add(Segment(PosTag::Type::kN, 3, 3));
-  context->GetSentence().GetNluContext()->SetSegments(segments);
+  context->GetSentence().GetNluContext()->Set<Segment>(segments);
   ASSERT_TRUE(ret.first->MatchPattern(*(context.get())));
 
   ret = PatternItem::Build(L"#Reg(\\d{4}年\\d{2}月)");
@@ -75,7 +75,7 @@ TEST(testAll, multiSegMatch) {
 
   segments.Add(Segment(PosTag::Type::kU, 2, 1));
   segments.Add(Segment(PosTag::Type::kN, 3, 3));
-  context->GetSentence().GetNluContext()->SetSegments(segments);
+  context->GetSentence().GetNluContext()->Set<Segment>(segments);
 
   auto ret = PatternItem::Build(L"#Pos((n|a)P-uP-nP-)");
   ASSERT_TRUE(ret.first->MatchPattern(*(context.get())));

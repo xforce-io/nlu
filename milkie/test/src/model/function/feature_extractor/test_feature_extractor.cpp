@@ -99,7 +99,7 @@ TEST(testBugfix, test) {
   segments.Add(Segment(PosTag::Type::kUndef, 1, 1));
   segments.Add(Segment(PosTag::Type::kUndef, 2, 2));
   segments.Add(Segment(PosTag::Type::kUndef, 4, 1));
-  context->GetSentence().GetNluContext()->SetSegments(segments);
+  context->GetSentence().GetNluContext()->Set<Segment>(segments);
  
   auto err = testFeatureExtractor->MatchPattern(*context);
   ASSERT_TRUE(err == Errno::kOk);
