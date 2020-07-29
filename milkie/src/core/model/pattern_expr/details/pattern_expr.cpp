@@ -269,8 +269,7 @@ bool PatternExpr::MatchPattern_(Context &context, bool singleton) const {
     }
 
     for (auto &item : items_) {
-      if (item->repeatPattern_ != CategoryPatternExpr::kZeroOrOnce &&
-          item->repeatPattern_ != CategoryPatternExpr::kZeroOrMore) {
+      if (!item->MatchPattern_(context, singleton)) {
         DebugMatch_(context, startIdx, false);
         return false;
       }
