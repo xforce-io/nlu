@@ -25,6 +25,8 @@ AnalysisClauseBranch::AnalysisClauseBranch(
     end_(false),
     childrenIdx_(0) {
   splitStage_->SetBornStage(splitStage_->GetLastStage());
+  splitStage_->SetCurStage(splitStage_->GetLastStage());
+  splitStage_->SetRuleIdx(splitStage_->GetLastRuleIdx());
 }
 
 AnalysisClauseBranch::~AnalysisClauseBranch() {
@@ -61,12 +63,16 @@ bool AnalysisClauseBranch::Process(
     }
 
     splitStage_->Process(nluContext_);
+    splitStage_->NextStage();
     processed_ = true;
 
     if (IsFinished_(*nluContext_)) {
       end_ = true;
       return true;
     } else if (!nluContext_->GetIsValid()) {
+      end_ = true;
+      return false;
+    } else if (splitStage_->IsEnd()) {
       end_ = true;
       return false;
     }

@@ -19,6 +19,9 @@ class SplitStage {
           CollectionNluContext &nluContexts);
 
   inline void SetBornStage(basic::Stage::Val stage);
+  inline void SetCurStage(basic::Stage::Val stage);
+  inline void SetRuleIdx(size_t ruleIdx);
+
   inline void AddForbidInterval(size_t offset, size_t len);
   bool PrevStage();
   bool NextStage();
@@ -51,6 +54,14 @@ class SplitStage {
 
 void SplitStage::SetBornStage(basic::Stage::Val stage) {
   bornStage_ = stage;
+}
+
+void SplitStage::SetCurStage(basic::Stage::Val stage) {
+  curStage_ = stage;
+}
+
+void SplitStage::SetRuleIdx(size_t ruleIdx) {
+  ruleIdx_ = ruleIdx;
 }
 
 void SplitStage::AddForbidInterval(size_t offset, size_t len) {
