@@ -69,6 +69,9 @@ class SyntaxTag {
       kUcp, //unidentical coordination phrase / 非对等同位语短语
       kVp, //Verb phrase / 动词短语
 
+      //indep tags
+      kTi,
+
       //special mark
       kStc,
       kContNp,
