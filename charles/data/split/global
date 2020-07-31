@@ -7,3 +7,8 @@ FEATURE_EXTRACTOR_BEGIN(vnv)
   ~{ { #Chk(v) #Chk(np) -> branch0_syntactic.vp } #Chk(vp) }
   ~{ #Chk(v) { #Chk(np) #Chk(vp) -> branch1_syntactic.np } }
 FEATURE_EXTRACTOR_END
+
+FEATURE_EXTRACTOR_BEGIN(indepTime)
+  ^{ $HC { #Chk(tp) -> branch0_syntactic.ti} } 
+  ^{ $HC { #Chk(tp) -> branch0_syntactic.tp} }
+FEATURE_EXTRACTOR_END

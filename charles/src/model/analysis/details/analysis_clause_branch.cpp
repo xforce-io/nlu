@@ -6,6 +6,8 @@
 
 namespace xforce { namespace nlu { namespace charles {
 
+const size_t AnalysisClauseBranch::kInitNo = 1;
+
 AnalysisClauseBranch::AnalysisClauseBranch(
         ssize_t no,
         size_t depth,
@@ -64,9 +66,6 @@ bool AnalysisClauseBranch::Process(
     }
 
     splitStage_->Process(nluContext_);
-    if (kInitNo != no_) {
-      splitStage_->NextStage();
-    }
     processed_ = true;
 
     if (IsFinished_(*nluContext_)) {

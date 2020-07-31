@@ -18,25 +18,22 @@ FEATURE_EXTRACTOR_BEGIN(syntaxFromChunk)
 FEATURE_EXTRACTOR_END
 
 FEATURE_EXTRACTOR_BEGIN(syntax)
-    { $HC #Chk(_stc_) -> syntactic._stc_ }
-
-    { #Chk(np) #Chk(vp) $MPP -> syntactic._stc_ }
-    ~{ { #Chk(vp) #Chk(np) -> syntactic.np } #Chk(vp) $MPP -> syntactic._stc_ }
-    ~{ #Chk(v) #Chk(np) #Chk(np) $MPP -> syntactic._stc_ }
-    ~{ #Chk(np) { #Chk(vw) ?} #Chk(pp) { $V ?} $MPP -> syntactic._stc_ }
-    ~{ #Chk(np) #Chk(v) #Chk(np) #Chk(advp) $MPP -> syntactic._stc_ }
-    ~{ #Chk(np) #Chk(c) #Chk(np) #Chk(advp) $MPP -> syntactic._stc_ }
-    ~{ { #Chk(np) ?} #Chk(v) #Chk(vp) $MPP -> syntactic._stc_ }
-    ~{ { #Chk(pp) ?} #Chk(np) #Chk(np) $V $MPP -> syntactic._stc_ }
-    ~{ #Chk(np) { #Chk(v) ?} #Chk(advp) $MPP -> syntactic._stc_ }
-    ~{ { #Chk(np) +} { #Chk(tp) ?} { #Chk(advp) ?} #Chk(vp) $MPP -> syntactic._stc_ }
-    ~{ #Chk(np) #Chk(advp) #Chk(np) #Chk(advp) $MPP -> syntactic._stc_ }
-    ~{ { #Chk(advp) ?} { { #Chk(pp) +} ?} { #Chk(np) ?} $V $MPP -> syntactic._stc_ }
-    ~{ { #Chk(advp) ?} #Chk(pp) #Chk(v) #Chk(np) #Chk(np) $MPP -> syntactic._stc_ }
-    ~{ { #Chk(_cont_np_) #Pos(c) #Chk(_cont_np_) -> syntactic.np } $MPP -> syntactic._stc_ }
-    ~{ #Chk(np) $MPP -> syntactic._stc_ }
-    ~{ #Chk(v) #Chk(pp) $MPP -> syntactic._stc_ }
-    ~{ #Chk(pp) $MPP -> syntactic._stc_ }
+    { $HCT { #Chk(vp) #Chk(np) -> syntactic.np } #Chk(vp) $MPP -> syntactic._stc_ }
+    { $HCT #Chk(v) #Chk(np) #Chk(np) $MPP -> syntactic._stc_ }
+    { $HCT #Chk(np) { #Chk(vw) ?} #Chk(pp) { $V ?} $MPP -> syntactic._stc_ }
+    { $HCT #Chk(np) #Chk(v) #Chk(np) #Chk(advp) $MPP -> syntactic._stc_ }
+    { $HCT #Chk(np) #Chk(c) #Chk(np) #Chk(advp) $MPP -> syntactic._stc_ }
+    { $HCT { #Chk(np) ?} #Chk(v) #Chk(vp) $MPP -> syntactic._stc_ }
+    { $HCT { #Chk(pp) ?} #Chk(np) #Chk(np) $V $MPP -> syntactic._stc_ }
+    { $HCT #Chk(np) { #Chk(v) ?} #Chk(advp) $MPP -> syntactic._stc_ }
+    { $HCT { #Chk(np) +} { #Chk(tp) ?} { #Chk(advp) ?} #Chk(vp) $MPP -> syntactic._stc_ }
+    { $HCT #Chk(np) #Chk(advp) #Chk(np) #Chk(advp) $MPP -> syntactic._stc_ }
+    { $HCT { #Chk(advp) ?} { { #Chk(pp) +} ?} { #Chk(np) ?} $V $MPP -> syntactic._stc_ }
+    { $HCT { #Chk(advp) ?} #Chk(pp) #Chk(v) #Chk(np) #Chk(np) $MPP -> syntactic._stc_ }
+    { $HCT { #Chk(_cont_np_) #Pos(c) #Chk(_cont_np_) -> syntactic.np } $MPP -> syntactic._stc_ }
+    { $HCT #Chk(np) $MPP -> syntactic._stc_ }
+    { $HCT #Chk(v) #Chk(pp) $MPP -> syntactic._stc_ }
+    { $HCT #Chk(pp) $MPP -> syntactic._stc_ }
 
     { $V #Pos(c) $V -> syntactic.vp }
 

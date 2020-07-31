@@ -9,7 +9,7 @@ class SplitStage;
 
 class AnalysisClauseBranch {
  public:
-  static const size_t kInitNo = 1;
+  static const size_t kInitNo;
 
  public:
   AnalysisClauseBranch(
