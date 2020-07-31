@@ -40,7 +40,7 @@ bool AnalysisClause::Init() {
 
   auto splitStage = new SplitStage(*splitRuleMgr);
   master_ = std::make_shared<AnalysisClauseBranch>(
-          1,
+          AnalysisClauseBranch::kInitNo,
           0,
           *clause_,
           *splitStage,

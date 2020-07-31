@@ -9,6 +9,9 @@ class SplitStage;
 
 class AnalysisClauseBranch {
  public:
+  static const size_t kInitNo = 1;
+
+ public:
   AnalysisClauseBranch(
           ssize_t no,
           size_t depth,
