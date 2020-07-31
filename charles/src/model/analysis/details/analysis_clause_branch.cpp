@@ -25,7 +25,8 @@ AnalysisClauseBranch::AnalysisClauseBranch(
     end_(false),
     childrenIdx_(0) {
   splitStage_->SetBornStage(splitStage_->GetLastStage());
-  splitStage_->SetCurStage(splitStage_->GetLastStage());
+  splitStage_->SetCurStage(
+          1==no ? basic::Stage::kSegment : splitStage_->GetLastStage());
   splitStage_->SetRuleIdx(splitStage_->GetLastRuleIdx());
 }
 
