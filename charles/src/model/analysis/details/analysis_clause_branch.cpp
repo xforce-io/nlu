@@ -90,6 +90,8 @@ bool AnalysisClauseBranch::Process(
     }
   }
 
+  std::list<std::shared_ptr<AnalysisClauseBranch>> tmpBranches;
+
   for (auto const &nluContext : nluContexts.Get()) {
     auto absVal = abs(no_) * 100 + childrenIdx_;
     auto child = std::make_shared<AnalysisClauseBranch>(
@@ -100,11 +102,15 @@ bool AnalysisClauseBranch::Process(
             endTags_,
             verifyStrategy_,
             traceEvent_);
-    branches.push_front(child);
+    tmpBranches.push_front(child);
     children_.push_back(child);
     ++childrenIdx_;
   }
   ++childrenIdx_;
+
+  for (auto &branch : tmpBranches) {
+    branches.push_front(branch);
+  }
 
   if (!nluContexts.Empty()) {
     end_ = true;
