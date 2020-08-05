@@ -78,7 +78,7 @@ bool AnalysisClause::Process() {
   succ_ = false;
   while (!branches_.empty()) {
     auto branch = branches_.front();
-    branches_.pop();
+    branches_.pop_front();
 
     allBranches_.insert(std::make_pair(branch->GetNo(), branch));
 
@@ -98,7 +98,7 @@ bool AnalysisClause::Process() {
       if (branch->GetEnd()) {
         finished_.push_back(branch);
       } else {
-        branches_.push(branch);
+        branches_.push_front(branch);
       }
     }
 

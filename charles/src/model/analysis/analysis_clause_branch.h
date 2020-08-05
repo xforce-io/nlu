@@ -23,7 +23,7 @@ class AnalysisClauseBranch {
 
   virtual ~AnalysisClauseBranch();
 
-  bool Process(std::queue<std::shared_ptr<AnalysisClauseBranch>> &children);
+  bool Process(std::list<std::shared_ptr<AnalysisClauseBranch>> &children);
 
   inline void SetEnd(bool isEnd);
 

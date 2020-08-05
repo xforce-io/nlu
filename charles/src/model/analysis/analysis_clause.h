@@ -52,7 +52,7 @@ class AnalysisClause : public AnalysisComponent {
   bool traceEvent_;
 
   std::shared_ptr<AnalysisClauseBranch> master_;
-  std::queue<std::shared_ptr<AnalysisClauseBranch>> branches_;
+  std::list<std::shared_ptr<AnalysisClauseBranch>> branches_;
   Branches finished_;
   Branches results_;
   std::unordered_map<size_t, std::shared_ptr<AnalysisClauseBranch>> allBranches_;

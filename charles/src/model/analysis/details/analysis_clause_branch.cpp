@@ -37,7 +37,7 @@ AnalysisClauseBranch::~AnalysisClauseBranch() {
 }
 
 bool AnalysisClauseBranch::Process(
-        std::queue<std::shared_ptr<AnalysisClauseBranch>> &branches) {
+        std::list<std::shared_ptr<AnalysisClauseBranch>> &branches) {
   if (!processed_) {
     int verifySubBranch = VerifySubBranches_();
     if (traceEvent_) {
@@ -100,7 +100,7 @@ bool AnalysisClauseBranch::Process(
             endTags_,
             verifyStrategy_,
             traceEvent_);
-    branches.push(child);
+    branches.push_front(child);
     children_.push_back(child);
     ++childrenIdx_;
   }
