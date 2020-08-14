@@ -9,4 +9,3 @@
 #include "basic/model/analysis_tracer/analysis_tracer.h"
 
 #include "ner/data/manager.h"
-#include "ner/person_name.h"

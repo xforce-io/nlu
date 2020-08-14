@@ -216,6 +216,21 @@ if __name__ == "__main__" :
             buildSyntax()
             buildSemantic()
             buildCharles()        
+        elif sys.argv[1] == "ner" :
+            buildNer()
+            buildSegmentor()
+            buildPosTagging()
+            buildChunker()
+            buildSyntax()
+            buildSemantic()
+            buildCharles()
+        elif sys.argv[1] == "seg" :
+            buildSegmentor()
+            buildPosTagging()
+            buildChunker()
+            buildSyntax()
+            buildSemantic()
+            buildCharles()
         elif sys.argv[1] == "pos" :
             buildPosTagging()
             buildChunker()
