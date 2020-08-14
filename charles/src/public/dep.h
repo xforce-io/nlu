@@ -2,6 +2,7 @@
 
 #include "public-cpp/public.h"
 #include "public-cpp/str_helper.hpp"
+#include "public-cpp/httplib.h"
 
 #include "basic/model/nlu_context.h"
 #include "basic/model/phrase.h"
