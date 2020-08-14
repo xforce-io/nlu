@@ -25,7 +25,7 @@ FILE(GLOB_RECURSE NER_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -W -Wall -Wno-deprecated -Wno-invalid-offsetof -Wno-strict-aliasing -ansi -std=c++11 -DUNICODE=1 -O2")
 
 add_library(ner
-  ${NER_FILES} src/public/dep.h)
+  ${NER_FILES} src/public/dep.h src/model/manager_recognizer.h src/model/details/manager_recognizer.cpp src/model/recognizer.h src/model/recognizer_timer.h src/model/details/recognizer_timer.cpp)
 
 target_link_libraries(ner
   log4cplus

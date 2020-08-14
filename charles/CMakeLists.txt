@@ -39,7 +39,7 @@ set(LIB_DEPS
 )
 
 add_library(charles
-  ${SEG_FILES})
+  ${SEG_FILES} src/webserver/webserver.h src/webserver/details/webserver.cpp)
 
 target_link_libraries(charles
   ${LIB_DEPS}
