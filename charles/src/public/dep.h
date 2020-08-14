@@ -27,7 +27,6 @@
 
 #include "segmentor/segmentor.h"
 
-#include "ner/person_name.h"
 #include "ner/data/manager.h"
 
 #include "pos_tagging/pos_tagging.h"

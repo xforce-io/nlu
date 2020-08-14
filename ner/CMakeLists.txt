@@ -45,7 +45,6 @@ add_custom_command(TARGET ner
   COMMAND mkdir -p ${NER_INC_OUTPUT_PATH}/data
 
   COMMAND cp ${NER_SRC_DIR}/ner.h ${NER_INC_OUTPUT_PATH}/
-  COMMAND cp ${NER_SRC_DIR}/person_name.h ${NER_INC_OUTPUT_PATH}/
   COMMAND cp ${NER_SRC_DIR}/public.h ${NER_INC_OUTPUT_PATH}/
   COMMAND cp ${NER_SRC_DIR}/public/common.h ${NER_INC_OUTPUT_PATH}/public/
   COMMAND cp ${NER_SRC_DIR}/public/public.h ${NER_INC_OUTPUT_PATH}/public/
