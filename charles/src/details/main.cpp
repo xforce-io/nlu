@@ -1,6 +1,7 @@
 #include "../public.h"
 #include "../model/runtime.h"
 #include "../model/base_modules.h"
+#include "../charles.h"
 
 #ifndef UT_TEST
 
@@ -21,29 +22,11 @@ int main() {
     return 1;
   }
 
-  bool ret = BaseModules::Init(*conf);
-  if (!ret) {
-    FATAL("fail_init_base_module");
-    return 2;
+  if (!Charles::Init(*conf)) {
+    FATAL("fail_init_charles");
+    return 1;
   }
 
-  ret = nlu::basic::Manager::Get().Init();
-  if (!ret) {
-    FATAL("fail_init_data_manager");
-    return 3;
-  }
-
-  Runtime *runtime = new Runtime();  
-  ret = runtime->Process(L"周杰伦、刘亦菲和王凯的关系很好");
-  if (!ret) {
-    return 4;
-  }
-
-  JsonType jsonType;
-  runtime->DumpAnalysisContext(jsonType);
-  std::stringstream ss;
-  jsonType.DumpJson(ss);
-  std::cout << ss.str() << std::endl;
   return 0;
 }
 

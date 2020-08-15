@@ -70,6 +70,13 @@ std::shared_ptr<NluContext> NluContext::Clone() const {
   return nluContext;
 }
 
+void NluContext::Reset(
+        const std::wstring &query,
+        basic::Stage::Val stage) {
+  query_ = query;
+  Reset(stage);
+}
+
 void NluContext::Reset(basic::Stage::Val stage) {
   switch (stage) {
     case basic::Stage::kNone :
