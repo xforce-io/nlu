@@ -2,6 +2,7 @@
 #include "../model/runtime.h"
 #include "../model/base_modules.h"
 #include "../charles.h"
+#include "../webserver/webserver.h"
 
 #ifndef UT_TEST
 
@@ -24,9 +25,14 @@ int main() {
 
   if (!Charles::Init(*conf)) {
     FATAL("fail_init_charles");
-    return 1;
+    return 2;
   }
 
+  WebServer webServer;
+  if (!webServer.Init()) {
+    FATAL("fail_init_webserver");
+    return 3;
+  }
   return 0;
 }
 
