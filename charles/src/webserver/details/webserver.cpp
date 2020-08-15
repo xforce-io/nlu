@@ -25,7 +25,9 @@ bool WebServer::Init() {
       return;
     }
 
-    std::wstring query = *StrHelper::Str2Wstr(req.get_param_value("q"));
+    std::wstring query = *StrHelper::Str2Wstr(
+            StrHelper::UrlDecode(
+                    req.get_param_value("q")));
     auto nluContext = std::make_shared<basic::NluContext>(query);
     Interface::ParseRaw(flags, nluContext);
 
