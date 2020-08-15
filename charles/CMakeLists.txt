@@ -38,8 +38,10 @@ set(LIB_DEPS
   ${CMAKE_SOURCE_DIR}/deps/public-cpp/lib/public-cpp/libpublic-cpp.a
 )
 
-add_library(charles
-  ${SEG_FILES} src/webserver/webserver.h src/webserver/details/webserver.cpp src/interface/interface.h src/interface/details/interface.cpp)
+add_executable(charles
+  ${SEG_FILES}
+  src/details/main.cpp
+)
 
 target_link_libraries(charles
   ${LIB_DEPS}

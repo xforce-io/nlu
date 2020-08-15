@@ -1,5 +1,6 @@
 #include "../webserver.h"
 #include "../../interface/interface.h"
+#include "../../conf/conf.h"
 
 namespace xforce { namespace nlu { namespace charles {
 
@@ -16,9 +17,10 @@ bool WebServer::Init() {
       }
     } else {
       WebServer::SetErrnoAndReturn_(res, result, 1, "flag error");
+      return;
     }
 
-    if (!req.has_header("q")) {
+    if (!req.has_param("q")) {
       WebServer::SetErrnoAndReturn_(res, result, 3, "no q");
       return;
     }
@@ -32,7 +34,13 @@ bool WebServer::Init() {
     result.DumpJson(resContent);
     res.set_content(resContent.str(), "text/plain");
   });
-  server_.listen("localhost", 1234);
+
+  std::cout << "start listening ..." << std::endl;
+
+  server_.listen(
+      Conf::Get().GetHost().c_str(), 
+      Conf::Get().GetPort());
+  return true;
 }
 
 

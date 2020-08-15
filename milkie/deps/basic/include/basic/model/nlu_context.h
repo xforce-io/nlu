@@ -37,6 +37,8 @@ class NluContext {
 
   std::shared_ptr<NluContext> Build(size_t from, size_t to);
   std::shared_ptr<NluContext> Clone() const;
+
+  void Reset(const std::wstring &query, basic::Stage::Val stage);
   void Reset(basic::Stage::Val stage);
 
   inline bool GetIsValid(bool check = false);

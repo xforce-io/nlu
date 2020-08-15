@@ -35,7 +35,7 @@ void WebServer::SetErrnoAndReturn_(
     JsonType &resultJson,
     int errNo,
     const std::string &errmsg) {
-  resultJson["errno"] = errno;
+  resultJson["errno"] = errNo;
   resultJson["errmsg"] = errmsg;
 
   std::stringstream resContent;
