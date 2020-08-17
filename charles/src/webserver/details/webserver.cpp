@@ -5,36 +5,54 @@
 namespace xforce { namespace nlu { namespace charles {
 
 bool WebServer::Init() {
-  server_.Get("/raw", [](const Request& req, Response& res) {
-    JsonType result;
-    std::vector<std::string> flags;
-    if (req.has_param("flags")) {
-      auto val = req.get_param_value("flags");
-      StrHelper::SplitStr(val, ',', flags);
-      if (flags.empty()) {
-        WebServer::SetErrnoAndReturn_(res, result, 1, "flag error");
+  server_.Post("/raw", [&](const Request& req, Response& res) {
+      JsonType result;
+      auto body = req.body;
+      auto json = std::shared_ptr<const JsonType>(JsonType::ParseJson(body.c_str()));
+      if (nullptr == json) {
+        WebServer::SetErrnoAndReturn_(res, result, 1, "invalid json");
         return;
       }
-    } else {
-      WebServer::SetErrnoAndReturn_(res, result, 1, "flag error");
-      return;
-    }
 
-    if (!req.has_param("q")) {
-      WebServer::SetErrnoAndReturn_(res, result, 3, "no q");
-      return;
-    }
+      auto &flagsJson = (*json)["flags"];
+      if (!flagsJson.IsStr()) {
+        WebServer::SetErrnoAndReturn_(res, result, 1, "invalid json");
+        return;
+      }
 
-    std::wstring query = *StrHelper::Str2Wstr(
-            StrHelper::UrlDecode(
-                    req.get_param_value("q")));
-    auto nluContext = std::make_shared<basic::NluContext>(query);
-    Interface::ParseRaw(flags, nluContext);
+      std::vector<std::string> flags;
+      StrHelper::SplitStr(flagsJson.AsStr(), ',', flags);
+      if (flags.empty()) {
+        WebServer::SetErrnoAndReturn_(res, result, 2, "flag error");
+        return;
+      }
 
-    WebServer::Dump_(nluContext, basic::Stage::kSegment, result);
-    std::stringstream resContent;
-    result.DumpJson(resContent);
-    res.set_content(resContent.str(), "text/plain");
+      auto &queries = (*json)["queries"];
+      if (!queries.IsList()) {
+        WebServer::SetErrnoAndReturn_(res, result, 1, "invalid json");
+        return;
+      }
+
+      for (size_t i=0; i < queries.Size(); ++i) {
+        if (!queries[i].IsStr()) {
+          WebServer::SetErrnoAndReturn_(res, result, 1, "invalid json");
+          return;
+        }
+
+        std::wstring query = *StrHelper::Str2Wstr(
+                StrHelper::UrlDecode(queries[i].AsStr()));
+        auto nluContext = std::make_shared<basic::NluContext>(query);
+        Interface::ParseRaw(flags, nluContext);
+        for (auto &flag : flags) {
+          if (flag == "segment") {
+            WebServer::Dump_(nluContext, basic::Stage::kSegment, result[i]);
+          }
+        }
+      }
+
+      std::stringstream resContent;
+      result.DumpJson(resContent);
+      res.set_content(resContent.str(), "text/plain");
   });
 
   std::cout << "start listening ..." << std::endl;
