@@ -7,7 +7,7 @@ bool Interface::ParseRaw(
     std::shared_ptr<basic::NluContext> &nluContext) {
   nluContext->Reset(basic::Stage::kNone);
   for (auto &flag : flags) {
-    if ("seg" == flag) {
+    if ("segment" == flag) {
       segmentor::Segmentor::Parse(nluContext);
     } else {
       return false;

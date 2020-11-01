@@ -51,6 +51,8 @@ def buildNer() :
             (kBuildPathPublicCpp, kDepPathNer))
     call("cp -rf %s/basic %s/basic" % \
             (kBuildPathBasic, kDepPathNer))
+    call("cp -rf %s/milkie %s/milkie/" % \
+            (kBuildPathMilkie, kDepPathNer))
     call("mkdir -p %s && rm -rf %s/* && cd %s && cmake ../ && make clean && make -j4 -s" % \
             (kBuildPathNer, kBuildPathNer, kBuildPathNer))
 

@@ -6,11 +6,13 @@ class lua_State;
 
 namespace xforce { namespace nlu { namespace milkie {
 
+class Conf;  
 class Context;
 
 class CodeSeg {
  public:
-  explicit CodeSeg(const std::wstring &code);
+  CodeSeg();
+  bool Init(const Conf &conf, const std::wstring &code);
   virtual ~CodeSeg();
 
   /*
@@ -21,7 +23,9 @@ class CodeSeg {
    */
   int Match(Context &context);
 
-  static std::shared_ptr<CodeSeg> Build(const std::wstring &expr);
+  static std::shared_ptr<CodeSeg> Build(
+      const Conf &conf, 
+      const std::wstring &code);
   inline static bool IsStartingChar(char c);
 
  private:

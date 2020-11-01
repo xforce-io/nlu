@@ -33,6 +33,7 @@ int main(int argc, char **argv) {
 TEST(testAll, all) {
   std::vector<std::shared_ptr<FeatureExtractor>> featureExtractors;
   ASSERT_TRUE(FeatureExtractor::Build(
+        milkie->GetConf(),
         milkie->GetReferManager(),
         "../../data/global", 
         featureExtractors));
@@ -78,6 +79,7 @@ TEST(testAll, all) {
 TEST(testBugfix, test) {
   std::vector<std::shared_ptr<FeatureExtractor>> featureExtractors;
   ASSERT_TRUE(FeatureExtractor::Build(
+          milkie->GetConf(),
           milkie->GetReferManager(),
           "../../data/global",
           featureExtractors));

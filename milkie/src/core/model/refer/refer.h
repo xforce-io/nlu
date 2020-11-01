@@ -2,12 +2,13 @@
 
 namespace xforce { namespace nlu { namespace milkie {
 
+class Conf;  
 class ReferManager;
 class PatternExpr;  
 
 class Refer {
  public:
-  explicit Refer(const ReferManager &referManager);
+  explicit Refer(const Conf &conf, const ReferManager &referManager);
 
   const ReferManager& GetReferManager() const { return referManager_; }
 
@@ -17,9 +18,10 @@ class Refer {
   void Clear();
 
  private:
-   const ReferManager &referManager_;
+  const Conf &conf_;
+  const ReferManager &referManager_;
 
-   std::unordered_map<std::wstring, std::shared_ptr<PatternExpr>> theMap_; 
+  std::unordered_map<std::wstring, std::shared_ptr<PatternExpr>> theMap_; 
 };
 
 const std::shared_ptr<PatternExpr> Refer::Get(const std::wstring &key) const {

@@ -4,6 +4,7 @@
 #include "../../context/context.h"
 #include "../../pattern_expr/pattern_expr.h"
 #include "../../refer/refer_manager.h"
+#include "../../../../conf/conf.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -45,11 +46,12 @@ Errno::Code FeatureExtractor::MatchPattern(Context &context, size_t offset) cons
 }
 
 bool FeatureExtractor::Build(
+      const Conf &conf,
       ReferManager &referManager,
       const std::string &filepath,
       std::vector<std::shared_ptr<FeatureExtractor>> &featureExtractors) {
   std::vector<std::shared_ptr<StructFeatureExtractor>> result;
-  bool ret = StructFeatureExtractor::Parse(referManager, filepath, result);
+  bool ret = StructFeatureExtractor::Parse(conf, referManager, filepath, result);
   if (!ret) {
     FATAL("fail_parse_struct_feature_extractor_from[" << *StrHelper::Str2Wstr(filepath) << "]");
     return false;

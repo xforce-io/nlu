@@ -49,6 +49,7 @@ class StructPatternExpr :public StructElement {
   CategoryPatternExpr::Category GetCategoryPatternExpr() const { return categoryPatternExpr_; }
 
   static std::shared_ptr<StructPatternExpr> Parse(
+          const Conf &conf,
           const ReferManager &referManager,
           const std::wstring &blockKey,
           const std::wstring &statement);

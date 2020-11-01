@@ -5,6 +5,7 @@
 #include "../../../variable/variable.h"
 #include "../../../refer/refer_manager.h"
 #include "../../../codeseg/code_seg.h"
+#include "../../../../../conf/conf.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -14,6 +15,7 @@ StructPatternExpr::~StructPatternExpr() {
 }
 
 std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
+    const Conf &conf,
     const ReferManager &referManager,
     const std::wstring &blockKey, 
     const std::wstring &statement) {
@@ -22,7 +24,7 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
     auto ret = Pattern::Build(statement);
     return std::make_shared<StructPatternExpr>(statement.substr(0, ret.second), ret.first);
   } else if (PatternSet::IsStartingChar(startingChar)) {
-    auto ret = PatternSet::Build(referManager, blockKey, statement);
+    auto ret = PatternSet::Build(conf, referManager, blockKey, statement);
     return std::make_shared<StructPatternExpr>(statement.substr(0, ret.second), ret.first);
   } else if (PatternExpr::IsExactStartingChar(startingChar)) {
     PatternExpr::Vector items;
@@ -44,14 +46,14 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
         items.push_back(std::make_shared<PatternExpr>(ret.first));
         curIdx += ret.second;
       } else if (PatternSet::IsStartingChar(curChar)) {
-        auto ret = PatternSet::Build(referManager, blockKey, statement.substr(curIdx));
+        auto ret = PatternSet::Build(conf, referManager, blockKey, statement.substr(curIdx));
         if (nullptr == ret.first) {
           return nullptr;
         }
         items.push_back(std::make_shared<PatternExpr>(ret.first));
         curIdx += ret.second;
       } else if (PatternExpr::IsExactStartingChar(curChar)) {
-        auto ret = PatternExpr::Build(referManager, blockKey, statement.substr(curIdx));
+        auto ret = PatternExpr::Build(conf, referManager, blockKey, statement.substr(curIdx));
         if (nullptr == ret.first) {
           return nullptr;
         }
@@ -138,7 +140,7 @@ std::shared_ptr<StructPatternExpr> StructPatternExpr::Parse(
           }
         }
 
-        filter = CodeSeg::Build(statement.substr(curIdx, endOfFilter+1-curIdx));
+        filter = CodeSeg::Build(conf, statement.substr(curIdx, endOfFilter+1-curIdx));
         curIdx = endOfFilter+1;
       } else {
         FATAL("invalid_pattern_expr(" << statement << ")");

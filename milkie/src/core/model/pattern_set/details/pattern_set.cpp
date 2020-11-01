@@ -3,6 +3,7 @@
 #include "../../pattern_expr/pattern_expr.h"
 #include "../parser/struct_pattern_set.h"
 #include "../../refer/refer_manager.h"
+#include "../../../../conf/conf.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -93,17 +94,19 @@ const std::wstring* PatternSet::AsStr() const {
 }
 
 std::pair<std::shared_ptr<PatternSet>, ssize_t> PatternSet::Build(
+    const Conf &conf,
     const ReferManager &referManager,
     const std::wstring &blockKey,
     const std::wstring &statement) {
-  std::shared_ptr<StructPatternSet> structPatternSet = StructPatternSet::Parse(referManager, blockKey, statement);
+  std::shared_ptr<StructPatternSet> structPatternSet = StructPatternSet::Parse(conf, referManager, blockKey, statement);
   if (nullptr == structPatternSet) {
     return std::make_pair(nullptr, -1);
   }
   return std::make_pair(Build(structPatternSet), structPatternSet->GetStatement().length());
 }
 
-std::shared_ptr<PatternSet> PatternSet::Build(std::shared_ptr<StructPatternSet> structPatternSet) {
+std::shared_ptr<PatternSet> PatternSet::Build(
+    std::shared_ptr<StructPatternSet> structPatternSet) {
   return std::make_shared<PatternSet>(structPatternSet);
 }
 

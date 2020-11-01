@@ -6,6 +6,7 @@
 
 namespace xforce { namespace nlu { namespace milkie {
 
+class Conf;  
 class StructPattern;
 class Context;
 
@@ -19,7 +20,8 @@ class Pattern {
   inline const std::wstring* AsStr() const;
 
   inline static bool IsStartingChar(wchar_t c);
-  inline static std::pair<std::shared_ptr<Pattern>, size_t> Build(const std::wstring &statement);
+  inline static std::pair<std::shared_ptr<Pattern>, size_t> Build(
+      const std::wstring &statement);
 
  private:
   inline static PatternItem::Vector CreatePatternItems(const StructPatternItem::Vector &structPatternItems);
@@ -56,7 +58,8 @@ bool Pattern::IsStartingChar(wchar_t c) {
   return '"' == c || '#' == c || '%' == c;
 }
 
-std::pair<std::shared_ptr<Pattern>, size_t> Pattern::Build(const std::wstring &statement) {
+std::pair<std::shared_ptr<Pattern>, size_t> Pattern::Build(
+    const std::wstring &statement) {
   std::shared_ptr<StructPattern> structPattern = StructPattern::Parse(statement);
   if (nullptr == structPattern) {
     return std::make_pair(nullptr, -1);

@@ -14,6 +14,12 @@ class PatternItemReg : public PatternItem {
   const std::wregex& GetPattern() const { return *regex_; }
 
  private:
+  static void ReplaceFamousPattern_(std::wstring &patternStr);
+  static void ReplaceSingleFamousPattern_(
+      const std::wstring &key,
+      const std::wstring &val,
+      std::wstring &patternStr);
+
   static std::wregex* CreatePattern_(const std::wstring &patternStr);
 
  private:

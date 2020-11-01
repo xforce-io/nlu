@@ -29,6 +29,7 @@ class PatternSet {
 
   inline static bool IsStartingChar(wchar_t c);
   static std::pair<std::shared_ptr<PatternSet>, ssize_t > Build(
+          const Conf &conf,
           const ReferManager &referManager,
           const std::wstring &blockKey,
           const std::wstring &statement);

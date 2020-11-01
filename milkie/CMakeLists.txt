@@ -50,6 +50,7 @@ add_custom_command(TARGET milkie
   COMMAND mkdir -p ${MILKIE_INC_OUTPUT_PATH}
   COMMAND mkdir -p ${MILKIE_INC_OUTPUT_PATH}/public
   COMMAND mkdir -p ${MILKIE_INC_OUTPUT_PATH}/manager
+  COMMAND mkdir -p ${MILKIE_INC_OUTPUT_PATH}/util
   COMMAND mkdir -p ${MILKIE_INC_OUTPUT_PATH}/core/model/feature_extractor
   COMMAND mkdir -p ${MILKIE_INC_OUTPUT_PATH}/core/model/context
   COMMAND mkdir -p ${MILKIE_INC_OUTPUT_PATH}/core/model/sentence
@@ -61,6 +62,7 @@ add_custom_command(TARGET milkie
   COMMAND cp ${MILKIE_SRC_DIR}/public/dep.h ${MILKIE_INC_OUTPUT_PATH}/public/
   COMMAND cp ${MILKIE_SRC_DIR}/public/aho_corasick.hpp ${MILKIE_INC_OUTPUT_PATH}/public/
   COMMAND cp ${MILKIE_SRC_DIR}/manager/manager.h ${MILKIE_INC_OUTPUT_PATH}/manager/
+  COMMAND cp ${MILKIE_SRC_DIR}/util/matcher.h ${MILKIE_INC_OUTPUT_PATH}/util/
   COMMAND cp ${MILKIE_SRC_DIR}/core/model/feature_extractor/feature_extractor.h ${MILKIE_INC_OUTPUT_PATH}/core/model/feature_extractor/
   COMMAND cp ${MILKIE_SRC_DIR}/core/model/context/frame.h ${MILKIE_INC_OUTPUT_PATH}/core/model/context/
   COMMAND cp ${MILKIE_SRC_DIR}/core/model/context/context.h ${MILKIE_INC_OUTPUT_PATH}/core/model/context/

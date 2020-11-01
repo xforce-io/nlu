@@ -42,6 +42,7 @@ int main(int argc, char **argv) {
 void testcase0();
 void testcase1();
 void testcase2();
+void testcaseNer();
 void testcaseWildcard();
 void testcaseMultimatch();
 void testPartlyMultimatch();
@@ -49,25 +50,32 @@ void testBugfix();
 
 TEST(testAll, all) {
   ASSERT_TRUE(milkie->GetReferManager().AddToGlobalDict("../../data/test/dict"));
-  /*
   testcase0();
   testcase1();
   testcase2();
+  testcaseNer();
   testcaseWildcard();
   testcaseMultimatch();
   testPartlyMultimatch();
-  */
   testBugfix();
 }
 
 void testcase0() {
-  auto ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, L"{$IsAAnchor -> desc }");
+  auto ret = PatternExpr::Build(
+      milkie->GetConf(),
+      milkie->GetReferManager(), 
+      kTestBlockKey, 
+      L"{$IsAAnchor -> desc }");
   ASSERT_TRUE(ret.second == 21);
 }
 
 void testcase1() {
   std::wstring expr = Helper::PreprocessExprLine(L"{#Pos(dP-aP-) | ret = _pl_ < 5 | -> target *}");
-  auto ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, expr);
+  auto ret = PatternExpr::Build(
+      milkie->GetConf(),
+      milkie->GetReferManager(), 
+      kTestBlockKey, 
+      expr);
   ASSERT_TRUE(ret.first != nullptr);
 
   auto query = L"不好";
@@ -103,7 +111,11 @@ void testcase1() {
 
 void testcase2() {
   std::wstring expr = Helper::PreprocessExprLine(L"{ {$ContinousN -> noun} #Pos(dP-aP-) { #Pos(yP-) -> yPhrase *} => target *}");
-  auto ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, expr);
+  auto ret = PatternExpr::Build(
+      milkie->GetConf(),
+      milkie->GetReferManager(), 
+      kTestBlockKey, 
+      expr);
   ASSERT_TRUE(ret.first != nullptr);
 
   auto query = L"苹果橘子不好吃吧";
@@ -133,11 +145,32 @@ void testcase2() {
   ASSERT_TRUE(context->GetCurStorageAsStr(*new StorageKey(L"target", L"yPhrase")) == nullptr);
 }
 
+void testcaseNer() {
+  std::wstring expr = Helper::PreprocessExprLine(L"{ {#Reg(_NUM_WITH_CHN_{1,2}) -> month} \"月\" {#Reg(_NUM_WITH_CHN_{1,2}) -> day} \"日\"}");
+  auto ret = PatternExpr::Build(
+      milkie->GetConf(),
+      milkie->GetReferManager(), 
+      kTestBlockKey, 
+      expr);
+  ASSERT_TRUE(ret.first != nullptr);
+
+  auto query = L"十一月2日";
+  auto context = std::make_shared<Context>(query);
+  FragmentSet<Segment> segments(query);
+  ASSERT_TRUE(ret.first->ExactMatch(*(context.get())));
+  ASSERT_TRUE(*(context->GetCurStorageAsStr(*new StorageKey(nullptr, L"month"))) == L"十一");
+  ASSERT_TRUE(*(context->GetCurStorageAsStr(*new StorageKey(nullptr, L"day"))) == L"2");
+}
+
 void testcaseWildcard() {
   std::cout << "A" << std::endl;
 
   std::wstring expr = Helper::PreprocessExprLine(L"{ {$ContinousN -> noun} $*Wield #Pos(dP-aP-) { #Pos(yP-) -> yPhrase *} -> target }");
-  auto ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, expr);
+  auto ret = PatternExpr::Build(
+      milkie->GetConf(),
+      milkie->GetReferManager(), 
+      kTestBlockKey, 
+      expr);
   ASSERT_TRUE(ret.first != nullptr);
 
   std::cout << "A.1" << std::endl;
@@ -164,7 +197,11 @@ void testcaseWildcard() {
   std::cout << "B" << std::endl;
 
   expr = Helper::PreprocessExprLine(L"{ {$ContinousN -> noun} $*Wield #Pos(v) #Pos(yP-) }");
-  ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, expr);
+  ret = PatternExpr::Build(
+      milkie->GetConf(),
+      milkie->GetReferManager(), 
+      kTestBlockKey, 
+      expr);
   ASSERT_TRUE(ret.first != nullptr);
 
   query = L"苹果橘子真的真的不好吃是吧";
@@ -185,7 +222,11 @@ void testcaseWildcard() {
   std::cout << "C" << std::endl;
 
   expr = Helper::PreprocessExprLine(L"{ {$ContinousN -> noun} $*Wield }");
-  ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, expr);
+  ret = PatternExpr::Build(
+      milkie->GetConf(),
+      milkie->GetReferManager(), 
+      kTestBlockKey, 
+      expr);
   ASSERT_TRUE(ret.first != nullptr);
 
   query = L"苹果橘子真的真的不好吃";
@@ -206,7 +247,11 @@ void testcaseWildcard() {
 
 void testcaseMultimatch() {
   std::wstring expr = Helper::PreprocessExprLine(L"{ {$ContinousN -> noun} #Pos(dP-aP-) { #Pos(yP-) -> yPhrase *} -> target }");
-  auto ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, expr);
+  auto ret = PatternExpr::Build(
+      milkie->GetConf(),
+      milkie->GetReferManager(), 
+      kTestBlockKey, 
+      expr);
   ASSERT_TRUE(ret.first != nullptr);
 
   std::wstring query = L"苹果橘子不好吃吧吧";
@@ -234,7 +279,11 @@ void testcaseMultimatch() {
   ASSERT_TRUE(context->GetCurStorage(L"yPhrase") == nullptr);
 
   expr = Helper::PreprocessExprLine(L"{ {$ContinousN -> noun} #Pos(dP-aP-) { #Pos(yP-) -> yPhrase +} -> target }");
-  ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, expr);
+  ret = PatternExpr::Build(
+      milkie->GetConf(),
+      milkie->GetReferManager(), 
+      kTestBlockKey, 
+      expr);
   ASSERT_TRUE(ret.first != nullptr);
 
   query = L"苹果橘子不好吃吧吧";
@@ -263,7 +312,11 @@ void testcaseMultimatch() {
 
 void testPartlyMultimatch() {
   std::wstring expr = Helper::PreprocessExprLine(L"{ #Pos((dP-)*(vP-)) -> syntactic.v }");
-  auto ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, expr);
+  auto ret = PatternExpr::Build(
+      milkie->GetConf(),
+      milkie->GetReferManager(), 
+      kTestBlockKey, 
+      expr);
   ASSERT_TRUE(ret.first != nullptr);
 
   std::wstring query = L"他是会舞蹈";
@@ -288,7 +341,11 @@ void testPartlyMultimatch() {
 
 void testBugfix() {
   std::wstring expr = Helper::PreprocessExprLine(L"{ #Chk(v) $MPP -> syntactic._stc_ }");
-  auto ret = PatternExpr::Build(milkie->GetReferManager(), kTestBlockKey, expr);
+  auto ret = PatternExpr::Build(
+      milkie->GetConf(),
+      milkie->GetReferManager(), 
+      kTestBlockKey, 
+      expr);
   ASSERT_TRUE(ret.first != nullptr);
 
   std::wstring query = L"卖";

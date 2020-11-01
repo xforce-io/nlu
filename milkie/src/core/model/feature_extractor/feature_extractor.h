@@ -4,6 +4,7 @@
 
 namespace xforce { namespace nlu { namespace milkie {
 
+class Conf;
 class StructFeatureExtractor;  
 class Context;
 class ReferManager;
@@ -21,6 +22,7 @@ class FeatureExtractor {
 
  public: 
   static bool Build(
+          const Conf &conf,
           ReferManager &referManager,
           const std::string &filepath,
           std::vector<std::shared_ptr<FeatureExtractor>> &featureExtractors);

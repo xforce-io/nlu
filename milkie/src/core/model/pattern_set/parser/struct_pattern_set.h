@@ -6,6 +6,7 @@
 
 namespace xforce { namespace nlu { namespace milkie {
 
+class Conf;  
 class PatternExpr;
 class ReferManager;
 
@@ -20,6 +21,7 @@ class StructPatternSet :public StructElement {
   inline const PatternExpr::Vector* GetPatternExprs() const;
 
   static std::shared_ptr<StructPatternSet> Parse(
+      const Conf &conf,
       const ReferManager &referManager,
       const std::wstring &blockKey,
       const std::wstring &statement);
@@ -29,6 +31,7 @@ class StructPatternSet :public StructElement {
       const std::wstring &statement);
 
   static std::shared_ptr<StructPatternSet> ParseForPatternExprSet(
+      const Conf &conf,
       const ReferManager &referManager,
       const std::wstring &blockKey,
       const std::wstring &statement);

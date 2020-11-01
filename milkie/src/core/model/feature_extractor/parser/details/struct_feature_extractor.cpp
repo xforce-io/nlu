@@ -3,6 +3,7 @@
 #include "../../../pattern_expr/pattern_expr.h"
 #include "../../instruction_feature_extractor.h"
 #include "../../../variable/variable.h"
+#include "../../../../../conf/conf.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
@@ -17,6 +18,7 @@ StructFeatureExtractor::StructFeatureExtractor(
 }
 
 bool StructFeatureExtractor::Parse(
+        const Conf &conf,
         ReferManager &referManager,
         const std::string &filepath,
         std::vector<std::shared_ptr<StructFeatureExtractor>> &results) {
@@ -64,9 +66,9 @@ bool StructFeatureExtractor::Parse(
 
       std::pair<std::shared_ptr<PatternExpr>, ssize_t> buildRet;
       if (MatchType::kExactMatch == matchType) {
-        buildRet = PatternExpr::Build(referManager, curName, lineAfterProcess);
+        buildRet = PatternExpr::Build(conf, referManager, curName, lineAfterProcess);
       } else {
-        buildRet = PatternExpr::Build(referManager, curName, lineAfterProcess.substr(1));
+        buildRet = PatternExpr::Build(conf, referManager, curName, lineAfterProcess.substr(1));
       }
 
       if (nullptr == buildRet.first) {

@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
 TEST(testAll, all) {
   const xforce::JsonType* conf = xforce::JsonType::CreateConf("../conf/charles.conf");
 
-  std::wstring query = L"哪位陈凯歌妻子出演的电影获得过金马奖";
+  std::wstring query = L"我和他一起喝咖啡的时候气温会是多少";
   ASSERT_TRUE(Charles::Init(*conf));
   AnalysisClause analysisClause(query,basic::CollectionSyntaxTag(true));
 

@@ -1,10 +1,12 @@
 #include "../refer.h"
 #include "../../variable/variable.h"
 #include "../../pattern_expr/pattern_expr.h"
+#include "../../../../conf/conf.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
-Refer::Refer(const ReferManager &referManager) :
+Refer::Refer(const Conf &conf, const ReferManager &referManager) :
+  conf_(conf),
   referManager_(referManager) {}
 
 void Refer::Put(
@@ -36,7 +38,7 @@ bool Refer::Put(
     return false;
   }
 
-  auto ret = PatternExpr::Build(referManager_, blockKey, value);
+  auto ret = PatternExpr::Build(conf_, referManager_, blockKey, value);
   if (ret.second != value.length()) {
     FATAL("invalid_dict_val(" << value << ")");
     return false;

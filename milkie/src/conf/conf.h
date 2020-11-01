@@ -13,10 +13,12 @@ class Conf {
 
   inline const std::vector<std::string>& GetExprFilepaths() const;
   inline const std::vector<std::string>& GetReferFilepaths() const;
+  inline const std::vector<std::string>& GetCodeSegFilepaths() const;
 
  private:
   std::vector<std::string> exprFilepaths_;
   std::vector<std::string> referFilepaths_;
+  std::vector<std::string> codeSegFilepaths_;
 };
 
 const std::vector<std::string>& Conf::GetExprFilepaths() const {
@@ -25,6 +27,10 @@ const std::vector<std::string>& Conf::GetExprFilepaths() const {
 
 const std::vector<std::string>& Conf::GetReferFilepaths() const {
   return referFilepaths_;
+}
+
+const std::vector<std::string>& Conf::GetCodeSegFilepaths() const {
+  return codeSegFilepaths_;
 }
 
 }}}

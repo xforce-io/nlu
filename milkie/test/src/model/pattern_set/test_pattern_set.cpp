@@ -27,7 +27,11 @@ int main(int argc, char **argv) {
 }
 
 TEST(testAll, build) {
-  auto ret = PatternSet::Build(milkie->GetReferManager(), L"global", L"[\"美味的方便面\" && #Pos(aP-uP-nP-), \"就是的\"]");
+  auto ret = PatternSet::Build(
+      milkie->GetConf(),
+      milkie->GetReferManager(), 
+      L"global", 
+      L"[\"美味的方便面\" && #Pos(aP-uP-nP-), \"就是的\"]");
   ASSERT_TRUE(ret.first->GetPatternExprs()->size() == 2);
 
   auto query = L"美味的方便面才好吃";
@@ -50,7 +54,11 @@ TEST(testAll, build) {
 }
 
 TEST(testAll, build1) {
-  auto ret = PatternSet::Build(milkie->GetReferManager(), L"global", L"[$a, $b]");
+  auto ret = PatternSet::Build(
+      milkie->GetConf(),
+      milkie->GetReferManager(), 
+      L"global", 
+      L"[$a, $b]");
   ASSERT_TRUE(ret.first->GetPatternExprs()->size() == 2);
 
   auto context = std::make_shared<Context>(L"0");

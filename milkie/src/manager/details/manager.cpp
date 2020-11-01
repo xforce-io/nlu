@@ -12,7 +12,7 @@ bool Manager::Init(
   featureExtractors_.clear();
   for (auto &filepath : conf.GetExprFilepaths()) {
     std::vector<std::shared_ptr<FeatureExtractor>> featureExtractors;
-    auto ret = FeatureExtractor::Build(*referManager_, filepath, featureExtractors);
+    auto ret = FeatureExtractor::Build(conf, *referManager_, filepath, featureExtractors);
     if (ret) {
       for (auto &featureExtractor : featureExtractors) {
         featureExtractors_.insert(std::make_pair(featureExtractor->GetName(), featureExtractor));

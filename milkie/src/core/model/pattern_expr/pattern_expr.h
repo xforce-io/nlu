@@ -5,6 +5,7 @@
 
 namespace xforce { namespace nlu { namespace milkie {
 
+class Conf;
 class Pattern;
 class PatternSet;
 class StructPatternExpr;
@@ -53,6 +54,7 @@ class PatternExpr {
   static bool IsPatternExprPrefixStartingChar(char c);
   static bool IsPatternExprPartlyStartingChar(char c);
   static std::pair<std::shared_ptr<PatternExpr>, ssize_t> Build(
+          const Conf &conf,
           const ReferManager &referManager,
           const std::wstring &blockKey,
           const std::wstring &statement);

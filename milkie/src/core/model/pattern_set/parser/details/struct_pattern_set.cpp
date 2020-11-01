@@ -3,10 +3,12 @@
 #include "../struct_pattern_set.h"
 #include "../../../pattern_expr/pattern_expr.h"
 #include "../../../refer/refer_manager.h"
+#include "../../../../../conf/conf.h"
 
 namespace xforce { namespace nlu { namespace milkie {
 
 std::shared_ptr<StructPatternSet> StructPatternSet::Parse(
+    const Conf &conf,
     const ReferManager &referManager,
     const std::wstring &blockKey,
     const std::wstring &statement) {
@@ -17,7 +19,7 @@ std::shared_ptr<StructPatternSet> StructPatternSet::Parse(
 
   auto structPatternSet = ParseForStrSet(blockKey, statement);
   if (nullptr == structPatternSet) {
-    structPatternSet = ParseForPatternExprSet(referManager, blockKey, statement);
+    structPatternSet = ParseForPatternExprSet(conf, referManager, blockKey, statement);
     if (nullptr == structPatternSet) {
       FATAL("invalid_pattern_set(" << blockKey << "|" << statement << ")");
       return nullptr;
@@ -66,6 +68,7 @@ std::shared_ptr<StructPatternSet> StructPatternSet::ParseForStrSet(
 }
 
 std::shared_ptr<StructPatternSet> StructPatternSet::ParseForPatternExprSet(
+    const Conf &conf,
     const ReferManager &referManager,
     const std::wstring &blockKey,
     const std::wstring &statement) {
@@ -81,7 +84,7 @@ std::shared_ptr<StructPatternSet> StructPatternSet::ParseForPatternExprSet(
       reachEndMark = true;
       exit = true;
     } else if (PatternExpr::IsPatternExprStartingChar(statement[curIdx])) {
-      auto ret = PatternExpr::Build(referManager, blockKey, statement.substr(curIdx));
+      auto ret = PatternExpr::Build(conf, referManager, blockKey, statement.substr(curIdx));
       patternExprs.push_back(ret.first);
       curIdx += ret.second;
     } else {

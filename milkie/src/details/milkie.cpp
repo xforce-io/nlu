@@ -7,7 +7,7 @@ namespace xforce { namespace nlu { namespace milkie {
 
 Milkie::Milkie() :
     conf_(new Conf()),
-    referManager_(new ReferManager()),
+    referManager_(nullptr),
     manager_(new Manager()) {}
 
 bool Milkie::Init(const std::string &confpath) {
@@ -17,7 +17,8 @@ bool Milkie::Init(const std::string &confpath) {
     return false;
   }
 
-  ret = referManager_->BuildGlobalDict(*conf_);
+  referManager_ = new ReferManager(*conf_),
+  ret = referManager_->BuildGlobalDict();
   if (!ret) {
     FATAL("fail_build_global_dict");
     return false;

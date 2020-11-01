@@ -11,7 +11,7 @@ class ReferManager {
   static const std::wstring kGlobal;
 
  public:
-  ReferManager();
+  ReferManager(const Conf &conf);
   virtual ~ReferManager();
 
   /*
@@ -19,12 +19,13 @@ class ReferManager {
    *        true  => succ
    *        false => has error
    */
-  bool BuildGlobalDict(const Conf &conf);
+  bool BuildGlobalDict();
   bool AddToGlobalDict(const std::string &filepath);
   bool PutLocalRefer(const std::wstring &blockKey, const std::wstring &line);
   const std::shared_ptr<PatternExpr> Get(const std::wstring &blockKey, const std::wstring &key) const;
 
  private:
+  const Conf *conf_;
   Refer *globalDict_;
   std::unordered_map<std::wstring, std::shared_ptr<Refer>> localDict_;
 };
